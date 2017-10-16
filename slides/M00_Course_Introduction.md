@@ -7,11 +7,11 @@ class: center, middle, title
 <br>
 <br>
 
-Ajay Chenampara
+Jason Edelman
 
-ajay@networktocode.com
+jason@networktocode.com
 
-@termlen0
+@jedelman8
 
 <br><br>
 
@@ -30,31 +30,39 @@ layout: true
 
 The primary objectives of this course is to learn and obtain foundational programming and automation skills with a focus on network engineering.
 
-In this course, you will learn how to get started with Python in the context of network automation.
+In this course, you will learn the following (additionally includes git):
 
 .left-column[
-- Data Types
-- Conditionals, Loops, Functions
-- Writing Scripts
-- Command Line Arguments
-- Working with Files 
-- Python Libraries
-- YAML
-- Jinja2 Templating
+- Python
+  - Data Types
+  - Conditionals, Loops, Functions
+  - Writing Scripts
+  - Command Line Arguments
+  - Working with Files and YAML
+  - Python Libraries
+  - Open Source Network Libraries
+  - HTTP-Based and RESTful APIs
+  - Vendor APIs
+
+]
+.right-column[
+- Ansible
+  - Playbooks,  Plays, Tasks, Modules, Inventory
+  - Writing Playbooks
+  - Configuration Templating with Jinja2
+  - Managing Network Configurations
+  - Automated Data Collection & Reporting
+  - Multi-vendor configuration with Ansible Roles
+  - Dynamic Inventory
 
 ]
 
-.left-column[
-- Open Source Network Libraries
-- HTTP-Based and RESTful APIs (JSON/XML)
-- Vendor APIs
 
-]
 ---
 
 # Target Audience
 
-This course was built for Network Engineers that are looking to gain an introduction into Python, exploring its relevance with respect to Network Automation & Programmability.  
+This course was built for Network Engineers that are looking to gain an introduction into Python and Ansible exploring its relevance with respect to Network Automation & Programmability.  
 
 The course does not assume any background in programming or software development methodologies, but the student should have some experience in the networking field as examples pertain to managing network devices such as switches and routers.
 
@@ -63,36 +71,65 @@ The course does not assume any background in programming or software development
 # Course Layout
 
 .left-column[
-- Python Foundations
+- Module 1 - Python
   - Data Types
   - Conditionals
   - Loops
   - Functions
   - Writing Python Scripts
   - Command Line Arguments
-  - Working with Text & YAML Files
-  - Configuration Templating with Jinaj2
-  - Python Modules/Libraries
+  - Working with Files
+  - Python Libraries
+- Module 2 - Python Network Libraries
+  - TextFSM
+  - netmiko
+
+]
+
+.right-column[
+- Module 2 (cont'd) - Python Network Libraries
+  - NAPALM
+  - pyntc
+- Module 3 - Network APIs & Vendor Libraries
+  - HTTP-Based APIs
+  - Arista eAPI
+  - Nexus NX-API
+  - IOS-XE RESTCONF
+  - Postman
+
+]
+
+---
+# Course Layout
+
+.left-column[
+- Module 4 - YAML
+  - Data Types Review
+  - JSON Review
+  - Introduction to YAML
+
+- Module 5 - Ansible
+  - Introduction to YAML
+  - Overview  
+  - Inventory File
+  - Variables
+  - Playbooks
+  - Directory Structure
 
 
 ]
 
 .right-column[
-- Network Operations with Python
-  - Getting Started with Netmiko
-  - Parsing show commands with Python
-  - Parsing show commands with TextFSM
-- Network APIs & Vendor Libraries
-  - HTTP-Based APIs (JSON/REST)
-  - Arista eAPI
-  - Nexus NX-API
-  - IOS-XE RESTCONF
-  - Postman
-  - Understanding Data Modeling
+- Module 5 - Ansible (cont'd)
+  - Configuration Management
+  - Executing show commands and parsing text
+  - Ansible Core Network Modules
+  - 3rd Party & Open Source Modules
+  - Roles
+  - Data Collection & Reporting
+  - Dynamic Inventory
 
 ]
-
-
 
 ---
 
@@ -102,6 +139,7 @@ The course does not assume any background in programming or software development
 
 - You will understand JSON, YAML, Jinja2, and REST APIs
 - You will be able to write Python scripts that gather information from network devices (helpful in creating documentation) as well as configure network devices
+- You will be able to write Ansible playbooks to more efficiently network devices: gathering facts, issuing show commands, and managing configurations
 
 
 
@@ -111,10 +149,9 @@ The course does not assume any background in programming or software development
 
 Everyone has a virtual topology that will be hosted in the public cloud for the week.  It includes:
 
-- 2 x CSR 1000V  (16.3.1 w/ RESTCONF/NETCONF/YANG)
+- 3 x CSR 1000V  (16.3.1 w/ RESTCONF/NETCONF/YANG)
 - 2 x NX-OSv (Virtual 7K running 7.3)
-- 2 x vEOS (4.15)
-- 2 x vMX (15.x)
+- 4 x vEOS (4.15)
 - 1 x Ubuntu Jump host
 
 
@@ -142,7 +179,7 @@ Everyone has a virtual topology that will be hosted in the public cloud for the 
 # Lab & Lecture Material
 
 - Access to Lecture / Lab Material
-  - Email your GitHub USER ID (not email address) to labs@networktocode.com
+  - Email your GitHub USER ID (not email address) to jason@networktocode.com
   - If you don't have one, create one at https://github.com
 
 
