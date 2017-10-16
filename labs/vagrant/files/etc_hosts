@@ -1,0 +1,87 @@
+127.0.0.1   localhost
+127.0.1.1   ntc.localdomain ntc
+
+# The following lines are desirable for IPv6 capable hosts
+::1     localhost ip6-localhost ip6-loopback
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
+
+10.0.0.11   eos-spine1
+10.0.0.12   eos-spine2
+10.0.0.13   eos-spine3
+10.0.0.14   eos-spine4
+10.0.0.15   eos-spine5
+10.0.0.16   eos-spine6
+10.0.0.17   eos-spine7
+10.0.0.18   eos-spine8
+
+
+10.0.0.21   eos-leaf1
+10.0.0.22   eos-leaf2
+10.0.0.23   eos-leaf3
+10.0.0.24   eos-leaf4
+10.0.0.25   eos-leaf5
+10.0.0.26   eos-leaf6
+10.0.0.27   eos-leaf7
+10.0.0.28   eos-leaf8
+
+10.0.0.31   vmx1
+10.0.0.32   vmx2
+10.0.0.33   vmx3
+10.0.0.34   vmx4
+10.0.0.35   vmx5
+10.0.0.36   vmx6
+10.0.0.37   vmx7
+10.0.0.38   vmx8
+10.0.0.39   vmx9
+10.0.0.40   vmx10
+10.0.0.41   vmx11
+10.0.0.42   vmx12
+
+
+10.0.0.51   csr1
+10.0.0.52   csr2
+10.0.0.53   csr3
+10.0.0.54   csr4
+10.0.0.55   csr5
+10.0.0.56   csr6
+10.0.0.57   csr7
+10.0.0.58   csr8
+10.0.0.59   csr9
+10.0.0.60   csr10
+10.0.0.61   csr11
+10.0.0.62   csr12
+10.0.0.63   csr13
+10.0.0.64   csr14
+10.0.0.65   csr15
+
+10.0.0.71   nxos-spine1
+10.0.0.72   nxos-spine2
+10.0.0.73   nxos-spine3
+10.0.0.74   nxos-spine4
+10.0.0.75   nxos-spine5
+10.0.0.76   nxos-spine6
+10.0.0.77   nxos-spine7
+10.0.0.78   nxos-spine8
+
+
+10.0.0.81   nxos-leaf1
+10.0.0.82   nxos-leaf2
+10.0.0.83   nxos-leaf3
+10.0.0.84   nxos-leaf4
+10.0.0.85   nxos-leaf5
+10.0.0.86   nxos-leaf6
+10.0.0.87   nxos-leaf7
+10.0.0.88   nxos-leaf8
+
+
+10.0.0.91   vsrx1
+10.0.0.92   vsrx2
+10.0.0.93   vsrx3
+10.0.0.94   vsrx4
+
+10.0.0.101   asa1
+10.0.0.102   asa2
+10.0.0.103   asa3
+10.0.0.104   asa3
+

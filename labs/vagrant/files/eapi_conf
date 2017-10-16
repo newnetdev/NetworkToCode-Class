@@ -1,0 +1,24 @@
+[connection:eos-spine1]
+host: 10.0.0.11
+username: ntc
+password: ntc123
+transport: https
+
+[connection:eos-spine2]
+host: 10.0.0.12
+username: ntc
+password: ntc123
+transport: https
+
+[connection:eos-leaf1]
+host: 10.0.0.21
+username: ntc
+password: ntc123
+transport: https
+
+
+[connection:eos-leaf2]
+host: 10.0.0.22
+username: ntc
+password: ntc123
+transport: https

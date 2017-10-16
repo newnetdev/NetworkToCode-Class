@@ -1,0 +1,60 @@
+{
+    "Eth2": {
+        "oper": {
+            "neighbors": [
+                {
+                    "neighbor_interface": "Eth9",
+                    "neighbor": "r1"
+                },
+                {
+                    "neighbor_interface": "Eth22",
+                    "neighbor": "r2"
+                },
+                {
+                    "neighbor_interface": "Eth2",
+                    "neighbor": "r3"
+                }
+            ],
+            "resets": 10,
+            "state": "down",
+            "crc_errors": "9",
+            "mtu": 1500
+        },
+        "config": {
+            "duplex": "auto",
+            "state": "up",
+            "speed": "full",
+            "description": "configured by Python",
+            "mtu": 1518
+        }
+    },
+    "Eth1": {
+        "oper": {
+            "neighbors": [
+                {
+                    "neighbor_interface": "Eth2",
+                    "neighbor": "r1"
+                },
+                {
+                    "neighbor_interface": "Eth11",
+                    "neighbor": "r2"
+                },
+                {
+                    "neighbor_interface": "Eth1",
+                    "neighbor": "r3"
+                }
+            ],
+            "resets": 5,
+            "state": "down",
+            "crc_errors": "5",
+            "mtu": 1500
+        },
+        "config": {
+            "duplex": "auto",
+            "state": "down",
+            "speed": "auto",
+            "description": "configured by Python",
+            "mtu": 1600
+        }
+    }
+}

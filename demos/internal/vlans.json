@@ -1,0 +1,30 @@
+{
+    "output": {
+        "proposed": {
+            "name": "NTC"
+        }, 
+        "existing_vlans_list": [
+            "1"
+        ], 
+        "end_state_vlans_list": [
+            "1", 
+            "100"
+        ], 
+        "existing": {}, 
+        "updates": [
+            "vlan 100", 
+            "name NTC", 
+            "exit"
+        ], 
+        "end_state": {
+            "vlan_state": "active", 
+            "mapped_vni": "", 
+            "admin_state": "up", 
+            "name": "NTC", 
+            "vlan_id": "100"
+        }, 
+        "proposed_vlans_list": [
+            "100"
+        ]
+    }
+}

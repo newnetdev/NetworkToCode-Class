@@ -1,0 +1,185 @@
+{
+    "output": {
+        "ansible_facts": {
+            "fan_info": [
+                {
+                    "status": "Ok", 
+                    "model": null, 
+                    "hw_ver": "0.0", 
+                    "name": "ChassisFan1"
+                }, 
+                {
+                    "status": "None", 
+                    "model": null, 
+                    "hw_ver": "0.0", 
+                    "name": "ChassisFan2"
+                }, 
+                {
+                    "status": "Ok", 
+                    "model": "--", 
+                    "hw_ver": "--", 
+                    "name": "Fan_in_PS1"
+                }, 
+                {
+                    "status": "Failure", 
+                    "model": "--", 
+                    "hw_ver": "--", 
+                    "name": "Fan_in_PS2"
+                }
+            ], 
+            "hostname": "nxos-spine1", 
+            "ansible_net_serialnum": "TM6017D760B", 
+            "platform": "NX-OSv Chassis", 
+            "ansible_net_all_ipv4_addresses": [
+                "10.0.0.71"
+            ], 
+            "ansible_net_model": "NX-OSv Chassis", 
+            "ansible_net_hostname": "nxos-spine1", 
+            "interfaces_list": [
+                "mgmt0", 
+                "Ethernet2/1", 
+                "Ethernet2/2", 
+                "Ethernet2/3", 
+                "Ethernet2/4", 
+                "Ethernet2/5", 
+                "Ethernet2/6", 
+                "Ethernet2/7", 
+                "Ethernet2/8", 
+                "Ethernet2/9", 
+                "Ethernet2/10", 
+                "Ethernet2/11", 
+                "Ethernet2/12", 
+                "Ethernet2/13", 
+                "Ethernet2/14", 
+                "Ethernet2/15"
+            ], 
+            "ansible_net_gather_subset": [
+                "hardware", 
+                "default", 
+                "interfaces", 
+                "legacy"
+            ], 
+            "power_supply_info": [
+                {
+                    "status": "Ok", 
+                    "model": "DS-CAC-845W", 
+                    "number": 1
+                }, 
+                {
+                    "status": "Absent", 
+                    "model": "------------", 
+                    "number": 2
+                }
+            ], 
+            "ansible_net_interfaces": {
+                "Ethernet2/13": {
+                    "macaddress": "2cc2.604f.feb2", 
+                    "duplex": "auto", 
+                    "type": "Ethernet", 
+                    "state": "down", 
+                    "mtu": "1500", 
+                    "bandwidth": 1000000, 
+                    "mode": "routed", 
+                    "speed": "auto-speed"
+                }, 
+                "Ethernet2/12": {
+                    "macaddress": "2cc2.604f.feb2", 
+                    "duplex": "auto", 
+                    "type": "Ethernet", 
+                    "state": "down", 
+                    "mtu": "1500", 
+                    "bandwidth": 1000000, 
+                    "mode": "routed", 
+                    "speed": "auto-speed"
+                }, 
+                "Ethernet2/11": {
+                    "macaddress": "2cc2.604f.feb2", 
+                    "duplex": "auto", 
+                    "type": "Ethernet", 
+                    "state": "down", 
+                    "mtu": "1500", 
+                    "bandwidth": 1000000, 
+                    "mode": "routed", 
+                    "speed": "auto-speed"
+                }, 
+                "Ethernet2/10": {
+                    "macaddress": "2cc2.604f.feb2", 
+                    "duplex": "auto", 
+                    "type": "Ethernet", 
+                    "state": "down", 
+                    "mtu": "1500", 
+                    "bandwidth": 1000000, 
+                    "mode": "routed", 
+                    "speed": "auto-speed"
+                }, 
+                "Ethernet2/15": {
+                    "macaddress": "2cc2.604f.feb2", 
+                    "duplex": "auto", 
+                    "type": "Ethernet", 
+                    "state": "down", 
+                    "mtu": "1500", 
+                    "bandwidth": 1000000, 
+                    "mode": "routed", 
+                    "speed": "auto-speed"
+                }, 
+                "Ethernet2/14": {
+                    "macaddress": "2cc2.604f.feb2", 
+                    "duplex": "auto", 
+                    "type": "Ethernet", 
+                    "state": "down", 
+                    "mtu": "1500", 
+                    "bandwidth": 1000000, 
+                    "mode": "routed", 
+                    "speed": "auto-speed"
+                }, 
+                "Ethernet2/1": {
+                    "macaddress": "2cc2.604f.feb2", 
+                    "duplex": "full", 
+                    "type": "Ethernet", 
+                    "state": "up", 
+                    "mtu": "1500", 
+                    "bandwidth": 1000000, 
+                    "mode": "routed", 
+                    "speed": "1000 Mb/s"
+                }
+            }, 
+            "ansible_net_version": "7.3(1)D1(1) [build 7.3(1)D1(0.10)]", 
+            "module": [
+                {
+                    "status": "active *", 
+                    "model": "N7K-SUP1", 
+                    "type": "NX-OSv Supervisor Module", 
+                    "ports": 0
+                }, 
+                {
+                    "status": "ok", 
+                    "model": "N7K-F248XP-25", 
+                    "type": "NX-OSv Ethernet Module", 
+                    "ports": 48
+                }, 
+                {
+                    "status": "ok", 
+                    "model": "N7K-F248XP-25", 
+                    "type": "NX-OSv Ethernet Module", 
+                    "ports": 48
+                }, 
+                {
+                    "status": "ok", 
+                    "model": "N7K-F248XP-25", 
+                    "type": "NX-OSv Ethernet Module", 
+                    "ports": 48
+                }
+            ], 
+            "ansible_net_all_ipv6_addresses": [], 
+            "ansible_net_memtotal_mb": 3908, 
+            "ansible_net_filesystems": [
+                "bootflash:"
+            ], 
+            "ansible_net_image": "bootflash:///titanium-d1.7.3.1.D1.0.10.bin", 
+            "os": "7.3(1)D1(1) [build 7.3(1)D1(0.10)]", 
+            "vlan_list": [
+                1
+            ]
+        }
+    }
+}
