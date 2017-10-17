@@ -1,4 +1,4 @@
-## Lab 12 - Network Automation with Netmiko 
+## Lab 12.2 - Netmiko Intro with Junos
 
 In this lab, we will explore using netmiko for network automation on the Juniper VMX devices.
 

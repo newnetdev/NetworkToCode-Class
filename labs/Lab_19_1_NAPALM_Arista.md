@@ -1,75 +1,64 @@
-## Lab 18.2 - NAPALM
+## Lab 19.1 - NAPALM
 
 ### Task 1 - Basic Configuration Merge with NAPALM
 
-In this task, you will explore working with the NAPALM Python library to perform a configuration **merge** on a Cisco router.
+In this task, you will explore working with the NAPALM Python library to perform a configuration **merge** on an Arista switch.
 
 ##### Step 1
 
-Connect to `csr1` and configure three SNMP community strings.
-
-```
-csr1#conf t
-Enter configuration commands, one per line.  End with CNTL/Z.
-csr1(config)#snmp-server community NTC ro
-csr1(config)#snmp-server community networktocode ro
-csr1(config)#snmp-server community public ro
-csr1(config)#end
-csr1#
-```
+Create a new file called `snmp.conf` in your home directory and open the file in Sublime Text or the editor of your choice.
 
 ##### Step 2
 
-Create a new file called `snmp.conf` in your home directory and open the file in Sublime Text or the editor of your choice.
-
-##### Step 3
-
-Take the config snippet below and save it in the file just created (`snmp.conf`). These commands will be used to directly configure the routers. 
+Take the config snippet below and save it in the file just created (`snmp.conf`). These commands will be used to directly configure the switches. 
 
 ```
-no snmp-server community NTC ro
 snmp-server community networktocode ro
 snmp-server community public ro
 snmp-server community private rw
 snmp-server community supersecret rw
 snmp-server location SYDNEY
 snmp-server contact JOHN_SMITH
+
 ```
 
 
-##### Step 4
+##### Step 3
 
 Enter the Python shell **from your home directory**.
 
 ```python
 ntc@ntc:~$ python
-Python 2.7.12 (default, Nov 19 2016, 06:48:10)
-[GCC 5.4.0 20160609] on linux2
+
+Python 2.7.6 (default, Jun 22 2015, 17:58:13) 
+[GCC 4.8.2] on linux2
 Type "help", "copyright", "credits" or "license" for more information.
->>>
+
+>>> 
+>>> 
 ```
 
-##### Step 5
+##### Step 4
 
-Load the correct NAPALM driver.  Since we're using the Cisco router in this lab, load the **ios** driver.
+Load the correct NAPALM driver.  Since we're using the Arista switch in this lab, load the **eos** driver.
 
 ```python
 >>> from napalm import get_network_driver
 >>>
->>> driver = get_network_driver('ios')
+>>> driver = get_network_driver('eos')
+>>> 
+```
+
+##### Step 5
+
+Create an **eos** device object for **eos-spine1** using the previously loaded driver.  Use the variable name `device`.
+
+```python
+>>> device = driver('eos-spine1', 'ntc', 'ntc123')
 >>> 
 ```
 
 ##### Step 6
-
-Create an **ios** device object for **csr1** using the previously loaded driver.  Use the variable name `device`.
-
-```python
->>> device = driver('csr1', 'ntc', 'ntc123')
->>> 
-```
-
-##### Step 7
 
 Use `help` on `device`.  You will be able to see all of supported properties and methods of this object.
 
@@ -79,50 +68,32 @@ Use `help` on `device`.  You will be able to see all of supported properties and
 ```
 
 ```
-Help on IOSDriver in module napalm_ios.ios object:
+Help on EOSDriver in module napalm_eos.eos object:
 
-class IOSDriver(napalm_base.base.NetworkDriver)
- |  NAPALM Cisco IOS Handler.
- |
+class EOSDriver(napalm_base.base.NetworkDriver)
+ |  Napalm driver for Arista EOS.
+ |  
  |  Method resolution order:
- |      IOSDriver
+ |      EOSDriver
  |      napalm_base.base.NetworkDriver
  |      __builtin__.object
- |
+ |  
  |  Methods defined here:
- |
+ |  
  |  __init__(self, hostname, username, password, timeout=60, optional_args=None)
- |      NAPALM Cisco IOS Handler.
- |
- |  cli(self, commands)
- |      Execute a list of commands and return the output in a dictionary format using the command
- |      as the key.
- |
- |      Example input:
- |      ['show clock', 'show calendar']
- |
- |      Output example:
- |      {   'show calendar': u'22:02:01 UTC Thu Feb 18 2016',
- |          'show clock': u'*22:01:51.165 UTC Thu Feb 18 2016'}
- |
+ |      Constructor.
+ |  
+ |  cli(self, commands=None)
+ |  
  |  close(self)
- |      Close the connection to the device.
- |
+ |      Implemantation of NAPALM method close.
+ |  
  |  commit_config(self)
- |      If replacement operation, perform 'configure replace' for the entire config.
- |
- |      If merge operation, perform copy <file> running-config.
- |
+ |      Implemantation of NAPALM method commit_config.
+ |  
  |  compare_config(self)
- |      show archive config differences <base_file> <new_file>.
- |
- |      Default operation is to compare system:running-config to self.candidate_cfg
- |
- |  discard_config(self)
- |      Set candidate_cfg to current running-config. Erase the merge_cfg file.
- |
- |  get_arp_table(self)
-:
+
+
 ```
 
 Just like you've seen with built-in data types, you can use `help()` and `dir()` on 3rd party object types too.
@@ -136,7 +107,7 @@ For this lab, we are  using `load_merge_candidate`.
 
 > Note: we will use `load_replace_candidate` indirectly in an upcoming Ansible lab.
 
-##### Step 8
+##### Step 7
 
 Open a connection to the device.  This is done using the `open()` method.
 
@@ -145,9 +116,11 @@ Open a connection to the device.  This is done using the `open()` method.
 >>> 
 ```
 
-##### Step 9
+> Note: technically this is not required for Arista devices as there is not a persistent connection used to connect to the device as opposed to protocols such as SSH and NETCONF.
 
-Load the configuration you created in Step 3 onto the device.
+##### Step 8
+
+Load the configuration you created in Step 2 onto the device.
 
 This is done by using the `load_merge_candiate` method of the device object.
 
@@ -156,27 +129,54 @@ This is done by using the `load_merge_candiate` method of the device object.
 >>> 
 ```
 
-As soon as you hit enter in this step, NAPALM is loading this configuration onto the device, but NOT committing it to the running configuration.  **How** this happens is different for every OS.
+As soon as you hit enter in this step, NAPALM is loading this configuration onto the device, but NOT committing it to the running configuration.  **How** this happens is different for every OS.  For Arista EOS, the feature called **configuration sessions** is being used.
 
-##### Step 10
-Use `compare_config()` to show candidate configuration diffs.
+At this step you can verify the changes manually by going to the device to view the preview of configs to be pushed too. As already stated, in the NAPALM implementation for Arista, the _session_ feature is being used, so first you can use view the pending session using the command `show configuration sessions`:
 
-```python
->>> diffs = device.compare_config()
->>>
->>> print diffs
--no snmp-server community NTC ro
-+snmp-server community private ro
-+snmp-server community supersecret ro
-+snmp-server location SYDNEY
-+snmp-server contact JOHN_SMITH
+```
+eos-spine1#show configuration sessions 
+Maximum number of completed sessions: 1
+Maximum number of pending sessions: 5
+
+  Name             State         User    Terminal 
+  ------------- ------------- ---------- -------- 
+  napalm_243001    pending                        
+
 ```
 
-As stated before, these changes are not applied to the running configuration yet. Instead, a `merge_config.txt` is created on the device. Feel free to connect to `csr1` and verify that none of those configuration lines have been applied yet.
+You can then generate a diff on the EOS CLI, if desired, using the command:
 
-##### Step 11
+```
+show session-config named <name> diffs 
+```
 
-Commit the config to the device while from the Python shell. 
+> These commands are exactly what NAPALM does for you.
+
+```
+eos-spine1#show session-config named napalm_243001 diffs 
+--- system:/running-config
++++ session:/napalm_243001-session-config
+@@ -7,7 +7,12 @@
+ hostname eos-spine1
+ ip domain-name ntc.com
+ !
++snmp-server contact JOHN_SMITH
++snmp-server location SYDNEY
+ snmp-server community networktocode ro
++snmp-server community private rw
++snmp-server community public ro
++snmp-server community supersecret rw
+ !
+ spanning-tree mode mstp
+ !
+
+eos-spine1#
+```
+
+
+##### Step 9
+
+Commit the config to the device while back at the Python shell. 
 
 This is when the configuration will be activated and _committed_ to the running configuration.
 
@@ -193,7 +193,8 @@ This is when the configuration will be activated and _committed_ to the running 
 ```
 
 
-##### Step 12
+##### Step 10
+
 
 To rollback, you use the rollback method.
 
@@ -204,13 +205,172 @@ Feel free to view the config on the CLI of the device before and after you issue
 >>> 
 ```
 
-##### Step 13
+##### Step 11
 
-Load the new SNMP configuration on the three other Cisco routers.  
+We now want to see how to view diffs directly from Python and not using the Arista CLI.
 
-Use a for loop to build the proper NAPALM device object as well as load and commit the configuration for each IOS-XE router.
+Re-load the configuration on the device.
 
-### Task 2 - NAPALM Getters
+
+```python
+>>> device.load_merge_candidate(filename='snmp.conf')
+>>> 
+```
+
+After it's loaded, view the diffs with the `compare_config` method.
+
+```python
+>>> diffs = device.compare_config()
+>>> 
+>>> print diffs
+@@ -7,7 +7,12 @@
+ hostname eos-spine1
+ ip domain-name ntc.com
+ !
++snmp-server contact JOHN_SMITH
++snmp-server location SYDNEY
+ snmp-server community networktocode ro
++snmp-server community private rw
++snmp-server community public ro
++snmp-server community supersecret rw
+ !
+ spanning-tree mode mstp
+ !
+>>> 
+```
+
+Now NAPALM is generating the diffs using the same CLI command you just tried in Step 8.
+
+##### Step 12
+
+Load the new SNMP configuration on the three other Arista switches.  
+
+Use a for loop to build the proper NAPALM device object as well as load and commit the configuration for each EOS switch.
+
+
+### Task 2 - Declarative Network Configuration with NAPALM for a Configuration Section
+
+In this task, you will use NAPALM to declaratively configure BGP on an Arista switch.  Normally, NAPALM is known for declaratively managing _full_ configuration files, but we'll show you can still use NAPALM to declaratively manage a single section.
+
+> Note: this is 100% dependent on the OS being used. 
+
+##### Step 1
+
+Use SSH to manully log to eos-spine1 switch.
+
+Load the following BGP configuration onto the device:
+
+```bash
+eos-spine1#show run section bgp
+router bgp 65512
+   neighbor 10.0.0.0 remote-as 65500
+   neighbor 10.0.0.0 maximum-routes 12000
+   neighbor 10.0.0.1 remote-as 65512
+   neighbor 10.0.0.1 maximum-routes 12000
+   network 20.20.20.0/24
+```
+
+##### Step 2
+
+Create a new file called `bgp.conf` in your home directory and open the file in Sublime Text or the text editor of your choice.
+
+##### Step 3
+
+We now want to declaratively manage just BGP.  This means we DO NOT CARE what's there.  What's in our new `bgp.conf` should be the only BGP config that ends up on the device.
+
+Take the config below and save it as `bgp.conf`.
+
+```
+no router bgp 65512
+router bgp 65512
+   neighbor 10.0.0.2 remote-as 65500
+   neighbor 10.0.0.2 maximum-routes 12000
+   neighbor 10.0.0.1 remote-as 65512
+   neighbor 10.0.0.1 maximum-routes 12000
+   neighbor 10.0.0.10 remote-as 65512
+   network 100.0.100.0/24
+```
+
+> Take note of the first line `no router bgp 65512`.  Watch what's going to happen next.
+
+##### Step 4
+
+Enter the Python shell from your home directory, import the *eos* napalm driver and create an *eos* device object for *eos-spine1* just like you already did on Task 1.
+
+```python
+ntc@ntc:~$ python
+
+Python 2.7.6 (default, Jun 22 2015, 17:58:13) 
+[GCC 4.8.2] on linux2
+Type "help", "copyright", "credits" or "license" for more information.
+
+>>> from napalm import get_network_driver
+>>> driver = get_network_driver('eos')
+>>> device = driver('eos-spine1', 'ntc', 'ntc123')
+>>>
+```
+
+##### Step 5
+
+Open a connection to the device.
+
+```python
+>>> device.open()
+>>> 
+```
+
+##### Step 6
+
+Load the configuration you created in Step 3 onto the device.
+
+All of these steps are no different than Task 1.
+
+```python
+>>> device.load_merge_candidate(filename='bgp.conf')
+>>> 
+```
+
+##### Step 7
+
+Use the `compare_config` method to show the configuration diffs.
+
+This is where you get to see the real power of EOS and NAPALM working together.
+
+```python
+>>> print device.compare_config()
+@@ -44,11 +44,13 @@
+ ip routing vrf MANAGEMENT
+ !
+ router bgp 65512
+-   neighbor 10.0.0.0 remote-as 65500
+-   neighbor 10.0.0.0 maximum-routes 12000 
+    neighbor 10.0.0.1 remote-as 65512
+    neighbor 10.0.0.1 maximum-routes 12000 
+-   network 20.20.20.0/24
++   neighbor 10.0.0.2 remote-as 65500
++   neighbor 10.0.0.2 maximum-routes 12000 
++   neighbor 10.0.0.10 remote-as 65512
++   neighbor 10.0.0.10 maximum-routes 12000 
++   network 100.0.100.0/24
+ !
+ management api http-commands
+    protocol http
+```
+
+Notice how the commands aren't just getting pushed.  BGP is NOT getting un-configured and re-configured.  Simply, the commands required to get BGP into its final are the only commands actually being used EOS.
+
+##### Step 8
+
+Finally, commit the config to the device.
+
+```python
+>>> device.commit_config()
+>>> 
+```
+
+Feel free to log back to the device and verify the configuration has been applied correctly.
+
+### Task 3 - NAPALM Getters
 
 In this task you will make practice with NAPALM getters on several platforms.
 
