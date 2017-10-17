@@ -7,3 +7,5 @@ Do the lab(s) as directed by your instructor.  This is determined based on your 
 
 **18.2** [NAPALM with Cisco IOS](Lab_18_2_NAPALM_IOS.md)
 
+**18.3** [NAPALM with Junos](Lab_18_3_NAPALM_Junos.md)
+
