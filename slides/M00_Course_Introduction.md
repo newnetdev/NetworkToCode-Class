@@ -7,11 +7,11 @@ class: center, middle, title
 <br>
 <br>
 
-Jason Edelman
+Ajay Chenampara
 
-jason@networktocode.com
+ajay@networktocode.com
 
-@jedelman8
+@termlen0
 
 <br><br>
 
@@ -24,6 +24,18 @@ layout: true
 .footer-picture[![Network to Code Logo](slides/media/Footer2.PNG)]
 .footnote-left[(C) 2015 Network to Code, LLC. All Rights Reserved. ]
 .footnote-con[CONFIDENTIAL]
+
+
+---
+
+# Who is Network to Code?
+
+- Founded in 2014
+- Consultancy specifically focused on network automation technologies
+- Provide Training and Professional Services helping roll out network automation tools and technology
+- On Demand Virtual Labs Platform (https://labs.networktocode.com)
+- Flagship course is 4-5 day on-site instructor-led Python and Ansible Network automation course
+- Vendor and tool neutral
 
 ---
 # Objectives
@@ -179,7 +191,7 @@ Everyone has a virtual topology that will be hosted in the public cloud for the 
 # Lab & Lecture Material
 
 - Access to Lecture / Lab Material
-  - Email your GitHub USER ID (not email address) to jason@networktocode.com
+  - Email your GitHub USER ID (not email address) to ajay@networktocode.com
   - If you don't have one, create one at https://github.com
 
 
