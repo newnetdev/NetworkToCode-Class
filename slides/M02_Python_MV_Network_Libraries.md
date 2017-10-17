@@ -309,7 +309,7 @@ From Example 2:
 
 # Lab Time
 
-- Lab 12 - TextFSM
+- Lab 15 - TextFSM
   - Use TextFSM to parse `show ip interface brief` from a Cisco Nexus switch
 
   - **Note: same workflow and process can be used for any other device.**
@@ -728,9 +728,10 @@ u'NEW_HOSTNAME#'
 
 # Lab Time
 
-- Lab 13- Netmiko
-  - Use Netmiko to interactively communicate with a network switch
-  - Review a script that communicates to a network device using netmiko and uses TextFSM to parse raw text data in real-time coming back from the device
+- Lab 12 - Introduction to Netmiko
+    - Choose either IOS or JUNOS
+
+- Lab 13 -  Use Netmiko to interactively communicate with a network switch
  
 
 ---

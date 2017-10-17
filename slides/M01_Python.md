@@ -2776,9 +2776,428 @@ ethernet
 - Lab 8 - Writing Python Scripts
   - Hello Network Automation
   - Generating Interface Commands using a Key Map
-  - Gathering (simulated) LLDP neighbor information
-- Lab 9 - Writing a Script using Functions
-  - Modularize and re-factor the gather neighbors script to use functions
+
+- Lab 9 - Writing a Script to generate configurations
+  - Write a script to generate interface configuration commands
+  
+- Lab 10 - Write a modular script that breaks down thescript into distinct, logical, functions, from the previous lab.
+
+---
+
+class: middle, segue
+
+# Working with Files
+### Introduction to Python for Network Engineers
+
+---
+
+# Sample Switch Config File
+
+Filename: `switch.cfg` 
+
+```bash
+hostname NYCSWITCH1
+
+vlan 100
+ name web
+!
+interface Ethernet 1/1
+  description connecting to US101
+  switchport trunk encapsulation dot1q
+  switchport mode trunk
+
+interface Ethernet 1/2
+  description connecting to US102
+  switchport trunk encapsulation dot1q
+  switchport mode trunk
+
+interface vlan 100
+  ip address 10.100.15.100/24
+
+ip route 0.0.0.0/0 10.100.15.1
+```
+
+---
+
+class: ubuntu
+
+# Reading Data from a File
+
+.left-column[
+```
+>>> config = open('switch.cfg', 'r')         # open file
+>>> 
+>>> config.read()                            # read file
+'hostname NYCSWITCH1\n\nvlan 100\n name web\n!\ninterface Ethernet 1/1\n  description connecting to US101\n  switchport trunk encapsulation dot1q\n  switchport mode trunk\n\ninterface Ethernet 1/2\n  description connecting to US102\n  switchport trunk encapsulation dot1q\n  switchport mode trunk\n\ninterface vlan 100\n  ip address 10.100.15.100/24\n\nip route 0.0.0.0/0 10.100.15.1'
+>>>
+>>> config_str = config.read()
+>>> 
+```
+]
+--
+
+.right-column[
+```
+>>> print config_str
+hostname NYCSWITCH1
+
+vlan 100
+ name web
+!
+interface Ethernet 1/1
+  description connecting to US101
+  switchport trunk encapsulation dot1q
+  switchport mode trunk
+
+interface Ethernet 1/2
+  description connecting to US102
+  switchport trunk encapsulation dot1q
+  switchport mode trunk
+
+interface vlan 100
+  ip address 10.100.15.100/24
+
+ip route 0.0.0.0/0 10.100.15.1
+>>>
+>>> config.close()                           # close file
+```
+]
+
+---
+
+class: ubuntu
+
+# File Object & its Methods
+
+```
+>>> dir(config)
+['close', 'closed', 'encoding', 'errors', 'fileno', 'flush', 'isatty', 'mode', 'name', 'newlines', 'next', 'read', 'readinto', 'readline', 'readlines', 'seek', 'softspace', 'tell', 'truncate', 'write', 'writelines', 'xreadlines']
+```
+---
+
+class: ubuntu 
+
+# Writing Data to a File
+
+.left-column[
+```
+>>> vlans = [{'id': '10', 'name': 'USERS'}, {'id': '20', 'name': 'VOICE'}, {'id': '30', 'name': 'WLAN'}, {'id': '40', 'name': 'APP'}, {'id': '50', 'name': 'WEB'}]
+>>>
+>>> print json.dumps(vlans, indent=4)
+[
+    {
+        "id": "10", 
+        "name": "USERS"
+    }, 
+    {
+        "id": "20", 
+        "name": "VOICE"
+    }, 
+    {
+        "id": "30", 
+        "name": "WLAN"
+    }, 
+    {
+        "id": "40", 
+        "name": "APP"
+    }, 
+    {
+        "id": "50", 
+        "name": "WEB"
+    }
+]
+>>> 
+```
+]
+
+.right-column[
+```
+>>> write_file = open('vlans_new.cfg', 'w')
+>>>
+>>> for vlan in vlans:
+...     vlan_id = vlan['id']
+...     vlan_name = vlan['name']
+...     write_file.write('vlan ' + vlan_id + '\n')
+...     write_file.write('  name ' + vlan_name + '\n')
+...
+>>>
+>>> write_file.close()
+>>>
+```
+
+]
+
+---
+
+class: ubuntu
+# Writing Data to a File
+```
+ntc@ntc:~$ cat vlans.cfg
+vlan 10
+  name USERS
+vlan 20
+  name VOICE
+vlan 30
+  name WLAN
+vlan 40
+  name APP
+vlan 50
+  name WEB
+
+```
+
+Note: always remember to close files. By default, data isn't written to the file until it's closed.
+
+---
+class: ubuntu 
+
+# with Statement
+
+- `with` guarantees file will be closed (context  manager)
+
+```
+>>> with open('switch.cfg', 'r') as config:
+...     netcfg = config.read()     # readlines() could also be used
+>>> netcfg
+'hostname NYCSWITCH1\n\nvlan 100\n name web\n!\ninterface Ethernet 1/1\n  description connecting to US101\n  switchport trunk encapsulation dot1q\n  switchport mode trunk\n\ninterface Ethernet 1/2\n  description connecting to US102\n  switchport trunk encapsulation dot1q\n  switchport mode trunk\n\ninterface vlan 100\n  ip address 10.100.15.100/24\n\nip route 0.0.0.0/0 10.100.15.1'
+>>>
+```
+
+```
+>>> config = open('switch.cfg', 'r')         # open file
+>>> 
+>>> netcfg = config.read()
+>>> 
+>>> config.close()
+```
+
+
+---
+
+# Lab Time
+
+- Lab 11 - Working with Files
+  - Understand the basics of working with files.  You open a file, read data, and normalize input to usable data.
+  - Update modular script from previous lab to generate a configuration file
+   - Read a YAML data file and use it to generate device configuration; writing this to file
+
+---
+
+
+class: middle, segue
+
+# Python Libraries
+### Introduction to Python for Network Engineers
+
+---
+
+class: ubuntu
+
+# Python Libraries 
+
+* Python modules
+  * Standalone Python file used to share code between programs
+* Python packages
+  * Collection of Python modules
+
+Examples:
+
+```
+import json
+import sys
+
+```
+
+---
+
+
+# Example Script
+
+Filename: `common.py`
+
+```python
+#! /usr/bin/env python
+
+def show(command):
+    print "Sending 'show' command..."
+    print 'Command sent: ', command
+
+def config(command):
+    print "Sending 'config' command..."
+    print 'Commands sent: ', command
+
+if __name__ == "__main__":
+    command = 'show version'
+    show(command)
+    command = 'interface Eth1/1 ; shutdown'
+    config(command)
+
+```
+
+---
+
+# Example Script Output
+
+Running `common.py` as a standalone program:
+
+.ubuntu[
+```
+netdev@networktocode:~$ python common.py 
+
+Sending 'show' command...
+Command sent:  show version
+
+Sending 'config' command...
+Commands sent:  interface Eth1/1 ; shutdown 
+```
+]
+
+Remember, the code under the entry point conditional is only executed when the file is run as a standalone program
+
+What if you just wanted to use a function from within `common.py`?
+
+
+---
+
+class: ubuntu 
+
+# Re-Usable Python Objects
+
+What if we wanted to re-use objects (function, variables) from this file in another program?
+
+Remember the filename is called `common.py`
+
+```
+def show(command):
+    print "Sending 'show' command..."
+    print 'Command sent: ', command
+
+def config(command):
+    print "Sending 'config' command..."
+    print 'Commands sent: ', command
+
+if __name__ == "__main__":
+    # Code only executed when ran as a a program
+    # More flexibility than not using the entry point when
+    # you're re-suing objects in other programs
+```
+
+--
+
+.left-column[
+```
+>>> import common
+>>> 
+>>> common.show('show version')
+Sending 'show' command...
+Command sent:  show version
+>>> 
+```
+]
+--
+.right-column[
+```
+>>> import common
+>>> 
+>>> common.config('no router ospf 1')
+Sending 'config' command...
+Commands sent:  no router ospf 1
+>>>  
+```
+]
+
+
+
+
+---
+
+class: ubuntu 
+
+# Using from/import and re-naming objects
+
+
+.left-column[
+```
+>>> from common import show
+>>> 
+>>> show('show ip int brief')
+Sending 'show' command...
+Command sent:  show ip int brief
+>>>
+```
+]
+--
+.right-column[
+```
+>>> from common import config
+>>> 
+>>> config('interface Ethernet2/1 ; no shut')
+Sending 'config' command...
+Commands sent:  interface Ethernet2/1 ; no shut
+>>>  
+```
+]
+
+--
+
+- Use `as` to rename objects as you import them
+- Helpful to reduce length of long object names and eliminate naming conflicts
+
+
+.left-column[
+```
+>>> from common import show as sh
+>>> 
+>>> sh('show ip int brief')
+Sending 'show' command...
+Command sent:  show ip int brief
+>>>
+```
+]
+
+.right-column[
+```
+>>> from common import config as cfg
+>>> 
+>>> cfg('interface Ethernet2/1 ; no shut')
+Sending 'config' command...
+Commands sent:  interface Ethernet2/1 ; no shut
+>>>  
+```
+]
+
+---
+
+class: ubuntu
+
+# The PYTHONPATH
+
+* For testing, as we are doing in the course, you need to use your Python module from within the same directory where it exists
+  * Enter the Python shell where the module exists
+  * Write a new program and place in same directory where the module exists
+
+OR...update your PYTHONPATH
+
+```
+ntc@ntc:~$ env | grep "PYTHON"
+PYTHONPATH=/home/ntc/python/libraries/
+```
+
+One option is to update the PYTHONPATH in `.bashrc` so changes are persistent :
+
+```
+export PYTHONPATH=$PYTHONPATH:/home/ntc/new/path
+```
+
+
+---
+
+# Summary
+
+- Functions are a great way to re-use code within a program
+- Modules are a great way to re-used between programs
+- Packages are a collection of modules
+
 
 ---
 
@@ -3047,421 +3466,8 @@ if __name__ == "__main__":
 
 # Lab Time
 
-- Lab 10 - Gathering User input with Command Line Arguments
+- Lab 14 - Gathering User input with Command Line Arguments
+  - 
   - Write a basic script using `sys.argv` that prints arguments
   - Continue to build on the neighbors script from previous labs and only print certain neighbor and device information based on the arguments being passed in
-
----
-
-class: middle, segue
-
-# Working with Files
-### Introduction to Python for Network Engineers
-
----
-
-# Sample Switch Config File
-
-Filename: `switch.cfg` 
-
-```bash
-hostname NYCSWITCH1
-
-vlan 100
- name web
-!
-interface Ethernet 1/1
-  description connecting to US101
-  switchport trunk encapsulation dot1q
-  switchport mode trunk
-
-interface Ethernet 1/2
-  description connecting to US102
-  switchport trunk encapsulation dot1q
-  switchport mode trunk
-
-interface vlan 100
-  ip address 10.100.15.100/24
-
-ip route 0.0.0.0/0 10.100.15.1
-```
-
----
-
-class: ubuntu
-
-# Reading Data from a File
-
-.left-column[
-```
->>> config = open('switch.cfg', 'r')         # open file
->>> 
->>> config.read()                            # read file
-'hostname NYCSWITCH1\n\nvlan 100\n name web\n!\ninterface Ethernet 1/1\n  description connecting to US101\n  switchport trunk encapsulation dot1q\n  switchport mode trunk\n\ninterface Ethernet 1/2\n  description connecting to US102\n  switchport trunk encapsulation dot1q\n  switchport mode trunk\n\ninterface vlan 100\n  ip address 10.100.15.100/24\n\nip route 0.0.0.0/0 10.100.15.1'
->>>
->>> config_str = config.read()
->>> 
-```
-]
---
-
-.right-column[
-```
->>> print config_str
-hostname NYCSWITCH1
-
-vlan 100
- name web
-!
-interface Ethernet 1/1
-  description connecting to US101
-  switchport trunk encapsulation dot1q
-  switchport mode trunk
-
-interface Ethernet 1/2
-  description connecting to US102
-  switchport trunk encapsulation dot1q
-  switchport mode trunk
-
-interface vlan 100
-  ip address 10.100.15.100/24
-
-ip route 0.0.0.0/0 10.100.15.1
->>>
->>> config.close()                           # close file
-```
-]
-
----
-
-class: ubuntu
-
-# File Object & its Methods
-
-```
->>> dir(config)
-['close', 'closed', 'encoding', 'errors', 'fileno', 'flush', 'isatty', 'mode', 'name', 'newlines', 'next', 'read', 'readinto', 'readline', 'readlines', 'seek', 'softspace', 'tell', 'truncate', 'write', 'writelines', 'xreadlines']
-```
----
-
-class: ubuntu 
-
-# Writing Data to a File
-
-.left-column[
-```
->>> vlans = [{'id': '10', 'name': 'USERS'}, {'id': '20', 'name': 'VOICE'}, {'id': '30', 'name': 'WLAN'}, {'id': '40', 'name': 'APP'}, {'id': '50', 'name': 'WEB'}]
->>>
->>> print json.dumps(vlans, indent=4)
-[
-    {
-        "id": "10", 
-        "name": "USERS"
-    }, 
-    {
-        "id": "20", 
-        "name": "VOICE"
-    }, 
-    {
-        "id": "30", 
-        "name": "WLAN"
-    }, 
-    {
-        "id": "40", 
-        "name": "APP"
-    }, 
-    {
-        "id": "50", 
-        "name": "WEB"
-    }
-]
->>> 
-```
-]
-
-.right-column[
-```
->>> write_file = open('vlans_new.cfg', 'w')
->>>
->>> for vlan in vlans:
-...     vlan_id = vlan['id']
-...     vlan_name = vlan['name']
-...     write_file.write('vlan ' + vlan_id + '\n')
-...     write_file.write('  name ' + vlan_name + '\n')
-...
->>>
->>> write_file.close()
->>>
-```
-
-]
-
----
-
-class: ubuntu
-# Writing Data to a File
-```
-ntc@ntc:~$ cat vlans.cfg
-vlan 10
-  name USERS
-vlan 20
-  name VOICE
-vlan 30
-  name WLAN
-vlan 40
-  name APP
-vlan 50
-  name WEB
-
-```
-
-Note: always remember to close files. By default, data isn't written to the file until it's closed.
-
----
-class: ubuntu 
-
-# with Statement
-
-- `with` guarantees file will be closed (context  manager)
-
-```
->>> with open('switch.cfg', 'r') as config:
-...     netcfg = config.read()     # readlines() could also be used
->>> netcfg
-'hostname NYCSWITCH1\n\nvlan 100\n name web\n!\ninterface Ethernet 1/1\n  description connecting to US101\n  switchport trunk encapsulation dot1q\n  switchport mode trunk\n\ninterface Ethernet 1/2\n  description connecting to US102\n  switchport trunk encapsulation dot1q\n  switchport mode trunk\n\ninterface vlan 100\n  ip address 10.100.15.100/24\n\nip route 0.0.0.0/0 10.100.15.1'
->>>
-```
-
-```
->>> config = open('switch.cfg', 'r')         # open file
->>> 
->>> netcfg = config.read()
->>> 
->>> config.close()
-```
-
-
----
-
-# Lab Time
-
-- Lab 11 - Working with Files
-  - Understand the basics of working with files.  You open a file, read data, and normalize input to usable data.
-
----
-
-
-class: middle, segue
-
-# Python Libraries
-### Introduction to Python for Network Engineers
-
----
-
-class: ubuntu
-
-# Python Libraries 
-
-* Python modules
-  * Standalone Python file used to share code between programs
-* Python packages
-  * Collection of Python modules
-
-Examples:
-
-```
-import json
-import sys
-
-```
-
----
-
-
-# Example Script
-
-Filename: `common.py`
-
-```python
-#! /usr/bin/env python
-
-def show(command):
-    print "Sending 'show' command..."
-    print 'Command sent: ', command
-
-def config(command):
-    print "Sending 'config' command..."
-    print 'Commands sent: ', command
-
-if __name__ == "__main__":
-    command = 'show version'
-    show(command)
-    command = 'interface Eth1/1 ; shutdown'
-    config(command)
-
-```
-
----
-
-# Example Script Output
-
-Running `common.py` as a standalone program:
-
-.ubuntu[
-```
-netdev@networktocode:~$ python common.py 
-
-Sending 'show' command...
-Command sent:  show version
-
-Sending 'config' command...
-Commands sent:  interface Eth1/1 ; shutdown 
-```
-]
-
-Remember, the code under the entry point conditional is only executed when the file is run as a standalone program
-
-What if you just wanted to use a function from within `common.py`?
-
-
----
-
-class: ubuntu 
-
-# Re-Usable Python Objects
-
-What if we wanted to re-use objects (function, variables) from this file in another program?
-
-Remember the filename is called `common.py`
-
-```
-def show(command):
-    print "Sending 'show' command..."
-    print 'Command sent: ', command
-
-def config(command):
-    print "Sending 'config' command..."
-    print 'Commands sent: ', command
-
-if __name__ == "__main__":
-    # Code only executed when ran as a a program
-    # More flexibility than not using the entry point when
-    # you're re-suing objects in other programs
-```
-
---
-
-.left-column[
-```
->>> import common
->>> 
->>> common.show('show version')
-Sending 'show' command...
-Command sent:  show version
->>> 
-```
-]
---
-.right-column[
-```
->>> import common
->>> 
->>> common.config('no router ospf 1')
-Sending 'config' command...
-Commands sent:  no router ospf 1
->>>  
-```
-]
-
-
-
-
----
-
-class: ubuntu 
-
-# Using from/import and re-naming objects
-
-
-.left-column[
-```
->>> from common import show
->>> 
->>> show('show ip int brief')
-Sending 'show' command...
-Command sent:  show ip int brief
->>>
-```
-]
---
-.right-column[
-```
->>> from common import config
->>> 
->>> config('interface Ethernet2/1 ; no shut')
-Sending 'config' command...
-Commands sent:  interface Ethernet2/1 ; no shut
->>>  
-```
-]
-
---
-
-- Use `as` to rename objects as you import them
-- Helpful to reduce length of long object names and eliminate naming conflicts
-
-
-.left-column[
-```
->>> from common import show as sh
->>> 
->>> sh('show ip int brief')
-Sending 'show' command...
-Command sent:  show ip int brief
->>>
-```
-]
-
-.right-column[
-```
->>> from common import config as cfg
->>> 
->>> cfg('interface Ethernet2/1 ; no shut')
-Sending 'config' command...
-Commands sent:  interface Ethernet2/1 ; no shut
->>>  
-```
-]
-
----
-
-class: ubuntu
-
-# The PYTHONPATH
-
-* For testing, as we are doing in the course, you need to use your Python module from within the same directory where it exists
-  * Enter the Python shell where the module exists
-  * Write a new program and place in same directory where the module exists
-
-OR...update your PYTHONPATH
-
-```
-ntc@ntc:~$ env | grep "PYTHON"
-PYTHONPATH=/home/ntc/python/libraries/
-```
-
-One option is to update the PYTHONPATH in `.bashrc` so changes are persistent :
-
-```
-export PYTHONPATH=$PYTHONPATH:/home/ntc/new/path
-```
-
-
----
-
-# Summary
-
-- Functions are a great way to re-use code within a program
-- Modules are a great way to re-used between programs
-- Packages are a collection of modules
 
