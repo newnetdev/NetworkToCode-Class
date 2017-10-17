@@ -15,7 +15,7 @@ Please be sure to review the [device information](labs/DEVICE_INFO.md) before st
 - [Lab 9 - Generating Configs with Python](labs/Lab_09_Scripts_Generating_Configurations.md)
 - [Lab 10 - Modularizing Code with Functions](labs/Lab_10_Modularizing_Python_Script.md)
 - [Lab 11 - Working with Files](labs/Lab_11_Working_with_Files.md)
-- [Lab 12 - Introduction to Netmiko](labs/Lab_12_Using_Netmiko.md)
+- [Lab 12 - Introduction to Netmiko](labs/Lab_12_Netmiko_Intro.md)
 - [Lab 13 - Using Netmiko for Network Automation](labs/Lab_13_Netmiko_Automation.md)
 - [Lab 14 - Passing In User Input to your Script](labs/Lab_14_User_Input.md)
 - [Lab 15 - Parsing show commands with TextFSM](labs/Lab_15_Parsing_TextFSM.md)
