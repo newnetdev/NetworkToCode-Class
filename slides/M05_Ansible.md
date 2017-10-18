@@ -802,6 +802,90 @@ $ ansible-playbook deploy-vlans.yml
 
 ---
 
+class: center, middle
+
+# Before the First Lab
+
+---
+
+# Playbook Task Syntax
+
+.left-column[
+
+**Recommended YAML Syntax (key:value)**
+
+```yaml
+---
+
+- name: MANAGE VLANS
+  hosts: switches
+  connection: local
+  gather_facts: no
+
+  tasks:
+
+    - name: ensure VLAN exists
+      nxos_vlan:
+        vlan_id: 10
+        host: "{{ inventory_hostname }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+
+    # no curly braces used with var parameter
+    - debug: 
+        var: inventory_hostname
+
+```
+]
+
+.right-column[
+
+**Vertical and/or Horizontal (key=value)**
+
+```yaml
+---
+
+- name: MANAGE VLANS
+  hosts: switches
+  connection: local
+  gather_facts: no
+
+  tasks:
+
+    - name: ensure VLAN exists
+      nxos_vlan:
+        vlan_id=10
+        host={{ inventory_hostname }}
+        username={{ username }}
+        password={{ password }}
+
+    - name: ensure VLAN exists
+      nxos_vlan: vlan_id=10 host={{ inventory_hostname }} username={{ username }} password={{ password }}
+
+    # no curly braces used with var parameter  
+    - debug: var=inventory_hostname
+
+```
+]
+
+---
+
+# Idempotency 
+
+* Modules that perform a change _should_ only make the change once (the first execution)
+* You can run the task a 1000 and it'll only occur once
+
+
+---
+
+# Lab Time
+
+- Lab 1 - Deploying basic configs with Ansible
+  - Write Your First Ansible Playbook that will configure SNMP setting on 6 devices! 3 IOS and 3 JUNOS devices
+
+
+---
+
 class: middle
 
 # debug module
@@ -1021,80 +1105,6 @@ leaf2                      : ok=1    changed=0    unreachable=0    failed=0
 
 
 
----
-
-class: center, middle
-
-# Before the First Lab
-
----
-
-# Playbook Task Syntax
-
-.left-column[
-
-**Recommended YAML Syntax (key:value)**
-
-```yaml
----
-
-- name: MANAGE VLANS
-  hosts: switches
-  connection: local
-  gather_facts: no
-
-  tasks:
-
-    - name: ensure VLAN exists
-      nxos_vlan:
-        vlan_id: 10
-        host: "{{ inventory_hostname }}"
-        username: "{{ username }}"
-        password: "{{ password }}"
-
-    # no curly braces used with var parameter
-    - debug: 
-        var: inventory_hostname
-
-```
-]
-
-.right-column[
-
-**Vertical and/or Horizontal (key=value)**
-
-```yaml
----
-
-- name: MANAGE VLANS
-  hosts: switches
-  connection: local
-  gather_facts: no
-
-  tasks:
-
-    - name: ensure VLAN exists
-      nxos_vlan:
-        vlan_id=10
-        host={{ inventory_hostname }}
-        username={{ username }}
-        password={{ password }}
-
-    - name: ensure VLAN exists
-      nxos_vlan: vlan_id=10 host={{ inventory_hostname }} username={{ username }} password={{ password }}
-
-    # no curly braces used with var parameter  
-    - debug: var=inventory_hostname
-
-```
-]
-
----
-
-# Idempotency 
-
-* Modules that perform a change _should_ only make the change once (the first execution)
-* You can run the task a 1000 and it'll only occur once
 
 ---
 
@@ -1125,18 +1135,6 @@ nxos-spine1                : ok=3    changed=0    unreachable=0    failed=0
 ]
 
 
----
-
-# Lab Time
-
-- Lab 22-1 - Ansible Playbook
-  - Write Your First Ansible Playbook that will simply display the hostname of each device from the inventory file
-
-- Lab 22-2 - Using the nxos_vlan Module
-  - Using the VLAN module and begin to understand idempotency and learn how to use verbose mode.
-
-- Lab 23 - Ansible Inventory File
-  - Create inventory file for all course labs
 
 ---
 
@@ -1147,6 +1145,14 @@ nxos-spine1                : ok=3    changed=0    unreachable=0    failed=0
   * Choices, defaults, and description
 * [docs.ansible.com](docs.ansible.com)
 * `ansible-doc nxos_vlan`
+
+
+
+---
+# Lab Time
+
+- Lab 2 - Using the debug module
+- Lab 3 - Understanding "check mode" and verbosity
 
 
 ---
@@ -1395,6 +1401,11 @@ $ ansible-playbook -i inventory playbook.yml --extra-vars "devices=eos"
 ```
 
 
+
+---
+# Lab Time
+
+- Lab 4 - Building the course inventory file 
 
 ---
 
