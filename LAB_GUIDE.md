@@ -27,3 +27,21 @@ Please be sure to review the [device information](labs/DEVICE_INFO.md) before st
 - [Lab 21 - Bonus Lab: PyEZ Tables & Views](labs/Lab_21_Juniper_PyEZ_Part_2.md)
 
 ## Part 2 - Ansible for Network Automation
+
+- [Lab 1 - Deploying Basic Configs with Ansible](labs/Ansible_Lab_01_Deploy_Basic_Configs.md)
+- [Lab 2 - Using the debug Module](labs/Ansible_Lab_02_Debug_Module.md)
+- [Lab 3 - Understanding Check Mode and Verbosity](labs/Ansible_Lab_03_Config_Verbosity_Check.md) 
+- [Lab 4 - Building the Course Inventory File](labs/Ansible_Lab_04_Course_Inventory_File.md)
+- [Lab 5 - Backup and Restore Full Config Files with NAPALM](labs/Ansible_Lab_05_Backup_Restore_Configs.md)
+- [Lab 6 - Build Push with Jinja2 and NAPALM](labs/Ansible_Lab_06_Build_Push.md)
+
+Added on Day 4:
+- [Lab 7 - Ansible Core Command Modules]()
+- [Lab 8 - Ansible Core Config Modules]()
+- [Lab 9 - Resource Modules]()
+- [Lab 10 - Operational Tasks with NTC Modules]()
+- [Lab 11 - Data Collection & Reporting]()
+- [Lab 12 - Ansible Roles]()  
+- [Lab 13 - Dynamic Inventory]()
+
+
