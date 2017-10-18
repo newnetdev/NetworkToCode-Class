@@ -25,7 +25,7 @@ ntc@ntc:~/ansible$ tree
 1 directory, 1 file
 ```
 
-The configuration below is from one of the devices, namely *vmx1*.  The same configuration needs to be applied across all routers - with minor changes such as IP address, interface descriptions, etc.
+The configuration below is from one of the devices, namely *vmx8*.  The same configuration needs to be applied across all routers - with minor changes such as IP address, interface descriptions, etc.
 
 The task is to create templates and the associated group vars and host vars files to simplify the process of config creation.
 
@@ -49,7 +49,7 @@ groups {
 }
 apply-groups global;
 system {
-    host-name vmx1;
+    host-name vmx8;
     domain-name ntc.com;
     root-authentication {
         encrypted-password "$5$1FR588oW$dWnmaj9S4t/GHEYL/gn8tOz3.yXoIMYHrCDyn.4hIo0"; ## SECRET-DATA
@@ -75,7 +75,7 @@ system {
 }
 interfaces {
     ge-0/0/0 {
-        description CONNECTS_VMX3;
+        description CONNECTS_vmx7;
         unit 0 {
             family inet {
                 address 10.254.13.1/24;
@@ -90,7 +90,7 @@ interfaces {
         }
     }
     ge-0/0/2 {
-        description CONNECTS_VMX2;
+        description CONNECTS_vmx9;
         unit 0 {
             family inet {
                 address 10.254.12.1/24;
@@ -101,7 +101,7 @@ interfaces {
         description MANAGEMENT;
         unit 0 {
             family inet {
-                address 10.0.0.31/24;
+                address 10.0.0.38/24;
             }
         }
     }
@@ -247,7 +247,7 @@ interfaces {
 
 ##### Step 5
 
-Create a `host_vars` directory (if you don't already have one), and create three files in it: `vmx1.yml`, `vmx2.yml`, and `vmx3.yml`.
+Create a `host_vars` directory (if you don't already have one), and create three files in it: `vmx8.yml`, `vmx9.yml`, and `vmx7.yml`.
 
 The names of these files are significant.  They match the names as they are defined in the inventory file.
 
@@ -259,7 +259,7 @@ ntc@ntc:~/ansible$ cd host_vars/
 
 Open the newly created files and ensure they have the vars as defined below in them.
 
-`host_vars/vmx1.yml`
+`host_vars/vmx8.yml`
 
 ```yaml
 ---
@@ -269,7 +269,7 @@ interfaces:
     state: up
     ip: 10.254.13.1
     mask: 24
-    description: 'CONNECTS_VMX3'
+    description: 'CONNECTS_vmx7'
   - name: ge-0/0/1
     state: down
     description: 'UNUSED'
@@ -277,10 +277,10 @@ interfaces:
     state: up
     ip: 10.254.12.1
     mask: 24
-    description: 'CONNECTS_VMX2' 
+    description: 'CONNECTS_vmx9' 
   - name: fxp0
     state: up
-    ip: 10.0.0.31
+    ip: 10.0.0.38
     mask: 24
     description: 'MANAGEMENT'
   - name: lo0
@@ -293,31 +293,31 @@ interfaces:
 
 Notice how we are using a different syntax for the next two host vars file to create lists of dictionaries.  Either option works - it's up to you.
 
-`host_vars/vmx2.yml`
+`host_vars/vmx9.yml`
 
 ```yaml
 ---
 
 interfaces:
   - { name: ge-0/0/0, state: down, description: 'UNUSED' }
-  - { name: ge-0/0/1, state: up, ip: 10.254.23.2, mask: 24, description: 'CONNECTS_VMX3'}
-  - { name: ge-0/0/2, state: up, ip: 10.254.12.2, mask: 24, description: 'CONNECTS_VMX1'}
-  - { name: fxp0, state: up, ip: 10.0.0.32, mask: 24, description: 'MANAGEMENT'}
+  - { name: ge-0/0/1, state: up, ip: 10.254.23.2, mask: 24, description: 'CONNECTS_vmx7'}
+  - { name: ge-0/0/2, state: up, ip: 10.254.12.2, mask: 24, description: 'CONNECTS_vmx8'}
+  - { name: fxp0, state: up, ip: 10.0.0.39, mask: 24, description: 'MANAGEMENT'}
   - { name: lo0, state: up, ip: 2.2.2.2, mask: 32, description: 'OSPF_ROUTER_ID' }
 
 ```
 
 
-`host_vars/vmx3.yml`
+`host_vars/vmx7.yml`
 
 ```yaml
 ---
 
 interfaces:
-  - { name: ge-0/0/0, state: up, ip: 10.254.13.3, mask: 24, description: 'CONNECTS_VMX1'}
-  - { name: ge-0/0/1, state: up, ip: 10.254.23.3, mask: 24, description: 'CONNECTS_VMX2'}
+  - { name: ge-0/0/0, state: up, ip: 10.254.13.3, mask: 24, description: 'CONNECTS_vmx8'}
+  - { name: ge-0/0/1, state: up, ip: 10.254.23.3, mask: 24, description: 'CONNECTS_vmx9'}
   - { name: ge-0/0/2, state: down, description: 'UNUSED' }
-  - { name: fxp0, state: up, ip: 10.0.0.33, mask: 24, description: 'MANAGEMENT'}
+  - { name: fxp0, state: up, ip: 10.0.0.37, mask: 24, description: 'MANAGEMENT'}
   - { name: lo0, state: up, ip: 3.3.3.3, mask: 32, description: 'OSPF_ROUTER_ID' }
 
 
@@ -353,7 +353,7 @@ Now create a new directory called `group_vars` (if you don't already have it cre
 
 > Note: The name of the directory called `group_vars` is an important name within Ansible.  It will store "group based variables".
 
-> The names of the files in the `group_vars` directory map directly to the groups that are found in the inventory file.  For example, the variables that end up in `group_vars/all.yml` will be available, and in scope, for all devices in the *vmx1* group, i.e. vmx1, vmx2, and vmx3.  For this step, we could use `all.yml` or `vmx.yml`.  
+> The names of the files in the `group_vars` directory map directly to the groups that are found in the inventory file.  For example, the variables that end up in `group_vars/all.yml` will be available, and in scope, for all devices in the *vmx8* group, i.e. vmx8, vmx9, and vmx7.  For this step, we could use `all.yml` or `vmx.yml`.  
 
 Since the SNMP configuration is the same across all devices in the group, you can use a group based variable file as compared to host based vars file, which you used for the interfaces.
 
@@ -405,7 +405,7 @@ mgmt_default_route_next_hop: 10.0.0.2
 
 These updates are needed for each host_var file:
 
-`host_vars/vmx1.yml`
+`host_vars/vmx8.yml`
 
 ```yaml
 
@@ -413,7 +413,7 @@ router_id: 1.1.1.1
 
 ```
 
-`host_vars/vmx2.yml`
+`host_vars/vmx9.yml`
 
 ```yaml
 
@@ -422,7 +422,7 @@ router_id: 2.2.2.2
 ```
 
 
-`host_vars/vmx3.yml`
+`host_vars/vmx7.yml`
 
 ```yaml
 
@@ -461,7 +461,7 @@ If all of the interfaces being enabled for OSPF were the same across devices, yo
 
 Instead, ensure you add the following variable to each of the host vars files.
 
-`host_vars/vmx1.yml`
+`host_vars/vmx8.yml`
 
 ```yaml
 ospf:
@@ -473,7 +473,7 @@ ospf:
 
 ```
 
-`host_vars/vmx2.yml`
+`host_vars/vmx9.yml`
 
 ```yaml
 
@@ -487,7 +487,7 @@ ospf:
 ```
 
 
-`host_vars/vmx3.yml`
+`host_vars/vmx7.yml`
 
 ```yaml
 
@@ -522,7 +522,7 @@ snmp:
 
 ```
 
-`host_vars/vmx1.yml`
+`host_vars/vmx8.yml`
 
 ```yaml
 
@@ -533,7 +533,7 @@ interfaces:
     state: up
     ip: 10.254.13.1
     mask: 24
-    description: 'CONNECTS_VMX3'
+    description: 'CONNECTS_vmx7'
   - name: ge-0/0/1
     state: down
     description: 'UNUSED' 
@@ -541,10 +541,10 @@ interfaces:
     state: up
     ip: 10.254.12.1
     mask: 24
-    description: 'CONNECTS_VMX2' 
+    description: 'CONNECTS_vmx9' 
   - name: fxp0
     state: up
-    ip: 10.0.0.31
+    ip: 10.0.0.38
     mask: 24
     description: 'MANAGEMENT'
   - name: lo0
@@ -565,7 +565,7 @@ ospf:
 
 ```
 
-`host_vars/vmx2.yml`
+`host_vars/vmx9.yml`
 
 ```yaml
 
@@ -573,9 +573,9 @@ ospf:
 
 interfaces:
   - { name: ge-0/0/0, state: down, description: 'UNUSED' }
-  - { name: ge-0/0/1, state: up, ip: 10.254.23.2, mask: 24, description: 'CONNECTS_VMX3'}
-  - { name: ge-0/0/2, state: up, ip: 10.254.12.2, mask: 24, description: 'CONNECTS_VMX1'}
-  - { name: fxp0, state: up, ip: 10.0.0.32, mask: 24, description: 'MANAGEMENT'}
+  - { name: ge-0/0/1, state: up, ip: 10.254.23.2, mask: 24, description: 'CONNECTS_vmx7'}
+  - { name: ge-0/0/2, state: up, ip: 10.254.12.2, mask: 24, description: 'CONNECTS_vmx8'}
+  - { name: fxp0, state: up, ip: 10.0.0.39, mask: 24, description: 'MANAGEMENT'}
   - { name: lo0, state: up, ip: 2.2.2.2, mask: 32, description: 'OSPF_ROUTER_ID' }
 
 router_id: 2.2.2.2
@@ -591,17 +591,17 @@ ospf:
 ```
 
 
-`host_vars/vmx3.yml`
+`host_vars/vmx7.yml`
 
 ```yaml
 
 ---
 
 interfaces:
-  - { name: ge-0/0/0, state: up, ip: 10.254.13.3, mask: 24, description: 'CONNECTS_VMX1'}
-  - { name: ge-0/0/1, state: up, ip: 10.254.23.3, mask: 24, description: 'CONNECTS_VMX2'}
+  - { name: ge-0/0/0, state: up, ip: 10.254.13.3, mask: 24, description: 'CONNECTS_vmx8'}
+  - { name: ge-0/0/1, state: up, ip: 10.254.23.3, mask: 24, description: 'CONNECTS_vmx9'}
   - { name: ge-0/0/2, state: down, description: 'UNUSED' }
-  - { name: fxp0, state: up, ip: 10.0.0.33, mask: 24, description: 'MANAGEMENT'}
+  - { name: fxp0, state: up, ip: 10.0.0.37, mask: 24, description: 'MANAGEMENT'}
   - { name: lo0, state: up, ip: 3.3.3.3, mask: 32, description: 'OSPF_ROUTER_ID' }
 
 router_id: 3.3.3.3
@@ -654,14 +654,14 @@ ntc@ntc:~/ansible$ ansible-playbook -i inventory juniper-build.yml
 PLAY [BUILD PUSH JUNIPER] *****************************************************
 
 TASK: [ENSURE DIRs created per device] ****************************************
-changed: [vmx1]
-changed: [vmx2]
-changed: [vmx3]
+changed: [vmx8]
+changed: [vmx9]
+changed: [vmx7]
 
 PLAY RECAP ********************************************************************
-vmx1                       : ok=1    changed=1    unreachable=0    failed=0   
-vmx2                       : ok=1    changed=1    unreachable=0    failed=0   
-vmx3                       : ok=1    changed=1    unreachable=0    failed=0
+vmx8                       : ok=1    changed=1    unreachable=0    failed=0   
+vmx9                       : ok=1    changed=1    unreachable=0    failed=0   
+vmx7                       : ok=1    changed=1    unreachable=0    failed=0
 ```
 
 Issue the `tree` command see what happened:
@@ -670,11 +670,11 @@ Issue the `tree` command see what happened:
 ntc@ntc:~/ansible$ tree
 .
 ├── configs
-│   ├── vmx1
+│   ├── vmx8
 │   │   └── partials
-│   ├── vmx2
+│   ├── vmx9
 │   │   └── partials
-│   └── vmx3
+│   └── vmx7
 │       └── partials
 # shortened for brevity
 
@@ -705,24 +705,24 @@ ntc@ntc:~/ansible$ ansible-playbook -i inventory juniper-build.yml
 PLAY [BUILD PUSH JUNIPER] *****************************************************
 
 TASK: [ENSURE DIRs created per device] ****************************************
-ok: [vmx2]
-ok: [vmx1]
-ok: [vmx3]
+ok: [vmx9]
+ok: [vmx8]
+ok: [vmx7]
 
 TASK: [BUILD TOP/BASE CONFIG] *************************************************
-changed: [vmx2]
-changed: [vmx1]
-changed: [vmx3]
+changed: [vmx9]
+changed: [vmx8]
+changed: [vmx7]
 
 TASK: [BUILD INTERFACES CONFIG] ***********************************************
-changed: [vmx2]
-changed: [vmx3]
-changed: [vmx1]
+changed: [vmx9]
+changed: [vmx7]
+changed: [vmx8]
 
 PLAY RECAP ********************************************************************
-vmx1                       : ok=3    changed=2    unreachable=0    failed=0   
-vmx2                       : ok=3    changed=2    unreachable=0    failed=0   
-vmx3                       : ok=3    changed=2    unreachable=0    failed=0   
+vmx8                       : ok=3    changed=2    unreachable=0    failed=0   
+vmx9                       : ok=3    changed=2    unreachable=0    failed=0   
+vmx7                       : ok=3    changed=2    unreachable=0    failed=0   
 ```
 
 ##### Step 15
@@ -732,15 +732,15 @@ Examine the files that were created:
 ```
 .
 ├── configs
-│   ├── vmx1
+│   ├── vmx8
 │   │   └── partials
 │   │       ├── 01_static.conf
 │   │       └── 02_interfaces.conf
-│   ├── vmx2
+│   ├── vmx9
 │   │   └── partials
 │   │       ├── 01_static.conf
 │   │       └── 02_interfaces.conf
-│   └── vmx3
+│   └── vmx7
 │       └── partials
 │           ├── 01_static.conf
 │           └── 02_interfaces.conf
@@ -784,31 +784,31 @@ ntc@ntc:~/ansible$ ansible-playbook -i inventory juniper-build.yml
 PLAY [BUILD PUSH JUNIPER] *****************************************************
 
 TASK: [ENSURE DIRs created per device] ****************************************
-ok: [vmx1]
-ok: [vmx2]
-ok: [vmx3]
+ok: [vmx8]
+ok: [vmx9]
+ok: [vmx7]
 
 TASK: [BUILD CONFIGS] *************************************************
-changed: [vmx1] => (item=/home/ntc/ansible/templates/03_snmp.j2)
-changed: [vmx3] => (item=/home/ntc/ansible/templates/03_snmp.j2)
-changed: [vmx2] => (item=/home/ntc/ansible/templates/03_snmp.j2)
-changed: [vmx3] => (item=/home/ntc/ansible/templates/04_routing.j2)
-changed: [vmx1] => (item=/home/ntc/ansible/templates/04_routing.j2)
-changed: [vmx2] => (item=/home/ntc/ansible/templates/04_routing.j2)
-changed: [vmx3] => (item=/home/ntc/ansible/templates/05_protocols.j2)
-changed: [vmx1] => (item=/home/ntc/ansible/templates/05_protocols.j2)
-changed: [vmx2] => (item=/home/ntc/ansible/templates/05_protocols.j2)
-ok: [vmx3] => (item=/home/ntc/ansible/templates/02_interfaces.j2)
-ok: [vmx1] => (item=/home/ntc/ansible/templates/02_interfaces.j2)
-ok: [vmx2] => (item=/home/ntc/ansible/templates/02_interfaces.j2)
-ok: [vmx3] => (item=/home/ntc/ansible/templates/01_static.j2)
-ok: [vmx2] => (item=/home/ntc/ansible/templates/01_static.j2)
-ok: [vmx1] => (item=/home/ntc/ansible/templates/01_static.j2)
+changed: [vmx8] => (item=/home/ntc/ansible/templates/03_snmp.j2)
+changed: [vmx7] => (item=/home/ntc/ansible/templates/03_snmp.j2)
+changed: [vmx9] => (item=/home/ntc/ansible/templates/03_snmp.j2)
+changed: [vmx7] => (item=/home/ntc/ansible/templates/04_routing.j2)
+changed: [vmx8] => (item=/home/ntc/ansible/templates/04_routing.j2)
+changed: [vmx9] => (item=/home/ntc/ansible/templates/04_routing.j2)
+changed: [vmx7] => (item=/home/ntc/ansible/templates/05_protocols.j2)
+changed: [vmx8] => (item=/home/ntc/ansible/templates/05_protocols.j2)
+changed: [vmx9] => (item=/home/ntc/ansible/templates/05_protocols.j2)
+ok: [vmx7] => (item=/home/ntc/ansible/templates/02_interfaces.j2)
+ok: [vmx8] => (item=/home/ntc/ansible/templates/02_interfaces.j2)
+ok: [vmx9] => (item=/home/ntc/ansible/templates/02_interfaces.j2)
+ok: [vmx7] => (item=/home/ntc/ansible/templates/01_static.j2)
+ok: [vmx9] => (item=/home/ntc/ansible/templates/01_static.j2)
+ok: [vmx8] => (item=/home/ntc/ansible/templates/01_static.j2)
 
 PLAY RECAP ********************************************************************
-vmx1                       : ok=2    changed=1    unreachable=0    failed=0   
-vmx2                       : ok=2    changed=1    unreachable=0    failed=0   
-vmx3                       : ok=2    changed=1    unreachable=0    failed=0   
+vmx8                       : ok=2    changed=1    unreachable=0    failed=0   
+vmx9                       : ok=2    changed=1    unreachable=0    failed=0   
+vmx7                       : ok=2    changed=1    unreachable=0    failed=0   
 ```
 
 Now view the files that were created.
@@ -817,21 +817,21 @@ Now view the files that were created.
 ntc@ntc:~/ansible$ tree
 .
 ├── configs
-│   ├── vmx1
+│   ├── vmx8
 │   │   └── partials
 │   │       ├── 01_static.conf
 │   │       ├── 02_interfaces.conf
 │   │       ├── 03_snmp.conf
 │   │       ├── 04_routing.conf
 │   │       └── 05_protocols.conf
-│   ├── vmx2
+│   ├── vmx9
 │   │   └── partials
 │   │       ├── 01_static.conf
 │   │       ├── 02_interfaces.conf
 │   │       ├── 03_snmp.conf
 │   │       ├── 04_routing.conf
 │   │       └── 05_protocols.conf
-│   └── vmx3
+│   └── vmx7
 │       └── partials
 │           ├── 01_static.conf
 │           ├── 02_interfaces.conf
@@ -892,40 +892,40 @@ ntc@ntc:~/ansible$ ansible-playbook -i inventory juniper-build.yml
 PLAY [BUILD PUSH JUNIPER] *****************************************************
 
 TASK: [ENSURE DIRs created per device] ****************************************
-ok: [vmx1]
-ok: [vmx2]
-ok: [vmx3]
+ok: [vmx8]
+ok: [vmx9]
+ok: [vmx7]
 
 TASK: [BUILD CONFIGS] *********************************************************
-ok: [vmx2] => (item=/home/ntc/ansible/templates/03_snmp.j2)
-ok: [vmx1] => (item=/home/ntc/ansible/templates/03_snmp.j2)
-ok: [vmx3] => (item=/home/ntc/ansible/templates/03_snmp.j2)
-ok: [vmx2] => (item=/home/ntc/ansible/templates/04_routing.j2)
-ok: [vmx3] => (item=/home/ntc/ansible/templates/04_routing.j2)
-ok: [vmx1] => (item=/home/ntc/ansible/templates/04_routing.j2)
-ok: [vmx2] => (item=/home/ntc/ansible/templates/05_protocols.j2)
-ok: [vmx3] => (item=/home/ntc/ansible/templates/05_protocols.j2)
-ok: [vmx1] => (item=/home/ntc/ansible/templates/05_protocols.j2)
-ok: [vmx2] => (item=/home/ntc/ansible/templates/02_interfaces.j2)
-ok: [vmx3] => (item=/home/ntc/ansible/templates/02_interfaces.j2)
-ok: [vmx1] => (item=/home/ntc/ansible/templates/02_interfaces.j2)
-ok: [vmx2] => (item=/home/ntc/ansible/templates/01_static.j2)
-ok: [vmx1] => (item=/home/ntc/ansible/templates/01_static.j2)
-ok: [vmx3] => (item=/home/ntc/ansible/templates/01_static.j2)
+ok: [vmx9] => (item=/home/ntc/ansible/templates/03_snmp.j2)
+ok: [vmx8] => (item=/home/ntc/ansible/templates/03_snmp.j2)
+ok: [vmx7] => (item=/home/ntc/ansible/templates/03_snmp.j2)
+ok: [vmx9] => (item=/home/ntc/ansible/templates/04_routing.j2)
+ok: [vmx7] => (item=/home/ntc/ansible/templates/04_routing.j2)
+ok: [vmx8] => (item=/home/ntc/ansible/templates/04_routing.j2)
+ok: [vmx9] => (item=/home/ntc/ansible/templates/05_protocols.j2)
+ok: [vmx7] => (item=/home/ntc/ansible/templates/05_protocols.j2)
+ok: [vmx8] => (item=/home/ntc/ansible/templates/05_protocols.j2)
+ok: [vmx9] => (item=/home/ntc/ansible/templates/02_interfaces.j2)
+ok: [vmx7] => (item=/home/ntc/ansible/templates/02_interfaces.j2)
+ok: [vmx8] => (item=/home/ntc/ansible/templates/02_interfaces.j2)
+ok: [vmx9] => (item=/home/ntc/ansible/templates/01_static.j2)
+ok: [vmx8] => (item=/home/ntc/ansible/templates/01_static.j2)
+ok: [vmx7] => (item=/home/ntc/ansible/templates/01_static.j2)
 
 TASK: [ASSEMBLE PARTIAL CONFIGS] **********************************************
-changed: [vmx2]
-changed: [vmx3]
-changed: [vmx1]
+changed: [vmx9]
+changed: [vmx7]
+changed: [vmx8]
 
 PLAY RECAP ********************************************************************
-vmx1                       : ok=3    changed=1    unreachable=0    failed=0   
-vmx2                       : ok=3    changed=1    unreachable=0    failed=0   
-vmx3                       : ok=3    changed=1    unreachable=0    failed=0   
+vmx8                       : ok=3    changed=1    unreachable=0    failed=0   
+vmx9                       : ok=3    changed=1    unreachable=0    failed=0   
+vmx7                       : ok=3    changed=1    unreachable=0    failed=0   
 ```
 
 
-You will see there is a full assembled configuration per device located at `configs/vmx1/vmx1.conf`, `configs/vmx1/vmx2.conf`, `configs/vmx1/vmx3.conf`.
+You will see there is a full assembled configuration per device located at `configs/vmx8/vmx8.conf`, `configs/vmx8/vmx9.conf`, `configs/vmx8/vmx7.conf`.
 
 Feel free to review them.
 
