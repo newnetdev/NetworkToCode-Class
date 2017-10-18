@@ -1934,7 +1934,7 @@ hostname nycr01
 
 # Lab Time
 
-- Lab 24 - Backing Up and Restoring Configurations
+- Lab 5 - Backing Up and Restoring Configurations
 
 ---
 
