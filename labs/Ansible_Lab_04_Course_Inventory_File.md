@@ -72,7 +72,7 @@ This methodology can be quite tedious for a large number of devices.
 The file can be optimized by using patterns in the inventory file.  For example, there are currently 3 *vmx* devices with the same name except having a different number appended.  When you have this pattern, you can list individual devices like *vmx7*, *vmx8*, and *vmx9* **or** you can use this syntax:
 
 ```
-vmx[1:3]
+vmx[7:9]
 ```
 
 We'll only do this for the vmx devices, but feel free to do this for the other devices too.  Note: patters *do not* have to be at the end of the device name.
@@ -98,7 +98,7 @@ nxos-spine1
 nxos-spine2
 
 [vmx]
-vmx[1:3]
+vmx[7:9]
 
 ```
 
@@ -146,7 +146,7 @@ nxos-spine1
 nxos-spine2
 
 [vmx]
-vmx[1:3]
+vmx[7:9]
 
 
 ```
@@ -268,7 +268,7 @@ api=nxapi
 vendor=cisco
 
 [vmx]
-vmx[1:3]
+vmx[7:9]
 
 [vmx:vars]
 os=junos
