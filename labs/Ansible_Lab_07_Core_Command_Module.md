@@ -134,8 +134,6 @@ Add a new task using the **assert** module that will ensure the following:
 
 # Task 1 Solutions
 
-# Task 2 Solutions
-
 ### Cisco NXOS:
 
 ```yaml

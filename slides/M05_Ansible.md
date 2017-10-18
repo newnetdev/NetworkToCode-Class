@@ -2560,8 +2560,9 @@ playbook: build-push.yml
 
 # Lab Time
 
-- Lab 25 - Building and Pushing Network Configuration Files
+- Lab 6 - Building and Pushing Network Configuration Files
   - You will use the "template" and "napalm_install_config" modules
+  - Choose any *1* vendor to complete this lab
 
 ---
 
@@ -2855,7 +2856,7 @@ ok: [nxos-spine1] => {
 
 # Lab Time
 
-- Lab 26.1 - Using the Ansible Command Module
+- Lab 7 - Using the Ansible Command Module
 
 ---
 
