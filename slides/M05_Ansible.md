@@ -1418,7 +1418,7 @@ class: middle, segue
 
 # Backing Up Configuration Files
 
-- **ntc_save_config** - built on top of `pyntc` and part of the **ntc-ansible** project
+- **ntc_show_command** - built on top of `pyntc` and part of the **ntc-ansible** project
 - Supports Junos, IOS, NX-OS, and EOS
 - Save the running configuration as a file to the Ansible control host.
 
@@ -1430,8 +1430,9 @@ class: middle, segue
 
     tasks:
       - name: BACKUP CONFIG
-        ntc_save_config:
+        ntc_show_command:
           platform: cisco_ios
+          command: show running
           host: "{{ inventory_hostname }}"
           username: "{{ username }}"
           password: "{{ password }}"
