@@ -236,7 +236,7 @@ ntc@ntc:~/ansible$
 Open one or more of the new configuration files and a take look at them and notice how those lines are gone from the files.
 
 
-### Task 2
+### Task 2 - Restore Configuration 
 
 ##### Step 1
 
@@ -422,7 +422,7 @@ eos-spine2                 : ok=1    changed=0    unreachable=0    failed=0
 
 **Even though you are pushing a full configuration, there are NO changes being applied since we are applying the SAME exact configuration that already exists on the device.**
 
-#### Step 7
+##### Step 7
 
 Open the stored backup configs inside the `backups` directory and make some changes.
 
@@ -459,7 +459,7 @@ interface Loopback10
 ```
 
 
-#### Step 8
+##### Step 8
 
 Update the napalm task for the following:
 * Save the diffs to a file such that we can see the changes that will get applied
@@ -484,7 +484,7 @@ Now update the napalm task with the two required changes.
 This will ensure the changes are not applied, but we will still get back the diffs on what will be applied on the next commit.
 
 
-#### Step 9
+##### Step 9
 
 Save and re-run the playbook (just the push task).  
 
@@ -515,7 +515,7 @@ csr3                       : ok=1    changed=0    unreachable=0    failed=0
 
 Note how are they are now __changed__.
 
-#### Step 10
+##### Step 10
 
 Navigate to the `diffs` directory and open the diff files. 
 
@@ -614,3 +614,4 @@ Full and final playbook will look like this:
 ```
 
 
+  
