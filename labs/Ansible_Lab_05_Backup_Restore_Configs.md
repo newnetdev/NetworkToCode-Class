@@ -2,7 +2,7 @@
 
 This lab will show how to use Ansible to manage network device configurations and focuses on the process of backing up and re-storing and deploying full configuration files.
 
-We'll use two main modules to do this:  one that is used to backup the configurations (ntc_save_config) and another that is used to deploy the configurations (NAPALM).
+We'll use two main modules to do this:  one that is used to backup the configurations (ntc_show_command) and another that is used to deploy the configurations (NAPALM).
 
 ### Task 1 - Backup Configurations
 
@@ -42,72 +42,109 @@ Create a play that'll be executed against **all** hosts defined in the inventory
 
 ##### Step 3
 
-Add a task to backup the running configuration using the module called `ntc_save_config`. 
+Add a variable in your playbook called `config`.  It should be a dictionary that contains 4 key-value pairs.  The keys should map to an OS and the value should be the command required to gather the existing running configuration.
+
+```yaml
+---
+  
+  - name: BACKUP
+    hosts: all
+    connection: local
+    gather_facts: no
+    tags: backup
+
+    vars:
+      config:
+        eos: show run
+        ios: show run
+        nxos: show run
+        junos: show config
+
+```
+
+By making an object like this, it'll allow us to use a single task to backup all configuration instead of neededing a task/pay per OS!
+
+##### Step 4
+
+Add a task to backup the running configuration using the module called `ntc_show_command`. 
 
 All backup files should be saved locally inside the `backups` directory.
 
 
 ```yaml
 ---
-
+  
   - name: BACKUP
     hosts: all
     connection: local
     gather_facts: no
 
+    vars:
+      config:
+        eos: show run
+        ios: show run
+        nxos: show run
+        junos: show config
+
     tasks:
 
       - name: BACKUP CONFIGS
-        ntc_save_config:
-          host={{ inventory_hostname }}
+        ntc_show_command:
+          host={{ ansible_host }}
           username={{ un }}
           password={{ pwd }}
-          local_file=backups/{{ inventory_hostname }}.cfg
-          platform={{ vendor }}_{{ os }}_{{ api }}
+          command={{ config[os] }}
+          local_file=./backups/{{ inventory_hostname }}.cfg
+          platform={{ vendor }}_{{ os }}
 
 ```
 
-**Pay attention to how we are using variables for the `platform` parameter**.  
+**Pay attention to how we are using variables for the `platform` parameter**.  It's similar to what we did for the `config` command.
 
-Supported platforms for this module are **cisco_nxos_nxapi**, **arista_eos_eapi**, **juniper_junos_netconf**, and **cisco_ios_ssh**.  By previously defining proper group variables in the inventory file, we can concatenate them in a playbook and now run this as a single task vs. needing a task per group.
+Supported platforms for this module actually matches anything Netmiko supports, e.g. vendor_os like cisco_ios, cisco_nxos, juniper_junos, arista_eos, etc.  Since we have those variables pre-built in our inventory file, we can use them as defined in the output above.
 
 Save and Execute the playbook.
 
 ```
-ntc@ntc:~/ansible$ ansible-playbook -i inventory backup-restore.yml
+ntc@ntc:ansible$ ansible-playbook -i inventory backup-restore.yml 
 ```
 
 You will see the following output during execution (this output doesn't include Nexus):
 
 ```
-ntc@ntc:~/ansible$ ansible-playbook -i inventory backup-restore.yml 
+ntc@ntc:ansible$ ansible-playbook -i inventory backup-restore.yml 
 
-PLAY [BACKUP] *********************************************************
+PLAY [BACKUP] *************************************************************************************************
 
-TASK [BACKUP CONFIGS] **********************************************************
-changed: [eos-spine1]
-changed: [eos-leaf1]
-changed: [eos-leaf2]
-changed: [eos-spine2]
-changed: [vmx1]
-changed: [vmx2]
-changed: [vmx3]
-changed: [csr3]
-changed: [csr1]
-changed: [csr2]
+TASK [BACKUP CONFIGS] *****************************************************************************************
+ok: [vmx7]
+ok: [eos-spine2]
+ok: [eos-leaf1]
+ok: [eos-leaf2]
+ok: [eos-spine1]
+ok: [vmx8]
+ok: [vmx9]
+ok: [nxos-spine1]
+ok: [nxos-spine2]
+ok: [csr1]
+ok: [csr2]
+ok: [csr3]
 
-PLAY RECAP *********************************************************************
-csr1                       : ok=1    changed=1    unreachable=0    failed=0   
-csr2                       : ok=1    changed=1    unreachable=0    failed=0   
-csr3                       : ok=1    changed=1    unreachable=0    failed=0   
-eos-leaf1                  : ok=1    changed=1    unreachable=0    failed=0   
-eos-leaf2                  : ok=1    changed=1    unreachable=0    failed=0   
-eos-spine1                 : ok=1    changed=1    unreachable=0    failed=0   
-eos-spine2                 : ok=1    changed=1    unreachable=0    failed=0   
-vmx1                       : ok=1    changed=1    unreachable=0    failed=0   
-vmx2                       : ok=1    changed=1    unreachable=0    failed=0   
-vmx3                       : ok=1    changed=1    unreachable=0    failed=0   
+PLAY RECAP ****************************************************************************************************
+csr1                       : ok=1    changed=0    unreachable=0    failed=0   
+csr2                       : ok=1    changed=0    unreachable=0    failed=0   
+csr3                       : ok=1    changed=0    unreachable=0    failed=0   
+eos-leaf1                  : ok=1    changed=0    unreachable=0    failed=0   
+eos-leaf2                  : ok=1    changed=0    unreachable=0    failed=0   
+eos-spine1                 : ok=1    changed=0    unreachable=0    failed=0   
+eos-spine2                 : ok=1    changed=0    unreachable=0    failed=0   
+nxos-spine1                : ok=1    changed=0    unreachable=0    failed=0   
+nxos-spine2                : ok=1    changed=0    unreachable=0    failed=0   
+vmx7                       : ok=1    changed=0    unreachable=0    failed=0   
+vmx8                       : ok=1    changed=0    unreachable=0    failed=0   
+vmx9                       : ok=1    changed=0    unreachable=0    failed=0   
 
+ntc@ntc:ansible$ 
 
 ```
 
@@ -127,6 +164,9 @@ We now need an automated way to remove them from each.
 Add two tasks to cleanup the backup configs. While it's only relevant for IOS configs, there is no harm on running this against all devices.
 
 ```yaml
+
+      # this goes below the existing tasks
+
       - name: CLEAN UP CONFIGS 1
         lineinfile: dest=backups/{{ inventory_hostname }}.cfg line="Building configuration..." state=absent
         tags: clean
@@ -266,21 +306,31 @@ The full playbook should look like this for now:
 
 ```yaml
 ---
-
+  
   - name: BACKUP
     hosts: all
     connection: local
     gather_facts: no
 
+    vars:
+      config:
+        eos: show run
+        ios: show run
+        nxos: show run
+        junos: show config
+
     tasks:
 
       - name: BACKUP CONFIGS
-        ntc_save_config:
-          host={{ inventory_hostname }}
+        ntc_show_command:
+          host={{ ansible_host }}
           username={{ un }}
           password={{ pwd }}
-          local_file=backups/{{ inventory_hostname }}.cfg
-          platform={{ vendor }}_{{ os }}_{{ api }}
+          command={{ config[os] }}
+          local_file=./backups/{{ inventory_hostname }}.cfg
+          platform={{ vendor }}_{{ os }}
+
+      # this goes below the existing tasks
 
       - name: CLEAN UP CONFIGS 1
         lineinfile: dest=backups/{{ inventory_hostname }}.cfg line="Building configuration..." state=absent
@@ -307,7 +357,6 @@ The full playbook should look like this for now:
           replace_config=true
           commit_changes=true
           dev_os=ios
-
 ```
 
 
@@ -511,21 +560,31 @@ Full and final playbook will look like this:
 
 ```yaml
 ---
-
+  
   - name: BACKUP
     hosts: all
     connection: local
     gather_facts: no
 
+    vars:
+      config:
+        eos: show run
+        ios: show run
+        nxos: show run
+        junos: show config
+
     tasks:
 
       - name: BACKUP CONFIGS
-        ntc_save_config:
-          host={{ inventory_hostname }}
+        ntc_show_command:
+          host={{ ansible_host }}
           username={{ un }}
           password={{ pwd }}
-          local_file=backups/{{ inventory_hostname }}.cfg
-          platform={{ vendor }}_{{ os }}_{{ api }}
+          command={{ config[os] }}
+          local_file=./backups/{{ inventory_hostname }}.cfg
+          platform={{ vendor }}_{{ os }}
+
+      # this goes below the existing tasks
 
       - name: CLEAN UP CONFIGS 1
         lineinfile: dest=backups/{{ inventory_hostname }}.cfg line="Building configuration..." state=absent
@@ -549,10 +608,9 @@ Full and final playbook will look like this:
           username={{ un }}
           password={{ pwd }}
           config_file=backups/{{ inventory_hostname }}.cfg
-          diff_file=diffs/{{ inventory_hostname }}.diffs
           replace_config=true
           commit_changes=true
-          dev_os={{ os }}
+          dev_os=ios
 ```
 
 
