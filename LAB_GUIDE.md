@@ -35,7 +35,7 @@ Please be sure to review the [device information](labs/DEVICE_INFO.md) before st
 - [Lab 5 - Backup and Restore Full Config Files with NAPALM](labs/Ansible_Lab_05_Backup_Restore_Configs.md)
 - [Lab 6 - Build Push with Jinja2 and NAPALM](labs/Ansible_Lab_06_Build_Push.md)
 - [Lab 7 - Ansible Core Command Modules](labs/Ansible_Lab_07_Core_Command_Module.md)
-- [Lab 8 - Ansible Core Config Modules](Ansible_Lab_08_Core_Config_Module.md)
+- [Lab 8 - Ansible Core Config Modules](labs/Ansible_Lab_08_Core_Config_Module.md)
 - [Lab 9 - Resource Modules]()
 - [Lab 10 - Operational Tasks with NTC Modules]()
 - [Lab 11 - Data Collection & Reporting]()
