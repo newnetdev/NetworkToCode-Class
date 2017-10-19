@@ -36,7 +36,7 @@ Please be sure to review the [device information](labs/DEVICE_INFO.md) before st
 - [Lab 6 - Build Push with Jinja2 and NAPALM](labs/Ansible_Lab_06_Build_Push.md)
 - [Lab 7 - Ansible Core Command Modules](labs/Ansible_Lab_07_Core_Command_Module.md)
 - [Lab 8 - Ansible Core Config Modules](labs/Ansible_Lab_08_Core_Config_Module.md)
-- [Lab 9 - Resource Modules]()
+- [Lab 9 - Resource Modules](labs/Ansible_Lab_09_Resource_Modules.md)
 - [Lab 10 - Operational Tasks with NTC Modules]()
 - [Lab 11 - Data Collection & Reporting]()
 - [Lab 12 - Ansible Roles]()  
