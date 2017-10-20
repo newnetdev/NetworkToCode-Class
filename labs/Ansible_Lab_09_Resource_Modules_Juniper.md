@@ -17,7 +17,7 @@ This playbook will be used to explore a few Juniper Ansible modules to automate 
 
 Open `juniper.yml` in your text editor.
 
-Create a play that will automate only one host - *vmx1*.
+Create a play that will automate only one host - *vmx7*.
 
 In the first task, use the **junos_get_config** module to retrieve configuration stanzas or a full configuration from Junos devices.
 
@@ -29,7 +29,7 @@ Save the retrieved config in the `configs` directory.
 ---
 
   - name: TEST JUNIPER MODULES
-    hosts: vmx1
+    hosts: vmx7
     connection: local
     gather_facts: no
 
@@ -48,10 +48,10 @@ ntc@ntc:~/ansible$ ansible-playbook -i inventory juniper.yml
 PLAY [TEST JUNIPER MODULES] ***************************************************
 
 TASK: [GET CONFIG] ************************************************************
-ok: [vmx1]
+ok: [vmx7]
 
 PLAY RECAP ********************************************************************
-vmx1                       : ok=1    changed=0    unreachable=0    failed=0   
+vmx7                       : ok=1    changed=0    unreachable=0    failed=0   
 
 ```
 
@@ -59,12 +59,12 @@ vmx1                       : ok=1    changed=0    unreachable=0    failed=0
 You can now view the new file.
 
 ```
-ntc@ntc:~/ansible$ cat configs/vmx1_get_test.conf
+ntc@ntc:~/ansible$ cat configs/vmx7_get_test.conf
 
 ## Last changed: 2016-02-25 11:36:57 UTC
 interfaces {
     ge-0/0/0 {
-        description CONNECTS_VMX3;
+        description CONNECTS_VMX9;
         unit 0 {
             family inet {
                 address 10.254.13.1/24;
@@ -79,7 +79,7 @@ interfaces {
         }
     }
     ge-0/0/2 {
-        description CONNECTS_VMX2;
+        description CONNECTS_VMX8;
         unit 0 {
             family inet {
                 address 10.254.12.1/24;
@@ -123,12 +123,12 @@ To do this, you separate each configuration section with a `/` in the filter val
 Open and check the file to ensure it is as expected.
 
 ```
-ntc@ntc:~/ansible$ cat configs/vmx1_get_test.conf
+ntc@ntc:~/ansible$ cat configs/vmx7_get_test.conf
 
 ## Last changed: 2016-02-25 11:36:57 UTC
 interfaces {
     ge-0/0/0 {
-        description CONNECTS_VMX3;
+        description CONNECTS_VMX9;
         unit 0 {
             family inet {
                 address 10.254.13.1/24;
@@ -143,7 +143,7 @@ interfaces {
         }
     }
     ge-0/0/2 {
-        description CONNECTS_VMX2;
+        description CONNECTS_VMX8;
         unit 0 {
             family inet {
                 address 10.254.12.1/24;
@@ -193,7 +193,7 @@ In this task, you will use the **juniper_install_config** which is very similar 
 
 Create a new template and save it as `templates/routing.j2`.  
 
-This template will be used to generate a new configuration that will be merged on onto *vmx1* and *vmx2*. 
+This template will be used to generate a new configuration that will be merged on onto *vmx7* and *vmx8*. 
 
 ```
 interfaces {
@@ -217,15 +217,15 @@ routing-options {
 
 ##### Step 2
 
-Add a new variable called `transit_ip` to the host_vars files for vmx1 and vmx2.
+Add a new variable called `transit_ip` to the host_vars files for vmx7 and vmx8.
 
-`host_vars/vmx1.yml`:
+`host_vars/vmx7.yml`:
 
 ```yaml
 transit_ip: 172.16.32.11
 ```
 
-`host_vars/vmx2.yml`:
+`host_vars/vmx8.yml`:
 
 ```yaml
 transit_ip: 172.16.32.12
@@ -233,14 +233,14 @@ transit_ip: 172.16.32.12
 
 ##### Step 3
 
-Add a NEW  play to the playbook.  Notice how we are only automating *vmx1* and *vmx2* in this play
+Add a NEW  play to the playbook.  Notice how we are only automating *vmx7* and *vmx8* in this play
 
 > The colon is used to select one _OR_ more hosts or groups.
 
 ```yaml
 
   - name: PUSHING CONFIGS
-    hosts: vmx1,vmx2
+    hosts: vmx7,vmx8
     connection: local
     gather_facts: no
     tags: push
@@ -274,16 +274,16 @@ ntc@ntc:~/ansible$ ansible-playbook -i inventory juniper.yml --tags=push
 PLAY [PUSHING CONFIGS] ********************************************************
 
 TASK: [UPDATE ROUTING CONFIG FILE] ********************************************
-changed: [vmx1]
-changed: [vmx2]
+changed: [vmx7]
+changed: [vmx8]
 
 TASK: [ENABLE ROUTING] ********************************************************
-changed: [vmx2]
-changed: [vmx1]
+changed: [vmx8]
+changed: [vmx7]
 
 PLAY RECAP ********************************************************************
-vmx1                       : ok=2    changed=2    unreachable=0    failed=0   
-vmx2                       : ok=2    changed=2    unreachable=0    failed=0   
+vmx7                       : ok=2    changed=2    unreachable=0    failed=0   
+vmx8                       : ok=2    changed=2    unreachable=0    failed=0   
 
 
 ```
@@ -354,19 +354,19 @@ Output:
 PLAY [CLI on JUNOS] ***********************************************************
 
 TASK: [EXECUTE SHOW VERSION] **************************************************
-ok: [vmx2]
-ok: [vmx1]
-ok: [vmx3]
+ok: [vmx8]
+ok: [vmx7]
+ok: [vmx9]
 
 TASK: [EXECUTE SHOW ROUTE] ****************************************************
-ok: [vmx1]
-ok: [vmx2]
-ok: [vmx3]
+ok: [vmx7]
+ok: [vmx8]
+ok: [vmx9]
 
 PLAY RECAP ********************************************************************
-vmx1                       : ok=2    changed=0    unreachable=0    failed=0   
-vmx2                       : ok=2    changed=0    unreachable=0    failed=0   
-vmx3                       : ok=2    changed=0    unreachable=0    failed=0   
+vmx7                       : ok=2    changed=0    unreachable=0    failed=0   
+vmx8                       : ok=2    changed=0    unreachable=0    failed=0   
+vmx9                       : ok=2    changed=0    unreachable=0    failed=0   
 ```
 
 
@@ -376,15 +376,15 @@ Open up the outputs that were collected and view them.
 
 ```
 ntc@ntc:~/ansible$ ls configs/
-vmx1        vmx1_routing.conf  vmx2_routes.text    vmx3
-vmx1_get_test.conf  vmx1_version.xml  vmx2_routing.text  vmx3_routes.conf
-vmx1_routes.text     vmx2         vmx2_version.xml  vmx3_version.xml
+vmx7        vmx7_routing.conf  vmx8_routes.text    vmx9
+vmx7_get_test.conf  vmx7_version.xml  vmx8_routing.text  vmx9_routes.conf
+vmx7_routes.text     vmx8         vmx8_version.xml  vmx9_version.xml
 ```
 
 Here is one of them:
 
 ```
-ntc@ntc:~/ansible$ more configs/vmx1_routes.text
+ntc@ntc:~/ansible$ more configs/vmx7_routes.text
 
 inet.0: 10 destinations, 11 routes (10 active, 0 holddown, 0 hidden)
 + = Active Route, - = Last Active, * = Both
@@ -452,14 +452,14 @@ ntc@ntc:~/ansible$ ansible-playbook -i inventory juniper.yml --tags=tables -v
 PLAY [GET OP DATA USING T/V] **************************************************
 
 TASK: [GET NEIGHBOR INFO USING STANDARD LLDP TABLE] ***************************
-ok: [vmx2] => {"changed": false, "resource": [{"local_int": "fxp0", "local_parent": "-", "remote_chassis_id": "00:05:86:71:a4:c0", "remote_port_desc": null, "remote_sysname": "vmx1", "remote_type": "Mac address"}, {"local_int": "ge-0/0/2", "local_parent": "-", "remote_chassis_id": "00:05:86:71:a4:c0", "remote_port_desc": null, "remote_sysname": "vmx1", "remote_type": "Mac address"}, {"local_int": "fxp0", "local_parent": "-", "remote_chassis_id": "00:05:86:71:db:c0", "remote_port_desc": null, "remote_sysname": "vmx3", "remote_type": "Mac address"}, {"local_int": "ge-0/0/1", "local_parent": "-", "remote_chassis_id": "00:05:86:71:db:c0", "remote_port_desc": null, "remote_sysname": "vmx3", "remote_type": "Mac address"}, {"local_int": "fxp0", "local_parent": "-", "remote_chassis_id": "28:03:82:9a:13:47", "remote_port_desc": null, "remote_sysname": "eos-spine1.ntc.com", "remote_type": "Mac address"}, {"local_int": "fxp0", "local_parent": "-", "remote_chassis_id": "28:03:82:9a:13:4b", "remote_port_desc": null, "remote_sysname": "eos-spine2.ntc.com", "remote_type": "Mac address"}]}
-ok: [vmx3] => {"changed": false, "resource": [{"local_int": "fxp0", "local_parent": "-", "remote_chassis_id": "00:05:86:71:25:c0", "remote_port_desc": null, "remote_sysname": "vmx2", "remote_type": "Mac address"}, {"local_int": "ge-0/0/1", "local_parent": "-", "remote_chassis_id": "00:05:86:71:25:c0", "remote_port_desc": null, "remote_sysname": "vmx2", "remote_type": "Mac address"}, {"local_int": "fxp0", "local_parent": "-", "remote_chassis_id": "00:05:86:71:a4:c0", "remote_port_desc": null, "remote_sysname": "vmx1", "remote_type": "Mac address"}, {"local_int": "ge-0/0/0", "local_parent": "-", "remote_chassis_id": "00:05:86:71:a4:c0", "remote_port_desc": null, "remote_sysname": "vmx1", "remote_type": "Mac address"}, {"local_int": "fxp0", "local_parent": "-", "remote_chassis_id": "28:03:82:9a:13:47", "remote_port_desc": null, "remote_sysname": "eos-spine1.ntc.com", "remote_type": "Mac address"}, {"local_int": "fxp0", "local_parent": "-", "remote_chassis_id": "28:03:82:9a:13:4b", "remote_port_desc": null, "remote_sysname": "eos-spine2.ntc.com", "remote_type": "Mac address"}]}
-ok: [vmx1] => {"changed": false, "resource": [{"local_int": "fxp0", "local_parent": "-", "remote_chassis_id": "00:05:86:71:25:c0", "remote_port_desc": null, "remote_sysname": "vmx2", "remote_type": "Mac address"}, {"local_int": "ge-0/0/2", "local_parent": "-", "remote_chassis_id": "00:05:86:71:25:c0", "remote_port_desc": null, "remote_sysname": "vmx2", "remote_type": "Mac address"}, {"local_int": "fxp0", "local_parent": "-", "remote_chassis_id": "00:05:86:71:db:c0", "remote_port_desc": null, "remote_sysname": "vmx3", "remote_type": "Mac address"}, {"local_int": "ge-0/0/0", "local_parent": "-", "remote_chassis_id": "00:05:86:71:db:c0", "remote_port_desc": null, "remote_sysname": "vmx3", "remote_type": "Mac address"}, {"local_int": "fxp0", "local_parent": "-", "remote_chassis_id": "28:03:82:9a:13:47", "remote_port_desc": null, "remote_sysname": "eos-spine1.ntc.com", "remote_type": "Mac address"}, {"local_int": "fxp0", "local_parent": "-", "remote_chassis_id": "28:03:82:9a:13:4b", "remote_port_desc": null, "remote_sysname": "eos-spine2.ntc.com", "remote_type": "Mac address"}]}
+ok: [vmx8] => {"changed": false, "resource": [{"local_int": "fxp0", "local_parent": "-", "remote_chassis_id": "00:05:86:71:a4:c0", "remote_port_desc": null, "remote_sysname": "vmx7", "remote_type": "Mac address"}, {"local_int": "ge-0/0/2", "local_parent": "-", "remote_chassis_id": "00:05:86:71:a4:c0", "remote_port_desc": null, "remote_sysname": "vmx7", "remote_type": "Mac address"}, {"local_int": "fxp0", "local_parent": "-", "remote_chassis_id": "00:05:86:71:db:c0", "remote_port_desc": null, "remote_sysname": "vmx9", "remote_type": "Mac address"}, {"local_int": "ge-0/0/1", "local_parent": "-", "remote_chassis_id": "00:05:86:71:db:c0", "remote_port_desc": null, "remote_sysname": "vmx9", "remote_type": "Mac address"}, {"local_int": "fxp0", "local_parent": "-", "remote_chassis_id": "28:03:82:9a:13:47", "remote_port_desc": null, "remote_sysname": "eos-spine1.ntc.com", "remote_type": "Mac address"}, {"local_int": "fxp0", "local_parent": "-", "remote_chassis_id": "28:03:82:9a:13:4b", "remote_port_desc": null, "remote_sysname": "eos-spine2.ntc.com", "remote_type": "Mac address"}]}
+ok: [vmx9] => {"changed": false, "resource": [{"local_int": "fxp0", "local_parent": "-", "remote_chassis_id": "00:05:86:71:25:c0", "remote_port_desc": null, "remote_sysname": "vmx8", "remote_type": "Mac address"}, {"local_int": "ge-0/0/1", "local_parent": "-", "remote_chassis_id": "00:05:86:71:25:c0", "remote_port_desc": null, "remote_sysname": "vmx8", "remote_type": "Mac address"}, {"local_int": "fxp0", "local_parent": "-", "remote_chassis_id": "00:05:86:71:a4:c0", "remote_port_desc": null, "remote_sysname": "vmx7", "remote_type": "Mac address"}, {"local_int": "ge-0/0/0", "local_parent": "-", "remote_chassis_id": "00:05:86:71:a4:c0", "remote_port_desc": null, "remote_sysname": "vmx7", "remote_type": "Mac address"}, {"local_int": "fxp0", "local_parent": "-", "remote_chassis_id": "28:03:82:9a:13:47", "remote_port_desc": null, "remote_sysname": "eos-spine1.ntc.com", "remote_type": "Mac address"}, {"local_int": "fxp0", "local_parent": "-", "remote_chassis_id": "28:03:82:9a:13:4b", "remote_port_desc": null, "remote_sysname": "eos-spine2.ntc.com", "remote_type": "Mac address"}]}
+ok: [vmx7] => {"changed": false, "resource": [{"local_int": "fxp0", "local_parent": "-", "remote_chassis_id": "00:05:86:71:25:c0", "remote_port_desc": null, "remote_sysname": "vmx8", "remote_type": "Mac address"}, {"local_int": "ge-0/0/2", "local_parent": "-", "remote_chassis_id": "00:05:86:71:25:c0", "remote_port_desc": null, "remote_sysname": "vmx8", "remote_type": "Mac address"}, {"local_int": "fxp0", "local_parent": "-", "remote_chassis_id": "00:05:86:71:db:c0", "remote_port_desc": null, "remote_sysname": "vmx9", "remote_type": "Mac address"}, {"local_int": "ge-0/0/0", "local_parent": "-", "remote_chassis_id": "00:05:86:71:db:c0", "remote_port_desc": null, "remote_sysname": "vmx9", "remote_type": "Mac address"}, {"local_int": "fxp0", "local_parent": "-", "remote_chassis_id": "28:03:82:9a:13:47", "remote_port_desc": null, "remote_sysname": "eos-spine1.ntc.com", "remote_type": "Mac address"}, {"local_int": "fxp0", "local_parent": "-", "remote_chassis_id": "28:03:82:9a:13:4b", "remote_port_desc": null, "remote_sysname": "eos-spine2.ntc.com", "remote_type": "Mac address"}]}
 
 PLAY RECAP ********************************************************************
-vmx1                       : ok=1    changed=0    unreachable=0    failed=0   
-vmx2                       : ok=1    changed=0    unreachable=0    failed=0   
-vmx3                       : ok=1    changed=0    unreachable=0    failed=0
+vmx7                       : ok=1    changed=0    unreachable=0    failed=0   
+vmx8                       : ok=1    changed=0    unreachable=0    failed=0   
+vmx9                       : ok=1    changed=0    unreachable=0    failed=0
 
 ```
 
