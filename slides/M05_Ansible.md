@@ -3170,7 +3170,7 @@ changed: [nxos] => (item=networktocode)
 
 # Lab Time
 
-- Lab 26.2 - Using the Ansible Config Module
+- Lab 8 - Using the Ansible Config Module
 
 
 ---
@@ -3632,10 +3632,9 @@ class: middle, segue
 
 # Lab Time
 
-- Lab 27 - Choose One:
-  - 27.1 - Arista Modules - building out MLAG spine configurations
-  - 27.2 - Cisco NXOS Modules - building out spine configurations 
-  - 27.3 - Juniper Modules - Get tables/views, Get configuration stanzas, and push Configuration stanzas and files
+- Lab 9 - Choose One:
+  - 9.1 - Cisco NXOS Modules - building out spine configurations 
+  - 9.2 - Juniper Modules - Get tables/views, Get configuration stanzas, and push Configuration stanzas and files
 
 ---
 
@@ -4005,7 +4004,7 @@ Reboot a network device, optionally on a timer.
 
 * Exploring NTC Ansible Modules
 
-  - Lab 28 - Ansible NTC Modules (IOS, NX-OS, EOS)
+  - Lab 10 - Ansible NTC Modules (IOS, NX-OS, EOS)
 
 
 ---
@@ -4554,7 +4553,7 @@ LOCAL INTERFACE:    Ethernet7
 
 # Lab Time
 
-- Lab 29 - Data Collection Modules & Reporting
+- Lab 11 - Data Collection Modules & Reporting
   - Facts Data Collection Modules
   - Structured Data from CLI Devices (ntc_show_command)
   - Inventory Report
@@ -4784,7 +4783,7 @@ n9k2.ntc.com               : ok=1    changed=0    unreachable=0    failed=0
 
 # Lab Time
 
-- Lab 30 - Using a Dynamic Inventory Script
+- Lab 13 - Using a Dynamic Inventory Script
   - You will execute a playbook that uses a pre-created inventory script that queries a public REST API
 
 ---
@@ -5080,7 +5079,7 @@ vlans:
 
 # Lab Time
 
-- Lab 31 - Creating an Ansible Role
+- Lab 12 - Creating an Ansible Role
   - Create a multi-vendor VLAN role that works with Cisco and Arista devices
 
 
