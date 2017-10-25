@@ -22,7 +22,7 @@ Please be sure to review the [device information](labs/DEVICE_INFO.md) before st
 - [Lab 16 - Exploring eAPI and NXAPI](labs/Lab_16_Exploring_eAPI_NXAPI.md)
 - [Lab 17 - Exploring IOS-XE RESTCONF with Postman](labs/Lab_17_Postman_RESTCONF.md)
 - [Lab 18 - Using Python requests to Automate Web (RESTful) APIs](labs/Lab_18_Python_requests.md)
-- [Lab 19 - Bonus Lab: Using NAPALM for Network Automation](labs/Lab_19_Python_requests.md)
+- [Lab 19 - Bonus Lab: Using NAPALM for Network Automation](labs/Lab_19_NAPALM.md)
 - [Lab 20 - Bonus Lab: Getting Started with PyEZ](labs/Lab_20_Juniper_PyEZ_Part_1.md)
 - [Lab 21 - Bonus Lab: PyEZ Tables & Views](labs/Lab_21_Juniper_PyEZ_Part_2.md)
 
