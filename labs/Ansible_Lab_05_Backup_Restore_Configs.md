@@ -323,7 +323,7 @@ The full playbook should look like this for now:
 
       - name: BACKUP CONFIGS
         ntc_show_command:
-          host={{ ansible_host }}
+          host={{ inventory_hostname }}
           username={{ un }}
           password={{ pwd }}
           command={{ config[os] }}
@@ -577,7 +577,7 @@ Full and final playbook will look like this:
 
       - name: BACKUP CONFIGS
         ntc_show_command:
-          host={{ ansible_host }}
+          host={{ inventory_hostname }}
           username={{ un }}
           password={{ pwd }}
           command={{ config[os] }}
