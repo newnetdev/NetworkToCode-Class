@@ -90,7 +90,7 @@ All backup files should be saved locally inside the `backups` directory.
 
       - name: BACKUP CONFIGS
         ntc_show_command:
-          host={{ ansible_host }}
+          host={{ inventory_hostname }}
           username={{ un }}
           password={{ pwd }}
           command={{ config[os] }}
