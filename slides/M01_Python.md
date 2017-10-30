@@ -2971,6 +2971,60 @@ class: ubuntu
 >>> config.close()
 ```
 
+---
+class: ubuntu
+
+# A quick intro to YAML
+
+- Human readable data serialization language
+- Heavily used for configuration files
+- Relies heavily on indentation
+- 2 space indent is common
+- Superset of JSON
+
+---
+
+class: ubuntu
+
+# YAML Demo
+
+
+.left-column[
+A list of dictionaries
+
+``` yaml
+---
+  - vlan_name: web
+    vlan_id: '10'
+    vlan_state: active
+  - vlan_name: app
+    vlan_id: '20'
+    vlan_state: active
+  - vlan_name: DB
+    vlan_id: '30'
+    vlan_state: active
+```
+]
+
+.right-column[
+
+A nested dictionary
+
+``` yaml
+---
+snmp:
+  ro: public
+  rw: private
+  info:
+    location: nyc
+    contact: bob
+vlans:
+  10:
+    name: web
+  20:
+    name: app
+```
+]
 
 ---
 
@@ -2981,493 +3035,4 @@ class: ubuntu
   - Update modular script from previous lab to generate a configuration file
    - Read a YAML data file and use it to generate device configuration; writing this to file
 
----
-
-
-class: middle, segue
-
-# Python Libraries
-### Introduction to Python for Network Engineers
-
----
-
-class: ubuntu
-
-# Python Libraries 
-
-* Python modules
-  * Standalone Python file used to share code between programs
-* Python packages
-  * Collection of Python modules
-
-Examples:
-
-```
-import json
-import sys
-
-```
-
----
-
-
-# Example Script
-
-Filename: `common.py`
-
-```python
-#! /usr/bin/env python
-
-def show(command):
-    print "Sending 'show' command..."
-    print 'Command sent: ', command
-
-def config(command):
-    print "Sending 'config' command..."
-    print 'Commands sent: ', command
-
-if __name__ == "__main__":
-    command = 'show version'
-    show(command)
-    command = 'interface Eth1/1 ; shutdown'
-    config(command)
-
-```
-
----
-
-# Example Script Output
-
-Running `common.py` as a standalone program:
-
-.ubuntu[
-```
-netdev@networktocode:~$ python common.py 
-
-Sending 'show' command...
-Command sent:  show version
-
-Sending 'config' command...
-Commands sent:  interface Eth1/1 ; shutdown 
-```
-]
-
-Remember, the code under the entry point conditional is only executed when the file is run as a standalone program
-
-What if you just wanted to use a function from within `common.py`?
-
-
----
-
-class: ubuntu 
-
-# Re-Usable Python Objects
-
-What if we wanted to re-use objects (function, variables) from this file in another program?
-
-Remember the filename is called `common.py`
-
-```
-def show(command):
-    print "Sending 'show' command..."
-    print 'Command sent: ', command
-
-def config(command):
-    print "Sending 'config' command..."
-    print 'Commands sent: ', command
-
-if __name__ == "__main__":
-    # Code only executed when ran as a a program
-    # More flexibility than not using the entry point when
-    # you're re-suing objects in other programs
-```
-
---
-
-.left-column[
-```
->>> import common
->>> 
->>> common.show('show version')
-Sending 'show' command...
-Command sent:  show version
->>> 
-```
-]
---
-.right-column[
-```
->>> import common
->>> 
->>> common.config('no router ospf 1')
-Sending 'config' command...
-Commands sent:  no router ospf 1
->>>  
-```
-]
-
-
-
-
----
-
-class: ubuntu 
-
-# Using from/import and re-naming objects
-
-
-.left-column[
-```
->>> from common import show
->>> 
->>> show('show ip int brief')
-Sending 'show' command...
-Command sent:  show ip int brief
->>>
-```
-]
---
-.right-column[
-```
->>> from common import config
->>> 
->>> config('interface Ethernet2/1 ; no shut')
-Sending 'config' command...
-Commands sent:  interface Ethernet2/1 ; no shut
->>>  
-```
-]
-
---
-
-- Use `as` to rename objects as you import them
-- Helpful to reduce length of long object names and eliminate naming conflicts
-
-
-.left-column[
-```
->>> from common import show as sh
->>> 
->>> sh('show ip int brief')
-Sending 'show' command...
-Command sent:  show ip int brief
->>>
-```
-]
-
-.right-column[
-```
->>> from common import config as cfg
->>> 
->>> cfg('interface Ethernet2/1 ; no shut')
-Sending 'config' command...
-Commands sent:  interface Ethernet2/1 ; no shut
->>>  
-```
-]
-
----
-
-class: ubuntu
-
-# The PYTHONPATH
-
-* For testing, as we are doing in the course, you need to use your Python module from within the same directory where it exists
-  * Enter the Python shell where the module exists
-  * Write a new program and place in same directory where the module exists
-
-OR...update your PYTHONPATH
-
-```
-ntc@ntc:~$ env | grep "PYTHON"
-PYTHONPATH=/home/ntc/python/libraries/
-```
-
-One option is to update the PYTHONPATH in `.bashrc` so changes are persistent :
-
-```
-export PYTHONPATH=$PYTHONPATH:/home/ntc/new/path
-```
-
-
----
-
-# Summary
-
-- Functions are a great way to re-use code within a program
-- Modules are a great way to re-used between programs
-- Packages are a collection of modules
-
-
----
-
-class: middle, segue
-
-# Command Line Arguments
-### Introduction to Python for Network Engineers
-
----
-
-# Passing in Arguments
-
-- Using the `sys` module
-  - `argv` is a attribute (variable) within the `sys` module that makes it fast and easy to pass variables in from the command line
-+ Using `argparse` module
-  - Built-in module that allows for more functionality such as defining a help menu and using user-friendly flags
-
----
-
-# sys.argv 
-
-- It's a variable that is of type `list`
-
-  ```python
-  #! /usr/bin/env python
-
-  import sys
-
-  if __name__ == "__main__":
-
-      print sys.argv
-
-  ```
-
---
-- Script name is `argv[0]`
-
-.ubuntu[```
-ntc@ntc:~$ python args_test.py hello world 10.1.1.1 NYCR1
-['args_test.py', 'hello', 'world', '10.1.1.1', 'NYCR1']
-```
-]
-
----
-
-# Example - sys.argv
-
-Objective:
-
-- Pass in the "fact" you want to see the value for and the proper key-value pair will be printed from the `facts` dictionary.
-
-Dictionary: 
-
-```python
-facts = {'vendor': 'cisco', 'mgmt_ip': '10.1.1.1', 'model': 'nexus', 'hostname': 'NYC301', 'os': '6.1.2'}
-```
-
-User experience:
-.ubuntu[```
-ntc@ntc:~$ python print_facts.py model
-model: nexus
-```
-]
----
-
-# Examining the Code
-
-```python
-#! /usr/bin/env python
-
-import sys
-
-if __name__ == "__main__":
-
-    facts = {'vendor': 'cisco', 'mgmt_ip': '10.1.1.1', 'model': 'nexus', 'hostname': 'NYC301', 'os': '6.1.2'}
-
-    args = sys.argv        # assign argv to args (optional; cleans up the code)
-
-    fact_to_print = args[1]      # assign the second element to my_fact
-
-    print fact_to_print + ': ' + facts[fact_to_print]
-
-    print args             # added for example below
-```
-
-.ubuntu[
-```
-ntc@ntc:~$ python print_facts.py model
-model: nexus
-['print_facts.py', 'model']
-```
-]
----
-
-# argparse
-
-- Python module that simplifies defining a help menu, using user-friendly flags, and much more
-
-.ubuntu[
-```
-ntc@ntc:~$ python get_facts.py -f model
-model: nexus
-ntc@ntc:~$ python get_facts.py -f=model
-model: nexus
-ntc@ntc:~$ python get_facts.py --f=model
-model: nexus
-ntc@ntc:~$ python get_facts.py --fact=model
-model: nexus
-ntc@ntc:~$ python get_facts.py --fact model
-model: nexus
-```
-]
---
-
-```python
-import argparse
-
-if __name__ == "__main__":
-
-    facts = {'vendor': 'cisco', 'mgmt_ip': '10.1.1.1', 'model': 'nexus', 'hostname': 'NYC301', 'os': '6.1.2'}
-
-    parser = argparse.ArgumentParser(description='Python Argparse Demo')
-    parser.add_argument('-f', '--fact', help='enter a valid fact from the device facts dictionary')
-
-    args = parser.parse_args()
-
-    print args.fact + ': ' + facts[args.fact]
-
-```
-
----
-
-class: ubuntu 
-# argparse - built-in help
-
-- Leverage help menu natively built-in
-- Can be disabled if needed when parser is instantiated 
-
-```
-ntc@ntc:~$ python get_facts.py --help
-usage: get_facts.py [-h] [-f FACT]
-
-Python Argparse demo.
-
-optional arguments:
-  -h, --help            show this help message and exit
-  -f FACT, --fact FACT  enter a valid fact from the device facts dictionary
-```
-
----
-
-
-# arparse - choices
-
-- Built-in error validation
-- What if the user enters an invalid value for argument?
-
-.ubuntu[
-```
-ntc@ntc:~$ python get_facts.py --f platform
-Traceback (most recent call last):
-  File "get_facts.py", line 14, in <module>
-    print args.fact + ': ' + facts[args.fact]
-KeyError: 'platform'
-```
-]
---
-
-Use the `choices` parameter:
-
-```python
-parser.add_argument('-f', '--fact', choices=['vendor', 'mgmt_ip', 'model', 'hostname', 'os'], help='enter a valid fact from the device facts dictionary')
-```
-
----
-
-class: ubuntu
-
-# argparse - Using choices
-
-```
-ntc@ntc:~$ python get_facts.py --f platform
-usage: get_facts.py [-h] [-f {vendor,mgmt_ip,model,hostname,os}]
-get_facts.py: error: argument -f/--fact: invalid choice: 'platform' (choose from 'vendor', 'mgmt_ip', 'model', 'hostname', 'os')
-```
---
-```
-ntc@ntc:~$ python get_facts.py -h
-usage: get_facts.py [-h] [-f {vendor,mgmt_ip,model,hostname,os}]
-
-Python Argparse Demo
-
-optional arguments:
-  -h, --help            show this help message and exit
-  -f {vendor,mgmt_ip,model,hostname,os}, --fact {vendor,mgmt_ip,model,hostname,os}
-                        enter a valid fact from the device facts dictionary
-
-```
-
----
-
-class: ubuntu
-
-# argparse - Multiple arguments
-
-Objective:
-
-- Pass in a fact you want to see the value for, but also include a description
-- Code was modified to also print the description
-
-```
-ntc@ntc:~$ python get_facts.py -h
-usage: get_facts.py [-h] [-f {vendor,mgmt_ip,model,hostname,os}] [-d DESCR]
-
-Python Argparse Demo
-
-optional arguments:
-  -h, --help            show this help message and exit
-  -f {vendor,mgmt_ip,model,hostname,os}, --fact {vendor,mgmt_ip,model,hostname,os}
-                        enter a valid fact from the device facts dictionary
-  -d DESCR, --descr DESCR
-                        enter a description for this job
-
-```
-
-```
-ntc@ntc:~$ python get_facts.py -f hostname -d "Test Job"
-hostname: NYC301
-Test Job
-```
-
----
-
-# argparse - Adding descr argument
-
-```python
-import argparse
-
-if __name__ == "__main__":
-
-    facts = {'vendor': 'cisco', 'mgmt_ip': '10.1.1.1', 'model': 'nexus', 'hostname': 'NYC301', 'os': '6.1.2'}
-
-    parser = argparse.ArgumentParser(description='Python Argparse Demo')
-    parser.add_argument('-f', '--fact', help='enter a valid fact from the device facts dictionary')
-    parser.add_argument('-d', '--descr', help='enter a description for this job')
-
-    args = parser.parse_args()
-
-    print args.fact + ': ' + facts[args.fact]
-    print args.descr
-
-```
-
-
-
-
----
-
-# Summary
-
-- For quick testing `sys.argv` is a great option
-- For a more robut script, you want others to use and to have a more defined help menu, `argparse` is the way to go
-  - Supports more features, feel free to continue to digging!
-
----
-
-# Lab Time
-
-- Lab 14 - Gathering User input with Command Line Arguments
-  - 
-  - Write a basic script using `sys.argv` that prints arguments
-  - Continue to build on the neighbors script from previous labs and only print certain neighbor and device information based on the arguments being passed in
 

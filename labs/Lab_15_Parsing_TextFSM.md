@@ -355,7 +355,7 @@ ntc@ntc:~/textfsm$ python netmiko-clitable-ios.py
 When you combine netmiko with TextFSM, you get a pseudo-API comparable to Cisco Nexus NX-API or Arista eAPI that takes a command in and returns structured data.
 
 
-#### Step 4
+##### Step 4
 
 Feel free to make changes as you desire and try other commands.
 

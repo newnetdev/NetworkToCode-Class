@@ -1,4 +1,4 @@
-## Lab 19.1 - NAPALM
+## Lab 19.3 - NAPALM
 
 ### Task 1 - Basic Configuration Merge with NAPALM
 

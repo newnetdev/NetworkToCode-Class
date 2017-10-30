@@ -15,11 +15,756 @@ class: center, middle, title
 
 # Module Overview
 
+- Python Libraries
+- netmiko
+- argparse
 - Regular Expressions 101
 - TextFSM
-- netmiko
 - NAPALM
-- pyntc
+
+---
+
+
+
+
+class: middle, segue
+
+# Python Libraries
+### Introduction to Python for Network Engineers
+
+---
+
+class: ubuntu
+
+# Python Libraries 
+
+* Python modules
+  * Standalone Python file used to share code between programs
+* Python packages
+  * Collection of Python modules
+
+Examples:
+
+```
+import json
+import sys
+
+```
+
+---
+
+
+# Example Script
+
+Filename: `common.py`
+
+```python
+#! /usr/bin/env python
+
+def show(command):
+    print "Sending 'show' command..."
+    print 'Command sent: ', command
+
+def config(command):
+    print "Sending 'config' command..."
+    print 'Commands sent: ', command
+
+if __name__ == "__main__":
+    command = 'show version'
+    show(command)
+    command = 'interface Eth1/1 ; shutdown'
+    config(command)
+
+```
+
+---
+
+# Example Script Output
+
+Running `common.py` as a standalone program:
+
+.ubuntu[
+```
+netdev@networktocode:~$ python common.py 
+
+Sending 'show' command...
+Command sent:  show version
+
+Sending 'config' command...
+Commands sent:  interface Eth1/1 ; shutdown 
+```
+]
+
+Remember, the code under the entry point conditional is only executed when the file is run as a standalone program
+
+What if you just wanted to use a function from within `common.py`?
+
+
+---
+
+class: ubuntu 
+
+# Re-Usable Python Objects
+
+What if we wanted to re-use objects (function, variables) from this file in another program?
+
+Remember the filename is called `common.py`
+
+```
+def show(command):
+    print "Sending 'show' command..."
+    print 'Command sent: ', command
+
+def config(command):
+    print "Sending 'config' command..."
+    print 'Commands sent: ', command
+
+if __name__ == "__main__":
+    # Code only executed when ran as a a program
+    # More flexibility than not using the entry point when
+    # you're re-suing objects in other programs
+```
+
+--
+
+.left-column[
+```
+>>> import common
+>>> 
+>>> common.show('show version')
+Sending 'show' command...
+Command sent:  show version
+>>> 
+```
+]
+--
+.right-column[
+```
+>>> import common
+>>> 
+>>> common.config('no router ospf 1')
+Sending 'config' command...
+Commands sent:  no router ospf 1
+>>>  
+```
+]
+
+
+
+
+---
+
+class: ubuntu 
+
+# Using from/import and re-naming objects
+
+
+.left-column[
+```
+>>> from common import show
+>>> 
+>>> show('show ip int brief')
+Sending 'show' command...
+Command sent:  show ip int brief
+>>>
+```
+]
+--
+.right-column[
+```
+>>> from common import config
+>>> 
+>>> config('interface Ethernet2/1 ; no shut')
+Sending 'config' command...
+Commands sent:  interface Ethernet2/1 ; no shut
+>>>  
+```
+]
+
+--
+
+- Use `as` to rename objects as you import them
+- Helpful to reduce length of long object names and eliminate naming conflicts
+
+
+.left-column[
+```
+>>> from common import show as sh
+>>> 
+>>> sh('show ip int brief')
+Sending 'show' command...
+Command sent:  show ip int brief
+>>>
+```
+]
+
+.right-column[
+```
+>>> from common import config as cfg
+>>> 
+>>> cfg('interface Ethernet2/1 ; no shut')
+Sending 'config' command...
+Commands sent:  interface Ethernet2/1 ; no shut
+>>>  
+```
+]
+
+---
+
+class: ubuntu
+
+# The PYTHONPATH
+
+* For testing, as we are doing in the course, you need to use your Python module from within the same directory where it exists
+  * Enter the Python shell where the module exists
+  * Write a new program and place in same directory where the module exists
+
+OR...update your PYTHONPATH
+
+```
+ntc@ntc:~$ env | grep "PYTHON"
+PYTHONPATH=/home/ntc/python/libraries/
+```
+
+One option is to update the PYTHONPATH in `.bashrc` so changes are persistent :
+
+```
+export PYTHONPATH=$PYTHONPATH:/home/ntc/new/path
+```
+
+
+---
+
+# Summary
+
+- Functions are a great way to re-use code within a program
+- Modules are a great way to re-used between programs
+- Packages are a collection of modules
+
+---
+
+class: middle, segue
+
+# netmiko
+### Python Network Libraries
+
+---
+
+# Netmiko Overview
+
+- Python library that simplifies SSH management to network devices
+- Based on the Paramiko SSH library
+
+**The purposes of the library are the following:**
+
+- Successfully establish an SSH connection to the device
+- Simplify the execution of show commands and the retrieval of output data
+- Simplify execution of configuration commands including possibly commit actions
+- Do the above across a broad set of networking vendors and platforms
+
+---
+
+# Supported Platforms
+
+.left-column[
+* Arista vEOS
+* Cisco ASA
+* Cisco IOS
+* Cisco IOS-XR
+* Cisco SG300
+* HP Comware7
+* HP ProCurve
+* Juniper Junos
+* Linux 
+* Brocade VDX (limited)
+* Brocade ICX/FastIron (limited)
+* Brocade MLX/NetIron (limited)
+]
+.right-column[
+* Avaya ERS (limited)
+* Avaya VSP (limited)
+* Cisco IOS-XE (limited)
+* Cisco NX-OS (limited)
+* Cisco WLC (limited)
+* Dell-Force10 DNOS9 (limited)
+* Huawei (limited)
+* Palo Alto PAN-OS (limited)
+* Vyatta VyOS  (limited)
+]
+
+---
+
+# Supported Platforms (experimental)
+
+.left-column[
+* A10
+* Alcatel-Lucent SR-OS
+* Enterasys
+* Extreme
+* F5 LTM
+* Fortinet 
+]
+
+---
+
+# Getting Started with Netmiko
+
+
+```python
+>>> from netmiko import ConnectHandler
+>>> 
+>>> device = ConnectHandler(device_type='cisco_nxos', ip='n9k1', username='cisco', password='cisco')`
+>>>
+
+```
+
+--
+
+We could have also done: 
+
+```python
+>>> args = dict(device_type='cisco_nxos', ip='n9k2', username='cisco', password='cisco')
+>>> 
+>>> device = ConnectHandler(**args)
+>>> 
+```
+
+Note: `**` as in `**args` is used to treat a dictionary (single object) as multiple key-value pairs.
+
+---
+
+# Using Netmiko
+
+Send a command to the device 
+
+```python
+>>> device.send_command_timing('show hostname')
+u'N9K1.cisconxapi.com '
+>>>
+```
+
+Send a command to the device and wait for a string (prompt).
+
+Default waits for the previous prompt string to return.
+
+```python
+>>> device.send_command('copy run start')
+# output omitted
+>>>
+```
+
+
+---
+
+# Using netmiko (cont'd)
+
+Enter config mode
+
+```python
+>>> device.config_mode()
+u'config term\nEnter configuration commands, one per line. End with CNTL/Z.\nN9K1(config)# '
+```
+
+
+Send configuration mode command (must using timing here)
+
+```python
+>>> device.send_command_timing('hostname NEW_HOSTNAME')
+u'NEW_HOSTNAME(config)# '
+>>> 
+```
+
+Same result can be achieved specifying `expect_string` within `send_command`
+
+```python
+>>> device.send_command('hostname NEWER_HOSTNAME', expect_string='NEWER_HOSTNAME')
+u'NEWER_HOSTNAME(config)# '
+>>> 
+```
+
+Exit configuration mode
+
+```python
+device.exit_config_mode()
+```
+
+---
+
+# Using netmiko (cont'd)
+
+Storing & Printing a command response
+
+```python
+>>> vlans = device.send_command_expect('show vlan')
+>>> 
+>>> print vlans
+
+VLAN Name                             Status    Ports
+---- -------------------------------- --------- -------------------------------
+1    default                          active    Eth1/2, Eth1/3, Eth1/8, Eth1/9
+                                                Eth1/11, Eth1/12, Eth1/13, Eth2/9
+                                                Eth2/10, Eth2/11, Eth2/12
+2    VLAN0002                         active    Po10, Po11, Po12, Eth1/4
+                                                Eth1/5, Eth1/6, Eth1/7, Eth2/5
+                                                Eth2/6
+3    VLAN0003                         active    Po10, Po11, Po12, Eth1/4
+                                                Eth1/5, Eth1/6, Eth1/7, Eth2/5
+                                                Eth2/6
+4    VLAN0004                         active    Po10, Po11, Po12, Eth1/4
+                                                Eth1/5, Eth1/6, Eth1/7, Eth2/5
+                                                Eth2/6
+5    VLAN0005                         active    Po10, Po11, Po12, Eth1/4
+                                                Eth1/5, Eth1/6, Eth1/7, Eth2/5
+                                                Eth2/6
+
+# shortened for brevity
+```
+
+---
+
+# Using netmiko (cont'd)
+
+Check your current prompt
+
+```python
+>>> device.find_prompt()
+u'NEW_HOSTNAME#'
+>>> 
+```
+
+---
+
+### Primary List of Methods
+
+* config_mode() -- Enter into config mode
+* enable() -- Enter enable mode
+* establish_connection() -- Establish SSH connection to device
+* exit_enable_mode() -- Exit enable mode
+* find_prompt() -- Return the current router prompt
+* commit() -- Execute a commit action on Juniper and IOS-XR
+* disconnect() -- Close the SSH connection
+* send_command_timing() - Send command down the SSH channel, return output back (uses timer to wait for device)
+* send_command_expect() -- Send command to device; retrieve output until router_prompt or expect_string
+* send_config_set() -- Send a set of configuration commands to remote device
+* send_config_from_file() -- Send a set of configuration commands loaded from a file
+
+
+---
+
+# Summary
+
+- Legacy devices are here to stay (for awhile)
+- Great way to bridge the gap between legacy and modern devices that return structured data
+
+- Netmiko is a great library to integrate with TextFSM to create a psuedo-API
+    -  CLI commands gets sent to the device and you get returned structured data
+    -  We cover how to do this with Ansible
+
+---
+
+# Lab Time
+
+- Lab 12 - Introduction to Netmiko
+    - Choose either IOS or JUNOS
+
+- Lab 13 -  Use Netmiko to interactively communicate with a network switch
+ 
+
+---
+
+
+class: middle, segue
+
+# Command Line Arguments
+### Introduction to Python for Network Engineers
+
+---
+class: ubuntu
+
+# User interaction - Prompting users for input
+
+- The `raw_input` (Python 2.x) or `input` (Python 3.x) built-in function is used to collect user input, interactively
+
+- Prompt the user for data that can then be stored as a variable and used in the script
+
+
+``` python
+
+number_of_routers = raw_input('Enter the number of routers in the mesh:')
+
+num_routers = int(number_of_routers)
+
+number_of_connections = ( num_routers * (num_routers - 1) )/2
+
+print("For a full mesh of {} routers, you will need {} connections".format(num_routers, number_of_connections))
+
+```
+
+---
+
+# Passing in Arguments
+
+- Using the `sys` module
+  - `argv` is a attribute (variable) within the `sys` module that makes it fast and easy to pass variables in from the command line
++ Using `argparse` module
+  - Built-in module that allows for more functionality such as defining a help menu and using user-friendly flags
+
+---
+
+# sys.argv 
+
+- It's a variable that is of type `list`
+
+  ```python
+  #! /usr/bin/env python
+
+  import sys
+
+  if __name__ == "__main__":
+
+      print sys.argv
+
+  ```
+
+--
+- Script name is `argv[0]`
+
+.ubuntu[```
+ntc@ntc:~$ python args_test.py hello world 10.1.1.1 NYCR1
+['args_test.py', 'hello', 'world', '10.1.1.1', 'NYCR1']
+```
+]
+
+---
+
+# Example - sys.argv
+
+Objective:
+
+- Pass in the "fact" you want to see the value for and the proper key-value pair will be printed from the `facts` dictionary.
+
+Dictionary: 
+
+```python
+facts = {'vendor': 'cisco', 'mgmt_ip': '10.1.1.1', 'model': 'nexus', 'hostname': 'NYC301', 'os': '6.1.2'}
+```
+
+User experience:
+.ubuntu[```
+ntc@ntc:~$ python print_facts.py model
+model: nexus
+```
+]
+---
+
+# Examining the Code
+
+```python
+#! /usr/bin/env python
+
+import sys
+
+if __name__ == "__main__":
+
+    facts = {'vendor': 'cisco', 'mgmt_ip': '10.1.1.1', 'model': 'nexus', 'hostname': 'NYC301', 'os': '6.1.2'}
+
+    args = sys.argv        # assign argv to args (optional; cleans up the code)
+
+    fact_to_print = args[1]      # assign the second element to my_fact
+
+    print fact_to_print + ': ' + facts[fact_to_print]
+
+    print args             # added for example below
+```
+
+.ubuntu[
+```
+ntc@ntc:~$ python print_facts.py model
+model: nexus
+['print_facts.py', 'model']
+```
+]
+---
+
+# argparse
+
+- Python module that simplifies defining a help menu, using user-friendly flags, and much more
+
+.ubuntu[
+```
+ntc@ntc:~$ python get_facts.py -f model
+model: nexus
+ntc@ntc:~$ python get_facts.py -f=model
+model: nexus
+ntc@ntc:~$ python get_facts.py --f=model
+model: nexus
+ntc@ntc:~$ python get_facts.py --fact=model
+model: nexus
+ntc@ntc:~$ python get_facts.py --fact model
+model: nexus
+```
+]
+--
+
+```python
+import argparse
+
+if __name__ == "__main__":
+
+    facts = {'vendor': 'cisco', 'mgmt_ip': '10.1.1.1', 'model': 'nexus', 'hostname': 'NYC301', 'os': '6.1.2'}
+
+    parser = argparse.ArgumentParser(description='Python Argparse Demo')
+    parser.add_argument('-f', '--fact', help='enter a valid fact from the device facts dictionary')
+
+    args = parser.parse_args()
+
+    print args.fact + ': ' + facts[args.fact]
+
+```
+
+---
+
+class: ubuntu 
+# argparse - built-in help
+
+- Leverage help menu natively built-in
+- Can be disabled if needed when parser is instantiated 
+
+```
+ntc@ntc:~$ python get_facts.py --help
+usage: get_facts.py [-h] [-f FACT]
+
+Python Argparse demo.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -f FACT, --fact FACT  enter a valid fact from the device facts dictionary
+```
+
+---
+
+
+# arparse - choices
+
+- Built-in error validation
+- What if the user enters an invalid value for argument?
+
+.ubuntu[
+```
+ntc@ntc:~$ python get_facts.py --f platform
+Traceback (most recent call last):
+  File "get_facts.py", line 14, in <module>
+    print args.fact + ': ' + facts[args.fact]
+KeyError: 'platform'
+```
+]
+--
+
+Use the `choices` parameter:
+
+```python
+parser.add_argument('-f', '--fact', choices=['vendor', 'mgmt_ip', 'model', 'hostname', 'os'], help='enter a valid fact from the device facts dictionary')
+```
+
+---
+
+class: ubuntu
+
+# argparse - Using choices
+
+```
+ntc@ntc:~$ python get_facts.py --f platform
+usage: get_facts.py [-h] [-f {vendor,mgmt_ip,model,hostname,os}]
+get_facts.py: error: argument -f/--fact: invalid choice: 'platform' (choose from 'vendor', 'mgmt_ip', 'model', 'hostname', 'os')
+```
+--
+```
+ntc@ntc:~$ python get_facts.py -h
+usage: get_facts.py [-h] [-f {vendor,mgmt_ip,model,hostname,os}]
+
+Python Argparse Demo
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -f {vendor,mgmt_ip,model,hostname,os}, --fact {vendor,mgmt_ip,model,hostname,os}
+                        enter a valid fact from the device facts dictionary
+
+```
+
+---
+
+class: ubuntu
+
+# argparse - Multiple arguments
+
+Objective:
+
+- Pass in a fact you want to see the value for, but also include a description
+- Code was modified to also print the description
+
+```
+ntc@ntc:~$ python get_facts.py -h
+usage: get_facts.py [-h] [-f {vendor,mgmt_ip,model,hostname,os}] [-d DESCR]
+
+Python Argparse Demo
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -f {vendor,mgmt_ip,model,hostname,os}, --fact {vendor,mgmt_ip,model,hostname,os}
+                        enter a valid fact from the device facts dictionary
+  -d DESCR, --descr DESCR
+                        enter a description for this job
+
+```
+
+```
+ntc@ntc:~$ python get_facts.py -f hostname -d "Test Job"
+hostname: NYC301
+Test Job
+```
+
+---
+
+# argparse - Adding descr argument
+
+```python
+import argparse
+
+if __name__ == "__main__":
+
+    facts = {'vendor': 'cisco', 'mgmt_ip': '10.1.1.1', 'model': 'nexus', 'hostname': 'NYC301', 'os': '6.1.2'}
+
+    parser = argparse.ArgumentParser(description='Python Argparse Demo')
+    parser.add_argument('-f', '--fact', help='enter a valid fact from the device facts dictionary')
+    parser.add_argument('-d', '--descr', help='enter a description for this job')
+
+    args = parser.parse_args()
+
+    print args.fact + ': ' + facts[args.fact]
+    print args.descr
+
+```
+
+
+
+
+---
+
+# Summary
+
+- For quick testing `sys.argv` is a great option
+- For a more robut script, you want others to use and to have a more defined help menu, `argparse` is the way to go
+  - Supports more features, feel free to continue to digging!
+
+---
+
+# Lab Time
+
+- Lab 14 - Gathering User input with Command Line Arguments
+  - Prompt user input using `raw_input` and process the input
+  - Continue to build on the neighbors script from previous labs and only print certain neighbor and device information based on the arguments being passed in
+  - Write a basic script using `sys.argv` that prints arguments
+
 
 ---
 
@@ -307,14 +1052,7 @@ From Example 2:
 
 ---
 
-# Lab Time
 
-- Lab 15 - TextFSM
-  - Use TextFSM to parse `show ip interface brief` from a Cisco Nexus switch
-
-  - **Note: same workflow and process can be used for any other device.**
-
----
 
 class: middle, segue
 
@@ -506,233 +1244,13 @@ VLAN_ID, NAME, STATUS
 - Rather, you know the command and Command and Platform
 
 ---
-
-class: middle, segue
-
-# netmiko
-### Python Network Libraries
-
----
-
-# Netmiko Overview
-
-- Python library that simplifies SSH management to network devices
-- Based on the Paramiko SSH library
-
-**The purposes of the library are the following:**
-
-- Successfully establish an SSH connection to the device
-- Simplify the execution of show commands and the retrieval of output data
-- Simplify execution of configuration commands including possibly commit actions
-- Do the above across a broad set of networking vendors and platforms
-
----
-
-# Supported Platforms
-
-.left-column[
-* Arista vEOS
-* Cisco ASA
-* Cisco IOS
-* Cisco IOS-XR
-* Cisco SG300
-* HP Comware7
-* HP ProCurve
-* Juniper Junos
-* Linux 
-* Brocade VDX (limited)
-* Brocade ICX/FastIron (limited)
-* Brocade MLX/NetIron (limited)
-]
-.right-column[
-* Avaya ERS (limited)
-* Avaya VSP (limited)
-* Cisco IOS-XE (limited)
-* Cisco NX-OS (limited)
-* Cisco WLC (limited)
-* Dell-Force10 DNOS9 (limited)
-* Huawei (limited)
-* Palo Alto PAN-OS (limited)
-* Vyatta VyOS  (limited)
-]
-
----
-
-# Supported Platforms (experimental)
-
-.left-column[
-* A10
-* Alcatel-Lucent SR-OS
-* Enterasys
-* Extreme
-* F5 LTM
-* Fortinet 
-]
-
----
-
-# Getting Started with Netmiko
-
-
-```python
->>> from netmiko import ConnectHandler
->>> 
->>> device = ConnectHandler(device_type='cisco_nxos', ip='n9k1', username='cisco', password='cisco')`
->>>
-
-```
-
---
-
-We could have also done: 
-
-```python
->>> args = dict(device_type='cisco_nxos', ip='n9k2', username='cisco', password='cisco')
->>> 
->>> device = ConnectHandler(**args)
->>> 
-```
-
-Note: `**` as in `**args` is used to treat a dictionary (single object) as multiple key-value pairs.
-
----
-
-# Using Netmiko
-
-Send a command to the device 
-
-```python
->>> device.send_command_timing('show hostname')
-u'N9K1.cisconxapi.com '
->>>
-```
-
-Send a command to the device and wait for a string (prompt).
-
-Default waits for the previous prompt string to return.
-
-```python
->>> device.send_command('copy run start')
-# output omitted
->>>
-```
-
-
----
-
-# Using netmiko (cont'd)
-
-Enter config mode
-
-```python
->>> device.config_mode()
-u'config term\nEnter configuration commands, one per line. End with CNTL/Z.\nN9K1(config)# '
-```
-
-
-Send configuration mode command (must using timing here)
-
-```python
->>> device.send_command_timing('hostname NEW_HOSTNAME')
-u'NEW_HOSTNAME(config)# '
->>> 
-```
-
-Same result can be achieved specifying `expect_string` within `send_command`
-
-```python
->>> device.send_command('hostname NEWER_HOSTNAME', expect_string='NEWER_HOSTNAME')
-u'NEWER_HOSTNAME(config)# '
->>> 
-```
-
-Exit configuration mode
-
-```python
-device.exit_config_mode()
-```
-
----
-
-# Using netmiko (cont'd)
-
-Storing & Printing a command response
-
-```python
->>> vlans = device.send_command_expect('show vlan')
->>> 
->>> print vlans
-
-VLAN Name                             Status    Ports
----- -------------------------------- --------- -------------------------------
-1    default                          active    Eth1/2, Eth1/3, Eth1/8, Eth1/9
-                                                Eth1/11, Eth1/12, Eth1/13, Eth2/9
-                                                Eth2/10, Eth2/11, Eth2/12
-2    VLAN0002                         active    Po10, Po11, Po12, Eth1/4
-                                                Eth1/5, Eth1/6, Eth1/7, Eth2/5
-                                                Eth2/6
-3    VLAN0003                         active    Po10, Po11, Po12, Eth1/4
-                                                Eth1/5, Eth1/6, Eth1/7, Eth2/5
-                                                Eth2/6
-4    VLAN0004                         active    Po10, Po11, Po12, Eth1/4
-                                                Eth1/5, Eth1/6, Eth1/7, Eth2/5
-                                                Eth2/6
-5    VLAN0005                         active    Po10, Po11, Po12, Eth1/4
-                                                Eth1/5, Eth1/6, Eth1/7, Eth2/5
-                                                Eth2/6
-
-# shortened for brevity
-```
-
----
-
-# Using netmiko (cont'd)
-
-Check your current prompt
-
-```python
->>> device.find_prompt()
-u'NEW_HOSTNAME#'
->>> 
-```
-
----
-
-### Primary List of Methods
-
-* config_mode() -- Enter into config mode
-* enable() -- Enter enable mode
-* establish_connection() -- Establish SSH connection to device
-* exit_enable_mode() -- Exit enable mode
-* find_prompt() -- Return the current router prompt
-* commit() -- Execute a commit action on Juniper and IOS-XR
-* disconnect() -- Close the SSH connection
-* send_command_timing() - Send command down the SSH channel, return output back (uses timer to wait for device)
-* send_command_expect() -- Send command to device; retrieve output until router_prompt or expect_string
-* send_config_set() -- Send a set of configuration commands to remote device
-* send_config_from_file() -- Send a set of configuration commands loaded from a file
-
-
----
-
-# Summary
-
-- Legacy devices are here to stay (for awhile)
-- Great way to bridge the gap between legacy and modern devices that return structured data
-
-- Netmiko is a great library to integrate with TextFSM to create a psuedo-API
-    -  CLI commands gets sent to the device and you get returned structured data
-    -  We cover how to do this with Ansible
-
----
-
 # Lab Time
 
-- Lab 12 - Introduction to Netmiko
-    - Choose either IOS or JUNOS
+- Lab 15 - TextFSM
+  - Use TextFSM to parse `show ip interface brief` from a Cisco Nexus switch
+  - Use `clitable` along with `netmiko` to generate structured data from unstructured device output
 
-- Lab 13 -  Use Netmiko to interactively communicate with a network switch
- 
+  - **Note: same workflow and process can be used for any other device.**
 
 ---
 
@@ -989,6 +1507,44 @@ Two main ways to manage device configurations with NAPALM
 * You can use the merge for declarative management on a stanza based on OS
 
 It does vary based on operating system.
+
+
+---
+
+class: ubuntu
+
+# How NAPALM Works
+
+* EOS
+  - Creates and locks config sessions
+  - Uses `rollback clean-config` to prepare for a config replace
+  - Commit is performed issuing `copy startup-config flash:rollback-0`, `configure session #` and `commit`
+  - Rollback is performed issuing `configure replace flash:rollback-0`
+  - Diffs are generated on the device using the `show session-config named <file> diffs`
+
+* IOS
+  - Uses SCP or Netmiko (TCL) to transfer config files for config replace/merge
+  - Uses `show archive config differences <base_file> <new_file>` to show diffs for config replace
+  - Uses `show archive config incremental-diffs <file> ignorecase` to show incremental diffs
+  - Replaces with `configure replace <file> force`. Merges with `copy <file> running-config`
+
+
+---
+
+class: ubuntu
+
+# How NAPALM Works
+
+* Junos
+  - Uses junos-pyez API
+  - Locks configurations while performing operations till first commit/rollback
+  - Uses `rollback 0` to rollback configuration
+
+* NXOS
+  - Uses checkpoint files for config replacement. A checkpoint file can be obtained with `device._get_checkpoint_file()` which issues `checkpoint file temp_cp_file_from_napalm` on the device and then prints it
+  - Diffs for config replacement are a list of commands that would be needed to take the device from its current state to the desired config state using `show diff rollback-patch file <source_of_truth_file> file <config_file>` command
+  - Merges send config line by line. This doesn’t use the checkpoint/rollback functionality. As a result, merges are not atomic
+  - Replaces uses `rollback running file <config_file>` command
 
 
 ---
@@ -1360,42 +1916,15 @@ u''
 >>> 
 ```
 
----
-
-class: ubuntu
-
-# How NAPALM Works
-
-* EOS
-  - Creates and locks config sessions
-  - Uses `rollback clean-config` to prepare for a config replace
-  - Commit is performed issuing `copy startup-config flash:rollback-0`, `configure session #` and `commit`
-  - Rollback is performed issuing `configure replace flash:rollback-0`
-  - Diffs are generated on the device using the `show session-config named <file> diffs`
-
-* IOS
-  - Uses SCP or Netmiko (TCL) to transfer config files for config replace/merge
-  - Uses `show archive config differences <base_file> <new_file>` to show diffs for config replace
-  - Uses `show archive config incremental-diffs <file> ignorecase` to show incremental diffs
-  - Replaces with `configure replace <file> force`. Merges with `copy <file> running-config`
-
 
 ---
 
-class: ubuntu
+# Lab Time - BONUS
 
-# How NAPALM Works
-
-* Junos
-  - Uses junos-pyez API
-  - Locks configurations while performing operations till first commit/rollback
-  - Uses `rollback 0` to rollback configuration
-
-* NXOS
-  - Uses checkpoint files for config replacement. A checkpoint file can be obtained with `device._get_checkpoint_file()` which issues `checkpoint file temp_cp_file_from_napalm` on the device and then prints it
-  - Diffs for config replacement are a list of commands that would be needed to take the device from its current state to the desired config state using `show diff rollback-patch file <source_of_truth_file> file <config_file>` command
-  - Merges send config line by line. This doesn’t use the checkpoint/rollback functionality. As a result, merges are not atomic
-  - Replaces uses `rollback running file <config_file>` command
+- Lab 19 - NAPALM
+ -   Using the NAPALM Python Library to do declarative config merge, full config merge and getters for Arista EOS
+ -   Using the NAPALM Python Library to do basic config merge and getters for Cisco IOS
+ -   Using the NAPALM Python Library to do declarative config merge, full config merge and getters for Juniper JUNOS
 
 
 ---
@@ -1668,18 +2197,5 @@ class: ubuntu
 - Multi-vendor library that currently supports system level tasks
   - Backing up configs, copying files, upgrading images
   - Rebooting devices, issuing commands, saving configs
-
----
-
-# Lab Time
-
-- Lab 14 - NAPALM
- -   Using the NAPALM Python Library to do a basic configuration merge for SNMP and declarative sectional merge for BGP using EOS
-
-- Lab 15  - pyntc
-  - Exploring pyntc and performing common operation 
-  - Choose one of the following:
-    - Lab 15.1 - pyntc + Arista EOS
-    - Lab 15.2 - pyntc + Cisco IOS
 
 
