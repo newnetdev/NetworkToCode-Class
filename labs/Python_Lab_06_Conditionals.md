@@ -4,81 +4,20 @@
 
 ##### Step 1
 
-Create a new dictionary that will depict a VLAN to configure on a device.
+Given a device name, test whether it complies with naming standards:
 
-The three keys you should use for modeling the VLAN in this example are `id`, `name`, and `state`.  `state` refers to up/down state.
+``` python
+>>> device_name = 'switch1'
+# naming standard requires device name to be all upper case
 
-```python
->>> vlan = dict(id='100', name='app_vlan')
->>> 
+>>> if device_name != device_name.upper():
+...   print("Device {} is NOT compliant".format(device_name)
+... else:
+...   print("Device {} is compliant".format(device_name))
+... 
+Device switch1 is NOT compliant
+
 ```
-
->Note: don't worry that you didn't create a `state` key.
-
-The goal is to prepare a list of commands to send to a device based on this dictionary.  And we need to check to make sure each value is not `None` within the dictionary before we build a list of commands.
-
-##### Step 2
-
-First, create a new variable called `commands` and extract the values we want from the dictionary.  Use the `get` method to do this.
-
-```python
->>> commands = []
->>>
->>> vlan_id = vlan.get('id')
->>> name = vlan.get('name')
->>> state = vlan.get('state')
-```
-
-What would happen if we didn't use the `get` method here?
-
-
-##### Step 3
-
-Write a conditional if statement for each variable to check to ensure that some value exists for each parameter.  You should remember from the dictionary lab, that if the key doesn't exist, `None` is returned when using the `get` method.
-
-> Note: you'll need to hit enter one extra time to exit the conditional block.  Ensure you see the `>>>` as depicted below and throughout this lab.
-
-
-```python
->>> if vlan_id:
-...     commands.append('vlan {}'.format(vlan_id))
-...     
->>> if name:
-...     commands.append('name {}'.format(name))
-...
->>>
-```
-
-Notice how we are able to chain methods together.  Remember to read them inside out.
-
-First, `'name {}'.format(name)` is executed and returns a string such as "name app_vlan".  Then "app_vlan" is appended to the `commands` variable.
-
-##### Step 4
-
-Add another conditional to check to see if `state` is up or down to generate the proper command.
-
-```python
->>> if state:
-...   if state == 'up':
-...       commands.append('no shutdown')
-...   if state == 'down':
-...       commands.append('shutdown')
-...
->>>
-```
-
-For validation, print the `state` variable.  What value does it have?
-
-##### Step 5
-
-Print the `commands` object that was generated.
-
-```python
->>> print(commands)
-['vlan 100', 'name app_vlan']
->>>
-```
-
 
 ### Task 2 - if-elif
 
@@ -86,98 +25,104 @@ You may have realized that when you checked `state` there are two `if` statement
 
 ##### Step 1
 
-Update the `state` variable to be equal to "down".
+Create a dictionary object that represents switches in the datacenter
 
-```python
->>> state = 'down'
->>> 
+``` python
+
+>>> dc = { 'switch1': { 'type': 'distribution'}, 'switch100': {'type': 'access'}, 'switch99': { 'type': 'campus_core'} }
+
 ```
 
 ##### Step 2
 
-Re-enter the conditional for state.
+Given the datcenter switch data-model, print the device type
 
-```python
->>> if state:
-...   if state == 'up':
-...       commands.append('no shutdown')
-...   elif state == 'down':
-...       commands.append('shutdown')
-...
->>>
-```
+``` python
+>>> for switch in dc.keys():
+...   if dc[switch]['type'].upper() == "ACCESS":
+...     print("Device {} is an access layer switch".format(switch))
+...   elif dc[switch]['type'].upper() == "DISTRIBUTION":
+...     print("Device {} is a distribution layer switch".format(switch))
+... 
+Device switch1 is a distribution layer switch
+Device switch100 is an access layer switch
+>>> 
 
-##### Step 3
-
-Print the `commands` object that was generated.
-
-```python
->>> print(commands)
-['vlan 100', 'name app_vlan', 'shutdown']
->>>
 ```
 
 ### Task 3 - if-elif-else
 
-Let's re-focus on the `if state` conditional.
 
 ##### Step 1
 
-If `state` is neither "up" or "down", print that there is an invalid entry.
+If `type` is neither "access" or "distribution", print that there is an erroneous entry.
 
-```python
->>> state = 'unknown'
->>>
->>> if state:
-...     if state == 'up':
-...         commands.append('no shutdown')
-...     elif state == 'down':
-...         commands.append('shutdown')
-...     else:
-...         print('INVALID INPUT!!!')
-...
-INVALID INPUT!!!
->>>
+``` python
+>>> for switch in dc.keys():
+...   if dc[switch]['type'].upper() == "ACCESS":
+...     print("Device {} is an access layer switch".format(switch))
+...   elif dc[switch]['type'].upper() == "DISTRIBUTION":
+...     print("Device {} is a distribution layer switch".format(switch))
+...   else:
+...     print("Device {} is of type {}. This is an invalid DC device".format(switch, dc[switch]['type']))
+... 
+Device switch1 is a distribution layer switch
+Device switch100 is an access layer switch
+Device switch99 is of type campus_core. This is an invalid DC device
+>>> 
+
 ```
+
 
 ### Task 4 - Containment
 
-When there are specific values that you want to check, you can usually check them within your first conditional statement.  For example, we know that `state` should be "up" or "down".  We can use containment, using the `in` keyword to do this.  Let's examine how.
+When there are specific values that you want to check, you can usually check them within your first conditional statement.  For example, we know that `type` should be "access" or "distribution", for datcenter switches.  We can use containment, using the `in` keyword to do this.  Let's examine how.
 
 ##### Step 1
 
-Update the first conditional `if state` with an expression that checks to make sure `state` is `in ['up', 'down']`.  Otherwise, continue to print "INVALID INPUT!!!"
+Update the first conditional `if` with an expression that checks to make sure `type` is `in ['access', 'didstribution']`.  Otherwise, continue to print "INVALID INPUT!!!"
 
 Notice the new indentation level for the `else` statement.
 
-```python
->>> options = ['up', 'down']
->>>
->>> if state in options:
-...     if state == 'up':
-...         commands.append('no shutdown')
-...     elif state == 'down':
-...         commands.append('shutdown')
-... else:
-...     print('INVALID INPUT!!!')
-...
-INVALID INPUT!!!
->>>
+``` python
+>>> valid_types = ['access', 'distribution']
+>>> for switch in dc.keys():
+...   if dc[switch]['type'] in valid_types:
+...     if dc[switch]['type'].upper() == "ACCESS":
+...       print("Device {} is an access layer switch".format(switch))
+...     elif dc[switch]['type'].upper() == "DISTRIBUTION":
+...       print("Device {} is a distribution layer switch".format(switch))
+...   else:
+...     print("Device {} is of type {}. This is an invalid DC device".format(switch, dc[switch]['type']))
+... 
+Device switch1 is a distribution layer switch
+Device switch100 is an access layer switch
+Device switch99 is of type campus_core. This is an invalid DC device
+>>> 
+
 ```
+
 
 You can also perform the same operation without pre-creating the list:
 
 ```python
->>>
->>> if state in ['up', 'down']:
-...     if state == 'up':
-...         commands.append('no shutdown')
-...     elif state == 'down':
-...         commands.append('shutdown')
-... else:
-...     print('INVALID INPUT!!!')
-...
-INVALID INPUT!!!
->>>
+>>> for switch in dc.keys():
+...   if dc[switch]['type'] in ['access', 'distribution']:
+...     if dc[switch]['type'].upper() == "ACCESS":
+...       print("Device {} is an access layer switch".format(switch))
+...     elif dc[switch]['type'].upper() == "DISTRIBUTION":
+...       print("Device {} is a distribution layer switch".format(switch))
+...   else:
+...     print("Device {} is of type {}. This is an invalid DC device".format(switch, dc[switch]['type']))
+... 
+Device switch1 is a distribution layer switch
+Device switch100 is an access layer switch
+Device switch99 is of type campus_core. This is an invalid DC device
+>>> 
+
 ```
+
+
+
+
 
