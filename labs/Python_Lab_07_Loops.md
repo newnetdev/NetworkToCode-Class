@@ -380,17 +380,14 @@ Printing the keys for facts1 validates that a new key called `vlans` has been ad
 
 ##### Step 2
 
-Iterate over the `devices` list and print the VLAN configuration for facts1.
+Iterate over the `facts1` dictionary and print the VLAN configuration for facts1.
 
-> Keep in mind that when you updated `facts1`, it also updated `devices` to reflect the new key associated with `facts1`.
 
 
 ``` python
->>> for device in devices:
-...   if device.get('vlans'):
-...     for vlan in device['vlans']:
-...       print("vlan {}".format(vlan['id']))
-...       print(" name {}".format(vlan['name']))
+>>> for vlan in facts1['vlans']:
+...   print("vlan {}".format(vlan['id']))
+...   print(" name {}".format(vlan['name']))
 ... 
 vlan 10
  name WEB
