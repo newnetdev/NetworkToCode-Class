@@ -32,7 +32,8 @@ duplex full
 Now try this again using a different variable than `command`.  Try using `for item in commands:` instead.
 
 
-##### Step 3
+### Task 2 - Iterating over a dictionary
+##### Step 1
 
 Create a dictionary that stores information about a network interface that will be configured.  The keys will be parameters/features and the values will be the specific commands to send to the device.
 
@@ -49,7 +50,7 @@ Create this dictionary:
 >>>
 ```
 
-##### Step 4
+##### Step 2
 
 Loop through `interface`, print the keys, values, and then the keys and values together.
 
@@ -65,7 +66,7 @@ description
 >>>
 ```
 
-##### Step 5
+##### Step 3
 
 Print the Values:
 
@@ -80,7 +81,7 @@ Configured by Python
 
 ```
 
-##### Step 6
+##### Step 4
 
 Print the Keys & Values:
 
@@ -107,7 +108,48 @@ This would also work just fine:
 # output omitted
 ```
 
-### Task 2 - Loop Through List of Dictionaries
+### Task3 - Modeling VLANs as list of dictionaries
+
+In this task, we will build a list of elements. Each element will represent a VLAN configuration, that consists of the `vlan id` and `vlan name`. 
+
+##### Step 1
+Create the vlan dictionaries:
+
+``` python
+>>> vlan10 = dict(id='10', name='WEB')
+>>> vlan20 = dict(id='20', name='WEB')
+>>> vlan30 = dict(id='30', name='WEB')
+
+```
+
+##### Step 2
+
+Add the VLANs to the vlan configuration list.
+
+``` python
+>>> vlans = [vlan10, vlan20, vlan30]
+
+```
+
+##### Step 3
+
+Print the VLANs:
+
+``` python
+>>> for vlan in vlans:
+...   print("vlan {}".format(vlan['id']))
+...   print(" name {}".format(vlan['name']))
+... 
+vlan 10
+ name WEB
+vlan 20
+ name WEB
+vlan 30
+ name WEB
+>>> 
+```
+
+### Task 4 - Parsing facts to build a report
 
 ##### Step 1
 
@@ -214,7 +256,7 @@ Solution:
 ...     print("OS:", item['os'])
 ...     print("IP ADDRESS:", item['ipaddr'])
 ...     print('-' * 10)
-... 
+ 
 VENDOR: cisco
 OS: nxos
 IP ADDRESS: 10.1.1.1
@@ -318,5 +360,42 @@ You could have also broken down extracting the IP address like this:
 >>> print(dc_switches)
 ['10.1.1.1', '10.1.1.2']
 >>> 
+```
+
+
+### Task 5 - Add the VLANs to facts1
+
+##### Step 1
+
+Add the list of VLANs created in **Task 3** as a new key to `facts1`.
+
+``` python
+>>> facts1['vlans'] = vlans
+>>> facts1.keys()
+['os', 'vlans', 'ipaddr', 'vendor']
+>>> 
+```
+
+Printing the keys for facts1 validates that a new key called `vlans` has been added to facts1.
+
+##### Step 2
+
+Iterate over the `facts1` dictionary and print the VLAN configuration for facts1.
+
+
+
+``` python
+>>> for vlan in facts1['vlans']:
+...   print("vlan {}".format(vlan['id']))
+...   print(" name {}".format(vlan['name']))
+... 
+vlan 10
+ name WEB
+vlan 20
+ name WEB
+vlan 30
+ name WEB
+>>> 
+
 ```
 

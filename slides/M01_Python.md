@@ -700,7 +700,27 @@ If the implementation is hard to explain, it's a bad idea.
 If the implementation is easy to explain, it may be a good idea.
 Namespaces are one honking great idea -- let's do more of those!
 ```
+---
 
+# Python 2.x vs Python 3.x
+
+Python3 removed some inefficiencies (like better memory management for lists and dictionaries) in addition to removing bugs and adding new features.
+
+Some significant differences for the beginner:
+ - `print` is a function, not a statement
+ - `raw_input` in Python2 is `input` in Python3
+ - `3/4 = 0` in Python 2 vs `3/4 = 0.75` in Python 3
+ - Improvements with error messages while calling functions with incorrect arguments
+ 
+The main driver for Python3 was to correctly handle unicode. In Python2 the default is byte encoding for strings (using ASCII encoding); in Python3 the default is unicode. This lead to a lot of bugs while handling non-english characters and symbols.
+
+---
+
+# How does Python2 vs Python3 affect network automation
+
+- Most 3rd party libraries that are needed for network automation have been ported to support Python3
+- Some exceptions may be encountered such as :
+  - `pyntc` has dependencies on the `textfsm` library. The Python3 compliant `textfsm` has to be manually installed for the `pyntc` installation to work.
 
 ---
 
