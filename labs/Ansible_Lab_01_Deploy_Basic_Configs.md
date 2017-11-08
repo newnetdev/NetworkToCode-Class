@@ -1,5 +1,7 @@
 ## Lab 1 - Deploying "Basic" Configurations with Ansible
 
+### Task 1
+
 This lab provides an introduction to using Ansible creating your first playbook to deploy basic configurations.
 
 ##### Step 1
@@ -439,3 +441,133 @@ ntc@ntc:ansible$ ansible-playbook -i lab-inventory snmp-config-01.yml
 
 
 In upcoming labs, we'll show how to simplify using `provider` even more when we get into more depth on variables and module parameters!
+
+### Task 2 - Deploying from a file
+
+##### Step 1
+
+Create a directory called `configs` and navigate to the directory.
+
+
+```
+ntc@ntc:ansible$ mkdir configs
+ntc@ntc:ansible$ cd configs
+ntc@ntc:configs$
+
+```
+
+##### Step 2
+
+Create 2 files that will contain the SNMP configuration - one for Cisco and one for Juniper respectively.
+
+```
+ntc@ntc:configs$ touch junos-snmp.cfg cisco-snmp.cfg
+
+```
+
+##### Step 3
+
+Open the `ios-snmp.cfg` file in vi, nano, sublime text etc. and copy the following configuration lines to it.
+
+```
+snmp-server community ntc-course RO
+snmp-server location NYC_HQ        
+snmp-server contact JOHN_SMITH     
+                                   
+```
+
+Save this file.
+
+
+##### Step 4
+
+Now open `junos-snmp.cfg` in a text editor and copy the following `junos` snmp configuration commands into it.
+
+```
+set snmp community public authorization read-only
+set snmp location NYC_HQ
+set snmp contact JOHN_SMITH
+```
+
+Save this file.
+
+##### Step 5
+
+Navigate back to the `ansible` directory and touch a new playbook file.
+
+```
+ntc@ntc:ansible$ touch snmp-config-02.yml
+```
+
+##### Step 6
+Open this file with a text editor and create 2 plays similar to **Task1** to deploy the changes. This time, however, we will use the source file to deploy the configuration.
+
+
+```yaml
+---
+
+  - name: PLAY 1 - DEPLOYING SNMP CONFIGURATIONS ON IOS
+    hosts: ios-xe
+    connection: local
+    gather_facts: no
+
+    tasks:
+
+      - name: TASK 1 in PLAY 1 - ENSURE SNMP COMMANDS EXIST ON IOS DEVICES
+        ios_config:
+          provider:
+            host: "{{ inventory_hostname }}"
+            username: "{{ un }}"
+            password: "{{ pwd }}"
+          src: ./configs/ios-snmp.cfg
+
+  - name: PLAY 2 - DEPLOYING SNMP CONFIGURATIONS ON JUNOS
+    hosts: junos
+    connection: local
+    gather_facts: no
+
+    tasks:
+
+      - name: TASK 1 in PLAY 2 - ENSURE SNMP COMMANDS EXIST ON JUNOS DEVICES
+        junos_config:
+          provider:
+            host: "{{ inventory_hostname }}"
+            username: "{{ un }}"
+            password: "{{ pwd }}"
+          src: ./configs/junos-snmp.cfg
+    
+
+```
+
+##### Step 7
+
+Run the playbook.
+
+
+```
+ntc@ntc:ansible$ ansible-playbook -i lab-inventory snmp-config-02.yml
+PLAY [PLAY 1 - DEPLOYING SNMP CONFIGURATIONS ON IOS] **********************************************************
+
+TASK [TASK 1 in PLAY 1 - ENSURE SNMP COMMANDS EXIST ON IOS DEVICES] *******************************************
+ok: [csr2]
+ok: [csr1]
+ok: [csr3]
+
+PLAY [PLAY 2 - DEPLOYING SNMP CONFIGURATIONS ON JUNOS] ********************************************************
+
+TASK [TASK 1 in PLAY 2 - ENSURE SNMP COMMANDS EXIST ON JUNOS DEVICES] *****************************************
+ok: [vmx8]
+ok: [vmx9]
+ok: [vmx7]
+
+PLAY RECAP ****************************************************************************************************
+csr1                       : ok=1    changed=0    unreachable=0    failed=0   
+csr2                       : ok=1    changed=0    unreachable=0    failed=0   
+csr3                       : ok=1    changed=0    unreachable=0    failed=0   
+vmx7                       : ok=1    changed=0    unreachable=0    failed=0   
+vmx8                       : ok=1    changed=0    unreachable=0    failed=0   
+vmx9                       : ok=1    changed=0    unreachable=0    failed=0   
+
+ntc@ntc:ansible$ 
+```
+

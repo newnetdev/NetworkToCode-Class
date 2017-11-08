@@ -75,7 +75,7 @@ The file can be optimized by using patterns in the inventory file.  For example,
 vmx[7:9]
 ```
 
-We'll only do this for the vmx devices, but feel free to do this for the other devices too.  Note: patters *do not* have to be at the end of the device name.
+We'll only do this for the vmx devices, but feel free to do this for the other devices too.  Note: patterns *do not* have to be at the end of the device name.
 
 The new inventory file looks like this:
 
@@ -100,6 +100,11 @@ nxos-spine2
 [vmx]
 vmx[7:9]
 
+[AMER]
+iosxe
+
+[EMEA]
+vmx
 ```
 
 
@@ -115,7 +120,7 @@ eos-spines
 eos-leaves
 ```
 
-Do this for both Arista EOS and Cisco NXOS groups.
+Do this for both Arista EOS and Cisco NXOS groups. Additionally create a group called `AMER` that contains all the csrs and a group called `EMEA` that contains all the vmxs
 
 The updated inventory file should look like this:
 
@@ -148,6 +153,11 @@ nxos-spine2
 [vmx]
 vmx[7:9]
 
+[AMER]
+iosxe
+
+[EMEA]
+vmx/
 
 ```
 
@@ -274,5 +284,11 @@ vmx[7:9]
 os=junos
 api=netconf
 vendor=juniper
+
+[AMER]
+iosxe
+
+[EMEA]
+vmx
 
 ```
