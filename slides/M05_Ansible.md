@@ -1936,6 +1936,75 @@ hostname nycr01
 
 - Lab 5 - Backing Up and Restoring Configurations
 
+
+---
+
+class: middle, segue
+
+# Jinja2 Templates
+### Ansible for Network Automation
+
+
+---
+
+
+# Templating
+
+
+- Manual method: 
+  - Enterprises have golden configuration standard for type of device, location of device etc
+  - This is updated and deployed, for a new device coming into the network
+  
+  
+- Automated templates:
+  - Jinja2 provides a way to write these golden configs as skeleton templates with variables
+  - Ansible provides the variables to the template and renders configuration using the `template` module.
+  
+
+
+---
+
+class: ubuntu
+
+# The Ansible template module
+The basic usage of the template module in Ansible:
+
+
+```yaml
+
+    - name: RENDER CONFIGURATIONS
+      template:
+        src: device_config.j2
+        dest: "./configs/{{ inventory_hostname }}.cfg
+        
+```
+
+---
+
+class: ubuntu
+
+# Jinja2 and the *_config modules
+
+Within the network core config modules (like ios_config, junos_config etc). You can specify a Jinja2 template as a src file rather than a config file.
+
+```yaml
+    - name: ENSURE THAT SNMP IS CONFIGURED ON IOS DEVICES
+      ios_config:
+        src: 02-ios-snmp.j2
+        provider: "{{ provider }}"
+
+```
+
+```yaml
+    - name: ENSURE THAT SNMP IS CONFIGURED ON JUNOS DEVICES
+      junos_config:
+        src: 02-junos-snmp.j2
+        provider: "{{ provider }}"
+
+```
+
+
+
 ---
 
 class: middle, segue
