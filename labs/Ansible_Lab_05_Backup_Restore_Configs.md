@@ -95,7 +95,7 @@ Add a variable to handle the login to the devices. Often referred to as a provid
 
 
 
-##### Step 4
+##### Step 5
 
 Add a task to backup the running configuration using the module called `ntc_show_command`. 
 
@@ -182,7 +182,7 @@ ntc@ntc:ansible$
 
 ```
 
-##### Step 4
+##### Step 6
 
 Move to the `backups` directory and open the newly created files to verify everything worked as expected.  
 
@@ -337,7 +337,7 @@ The task looks like this for now:
           dev_os=ios
 ```
 
-##### Step 3
+##### Step 4
 
 Execute just this new play:
 
@@ -428,7 +428,7 @@ The full playbook should look like this for now:
 
 
 
-##### Step 4
+##### Step 5
 
 Update the play definition of the second play to include another group.  Choose either the **vmx** or **eos** group.
 
@@ -439,7 +439,7 @@ hosts: iosxe,eos
 ```
 
 
-##### Step 5
+##### Step 6
 
 Since we are automating more than one group, we need to parametrize the napalm task for the `dev_os`.
 
@@ -455,7 +455,7 @@ We need to update this to be the following since we already have the `os` pre-de
 dev_os={{ os }}
 ```
 
-##### Step 6
+##### Step 7
 
 Execute the push task again:
 
@@ -489,7 +489,7 @@ eos-spine2                 : ok=1    changed=0    unreachable=0    failed=0
 
 **Even though you are pushing a full configuration, there are NO changes being applied since we are applying the SAME exact configuration that already exists on the device.**
 
-##### Step 7
+##### Step 8
 
 Open the stored backup configs inside the `backups` directory and make some changes.
 
@@ -526,7 +526,7 @@ interface Loopback10
 ```
 
 
-##### Step 8
+##### Step 9
 
 Update the napalm task for the following:
 * Save the diffs to a file such that we can see the changes that will get applied
@@ -551,7 +551,7 @@ Now update the napalm task with the two required changes.
 This will ensure the changes are not applied, but we will still get back the diffs on what will be applied on the next commit.
 
 
-##### Step 9
+##### Step 10
 
 Save and re-run the playbook (just the push task).  
 
@@ -582,7 +582,7 @@ csr3                       : ok=1    changed=0    unreachable=0    failed=0
 
 Note how are they are now __changed__.
 
-##### Step 10
+##### Step 11
 
 Navigate to the `diffs` directory and open the diff files. 
 
@@ -596,7 +596,7 @@ For example, `csr1.diffs` will look like this.
 
 Feel free to SSH to the devices to ensure the configs are not yet applied.
 
-##### Step 11
+##### Step 12
 
 Update the playbook to commit these new configurations.
 
@@ -606,7 +606,7 @@ Simply update `commit_changes` to be **true**.
           commit_changes=true
 ```
 
-##### Step 12
+##### Step 13
 
 Save and Run the playbook.
 
@@ -617,7 +617,7 @@ ntc@ntc:~/ansible$ ansible-playbook -i inventory backup-restore.yml --tags=push 
 SSH to the devices and ensure the configs are applied.
 
 
-##### Step 13
+##### Step 14
 
 Remove a particular configuration from the config files being used and see how there is not any "no" commands being applied.  While doing this, set commit_changes=False and view the diffs first before applying.
 
