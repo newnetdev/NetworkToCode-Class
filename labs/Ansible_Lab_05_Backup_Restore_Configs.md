@@ -64,6 +64,37 @@ Add a variable in your playbook called `config`.  It should be a dictionary that
 
 By making an object like this, it'll allow us to use a single task to backup all configuration instead of neededing a task/pay per OS!
 
+
+##### Step 4
+
+Add a variable to handle the login to the devices. Often referred to as a provider variable, this is a dictionary that can be passed to the `provider` directive of the `ntc` and `napalm` modules.
+
+
+``` yaml
+---
+  
+  - name: BACKUP
+    hosts: all
+    connection: local
+    gather_facts: no
+    tags: backup
+
+    vars:
+      config:
+        eos: show run
+        ios: show run
+        nxos: show run
+        junos: show config
+      ntc_provider:
+        username: "{{ un }}"
+        password: "{{ pwd }}"
+        host: "{{ inventory_hostname }}"
+        
+
+```
+
+
+
 ##### Step 4
 
 Add a task to backup the running configuration using the module called `ntc_show_command`. 
@@ -85,14 +116,17 @@ All backup files should be saved locally inside the `backups` directory.
         ios: show run
         nxos: show run
         junos: show config
+      ntc_provider:
+        username: "{{ un }}"
+        password: "{{ pwd }}"
+        host: "{{ inventory_hostname }}"
+      
 
     tasks:
 
       - name: BACKUP CONFIGS
         ntc_show_command:
-          host={{ inventory_hostname }}
-          username={{ un }}
-          password={{ pwd }}
+          provider={{ ntc_provider }}
           command={{ config[os] }}
           local_file=./backups/{{ inventory_hostname }}.cfg
           platform={{ vendor }}_{{ os }}
@@ -252,6 +286,26 @@ Create a new play in the playbook.  This requires a new play definition.  For th
 
 ##### Step 2
 
+Add a "provider variable" similar to the one we created in **Task1**
+
+```yaml
+  - name: DEPLOY CONFIGS
+    hosts: iosxe
+    connection: local
+    gather_facts: no
+    
+    vars:
+      napalm_provider:
+        username: "{{ un }}"
+        password: "{{ pwd }}"
+        hostname: "{{ inventory_hostname }}"
+    
+```
+
+
+
+##### Step 3
+
 Using `napalm_install_config`, push back these configurations. Since we didn't change anything from the original backup, the task result should be idempotent i.e. no change should actually occur.
 
 Additionally, ensure you use a "tag" called "push" for this new play so we can just run this play.
@@ -266,13 +320,17 @@ The task looks like this for now:
     gather_facts: no
     tags: push
 
+    vars:
+      napalm_provider:
+        username: "{{ un }}"
+        password: "{{ pwd }}"
+        hostname: "{{ inventory_hostname }}"
+
     tasks:
 
       - name: PUSH CONFIGS
         napalm_install_config:
-          hostname={{ inventory_hostname }}
-          username={{ un }}
-          password={{ pwd }}
+          provider={{ napalm_provider }}
           config_file=backups/{{ inventory_hostname }}.cfg
           replace_config=true
           commit_changes=true
@@ -318,17 +376,21 @@ The full playbook should look like this for now:
         ios: show run
         nxos: show run
         junos: show config
+      ntc_provider:
+        username: "{{ un }}"
+        password: "{{ pwd }}"
+        host: "{{ inventory_hostname }}"
+      
 
     tasks:
 
       - name: BACKUP CONFIGS
         ntc_show_command:
-          host={{ inventory_hostname }}
-          username={{ un }}
-          password={{ pwd }}
+          provider={{ ntc_provider }}
           command={{ config[os] }}
           local_file=./backups/{{ inventory_hostname }}.cfg
           platform={{ vendor }}_{{ os }}
+
 
       # this goes below the existing tasks
 
@@ -346,17 +408,22 @@ The full playbook should look like this for now:
     gather_facts: no
     tags: push
 
+    vars:
+      napalm_provider:
+        username: "{{ un }}"
+        password: "{{ pwd }}"
+        hostname: "{{ inventory_hostname }}"
+
     tasks:
 
       - name: PUSH CONFIGS
         napalm_install_config:
-          hostname={{ inventory_hostname }}
-          username={{ un }}
-          password={{ pwd }}
+          provider={{ napalm_provider }}
           config_file=backups/{{ inventory_hostname }}.cfg
           replace_config=true
           commit_changes=true
           dev_os=ios
+    
 ```
 
 
@@ -572,17 +639,21 @@ Full and final playbook will look like this:
         ios: show run
         nxos: show run
         junos: show config
+      ntc_provider:
+        username: "{{ un }}"
+        password: "{{ pwd }}"
+        host: "{{ inventory_hostname }}"
+      
 
     tasks:
 
       - name: BACKUP CONFIGS
         ntc_show_command:
-          host={{ inventory_hostname }}
-          username={{ un }}
-          password={{ pwd }}
+          provider={{ ntc_provider }}
           command={{ config[os] }}
           local_file=./backups/{{ inventory_hostname }}.cfg
           platform={{ vendor }}_{{ os }}
+
 
       # this goes below the existing tasks
 
@@ -600,6 +671,12 @@ Full and final playbook will look like this:
     gather_facts: no
     tags: push
 
+    vars:
+      napalm_provider:
+        username: "{{ un }}"
+        password: "{{ pwd }}"
+        hostname: "{{ inventory_hostname }}"
+
     tasks:
 
       - name: PUSH CONFIGS
@@ -610,7 +687,7 @@ Full and final playbook will look like this:
           config_file=backups/{{ inventory_hostname }}.cfg
           replace_config=true
           commit_changes=true
-          dev_os=ios
+          dev_os={{ os }}
 ```
 
 
