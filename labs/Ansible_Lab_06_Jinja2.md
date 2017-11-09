@@ -709,30 +709,335 @@ ntc@ntc:ansible$
 This time, you can see that Task 1 for PLAY 1 and 2 was executed just once.
 
 
-### Task 4 
-
-Move the vars to `group_vars` directory.
-
+### Task 4 - Move the vars to `group_vars` directory.
 
 ##### Step 1
 
 Create a directory called `group_vars` under `ansible` and within that directory, create the directories `AMER` and `EMEA`
 
-  slight change in data model
 
-create a dict call snmp
+```
+ntc@ntc:ansible$ mkdir group_vars
+ntc@ntc:ansible$ cd group_vars
+ntc@ntc:group_vars$ mkdir AMER
+ntc@ntc:group_vars$ mkdir EMEA
 
-  snmp.ro (list)
-  snmp.rw (list)
-  snmp.contact
-  snmp.location
-
-In the solution, show with and without 'set' command extracting each list.
+```
 
 
-Task 3: Using run_once
-Run, show qty of "ok" tasks...Introduce run_once parameter ...show again
 
-Task 4: 
+##### Step 2
 
-Deploy with _config task using the src parameter
+Create a file called `snmp_vars.yaml` inside `EMEA` and `AMER` directories
+
+```
+ntc@ntc:group_vars$ touch AMER/snmp_vars.yaml
+ntc@ntc:group_vars$ touch EMEA/snmp_vars.yaml
+
+```
+
+
+The directory structure looks as follows:
+
+```
+├── group_vars
+│   ├── AMER
+│   │   └── snmp_vars.yaml
+│   └── EMEA
+│       └── snmp_vars.yaml
+
+```
+
+##### Step 3
+
+Open the `render_snmp.yaml` file in a text editor. Also open the `AMER/snmp_vars.yaml` file in another terminal or tab of the text editor.
+
+Remove the following `vars` definition from PLAY 1.
+
+
+``` yaml
+  vars:
+    snmp:
+      ro:
+        - public
+        - ntc-course
+      rw:
+        - private
+        - ntc-private
+      contact: netops_team
+      location: NYC
+
+```
+
+##### Step 4
+
+Add the `snmp` variable into the `AMER/snmp_vars.yaml` file.
+
+
+``` yaml
+    snmp:
+      ro:
+        - public
+        - ntc-course
+      rw:
+        - private
+        - ntc-private
+      contact: netops_team
+      location: NYC
+
+```
+
+##### Step 5
+
+Repeat step 2 for the second PLAY. This time, remove the `vars` variable from PLAY 2. And move the `snmp` variable to the `EMEA/snmp_vars.yaml` file.
+
+
+``` yaml
+    snmp:
+      ro:
+        - public
+        - ntc-course
+      rw:
+        - private
+        - ntc-private
+      contact: netops_team
+      location: MILAN
+
+
+```
+
+##### Step 6
+
+At this point, the playbook should look as follows:
+
+
+``` yaml
+---
+- name: RENDER SNMP CONFIGS USING JINJA2 - AMERICAS
+  hosts: AMER
+  gather_facts: no
+  connection: local
+
+  tasks:
+    - name: ENSURE THAT A REGION DIR EXISTS
+      file: 
+        path: ./configs/amer/
+        state: directory
+  
+    - name: RENDER IOS SNMP CONFIGURATIONS
+      template:
+        src: 02-ios-snmp.j2
+        dest: "./configs/amer/02_{{ inventory_hostname }}_snmp.cfg"
+
+- name: RENDER SNMP CONFIGS USING JINJA2 - EMEA
+  hosts: EMEA
+  gather_facts: no
+  connection: local
+
+
+  tasks:
+    - name: ENSURE THAT A REGION DIR EXISTS
+      file: 
+        path: ./configs/emea/
+        state: directory
+  
+
+    - name: RENDER JUNOS SNMP CONFIGURATIONS
+      template:
+        src: 02-junos-snmp.j2
+        dest: "./configs/emea/02_{{ inventory_hostname }}_snmp.cfg"       
+        
+```
+
+We have thus improved the readability of our playbook, while at the same time, made it convenient to add or modify variables and values to our playbook by using the `group_vars` directory.
+
+
+##### Step 7
+
+Now run the playbook as follows and confirm that the configurations are rendered correctly as before.
+
+```
+ntc@ntc:ansible$ ansible-playbook -i inventory render_snmp.yaml 
+
+PLAY [RENDER SNMP CONFIGS USING JINJA2 - AMERICAS] **********************************************************************
+
+TASK [ENSURE THAT A REGION DIR EXISTS] **********************************************************************************
+ok: [csr1]
+
+TASK [RENDER IOS SNMP CONFIGURATIONS] ***********************************************************************************
+ok: [csr3]
+ok: [csr1]
+ok: [csr2]
+
+PLAY [RENDER SNMP CONFIGS USING JINJA2 - EMEA] **************************************************************************
+
+TASK [ENSURE THAT A REGION DIR EXISTS] **********************************************************************************
+ok: [vmx7]
+
+TASK [RENDER JUNOS SNMP CONFIGURATIONS] *********************************************************************************
+ok: [vmx7]
+ok: [vmx8]
+ok: [vmx9]
+
+PLAY RECAP **************************************************************************************************************
+csr1                       : ok=2    changed=0    unreachable=0    failed=0   
+csr2                       : ok=1    changed=0    unreachable=0    failed=0   
+csr3                       : ok=1    changed=0    unreachable=0    failed=0   
+vmx7                       : ok=2    changed=0    unreachable=0    failed=0   
+vmx8                       : ok=1    changed=0    unreachable=0    failed=0   
+vmx9                       : ok=1    changed=0    unreachable=0    failed=0   
+
+
+```
+
+##### Task 5 - Deploy the configuration
+
+Rather than render the configurations locally to the `configs` directory and then pushing to the devices. You can directly pass in the jinja2 template, to the `_config` (ios or junos_config) module to render and push the configuration in one task.
+
+
+##### Step 1
+
+Create a `provider` variable to login to the devices. Touch a file named `login_vars.yaml` under `group_vars/all.yaml` and open it with an editor. Add the following login info into it.
+
+``` yaml
+
+provider:
+  username: "{{ un }}"
+  password: "{{ pwd }}"
+  host: "{{ inventory_hostname }}"
+
+```
+
+>Since we are creating this variable in the `all.yaml` file, it will apply to all groups.
+
+
+
+##### Step 2
+
+Open the `render_snmp.yaml` file using a text editor. Since we no longer need to render the configurations locally, go ahead and remove both the tasks from PLAY 1 and 2.
+
+
+##### Step 3
+
+Add a new task under PLAY 1, that uses the `ios_config` module to render and push the configurations.
+
+
+``` yaml
+  tasks:
+    - name: ENSURE THAT SNMP IS CONFIGURED ON AMER DEVICES
+      ios_config:
+        src: 02-ios-snmp.j2
+        provider: "{{ provider }}"
+
+```
+
+
+##### Step 4
+
+Similarly under PLAY 2, create a task that uses `junos_config` to render the template and push to the EMEA devices.
+
+
+``` yaml
+  tasks:
+    - name: ENSURE THAT SNMP IS CONFIGURED ON AMER DEVICES
+      junos_config:
+        src: 02-ios-snmp.j2
+        provider: "{{ provider }}"
+
+```
+
+
+##### Step 5
+
+At this point, the entire playbook should look as follows:
+
+``` yaml
+---
+- name: RENDER SNMP CONFIGS USING JINJA2 - AMERICAS
+  hosts: AMER
+  gather_facts: no
+  connection: local
+
+  tasks:
+    - name: ENSURE THAT SNMP IS CONFIGURED ON AMER DEVICES
+      ios_config:
+        src: 02-ios-snmp.j2
+        provider: "{{ provider }}"
+
+- name: RENDER SNMP CONFIGS USING JINJA2 - EMEA
+  hosts: EMEA
+  gather_facts: no
+  connection: local
+
+  tasks:
+    - name: ENSURE THAT SNMP IS CONFIGURED ON EMEA DEVICES
+      junos_config:
+        src: 02-junos-snmp.j2
+        provider: "{{ provider }}"
+
+
+```
+
+##### Step 6
+
+Finally run the playbook as follows:
+
+```
+ntc@ntc:ansible$ ansible-playbook -i inventory render_snmp.yaml
+
+PLAY [RENDER SNMP CONFIGS USING JINJA2 - AMERICAS] **********************************************************************
+
+TASK [ENSURE THAT SNMP IS CONFIGURED ON AMER DEVICES] *******************************************************************
+changed: [csr1]
+changed: [csr2]
+changed: [csr3]
+
+PLAY [RENDER SNMP CONFIGS USING JINJA2 - EMEA] **************************************************************************
+
+TASK [ENSURE THAT SNMP IS CONFIGURED ON EMEA DEVICES] *******************************************************************
+changed: [vmx7]
+changed: [vmx8]
+changed: [vmx9]
+
+PLAY RECAP **************************************************************************************************************
+csr1                       : ok=1    changed=1    unreachable=0    failed=0   
+csr2                       : ok=1    changed=1    unreachable=0    failed=0   
+csr3                       : ok=1    changed=1    unreachable=0    failed=0   
+vmx7                       : ok=1    changed=1    unreachable=0    failed=0   
+vmx8                       : ok=1    changed=1    unreachable=0    failed=0   
+vmx9                       : ok=1    changed=1    unreachable=0    failed=0   
+
+
+```
+
+##### Step 7
+
+Login to the devices to ensure that the configuration changes were implemented correctly
+
+
+```
+#csr1
+
+csr1#sh run | inc snmp
+snmp-server community ntc-course RO
+snmp-server community private RW
+snmp-server community ntc-private RW
+snmp-server community public RO
+snmp-server location MILAN
+snmp-server contact netops_team
+csr1#
+
+#vmx7
+
+ntc@vmx7> show configuration snmp | display set 
+set snmp location NYC
+set snmp contact netops_team
+set snmp community public authorization read-only
+set snmp community ntc-course authorization read-only
+set snmp community private authorization read-write
+set snmp community ntc-private authorization read-write
+
+ntc@vmx7> 
+
+
+```
