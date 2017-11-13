@@ -142,7 +142,10 @@ Go ahead and save this file and execute it.
 ``` shell
 ntc@ntc:~/scripts$ python generate_config.py
 Commands as a List:
-['interface Loopback101', ' description Configured_by_Python_Looback101', 'interface GigabitEthernet1', ' description Configured_by_Python_GigabitEthernet1', ' speed 1000', ' duplex full', 'interface GigabitEthernet2', ' description Configured_by_Python_GigabitEthernet2', ' speed 100', ' duplex half', 'interface Loopback100', ' description Configured_by_Python_Loopback100']
+['interface Loopback101', ' description Configured_by_Python_Looback101', 'interface GigabitEthernet1',
+' description Configured_by_Python_GigabitEthernet1', ' speed 1000', ' duplex full', 'interface GigabitEthernet2',
+' description Configured_by_Python_GigabitEthernet2', ' speed 100', ' duplex half', 'interface Loopback100',
+' description Configured_by_Python_Loopback100']
 ntc@ntc:~/scripts$ 
 ```
 
@@ -226,7 +229,10 @@ Save and execute this script:
 ``` shell
 ntc@ntc:~/scripts$ python generate_config.py
 Commands as a List:
-['interface Loopback101', ' description Configured_by_Python_Looback101', 'interface GigabitEthernet1', ' description Configured_by_Python_GigabitEthernet1', ' speed 1000', ' duplex full', 'interface GigabitEthernet2', ' description Configured_by_Python_GigabitEthernet2', ' speed 100', ' duplex half', 'interface Loopback100', ' description Configured_by_Python_Loopback100']
+['interface Loopback101', ' description Configured_by_Python_Looback101', 'interface GigabitEthernet1',
+' description Configured_by_Python_GigabitEthernet1', ' speed 1000', ' duplex full', 'interface GigabitEthernet2',
+' description Configured_by_Python_GigabitEthernet2', ' speed 100', ' duplex half', 'interface Loopback100',
+' description Configured_by_Python_Loopback100']
 --------------------
 Commands Simulating Config File:
 interface Loopback101
