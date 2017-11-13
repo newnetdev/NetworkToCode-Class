@@ -16,7 +16,7 @@ Note: the naming standard requires device name to be all upper case.
 
 ```python
 >>> if device_name != device_name.upper():
-...   print("Device {} is NOT compliant".format(device_name)
+...   print("Device {} is NOT compliant".format(device_name))
 ... else:
 ...   print("Device {} is compliant".format(device_name))
 ... 
@@ -58,9 +58,9 @@ Given the datcenter switch data structure, print the device type for each device
 
 ``` python
 >>> for switch in dc.keys():
-...   if dc[switch]['type'].upper() == "ACCESS":
+...   if dc_switches[switch]['type'].upper() == "ACCESS":
 ...     print("Device {} is an access layer switch".format(switch))
-...   elif dc[switch]['type'].upper() == "DISTRIBUTION":
+...   elif dc_switches[switch]['type'].upper() == "DISTRIBUTION":
 ...     print("Device {} is a distribution layer switch".format(switch))
 ... 
 Device switch1 is a distribution layer switch
