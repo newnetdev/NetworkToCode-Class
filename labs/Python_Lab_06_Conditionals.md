@@ -57,7 +57,7 @@ s'}, 'switch99': { 'type': 'campus_core'} }
 Given the datcenter switch data structure, print the device type for each device:
 
 ``` python
->>> for switch in dc.keys():
+>>> for switch in dc_switches.keys():
 ...   if dc_switches[switch]['type'].upper() == "ACCESS":
 ...     print("Device {} is an access layer switch".format(switch))
 ...   elif dc_switches[switch]['type'].upper() == "DISTRIBUTION":
