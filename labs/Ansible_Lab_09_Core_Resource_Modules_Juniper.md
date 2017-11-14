@@ -493,7 +493,8 @@ Log in to the device and ensure that the configuration has been applied.
 
 ##### Step 2
 
-What if you wanted to establish configuration on all VMX devices such that vrfs only existed for tenants x, y and z? Up until Ansible 2.3, it was the automation engineer's responsibility, to issue the corresponding commands to remove the vrfs that shouldn't be present on the devices. Starting with Ansible 2.4, you can use the `aggregate` option to establish intent. 
+
+We can create multiple vrfs simultaneously by supplying a list of "tenants" to the `junos_vrf` module. This can be done using the `aggregate` option of the module.
 
 Add the vrfs for tenants x, y and z in the `host_vars/vmx7.yml` file for `vmx7`
 
@@ -522,7 +523,7 @@ tenants:
  
 ##### Step 3
 
-In the previous step we essentially created a data-model for our intended vrfs on the device. Now use the `aggregate` option with the `junos_vrf` and ensure that only these vrfs exist on the device.
+In the previous step we essentially created a data-model for our intended vrfs on the device. Now use the `aggregate` option with the `junos_vrf` and ensure that these vrfs exist on the device.
 
 
 ``` yaml
@@ -571,6 +572,6 @@ ntc@ntc:ansible$
 
 ##### Step 5
 
-Log into the `vmx7` and ensure that any vrf configuration associated with tenant-a has been removed and the vrfs for tenants x, y and z have been established.
+Log into the `vmx7` and ensure that the vrfs for tenants x, y and z have been established.
 
 
