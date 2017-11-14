@@ -41,8 +41,7 @@ Add a new function calling it `deploy_config`
 def deploy_config(config_file_name, device_details):
     """Connects to the device and deploys the configuration"""
 
-    print("Connecting to the remote device {}...\n"
-          .format(device_details['ip']))
+    print("Connecting to the remote device {}...\n".format(device_details['ip']))
 
     # Invoke netmiko ConnectHandler and pass it the device details
     # Using the "**" syntax, device_details must be a dictionary
@@ -204,8 +203,7 @@ def get_interfaces():
 def deploy_config(config_file_name, device_details):
     """Connects to the device and deploys the configuration"""
 
-    print("Connecting to the remote device {}...\n"
-          .format(device_details['ip']))
+    print("Connecting to the remote device {}...\n".format(device_details['ip']))
     # Invoke netmiko ConnectHandler and pass it the device details
     device = ConnectHandler(**device_details)
     # Send the config file
