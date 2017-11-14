@@ -2,7 +2,7 @@
 
 Do the lab(s) as directed by your instructor.  This is determined based on your lab topology.
 
-**12.1** [Netmiko with Cisco IOS](Lab_12_1_Using_Netmiko_IOS.md)
+**12.1** [Netmiko with Cisco IOS](Python_Lab_12_1_Using_Netmiko_IOS.md)
 
-**12.2** [Netmiko with Juniper JUNOS](Lab_12_2_Using_Netmiko_JUNOS.md)
+**12.2** [Netmiko with Juniper JUNOS](Python_Lab_12_2_Using_Netmiko_JUNOS.md)
 
