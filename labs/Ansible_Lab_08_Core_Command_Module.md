@@ -1,4 +1,4 @@
-## Lab 7 - Using the Core Command Module
+## Lab 8 - Using the Core Command Module
 
 ### Task 1 - Using the *_command module
 

@@ -1,4 +1,4 @@
-## Lab 8 - Using the Core _config Module
+## Lab 9.1 - Using the Core _config Module
 
 ### Task 1 - Using the *_config module for Global Configurations
 
