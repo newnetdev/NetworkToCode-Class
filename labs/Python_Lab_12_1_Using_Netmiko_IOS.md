@@ -21,6 +21,8 @@ Import the netmiko `ConnectHandler` object and establish an SSH session to the C
 * Password: ntc123
 * SSH port: 22
 
+**Make sure you can ping csr1 from the Linux terminal.**
+
 ```python
 >>> from netmiko import ConnectHandler
 >>> 
