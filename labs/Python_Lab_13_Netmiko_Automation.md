@@ -15,7 +15,7 @@ ntc@ntc:~/scripts$
 We can start off by making a copy the file you created in the last lab.
 
 ```
-ntc@ntc:~/scripts$ cp read_yaml_file.py deploy_csr1_config.py
+ntc@ntc:~/scripts$ cp modular_generate_config.py deploy_csr1_config.py
 ```
 
 ##### Step 3
