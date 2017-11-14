@@ -65,6 +65,8 @@ if __name__ == "__main__":
 
 ```
 
+Remember, feel free to add print statements such as `print json.dumps(interfaces, indent=4)` or `print interfaces` after you create objects like this in your code.  It'll help troubleshooting and understanding what is actually happening.
+
 ##### Step 5
 
 Using a for loop, iterate over all of the items in the dictionary that  contains configuration data of the interfaces.  Print each item as you loop over the dictionary.
@@ -74,8 +76,8 @@ Using a for loop, iterate over all of the items in the dictionary that  contains
 This code snippet gets placed below the dictionary.
 
 ``` python
-    for interface, config_params in interfaces.items():
-        print(interface, config_params)
+for interface, config_params in interfaces.items():
+    print(interface, config_params)
 
 ```
 
@@ -83,18 +85,18 @@ Save the file and execute it from the command line:
 
 ```
 ntc@ntc:~/scripts$ python generate_config.py
-Loopback101 {'description': 'Configured_by_Python_Looback101'}
-GigabitEthernet2 {'duplex': 'half', 'speed': 100, 'description': 'Configured_by_Python_GigabitEthernet2'}
-GigabitEthernet1 {'duplex': 'full', 'speed': 1000, 'description': 'Configured_by_Python_GigabitEthernet1'}
-Loopback100 {'description': 'Configured_by_Python_Loopback100'}
+(Loopback101 {'description': 'Configured_by_Python_Looback101'})
+(GigabitEthernet2 {'duplex': 'half', 'speed': 100, 'description': 'Configured_by_Python_GigabitEthernet2'})
+(GigabitEthernet1 {'duplex': 'full', 'speed': 1000, 'description': 'Configured_by_Python_GigabitEthernet1'})
+(Loopback100 {'description': 'Configured_by_Python_Loopback100'})
 
 ```
 
-As you can see from the output, we are able to print the interface name and the attributes to be configured for that interface. Notice also that the `key` for the nested `config_params` dictionary is the command that is used to configure that particular attribute.
+As you can see from the output, we are able to print the interface name and the attributes to be configured for that interface. Notice also that the "key" for the nested `config_params` dictionary is the command that is used to configure that particular attribute.
 
 #### Step 6
 
-Now that we have visualized the dictionary object, let's use a list to contain all the interfaces and associated commands to send to the device. Now, our for loop will look as follows:
+Now that we have visualized the dictionary object, let's create and use a list to contain all the interfaces and associated commands to send to the device. Now, our for loop will look as follows:
 
 ``` python
     commands_list = []
@@ -107,15 +109,18 @@ Now that we have visualized the dictionary object, let's use a list to contain a
 
 Add the above snippet to the script.
 
+> Note: feel free to print `interface_command` and/or `commands_list` while _in_ the loop and execute the script before going to the next step.
+
 #### Step 7
 
 Pay careful attention to the dictionary object -  not every interface has all attributes. For instance, the logical interfaces do not contain speed and duplex attributes. In this step, write conditional logic, to append the attributes for an interface if, and only if the attribute key is defined.
+
+Remember that when you see a statement with `if VARIABLE`, we're just checking to see that it has ANY value (and is not a null element).
 
 ``` python
     commands_list = []
 
     for interface, config_params in interfaces.items():
-
         interface_command = "interface {}".format(interface)
         commands_list.append(interface_command)
         description = config_params.get('description')
@@ -137,7 +142,9 @@ Pay careful attention to the dictionary object -  not every interface has all at
             
 ```
 
-Go ahead and save this file and execute it.
+##### Step 8
+
+Save this file and execute it.
 
 ``` shell
 ntc@ntc:~/scripts$ python generate_config.py
@@ -149,9 +156,9 @@ Commands as a List:
 ntc@ntc:~/scripts$ 
 ```
 
-#### Step 8
+##### Step 9
 
-Finally, we can now loops over this list and generate the device specific configuration for it's interfaces
+Finally, we can now loop over this list and generate the device specific configuration for it's interfaces.  Add the following loop to loop over the list you created.
 
 ``` python
     print("--------------------")
@@ -161,7 +168,11 @@ Finally, we can now loops over this list and generate the device specific config
 
 ```
 
-The final complete script should look like this:
+##### Step 10
+
+Execute the final script.
+
+The final complete script should look like this (without all other print statements you may have added):
 
 ``` python
 #!/usr/bin/env python
@@ -215,6 +226,7 @@ if __name__ == "__main__":
 
     print("Commands as a List:")
     print(commands_list)
+    
     print("--------------------")
     print("Commands Simulating Config File:")
     for command in commands_list:
