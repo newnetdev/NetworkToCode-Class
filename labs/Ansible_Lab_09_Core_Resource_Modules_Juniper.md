@@ -543,6 +543,7 @@ In the previous step we essentially created a data-model for our intended vrfs o
     - name: ENSURE THAT THE VRFS EXIST
       junos_vrf:
         aggregate: "{{ tenants }}"
+        purge: yes
         provider: "{{ provider }}"
 ```
 
