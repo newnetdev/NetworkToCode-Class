@@ -1,8 +1,8 @@
 ## Lab 10 - Modularizing A Python Script
 
-In the last lab, you built a script that prints interface configurations. In this lab, you will write a script that achieves the same end goal, however you will now use of Python functions creating more usable code. 
+In the last lab, you built a script that prints interface configurations. In this lab, you will write a script that achieves the same goal, however you will now use Python functions creating more modular code.
 
-Writing code using a modular approach helps break down a monolithic, inflexible script into a flexible, easy to read and  manage one. 
+Writing code using a modular approach helps break down a monolithic, inflexible script into a more flexible and easy to read script. 
 
 ### Task 1 - Printing interface configuration using functions
 
