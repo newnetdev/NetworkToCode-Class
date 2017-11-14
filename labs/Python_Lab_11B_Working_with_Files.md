@@ -93,6 +93,8 @@ Print out the `data` variable
 >>>
 ```
 
+Notice how the full YAML file is a dictionary and each key-value pair in the file is a key-value pair in the dictionary.
+
 ##### Step 9
 
 You can additionally pretty print the data:
@@ -150,12 +152,13 @@ Re-load and print the data in the YAML.
 >>>
 ```
 
+Note: whenever you see a hyphen `-` in a YAML file, that denotes a `list` object in Python.
 
 ##### Step 13
 
 Remember to pretty print it to make it easier to read:
 
-```
+```python
 >>> print json.dumps(data, indent=4)       
 {
     "snmp_rw": "private", 
@@ -212,6 +215,8 @@ Re-load and print the data in the YAML.
 >>> 
 
 ```
+
+Whenever you use an indentation under a key in a YAML file, that'll map back and be a dictionary while in Python:
 
 ```python
 >>> print json.dumps(data, indent=4)
