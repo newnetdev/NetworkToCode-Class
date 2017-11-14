@@ -89,9 +89,9 @@ Print the Keys & Values:
 >>> for key, value in interface.items():
 ...     print(key, value)
 ...
-duplex full
-speed 100
-description Configured by Python
+(duplex full)
+(speed 100)
+(description Configured by Python)
 >>>
 ```
 

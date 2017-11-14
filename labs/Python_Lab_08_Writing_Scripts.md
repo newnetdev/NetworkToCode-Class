@@ -49,6 +49,7 @@ Create a *Hello World* script that just prints *Hello Network Automation!*
 if __name__ == "__main__":
 
     print('Hello Network Automation!')
+
 ```
 
 ##### Step 6
@@ -116,6 +117,8 @@ IP ADDRESS: 10.1.1.2
 ntc@ntc:~/scripts$
 ```
 
-The point in this task is to showcase the transition going from learning to write code on the Python shell.
+The point in this lab is to showcase the transition going from learning to write code on the Python shell.
+
+We'll now move onto more useful scripts
 
 

@@ -87,7 +87,7 @@ def main():
     # Add the following line:
     device_details = user_input_interactive()
 
-    interfaces_dict = get_interfaces_from_file()
+    interfaces_dict = get_interfaces()
     # Call a function that returns the configuration
     commands_list = get_commands_list(interfaces_dict)
 
@@ -194,8 +194,7 @@ def get_interfaces():
 def deploy_config(config_file_name, device_details):
     """Connects to the device and deploys the configuration"""
 
-    print("Connecting to the remote device {}...\n"
-          .format(device_details['ip']))
+    print("Connecting to the remote device {}...\n".format(device_details['ip']))
     # Invoke netmiko ConnectHandler and pass it the device details
     device = ConnectHandler(**device_details)
     # Send the config file
@@ -222,7 +221,7 @@ def main():
     # Add the following line:
     device_details = user_input_interactive()
 
-    interfaces_dict = get_interfaces_from_file()
+    interfaces_dict = get_interfaces()
     # Call a function that returns the configuration
     commands_list = get_commands_list(interfaces_dict)
 
@@ -322,9 +321,6 @@ def user_input_parse():
     """Collect the device details using an unix-command-like menu"""
     parser = argparse.ArgumentParser(description='Collect device and data'
                                      ' file information to configure a device')
-    parser.add_argument('-f', '--file_name',
-                        help='Enter the full path to the YAML data file',
-                        default='csr1.yaml')
     parser.add_argument('-i', '--ip',
                         help='Enter the IP address or hostname of the device',
                         required=True)
@@ -342,17 +338,13 @@ def user_input_parse():
     username = input_data.username
     password = input_data.password
     device_type = input_data.device_type
-    file_name = input_data.file_name
 
     user_input = dict(device_type=device_type, ip=host,
-                      username=username, password=password,
-                      file_name=file_name)
+                      username=username, password=password)
     return user_input
 
 
 ```
-
-> We are adding 5 flags to collect user input. The `-f` or `--file_name` flag will use the default value of `csr1.yaml` but can be overridden by the user.
 
 
 This function will collect the FQDN/IP address of the device, the device type, login credentials and the configuration data YAML file through Unix-style flags. The function then returns a dictionary object that contains the user input.
@@ -372,7 +364,6 @@ Add the following lines to the function:
 
 ```python
 user_input = user_input_parse()
-file_name = user_input.pop('file_name')
 device_details = user_input  # not technically reuiqred, but we're doing this to limit changes in the function call to `deploy_config()`
 ```
 
@@ -386,14 +377,12 @@ def main():
     # Collect input from user
     user_input = user_input_parse()
 
-    # Collect the file name
-    file_name = user_input.pop('file_name')
 
     # Collect the device_details
     device_details = user_input
 
     # Collect the interface details from file
-    interfaces_dict = get_interfaces_from_file(file_name)
+    interfaces_dict = get_interfaces()
     # Call a function that returns the configuration
     commands_list = get_commands_list(interfaces_dict)
 
@@ -409,7 +398,6 @@ def main():
 
 ```
 
-"Popping" the `file_name` key from the dictionary returns the value of the YAML file name, which we store in `file_name`. The dictionary now is identical to the `device_details` dictionary in the previous lab.
 
 ##### Step 5
 
@@ -502,8 +490,7 @@ def get_interfaces():
 def deploy_config(config_file_name, device_details):
     """Connects to the device and deploys the configuration"""
 
-    print("Connecting to the remote device {}...\n"
-          .format(device_details['ip']))
+    print("Connecting to the remote device {}...\n".format(device_details['ip']))
     # Invoke netmiko ConnectHandler and pass it the device details
     device = ConnectHandler(**device_details)
     # Send the config file
@@ -526,9 +513,6 @@ def user_input_parse():
     """Collect the device details using an unix-command-like menu"""
     parser = argparse.ArgumentParser(description='Collect device and data'
                                      ' file information to configure a device')
-    parser.add_argument('-f', '--file_name',
-                        help='Enter the full path to the YAML data file',
-                        default='csr1.yaml')
     parser.add_argument('-i', '--ip',
                         help='Enter the IP address or hostname of the device',
                         required=True)
@@ -544,11 +528,9 @@ def user_input_parse():
     username = input_data.username
     password = input_data.password
     device_type = input_data.device_type
-    file_name = input_data.file_name
 
     user_input = dict(device_type=device_type, ip=host,
-                      username=username, password=password,
-                      file_name=file_name)
+                      username=username, password=password)
     return user_input
 
 
@@ -559,14 +541,11 @@ def main():
     # Collect input from user
     user_input = user_input_parse()
 
-    # Collect the file name
-    file_name = user_input.pop('file_name')
-
     # Collect the device_details
     device_details = user_input
 
     # Collect the interface details from file
-    interfaces_dict = get_interfaces_from_file(file_name)
+    interfaces_dict = get_interfaces()
     # Call a function that returns the configuration
     commands_list = get_commands_list(interfaces_dict)
 
@@ -593,7 +572,7 @@ Save and execute this script, first without any arguments
 
 ``` shell
 ntc@ntc:~/scripts$ python flags_user_input.py
-usage: flags_user_input.py [-h] [-f FILE_NAME] -i IP -d DEVICE_TYPE -u
+usage: flags_user_input.py [-h]  -i IP -d DEVICE_TYPE -u
                              USERNAME -p PASSWORD
 flags_user_input.py: error: argument -i/--ip is required
 
@@ -608,14 +587,12 @@ Next try and execute the script with the `-h` or `--help` flag:
 
 ``` shell
 ntc@ntc:~/scripts$ python flags_user_input.py --help
-usage: flags_user_input.py [-h] [-f FILE_NAME] -i IP -d DEVICE_TYPE -u
+usage: flags_user_input.py [-h] -i IP -d DEVICE_TYPE -u
                              USERNAME -p PASSWORD
 Collect device and data file information to configure a device
 
 optional arguments:
   -h, --help            show this help message and exit
-  -f FILE_NAME, --file_name FILE_NAME
-                        Enter the full path to the YAML data file
   -i IP, --ip IP        Enter the IP address or hostname of the device
   -d DEVICE_TYPE, --device_type DEVICE_TYPE
                         Enter the device type
@@ -632,7 +609,7 @@ Finally, execute the script with all the required inputs.
 
 
 ``` shell
-ntc@ntc:~/scripts$ python flags_user_input.py -i csr1 -d cisco_ios -u ntc -p ntc123 -f csr1.yaml                            
+ntc@ntc:~/scripts$ python flags_user_input.py -i csr1 -d cisco_ios -u ntc -p ntc123                             
 Opening file /tmp/device.cfg to write...
 File /tmp/device.cfg has been generated...
 Connecting to the remote device csr1...

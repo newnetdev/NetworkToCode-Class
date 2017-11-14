@@ -15,7 +15,7 @@ ntc@ntc:~/scripts$
 We can start off by making a copy the file you created in the last lab.
 
 ```
-ntc@ntc:~/scripts$ cp read_yaml_file.py deploy_csr1_config.py
+ntc@ntc:~/scripts$ cp modular_generate_config.py deploy_csr1_config.py
 ```
 
 ##### Step 3
@@ -41,8 +41,7 @@ Add a new function calling it `deploy_config`
 def deploy_config(config_file_name, device_details):
     """Connects to the device and deploys the configuration"""
 
-    print("Connecting to the remote device {}...\n"
-          .format(device_details['ip']))
+    print("Connecting to the remote device {}...\n".format(device_details['ip']))
 
     # Invoke netmiko ConnectHandler and pass it the device details
     # Using the "**" syntax, device_details must be a dictionary
@@ -84,13 +83,15 @@ This function takes the configuration file and device login/platform information
 
 Call this new function from `main()`. The `device_details` dictionary will be used to store the login details and the device type, needed by `netmiko` to connect to `csr1`.
 
+> Note that we are also switching back to using the `get_interfaces()` function to collect the interface dictionary.
+
 ```python
 
 def main():
     """Generate and write interface configurations to a file
     """
 
-    interfaces_dict = get_interfaces_from_file()
+    interfaces_dict = get_interfaces()
     # Call a function that returns the configuration
     commands_list = get_commands_list(interfaces_dict)
 
@@ -170,7 +171,7 @@ def generate_config_file(commands_list, config_file_name):
     print("File {} has been generated...".format(config_file_name))
 
 
-def get_interfaces_from_file():
+def get_interfaces_file():
     """Read in YAML data of the interfaces and generate the dictionary"""
     with open('csr1.yml') as yaml_file_handler:
         interfaces = yaml.load(yaml_file_handler)
@@ -204,8 +205,7 @@ def get_interfaces():
 def deploy_config(config_file_name, device_details):
     """Connects to the device and deploys the configuration"""
 
-    print("Connecting to the remote device {}...\n"
-          .format(device_details['ip']))
+    print("Connecting to the remote device {}...\n".format(device_details['ip']))
     # Invoke netmiko ConnectHandler and pass it the device details
     device = ConnectHandler(**device_details)
     # Send the config file
@@ -218,7 +218,7 @@ def main():
     """Generate and write interface configurations to a file
     """
 
-    interfaces_dict = get_interfaces_from_file()
+    interfaces_dict = get_interfaces()
     # Call a function that returns the configuration
     commands_list = get_commands_list(interfaces_dict)
 
