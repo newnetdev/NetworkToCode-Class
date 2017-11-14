@@ -1,4 +1,4 @@
-## Lab 10 - Using NTC Modules
+## Lab 11 - Using NTC Modules
 
 In this section, we'll look at how to use multi-vendor modules to perform system level change on the device.  These modules map directly back to what we did with `pyntc` in Module 2.
 

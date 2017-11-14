@@ -1,4 +1,4 @@
-## Lab 11 - Data Collection Modules & Reporting
+## Lab 12 - Data Collection Modules & Reporting
 
 Network Automation, and automation in general, is often equated with configuring devices faster, but as you've seen by now, it offers greater predictability and more deterministic outcomes.
 
