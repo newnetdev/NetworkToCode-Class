@@ -72,17 +72,7 @@ Add the `diff_against: running` parameter to the above task.
 Save and run the playbook as using the `--diff` flag. This will run the playbook, but not configure the device.
 
 ```
-ntc@ntc:ansible$ ansible-playbook -i inventory core_diff.yml --diff 
 
-PLAY [VALIDATING INTENT ON IOS] *************************************************************************************************************
-
-TASK [ENSURE THAT LOOPBACK222 IS CONFIGURED] ************************************************************************************************
-fatal: [csr1]: FAILED! => {"changed": false, "failed": true, "msg": "unable to open shell. Please see: https://docs.ansible.com/ansible/network_debug_troubleshooting.html#unable-to-open-shell"}
-
-PLAY RECAP **********************************************************************************************************************************
-csr1                       : ok=0    changed=0    unreachable=0    failed=1   
-
-ntc@ntc:ansible$ vi core_diff.yml 
 ntc@ntc:ansible$ ansible-playbook -i inventory core_diff.yml --diff --limit csr1
 
 PLAY [VALIDATING INTENT ON IOS] *************************************************************************************************************

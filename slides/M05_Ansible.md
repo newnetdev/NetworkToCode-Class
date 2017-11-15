@@ -3061,6 +3061,112 @@ You can pass commands into the module a few different ways:
 ```
 ]
 
+---
+
+# The diff_against Parameter
+
+Introduced in Ansible 2.4. Test running configuration against:
+
+- The startup configuration
+    - Check if there are ephemeral configurations
+- A configuration intent
+    - Check whether running configuration deviates from compliance/golden configuration
+- Pending configuration lines
+    - Check exact configuration impact of config lines being pushed
+
+
+---
+class: ubuntu
+
+# diff_against -  startup
+
+``` yaml
+    - name: COMPARE RUNNING CONFIG WITH STARTUP
+      ios_config:
+        provider: "{{ provider }}"
+        diff_against: startup
+```
+
+```
+TASK [COMPARE RUNNING CONFIG WITH STARTUP] **************************************
+--- before
++++ after
+@@ -36,6 +63,8 @@
+ redundancy
+ lldp run
+ cdp run
++interface Loopback222
++ ip address 10.222.222.222 255.255.255.255
+ interface GigabitEthernet1
+  vrf forwarding MANAGEMENT
+  ip address 10.0.0.51 255.255.255.0
+
+```
+
+---
+class: ubuntu
+
+# diff_against - intended
+
+
+``` yaml
+  tasks:
+    - name: VALIDATE CONFIGURATION INTENT
+      ios_config:
+        diff_against: intended
+        intended_config: "{{ lookup('file', './backups/{{ inventory_hostname }}.cfg') }}"
+        provider: "{{ provider }}"
+
+```
+
+```
+TASK [VALIDATE CONFIGURATION INTENT] **************************************
+--- before
++++ after
+@@ -63,6 +63,8 @@
+ redundancy
+ lldp run
+ cdp run
++interface Loopback222
++ ip address 10.222.222.222 255.255.255.255
+ interface GigabitEthernet1
+  vrf forwarding MANAGEMENT
+  ip address 10.0.0.51 255.255.255.0
+
+```
+
+---
+class: ubuntu
+
+# diff_against -  impending configuration lines
+
+
+``` yaml
+    - name: ENSURE THAT LOOPBACK222 IS CONFIGURED
+      ios_config:
+        provider: "{{ provider }}"
+        commands:
+          - ip address 10.222.222.222 255.255.255.255
+        parents:
+          - interface loopback 222
+        diff_against: running
+```
+
+```
+TASK [ENSURE THAT LOOPBACK 222 IS CONFIGURED]
+**************************************
++++ after
+@@ -63,6 +63,8 @@
+ redundancy
+ lldp run
+ cdp run
++interface Loopback222
++ ip address 10.222.222.222 255.255.255.255
+ interface GigabitEthernet1
+  vrf forwarding MANAGEMENT
+  ip address 10.0.0.51 255.255.255.0
+
+```
 
 ---
 
