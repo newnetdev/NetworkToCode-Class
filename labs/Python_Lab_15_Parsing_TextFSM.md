@@ -253,12 +253,10 @@ Copy and paste the following script into a new file called `netmiko-clitable-ios
 #! /usr/bin/env python
 
 import json
-import clitable
+import textfsm
 from netmiko import ConnectHandler
-from ntc_course import clitable_to_dict
 
-TEMPLATES_DIR = '/etc/ntc/ansible/library/ntc-ansible/ntc-templates/templates'
-INDEX_FILE = '/etc/ntc/ansible/library/ntc-ansible/ntc-templates/templates/index'
+TEMPLATES_PATH = "/etc/ntc/ansible/library/ntc-ansible/ntc-templates/templates/"
 
 if __name__ == "__main__":
 
@@ -273,89 +271,41 @@ if __name__ == "__main__":
                 password='ntc123'
                 )
 
-    rawtxt = device.send_command(command)
+    raw_text = device.send_command(command)
+    print "RAW RESPONSE:"
+    print raw_text
+    print "-" * 10
 
-    # this script is using clitable objects that are part of textfsm
-    # to help manage when you use a large qty of templates
+    template = TEMPLATES_PATH + 'cisco_ios_show_ip_int_brief.template'
+    table = textfsm.TextFSM(open(template))
+    
+    print "-" * 10
+    print "ALL HEADER (KEYS) from TextFSM Values:"
+    print table.header
 
-    cli_table = clitable.CliTable(INDEX_FILE, TEMPLATES_DIR)
+    # this actually parses the data
+    data = table.ParseText(raw_text)
+    print "THIS IS HOW TEXTFSM PARSES DATA (LIST OF LISTS)"
+    print json.dumps(data, indent=4)
+    print "-" * 10
 
-    attrs = {
-        'Command': command,
-        'Platform': platform
-    }
 
-    # based on the command and platform, the right template is used
-    # based on an index file - see PATH above for index file
+    # this step is optional, but it cleans up the final object from a list of lists to a list of dictionaries
+    final_list = []
+    for entry in data:
+        temp_dict = {}
+        for index, value in enumerate(entry):
+            temp_dict[table.header[index].lower()] = value
+        final_list.append(temp_dict)
 
-    cli_table.ParseCmd(rawtxt, attrs)
+    print "FINAL CONVERTED/PARSED OBJECT:"
+    print json.dumps(final_list, indent=4)
 
-    # helper function used to convert native list of lists from textfsm
-    # to a list of dictionaries
-
-    structured_data = clitable_to_dict(cli_table)
-
-    print json.dumps(structured_data, indent=4)
 
 ```
+
 
 ##### Step 2
-
-Take a few minutes to understand the script.  Here is a brief overview:
-
-- The `ConnectHandler` is the same as we've already used in the previous task - there is nothing new here.
-- The netmiko device method `send_command` is used to capture output from the switch (again, nothing new here)
-- The variable `attrs` is created which is a dictionary that has two key-value pairs.  The keys map directly to the column headers as defined in the TextFSM `index` file.  Feel free to look at the file.  It's located here: `/etc/ntc/ansible/library/ntc-ansible/ntc-templates/templates/index`
-- Once `attrs` is created, it denotes the command we will be parsing using a TextFSM template
-- Then we use the `ParseCmd` method of the `cli_table` object to perform the magic of using the right template to parse the raw text based on the parameters being used, i.e. `rawtxt` and `attrs`.  Internal to the `cli_table`, the right template is used based on the inputs of command and platform from the `attrs` object.  Then `textfsm` is used just as we learned in the previous lab.
-- The final output is the "list" output just like the previous lab
-- While out of scope at this point for further review, the `cli_table` object is then sent to a helper function to create a list of dictionaries for a more standardized output.
-- Finally, the new object is printed to the terminal.
-
-##### Step 3
-
-Execute the script using the following command:
-
-```bash
-ntc@ntc:~/textfsm$ python netmiko-clitable-ios.py 
-```
-
-
-```bash
-ntc@ntc:~/textfsm$ python netmiko-clitable-ios.py
-[
-    {
-        "status": "up", 
-        "intf": "GigabitEthernet1", 
-        "ipaddr": "10.0.0.51", 
-        "proto": "up"
-    }, 
-    {
-        "status": "up", 
-        "intf": "GigabitEthernet2", 
-        "ipaddr": "10.254.13.1", 
-        "proto": "up"
-    }, 
-    {
-        "status": "up", 
-        "intf": "GigabitEthernet3", 
-        "ipaddr": "unassigned", 
-        "proto": "up"
-    }, 
-    {
-        "status": "up", 
-        "intf": "GigabitEthernet4", 
-        "ipaddr": "10.254.12.1", 
-        "proto": "up"
-    }
-]
-
-```
-
-When you combine netmiko with TextFSM, you get a pseudo-API comparable to Cisco Nexus NX-API or Arista eAPI that takes a command in and returns structured data.
-
-
-##### Step 4
 
 Feel free to make changes as you desire and try other commands.
 
