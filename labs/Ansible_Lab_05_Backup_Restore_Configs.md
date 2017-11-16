@@ -228,14 +228,14 @@ ntc@ntc:~/ansible$ ansible-playbook -i inventory backup-restore.yml --tags=clean
 PLAY [BACKUP] *********************************************************
 
 TASK [CLEAN UP CONFIGS 1] ******************************************************
-ok: [vmx1]
+ok: [vmx7]
 ok: [eos-spine1]
 ok: [eos-leaf1]
 ok: [eos-leaf2]
 ok: [eos-spine2]
-ok: [vmx2]
+ok: [vmx8]
 changed: [csr2]
-ok: [vmx3]
+ok: [vmx9]
 changed: [csr1]
 changed: [csr3]
 
@@ -244,10 +244,10 @@ ok: [eos-spine1]
 ok: [eos-spine2]
 ok: [eos-leaf2]
 ok: [eos-leaf1]
-ok: [vmx1]
-ok: [vmx2]
+ok: [vmx7]
+ok: [vmx8]
 changed: [csr1]
-ok: [vmx3]
+ok: [vmx9]
 changed: [csr3]
 changed: [csr2]
 

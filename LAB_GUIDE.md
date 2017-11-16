@@ -33,7 +33,7 @@ Please be sure to review the [device information](labs/DEVICE_INFO.md) before st
 - [Lab 3 - Understanding Check Mode and Verbosity](labs/Ansible_Lab_03_Config_Verbosity_Check.md) 
 - [Lab 4 - Building the Course Inventory File](labs/Ansible_Lab_04_Course_Inventory_File.md)
 - [Lab 5 - Backup and Restore Full Config Files with NAPALM](labs/Ansible_Lab_05_Backup_Restore_Configs.md)
-- [Lab 6 - Using Jinja2 to render configuration](labs/Ansible_Lab_06_Jinja2.md)
+- [Lab 6 - Using Jinja2 Templates to Automate Configuration Files](labs/Ansible_Lab_06_Jinja2.md)
 - [Lab 7 - Build Push with Jinja2 and NAPALM](labs/Ansible_Lab_07_Build_Push.md)
 - [Lab 8 - Ansible Core Command Modules](labs/Ansible_Lab_08_Core_Command_Module.md)
 - [Lab 9 - Ansible Core Config Modules](labs/Ansible_Lab_09_Core_Config_Module.md)

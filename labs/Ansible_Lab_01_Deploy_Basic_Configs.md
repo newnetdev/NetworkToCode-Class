@@ -20,13 +20,13 @@ ntc@ntc:ansible$
 Create an Ansible inventory file.  The name of this file is arbitrary--we'll use the name `lab-devices`. 
 
 ```
-ntc@ntc:ansible$ touch lab-devices
+ntc@ntc:ansible$ touch lab-inventory
 ntc@ntc:ansible$ 
 ```
 
 ##### Step 3
 
-Open the file `lab-devices` in your text editor of choice.
+Open the file `lab-inventory` in your text editor of choice.
 
 
 ##### Step 4

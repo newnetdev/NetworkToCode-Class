@@ -100,11 +100,7 @@ nxos-spine2
 [vmx]
 vmx[7:9]
 
-[AMER]
-iosxe
 
-[EMEA]
-vmx
 ```
 
 
@@ -153,11 +149,11 @@ nxos-spine2
 [vmx]
 vmx[7:9]
 
-[AMER]
+[AMER:children]
 iosxe
 
-[EMEA]
-vmx/
+[EMEA:children]
+vmx
 
 ```
 
@@ -285,10 +281,10 @@ os=junos
 api=netconf
 vendor=juniper
 
-[AMER]
+[AMER:children]
 iosxe
 
-[EMEA]
+[EMEA:children]
 vmx
 
 ```
