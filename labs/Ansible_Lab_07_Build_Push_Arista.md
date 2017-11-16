@@ -10,21 +10,6 @@ Your goal now is to create 2 configuration files using a leaf template.
 
 ##### Step 1
 
-Within the `ansible` directory, create a directory called `templates`.
-
-It'll be on the same level as your inventory file.
-
-You can use the `tree` command within the terminal to view the directory structure:
-
-```
-ntc@ntc:~/ansible$ tree
-.
-├── inventory
-└── templates
-
-1 directory, 1 file
-```
-
 The configuration below is from one of the leaf switches, namely *eos-leaf1*.  The same configuration needs to be applied across all leaf switches.
 
 Your job is to create a leaf template and the associated group vars and host vars files.
@@ -106,25 +91,11 @@ Create a file called `eos-leaf.j2` in the `templates` directory and open it. It 
 
 ##### Step 3
 
-Now create a new directory called `group_vars` and in this directory create a file called `eos-leaves.yml`.  
+Create a file called `eos-leaves.yml` in the `group_vars` directory
 
 > Note: The name of the directory called `group_vars` is an important name within Ansible.  It will store "group based variables".
 
 > The names of the files in the `group_vars` directory map directly to the groups that are found in the inventory file.  For example, the variables that end up in `group_vars/eos-leaves.yml` will be available, and in scope, for all devices in the *leaves* group, i.e. eos-leaf1 - eos-leaf10.
-
-Updated directory structure:
-
-```
-ntc@ntc:~/ansible$ tree
-.
-├── group_vars
-│   └── eos-leaves.yml
-├── inventory
-└── templates
-    └── eos-leaf.j2
-
-2 directories, 3 files
-```
 
 Ensure you have both `eos-leaf.j2` and `eos-leaves.yml` open in your text editor.
 
@@ -509,24 +480,7 @@ interfaces:
 
 ##### Step 14
 
-Once the new config is generated from the template and vars file, it needs to be stored somewhere.  
-
-Create a new directory called `configs` that will store the new configuration files.
-
-The new directory structure should look like this:
-
-```
-ntc@ntc:~/ansible$ tree
-.
-├── configs
-├── group_vars
-│   └── eos-leaves.yml
-├── inventory
-└── templates
-    └── eos-leaf.j2
-
-3 directories, 3 files
-```
+Once the new config is generated from the template and vars file, it needs to be stored somewhere. We will be using the `configs` directory, created in the previous lab for this.
 
 
 ### Task 2 - Building the Configurations
@@ -538,22 +492,6 @@ It's time to create the playbook that will auto-generate all of the leaf configu
 Create and open a file called `build-push.yml`.
 
 Save it in the `ansible` directory.
-
-```
-ntc@ntc:~/ansible$ tree
-.
-├── build-push.yml
-├── configs
-├── group_vars
-│   └── eos-leaves.yml
-├── inventory
-└── templates
-    └── eos-leaf.j2
-
-3 directories, 4 files
-
-```
-
 
 The playbook will consist of a single play and a single task.  The task will use the **template** module.
 

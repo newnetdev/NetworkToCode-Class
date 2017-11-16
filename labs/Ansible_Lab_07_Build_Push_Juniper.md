@@ -10,21 +10,6 @@ In this task, you will automate the creation of 3 configuration files using seve
 
 ##### Step 1
 
-Within the `ansible` directory, create a directory called `templates`.  
-
-It'll be on the same level as your inventory file.
-
-You can use the `tree` command within the terminal to view the directory structure:
-
-```
-ntc@ntc:~/ansible$ tree
-.
-├── inventory
-└── templates
-
-1 directory, 1 file
-```
-
 The configuration below is from one of the devices, namely *vmx8*.  The same configuration needs to be applied across all routers - with minor changes such as IP address, interface descriptions, etc.
 
 The task is to create templates and the associated group vars and host vars files to simplify the process of config creation.
