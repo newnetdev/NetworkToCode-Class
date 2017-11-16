@@ -1,4 +1,4 @@
-## Lab 6.2 - Building and Pushing Network Configuration Files
+## Lab 7.2 - Building and Pushing Network Configuration Files
 
 This lab will show how to use Ansible to automate the process of building full network configuration files and pushing them to network devices.  
 
