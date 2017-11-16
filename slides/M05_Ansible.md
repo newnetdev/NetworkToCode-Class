@@ -3075,6 +3075,8 @@ Introduced in Ansible 2.4. Test running configuration against:
     - Check exact configuration impact of config lines being pushed
 
 
+*Invoked with `--diff` flag*
+
 ---
 class: ubuntu
 
