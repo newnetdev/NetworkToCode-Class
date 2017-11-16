@@ -89,12 +89,12 @@ Navigate back to the `ansible` directory, where we will write a playbook that wi
 
   tasks:
 
-    - name: COLLECT THE HOSTNAME
+    - name: COLLECT THE SERIAL NUMBER
       ios_facts:
         provider: "{{ provider }}"
 
 
-    - name: DISPLAY HOSTNAME ON TERMINAL
+    - name: DISPLAY SERIAL NUMBER ON TERMINAL
       debug:
         msg: "{{ ansible_net_serialnum }}"
       
@@ -129,13 +129,13 @@ Vault password:
 
 PLAY [USE ENCRYPTED LOGIN] *******************************************************************************************************
 
-TASK [COLLECT THE HOSTNAME] ******************************************************************************************************
+TASK [COLLECT THE SERIAL NUMBER] ******************************************************************************************************
 ok: [csr1]
 ok: [csr2]
 ok: [csr3]
 
 
-TASK [DISPLAY HOSTNAME ON TERMINAL] **********************************************************************************************
+TASK [DISPLAY SERIAL NUMBER ON TERMINAL] **********************************************************************************************
 ok: [csr1] => {
     "msg": "9KXI0D7TVFI"
 }
