@@ -3062,6 +3062,34 @@ You can pass commands into the module a few different ways:
 ]
 
 ---
+# *_config (cont'd)
+.left-column[
+The `save_when` parameter is needed to commit running config to the NVRAM. (Deprecated command `save` no longer works with Ansible 2.4 and above)
+Available options for the  save_when parameter:
+
+- always
+- modified
+- never
+
+]
+
+.right-column[
+
+``` yaml
+
+    - name: ENSURE THAT LOOPBACK 222 IS CONFIGURED
+      ios_config:
+        provider: "{{ provider }}"
+        commands:
+          - ip address 10.222.222.222 255.255.255.255
+        parents:
+          - interface loopback 222
+        save_when: modified
+```
+]
+
+
+---
 
 # The diff_against Parameter
 
