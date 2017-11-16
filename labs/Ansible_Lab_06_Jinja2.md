@@ -180,9 +180,6 @@ snmp_contact: netops_team
 
 ```
 
-Additionally, **remove** the `snmp_ro` variable from being defined in your playbook.
-
-
 ##### Step 4
 
 Similarly update `EMEA.yml` to contain the EMEA region specific SNMP variables.
