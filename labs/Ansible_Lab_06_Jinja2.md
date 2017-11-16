@@ -155,7 +155,7 @@ In this task we will template the configuration for some additional SNMP variabl
 
 Create a sub-directory called `group_vars` within the `ansible` directory.
 
-In this directory, create two grou_vars files called `AMER.yml` and `EMEA.yml`
+In this directory, create two group_vars files, called `AMER.yml` and `EMEA.yml`
 
 
 ```
@@ -169,13 +169,7 @@ ntc@ntc:group_vars$ touch EMEA.yml
 
 ##### Step 2
 
-
-The directory structure looks as follows:
-
-
-##### Step 3
-
-Open the `AMER/snmp_vars.yml` using a text editor and update it with the following variables:
+Open the `AMER.yml` using a text editor and update it with the following variables:
 
 ```yaml
 snmp_ro: ntc_course
@@ -188,7 +182,7 @@ snmp_contact: netops_team
 
 ##### Step 4
 
-Similarly update `EMEA/snmp_vars.yml` to contain the EMEA region specific SNMP variables.
+Similarly update `EMEA.yml` to contain the EMEA region specific SNMP variables.
 
 ``` yaml
 snmp_ro: ntc_course
@@ -467,7 +461,7 @@ In the previous task, the SNMP data was modeled as a set of 'key-value' pairs. T
 ##### Step 1
 
 
-Add the `snmp` variable into the `AMER/snmp_vars.yml` file.
+Add the `snmp` variable into the `AMER.yml` file.
 
 
 ``` yaml
@@ -485,7 +479,7 @@ Add the `snmp` variable into the `AMER/snmp_vars.yml` file.
 
 ##### Step 2
 
-Repeat and add the  `snmp` variable to the `EMEA/snmp_vars.yml` file.
+Repeat and add the  `snmp` variable to the `EMEA.yml` file.
 
 
 ``` yaml
