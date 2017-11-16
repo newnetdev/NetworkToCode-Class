@@ -163,6 +163,7 @@ ntc@ntc:ansible$ mkdir group_vars
 ntc@ntc:ansible$ cd group_vars
 ntc@ntc:group_vars$ touch AMER.yml
 ntc@ntc:group_vars$ touch EMEA.yml
+ntc@ntc:group_vars$
 
 ```
 
@@ -178,7 +179,6 @@ snmp_location: NYC
 snmp_contact: netops_team
 
 ```
-
 
 ##### Step 4
 
