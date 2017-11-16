@@ -157,7 +157,7 @@ vmx[7:9]
 iosxe
 
 [EMEA]
-vmx/
+vmx
 
 ```
 
