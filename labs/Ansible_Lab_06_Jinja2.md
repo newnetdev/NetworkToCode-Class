@@ -506,7 +506,7 @@ Create a new file called `02-ios-snmp.j2` within the templates directory and ope
 
 
 ``` 
-set snmp_ro_comms = {{ snmp.ro }}
+{% set snmp_ro_comms =  snmp.ro  %}
 {% for ro_comm in snmp_ro_comms -%}
 snmp-server community {{ ro_comm }} RO
 {%- endfor %}
