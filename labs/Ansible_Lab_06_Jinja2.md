@@ -1,28 +1,29 @@
 ## Lab 6 - Jinja2 Templating with Ansible
 
 
-### Task 1 - Using Jinja2 to render a variable
+### Task 1 - Using Jinja2 to Build Configuration Templates
 
-In this task we will learn how to use Jinja2 templates in Ansible.
+In this task we will learn how to use Jinja2 templates in Ansible to dynamically build configuration files.
 
 
 ##### Step 1
 
-Create a new playbook within the `ansible` directory by using the `touch` command
+Create a new playbook within the `ansible` directory by using the `touch` command:
 
 
 ```
 ntc@ntc:ansible$ touch render_snmp.yml
-
+ntc@ntc:ansible$
 ```
 
 
 ##### Step 2 
+
 Open this file using any text editor and add the following play definition:
 
 ```yaml
 ---
-- name: RENDER SNMP CONFIGS USING JINJA2 - AMERICAS
+- name: GENERATE SNMP CONFIGS USING JINJA2 - AMERICAS
   hosts: AMER
   gather_facts: no
   connection: local
@@ -31,11 +32,12 @@ Open this file using any text editor and add the following play definition:
 
 ##### Step 3
 
-Define a SNMP RO string as a variable, within the playbook file:
+Define a SNMP RO string as a variable within the playbook:
 
 ``` yaml
 ---
-- name: RENDER SNMP CONFIGS USING JINJA2 - AMERICAS
+
+- name: GENERATE SNMP CONFIGS USING JINJA2 - AMERICAS
   hosts: AMER
   gather_facts: no
   connection: local
@@ -47,11 +49,12 @@ Define a SNMP RO string as a variable, within the playbook file:
 
 ##### Step 4
 
-Using the Ansible `template` module, create a task that will take this variables and render it :
+Using the Ansible `template` module, create a task that will take this variables and render it with a Jinja template (that is yet to be created):
 
 ``` yaml
 ---
-- name: RENDER SNMP CONFIGS USING JINJA2 - AMERICAS
+
+- name: GENERATE SNMP CONFIGS USING JINJA2 - AMERICAS
   hosts: AMER
   gather_facts: no
   connection: local
@@ -60,12 +63,15 @@ Using the Ansible `template` module, create a task that will take this variables
     snmp_ro: ntc_course
 
   tasks:
-    - name: RENDER IOS SNMP CONFIGURATIONS
+    - name: GENERATE IOS SNMP CONFIGURATIONS
       template:
         src: 01-ios-snmp.j2
         dest: "./configs/01_{{ inventory_hostname }}_snmp.cfg"
         
 ```
+
+We're also going to be saving these configs in the `configs` directory.  Create a sub-directory called `configs` in the Ansible directory.
+
 
 ##### Step 5
 
@@ -83,11 +89,13 @@ ntc@ntc:templates$
 
 ##### Step 6
 
-Here, create the template file we will be using to render the SNMP configuration, by using the `touch` command
+In the `templates` directory, create the Jinja template we will be using to render the SNMP configuration, by using the `touch` command.
+
+> Note: this already referenced in the playbook.
 
 ```
 ntc@ntc:templates$ touch 01-ios-snmp.j2 
-
+ntc@ntc:templates$
 ```
 
 
@@ -100,7 +108,7 @@ snmp-server community {{ snmp_ro }}  RO
 
 ```
 
-Keep in mind that the values for this variable was defined in **Step3**, within the playbook. Ansible will pass those variables to the template, which will then render it.
+Keep in mind that the value for this variable was defined in **Step3** within the playbook.  Ansible auto-loads all variables it's aware of at run-time and makes those variables available to the playbook and any template.
 
 
 ##### Step 8
@@ -111,9 +119,9 @@ Run the playbook as follows:
 ```
 ntc@ntc:ansible$ ansible-playbook -i inventory render_snmp.yml 
 
-PLAY [RENDER SNMP CONFIGS USING JINJA2] *********************************************************************************
+PLAY [GENERATE SNMP CONFIGS USING JINJA2] *********************************************************************************
 
-TASK [RENDER IOS SNMP CONFIGURATIONS] ***********************************************************************************
+TASK [GENERATE IOS SNMP CONFIGURATIONS] ***********************************************************************************
 changed: [csr1]
 changed: [csr2]
 changed: [csr3]
@@ -130,53 +138,39 @@ ntc@ntc:ansible$
 
 ##### Step 9
 
-Now, validate that the variables have been rendered correctly by checking the files created in the `configs` directory.
+Validate that the variables have been rendered correctly by checking the files created in the `configs` directory.
 
 ```
-#01_csr1_snmp.cfg 
+ntc@ntc:ansible$ cd configs
+ntc@ntc:configs$ cat 01_csr1_snmp.cfg 
+
 snmp-server community ntc_course  RO
 ```
 
-### Task 2 - Adding more SNMP variables to group_vars
+### Task 2 - Adding more SNMP variables as Group Variables
 
 In this task we will template the configuration for some additional SNMP variables. The "snmp location" will be different for the `AMER` group and the `EMEA` group.
 
 ##### Step 1
 
-Create a directory called `group_vars` under `ansible` and within that directory, create the directories `AMER` and `EMEA`
+Create a sub-directory called `group_vars` within the `ansible` directory.
+
+In this directory, create two grou_vars files called `AMER.yml` and `EMEA.yml`
 
 
 ```
 ntc@ntc:ansible$ mkdir group_vars
 ntc@ntc:ansible$ cd group_vars
-ntc@ntc:group_vars$ mkdir AMER
-ntc@ntc:group_vars$ mkdir EMEA
+ntc@ntc:group_vars$ touch AMER.yml
+ntc@ntc:group_vars$ touch EMEA.yml
 
 ```
-
 
 
 ##### Step 2
 
-Create a file called `snmp_vars.yml` inside `EMEA` and `AMER` directories
-
-```
-ntc@ntc:group_vars$ touch AMER/snmp_vars.yml
-ntc@ntc:group_vars$ touch EMEA/snmp_vars.yml
-
-```
-
 
 The directory structure looks as follows:
-
-```
-├── group_vars
-│   ├── AMER
-│   │   └── snmp_vars.yml
-│   └── EMEA
-│       └── snmp_vars.yml
-
-```
 
 
 ##### Step 3
@@ -236,13 +230,13 @@ Since the `snmp_ro` variable has been defined as a group variable, we can now re
 
 ``` yaml
 ---
-- name: RENDER SNMP CONFIGS USING JINJA2 - AMERICAS
+- name: GENERATE SNMP CONFIGS USING JINJA2 - AMERICAS
   hosts: AMER
   gather_facts: no
   connection: local
 
   tasks:
-    - name: RENDER IOS SNMP CONFIGURATIONS
+    - name: GENERATE IOS SNMP CONFIGURATIONS
       template:
         src: 01-ios-snmp.j2
         dest: "./configs/01_{{ inventory_hostname }}_snmp.cfg"
@@ -255,24 +249,24 @@ Add one more play to this playbook to also render the JUNOS specific commands us
 
 ``` yaml
 ---
-- name: RENDER SNMP CONFIGS USING JINJA2 - AMERICAS
+- name: GENERATE SNMP CONFIGS USING JINJA2 - AMERICAS
   hosts: AMER
   gather_facts: no
   connection: local
 
   tasks:
-    - name: RENDER IOS SNMP CONFIGURATIONS
+    - name: GENERATE IOS SNMP CONFIGURATIONS
       template:
         src: 01-ios-snmp.j2
         dest: "./configs/01_{{ inventory_hostname }}_snmp.cfg"
 
-- name: RENDER SNMP CONFIGS USING JINJA2 - EMEA
+- name: GENERATE SNMP CONFIGS USING JINJA2 - EMEA
   hosts: EMEA
   gather_facts: no
   connection: local
 
   tasks:
-    - name: RENDER JUNOS SNMP CONFIGURATIONS
+    - name: GENERATE JUNOS SNMP CONFIGURATIONS
       template:
         src: 01-junos-snmp.j2
         dest: "./configs/01_{{ inventory_hostname }}_snmp.cfg"
@@ -287,16 +281,16 @@ Now, run the playbook and validate that the configurations have been created in 
 ```
 ntc@ntc:ansible$ ansible-playbook -i inventory render_snmp.yaml 
 
-PLAY [RENDER SNMP CONFIGS USING JINJA2 - AMERICAS] **********************************************************************
+PLAY [GENERATE SNMP CONFIGS USING JINJA2 - AMERICAS] **********************************************************************
 
-TASK [RENDER IOS SNMP CONFIGURATIONS] ***********************************************************************************
+TASK [GENERATE IOS SNMP CONFIGURATIONS] ***********************************************************************************
 changed: [csr3]
 changed: [csr2]
 changed: [csr1]
 
-PLAY [RENDER SNMP CONFIGS USING JINJA2 - EMEA] **************************************************************************
+PLAY [GENERATE SNMP CONFIGS USING JINJA2 - EMEA] **************************************************************************
 
-TASK [RENDER JUNOS SNMP CONFIGURATIONS] *********************************************************************************
+TASK [GENERATE JUNOS SNMP CONFIGURATIONS] *********************************************************************************
 changed: [vmx8]
 changed: [vmx7]
 changed: [vmx9]
@@ -348,7 +342,7 @@ Add a new task under PLAY 1, that uses the `ios_config` module to render and pus
 ``` yaml
 
 ---
-- name: RENDER SNMP CONFIGS USING JINJA2 - AMERICAS
+- name: GENERATE SNMP CONFIGS USING JINJA2 - AMERICAS
   hosts: AMER
   gather_facts: no
   connection: local
@@ -370,7 +364,7 @@ Similarly under PLAY 2, create a task that uses `junos_config` to render the tem
 
 ``` yaml
 ---
-- name: RENDER SNMP CONFIGS USING JINJA2 - AMERICAS
+- name: GENERATE SNMP CONFIGS USING JINJA2 - AMERICAS
   hosts: AMER
   gather_facts: no
   connection: local
@@ -381,7 +375,7 @@ Similarly under PLAY 2, create a task that uses `junos_config` to render the tem
         src: 01-ios-snmp.j2
         provider: "{{ provider }}"
 
-- name: RENDER SNMP CONFIGS USING JINJA2 - EMEA
+- name: GENERATE SNMP CONFIGS USING JINJA2 - EMEA
   hosts: EMEA
   gather_facts: no
   connection: local
@@ -402,7 +396,7 @@ Now run the playbook.
 ```
 ntc@ntc:ansible$ ansible-playbook -i inventory render_snmp.yaml 
 
-PLAY [RENDER SNMP CONFIGS USING JINJA2 - AMERICAS] **********************************************************************
+PLAY [GENERATE SNMP CONFIGS USING JINJA2 - AMERICAS] **********************************************************************
 
 TASK [ENSURE THAT SNMP IS CONFIGURED ON AMER DEVICES] *******************************************************************
 changed: [csr1]
@@ -410,7 +404,7 @@ changed: [csr2]
 changed: [csr3]
 
 
-PLAY [RENDER SNMP CONFIGS USING JINJA2 - EMEA] **************************************************************************
+PLAY [GENERATE SNMP CONFIGS USING JINJA2 - EMEA] **************************************************************************
 
 TASK [ENSURE THAT SNMP IS CONFIGURED ON AMER DEVICES] *******************************************************************
 changed: [vmx7]
