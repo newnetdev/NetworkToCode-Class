@@ -10,21 +10,6 @@ Your goal now is to create 3 configuration files using a single template.
 
 ##### Step 1
 
-Within the `ansible` directory, create a directory called `templates` using the command `mkdir templates`.
-
-It'll be on the same level as your inventory file.
-
-You can use the `tree` command within the terminal to view the directory structure:
-
-```
-ntc@ntc:~/ansible$ tree
-.
-├── inventory
-└── templates
-
-1 directory, 1 file
-```
-
 The configuration below is a partial final config from one of the routers, namely *csr1*.  The same configuration needs to be applied across all switches (with the exception of hostname, IP addressing, router-id, etc.).
 
 
@@ -101,23 +86,7 @@ Create a file called `csr-ospf.j2` in the `templates` directory and open it. It 
 
 ##### Step 3
 
-Now create a new directory called `group_vars` and in the directory create a file called `all.yml`.  The name of the directory called `group_vars` is an important name within Ansible.  It will store "group based variables" - these map directly to the groups that are found in the inventory file.  For example, the variables that end up in `group_vars/all.yml` will be available to all devices.
-
-Updated directory structure:
-
-```
-ntc@ntc:~/ansible$ tree
-.
-├── group_vars
-│   └── all.yml
-├── inventory
-└── templates
-    └── csr-ospf.j2
-
-2 directories, 3 files
-```
-
-Ensure you have both `csr-ospf.j2` and `all.yml` open in your text editor.
+Open the `all.yml` file created in the previous lab under the `group_vars` directory and ensure you have both `csr-ospf.j2` and `all.yml` open in your text editor.
 
 Now, we will start to break down the configuration file into a series of Jinja2 template snippets and variables.
 
@@ -397,7 +366,7 @@ end
 
 There are a few parameters that will be the same for each router such as OSPF instance tag (or process ID), enabling log-adjacency-changes, the static route, and SNMP settings, but there are also a few parameters that need to be different per device such as the router ID and interfaces that will have OSPF enabled on.  
 
-Make the appropriate changes host vars files, and group vars `all.yml` file.  The text below is only showing what should be added to each vars file.
+Make the appropriate changes to the host vars files, and group vars `all.yml` file.  The text below is only showing what should be added to each vars file.
 
 File: `group_vars/all.yml`
 
@@ -502,8 +471,10 @@ ntc@ntc:~/ansible$ tree
 ├── inventory
 └── templates
     └── csr-ospf.j2
+    ├── 01-ios-snmp.j2
+    ├── 01-junos-snmp.j2
 
-3 directories, 6 files
+3 directories, 7 files
 ```
 
 Please note that there isn't a right or wrong way to create templates.  You have to find what works for you and your team, for your configuration.  
@@ -589,6 +560,12 @@ VARS FILES:
 
 ```yaml
 ---
+
+provider:
+  username: "{{ un }}"
+  password: "{{ pwd }}"
+  host: "{{ inventory_hostname }}"
+
 
 domain_name: ntc.com
 

@@ -153,9 +153,7 @@ In this task we will template the configuration for some additional SNMP variabl
 
 ##### Step 1
 
-Create a sub-directory called `group_vars` within the `ansible` directory.
-
-In this directory, create two group_vars files, called `AMER.yml` and `EMEA.yml`
+Now create a new directory called `group_vars`.  The name of the directory called `group_vars` is an important name within Ansible.  It will store "group based variables" - these map directly to the groups that are found in the inventory file.  For example, the variables that end up in `group_vars/all.yml` will be available to all devices. In this directory, create two group_vars files, called `AMER.yml` and `EMEA.yml`
 
 
 ```
@@ -461,11 +459,11 @@ In the previous task, the SNMP data was modeled as a set of 'key-value' pairs. T
 ##### Step 1
 
 
-Add the `snmp` variable into the `AMER.yml` file.
+Add the `snmp_config` variable into the `AMER.yml` file.
 
 
 ``` yaml
-    snmp:
+    snmp_config:
       ro:
         - public
         - ntc-course
@@ -479,11 +477,11 @@ Add the `snmp` variable into the `AMER.yml` file.
 
 ##### Step 2
 
-Repeat and add the  `snmp` variable to the `EMEA.yml` file.
+Repeat and add the  `snmp_config` variable to the `EMEA.yml` file.
 
 
 ``` yaml
-    snmp:
+    snmp_config:
       ro:
         - public
         - ntc-course
@@ -506,14 +504,14 @@ Create a new file called `02-ios-snmp.j2` within the templates directory and ope
 
 
 ``` 
-set snmp_ro_comms = {{ snmp.ro }}
-{% for ro_comm in snmp_ro_comms -%}
+{% set snmp_ro_comms =  snmp_config.ro  %}
+{% for ro_comm in snmp_ro_comms %}
 snmp-server community {{ ro_comm }} RO
-{%- endfor %}
-set snmp_rw_comms = {{ snmp.rw }}
-{% for rw_comm in snmp_ro_comms -%}
+{% endfor %}
+{% set snmp_rw_comms =  snmp_config.rw  %}
+{% for rw_comm in snmp_ro_comms %}
 snmp-server community {{ rw_comm }} RW
-{%- endfor %}
+{% endfor %}
 snmp-server location {{ snmp_location }}
 snmp-server contact {{ snmp_contact }}
 
@@ -523,16 +521,16 @@ snmp-server contact {{ snmp_contact }}
 Similarly, create a `02-junos-snmp.j2` template file, using the JUNOS configuration commands.
 
 ```
-{% set snmp_ro_comms =  snmp.ro  %}
+{% set snmp_ro_comms =  snmp_config.ro  %}
 {% for ro_comm in snmp_ro_comms %}
 set snmp community {{ ro_comm }} authorization read-only
 {% endfor %}
-{% set snmp_rw_comms =  snmp.rw  %}
+{% set snmp_rw_comms =  snmp_config.rw  %}
 {% for rw_comm in snmp_rw_comms %}
 set snmp community {{ rw_comm }} authorization read-write
 {% endfor %}
-set snmp location {{ snmp.location }}
-set snmp contact {{ snmp.contact }}
+set snmp location {{ snmp_config.location }}
+set snmp contact {{ snmp_config.contact }}
 
 ```
 
