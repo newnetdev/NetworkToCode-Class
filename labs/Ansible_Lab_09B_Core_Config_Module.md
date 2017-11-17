@@ -12,6 +12,7 @@ Create a new playbook called `core_diff.yml` in the `ansible` directory.
 
 Add a new play. Restrict it to `csr1` and build a single task to add a new loopback interface `Loopback 222` to the device.
 
+Note: if you already have `provider` in a `group_vars` file, you do not need it in the playbook as shown below too.
 
 ``` yaml
 ---
@@ -117,7 +118,6 @@ csr1                       : ok=1    changed=1    unreachable=0    failed=0
 ntc@ntc:ansible$ 
 ```
 
-> Keep in mind that without using the `save_when` parameter of the *_config modules, the running configuration is not saved to the nvram.
 
 ##### Step 6
 
@@ -254,7 +254,6 @@ Update the first task to save the Loopback interface configuration to the device
         parents:
           - interface loopback 222
         diff_against: running
-        save_when: modified
       tags: loopback
 
     - name: COMPARE RUNNING CONFIG WITH STARTUP
