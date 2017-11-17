@@ -38,7 +38,7 @@ Please be sure to review the [device information](labs/DEVICE_INFO.md) before st
 - [Lab 8 - Ansible Core Command Modules](labs/Ansible_Lab_08_Core_Command_Module.md)
 - [Lab 9 - Ansible Core Config Modules](labs/Ansible_Lab_09_Core_Config_Module.md)
 - [Lab 10 - Resource Modules](labs/Ansible_Lab_10_Resource_Modules.md)
-- [Lab 11 - Operational Tasks with NTC Modules](labs/Ansible_Lab_11_NTC_Modules.md)
+- Lab 11 - Removed
 - [Lab 12 - Data Collection & Reporting](labs/Ansible_Lab_12_Data_Collection_Reporting.md)
 - [Lab 13 - Ansible Roles](labs/Ansible_Lab_13_Creating_Ansible_Role.md)  
 - [Lab 14 - Dynamic Inventory](labs/Ansible_Lab_14_Dynamic_Inventory.md)
