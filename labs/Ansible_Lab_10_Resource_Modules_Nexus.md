@@ -1,4 +1,4 @@
-## Lab 9.1 - Cisco NX-OS Modules
+## Lab 10.1 - Cisco NX-OS Modules
 
 For the Nexus switches, you will not be building a particular topology.  Rather, you will learn how to use the Nexus modules with some other features of Ansible.
 
