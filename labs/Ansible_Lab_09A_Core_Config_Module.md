@@ -40,7 +40,7 @@ In your play definition, you can enter one of the following if you want to autom
 
 ##### Step 2
 
-Create a variable called `provider` in the playbook that will be used to easily pass the same parameters into the these Ansible core modules.
+Create a variable called `provider` in the playbook that will be used to easily pass the same parameters into the these Ansible core modules.  Remember, the provider can also be stored in `group_vars` files too.
 
 ```yaml
 ---
