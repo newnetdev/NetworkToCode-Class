@@ -1735,7 +1735,7 @@ Works slightly different than based on individual drivers and operating systems.
 4. Use a vendor command apply configuration changes
 5. Optionally, rollback to a config that exists in the file system.
 
-Note: you dictate if the supplised configuration is a full config file or partial configuration
+Note: you dictate if the supplied configuration is a full config file or partial configuration
 
 ---
 
