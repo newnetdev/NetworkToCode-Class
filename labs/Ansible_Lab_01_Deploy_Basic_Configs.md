@@ -461,8 +461,9 @@ ntc@ntc:configs$
 Create 2 files that will contain the SNMP configuration - one for Cisco and one for Juniper respectively.
 
 ```
-ntc@ntc:configs$ touch junos-snmp.cfg cisco-snmp.cfg
-
+ntc@ntc:configs$ touch junos-snmp.cfg 
+ntc@ntc:configs$ touch ios-snmp.cfg
+ntc@ntc:configs$
 ```
 
 ##### Step 3
@@ -497,9 +498,11 @@ Navigate back to the `ansible` directory and touch a new playbook file.
 
 ```
 ntc@ntc:ansible$ touch snmp-config-02.yml
+ntc@ntc:ansible$
 ```
 
 ##### Step 6
+
 Open this file with a text editor and create 2 plays similar to **Task1** to deploy the changes. This time, however, we will use the source file to deploy the configuration.
 
 
