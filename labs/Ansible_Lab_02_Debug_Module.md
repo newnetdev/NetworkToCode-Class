@@ -369,9 +369,9 @@ Add a new task to the playbook to debug the `region` variable. This time, we wil
         debug:
           var: device_type  
 
-      -name: PRINT THE REGION TO THE TERMINAL
-       debug: 
-         msg: "{{ inventory_hostname }} is in the {{ region }} region"
+      - name: PRINT THE REGION TO THE TERMINAL
+        debug: 
+          msg: "{{ inventory_hostname }} is in the {{ region }} region"
 ```
 
 
