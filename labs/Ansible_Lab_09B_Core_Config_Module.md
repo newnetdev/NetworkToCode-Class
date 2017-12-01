@@ -64,13 +64,14 @@ Add the `diff_against: running` parameter to the above task.
         commands:
           - ip address 10.222.222.222 255.255.255.255
         parents:
-          - interface loopback 222
+          - interface Loopback 222
         diff_against: running
 ```
 
 ##### Step 4 
 
-Save and run the playbook as using the `--diff` flag. This will run the playbook, but not configure the device.
+Save and run the playbook as using the `--diff` flag. 
+> This will also implement the configuration on the device.
 
 ```
 
@@ -99,25 +100,7 @@ csr1                       : ok=1    changed=1    unreachable=0    failed=0
 ntc@ntc:ansible$ 
 ```
 
-Thus the `diff_against: running`, when used with a core config module, helps the operator visualize the exact change that is going to be applied to the device.
-
-##### Step 5
-If you run the playbook without the `--diff` flag, the configuration gets implemented on the device. Go ahead and run the playbook as follows:
-
-```
-ntc@ntc:ansible$ ansible-playbook -i inventory core_diff.yml 
-
-PLAY [VALIDATING INTENT ON IOS] *************************************************************************************************************
-
-TASK [ENSURE THAT LOOPBACK 222 IS CONFIGURED] ***********************************************************************************************
-changed: [csr1]
-
-PLAY RECAP **********************************************************************************************************************************
-csr1                       : ok=1    changed=1    unreachable=0    failed=0   
-
-ntc@ntc:ansible$ 
-```
-
+Thus the `diff_against: running`, when used with a core config module, helps the operator visualize the exact change that is applied to the device.
 
 ##### Step 6
 
