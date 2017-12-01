@@ -2,7 +2,7 @@
 
 In this section, we'll look at how to use multi-vendor modules to perform system level change on the device.  These modules map directly back to what we did with `pyntc` in Module 2.
 
-### Task 1 - Performating Operational Tasks with ntc-ansible Modules
+### Task 1 - Performing Operational Tasks with ntc-ansible Modules
 
 ##### Step 1
 
