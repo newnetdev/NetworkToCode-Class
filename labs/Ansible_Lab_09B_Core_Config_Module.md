@@ -102,7 +102,7 @@ ntc@ntc:ansible$
 
 Thus the `diff_against: running`, when used with a core config module, helps the operator visualize the exact change that is applied to the device.
 
-##### Step 6
+##### Step 5
 
 Add a new task to compare the running config, to the startup configuration on the CSR. Tag the task with `diff_startup`
 
@@ -139,7 +139,7 @@ Add a new task to compare the running config, to the startup configuration on th
 ```
 
 
-##### Step 7
+##### Step 6
 
 Save and run this this playbook with the `--diff` flag.
 
@@ -210,7 +210,7 @@ ntc@ntc:ansible$
 This compares the running config of the router against the configuration stored in the NVRAM.
 
 
-##### Step 8
+##### Step 7
 
 Update the first task to save the Loopback interface configuration to the device. Also tag the task as `loopback`
 
@@ -251,7 +251,7 @@ Update the first task to save the Loopback interface configuration to the device
 
 ```
 
-##### Step 9
+##### Step 8
 
 Run the playbook first using the tag loopback and then rerun the playbook using the `diff` flag, without any tag.
 
