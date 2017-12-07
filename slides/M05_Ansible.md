@@ -1134,7 +1134,64 @@ nxos-spine1                : ok=3    changed=0    unreachable=0    failed=0
 ```
 ]
 
+---
 
+# Understanding the "check" mode 
+
+* Does not make configuration changes - dry run
+* Verbose mode in combination with the `--check` flag shows the actual commands
+
+.left-column[
+.small-code[
+``` yaml
+---
+
+  - name: PLAY 1 - DEPLOYING SNMP CONFIGURATIONS ON IOS
+    hosts: ios-xe
+    connection: local
+    gather_facts: no
+
+    tasks:
+
+      - name: TASK 1 in PLAY 1 - ENSURE SNMP COMMANDS EXIST ON IOS DEVICES
+        ios_config:
+          provider:
+            host: "{{ inventory_hostname }}"
+            username: "{{ un }}"
+            password: "{{ pwd }}"
+          commands:
+            - snmp-server community ntc-course RO
+            - snmp-server community supersecret RW
+            - snmp-server location NYC_HQ_COLO
+            - snmp-server contact JOHN_SMITH
+```
+]
+]
+.right-column[
+.ubuntu[
+.small-code[
+```
+ntc@ntc:ansible$ ansible-playbook -i lab-inventory snmp-config-02.yml --check -v
+Using /etc/ansible/ansible.cfg as config file
+
+PLAY [PLAY 1 - DEPLOYING SNMP CONFIGURATIONS ON IOS] **********************************************************
+
+TASK [TASK 1 in PLAY 1 - ENSURE SNMP COMMANDS EXIST ON IOS DEVICES] *******************************************
+changed: [csr3] => {"banners": {}, "changed": true, "commands": ["snmp-server location NYC_HQ_COLO"], "failed": false, "updates": ["snmp-server location NYC_HQ_COLO"]}
+changed: [csr2] => {"banners": {}, "changed": true, "commands": ["snmp-server location NYC_HQ_COLO"], "failed": false, "updates": ["snmp-server location NYC_HQ_COLO"]}
+changed: [csr1] => {"banners": {}, "changed": true, "commands": ["snmp-server location NYC_HQ_COLO"], "failed": false, "updates": ["snmp-server location NYC_HQ_COLO"]}
+
+PLAY RECAP ****************************************************************************************************
+csr1                       : ok=1    changed=1    unreachable=0    failed=0   
+csr2                       : ok=1    changed=1    unreachable=0    failed=0   
+csr3                       : ok=1    changed=1    unreachable=0    failed=0   
+
+ntc@ntc:ansible$ 
+
+```
+]
+]
+]
 
 ---
 
@@ -3139,7 +3196,6 @@ Introduced in Ansible 2.4. Test running configuration against:
 
 
 ---
-class: ubuntu
 
 # diff_against -  startup
 
@@ -3149,7 +3205,7 @@ class: ubuntu
         provider: "{{ provider }}"
         diff_against: startup
 ```
-
+.ubuntu[
 ```
 TASK [COMPARE RUNNING CONFIG WITH STARTUP] **************************************
 --- before
@@ -3165,9 +3221,62 @@ TASK [COMPARE RUNNING CONFIG WITH STARTUP] *************************************
   ip address 10.0.0.51 255.255.255.0
 
 ```
+]
 
 ---
-class: ubuntu
+
+# The lookup plugin
+
+.left-column[
+
+Powerful Ansible plugin that is used access data from outside sources
+  * Regular text file content
+  * CSV
+  * INI
+  * DNS Lookup
+  * MongoDB and many more
+  
+Can be used to assign values to variables
+]
+
+.right-column[
+
+.small-code[
+
+``` yaml
+vars:
+  config_file: "{{ lookup('file', './backups/{{ inventory_hostname }}.cfg') }}"
+
+tasks:
+  - debug: 
+      msg: "The file name is {{ config_file }}"
+```
+
+
+.ubuntu[
+
+```
+ntc@ntc:ansible$ ansible-playbook -i inventory file_lookup_demo.yml
+
+PLAY [DEMO FILE LOOKUPS] *********************************************************************************************************
+
+TASK [debug] *********************************************************************************************************************
+ok: [csr1] => {
+    "msg": "The file name is snmp-server community PUBLIC123 RO 5\nsnmp-server community PRIVATE123 RW 95\nsnmp-server location GLOBAL\nsnmp-server contact LOCAL_ADMIN\nsnmp-server host 1.1.1.1\n\nvlan 10\n name web_servers\nvlan 20\nvlan 30\n name db_servers"
+}
+
+PLAY RECAP ***********************************************************************************************************************
+csr1                       : ok=1    changed=0    unreachable=0    failed=0   
+
+
+```
+
+]
+]
+]
+
+
+---
 
 # diff_against - intended
 
@@ -3181,6 +3290,7 @@ class: ubuntu
         provider: "{{ provider }}"
 
 ```
+.ubuntu[
 
 ```
 TASK [VALIDATE CONFIGURATION INTENT] **************************************
@@ -3198,8 +3308,12 @@ TASK [VALIDATE CONFIGURATION INTENT] **************************************
 
 ```
 
+]
+
+
+
+
 ---
-class: ubuntu
 
 # diff_against -  impending configuration lines
 
@@ -3214,6 +3328,8 @@ class: ubuntu
           - interface loopback 222
         diff_against: running
 ```
+
+.ubuntu[
 
 ```
 TASK [ENSURE THAT LOOPBACK 222 IS CONFIGURED]
@@ -3230,6 +3346,9 @@ TASK [ENSURE THAT LOOPBACK 222 IS CONFIGURED]
   ip address 10.0.0.51 255.255.255.0
 
 ```
+]
+
+**Note: This task will actually make changes to the running config!**
 
 ---
 
