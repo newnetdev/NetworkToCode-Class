@@ -3182,6 +3182,34 @@ You can pass commands into the module a few different ways:
 ]
 
 ---
+# *_config (cont'd)
+.left-column[
+The `save_when` parameter is needed to commit running config to the NVRAM. (Deprecated command `save` no longer works with Ansible 2.4 and above)
+Available options for the  save_when parameter:
+
+- always
+- modified
+- never
+
+]
+
+.right-column[
+
+``` yaml
+
+    - name: ENSURE THAT LOOPBACK 222 IS CONFIGURED
+      ios_config:
+        provider: "{{ provider }}"
+        commands:
+          - ip address 10.222.222.222 255.255.255.255
+        parents:
+          - interface loopback 222
+        save_when: modified
+```
+]
+
+
+---
 
 # The diff_against Parameter
 
@@ -3194,6 +3222,8 @@ Introduced in Ansible 2.4. Test running configuration against:
 - Pending configuration lines
     - Check exact configuration impact of config lines being pushed
 
+
+*Invoked with `--diff` flag*
 
 ---
 
@@ -5792,6 +5822,91 @@ What's needed?
 - Keep the module code small - use libs, functions, etc. to minimize change to the actual module
 
 ---
+
+class: middle
+
+# EXTRA - BONUS 
+# Using the Ansible Vault Feature
+### Ansible for Network Automation
+
+---
+class: ubuntu
+
+# Ansible Vault
+
+The Ansible Vault functionality allows the user:
+- To store sensitive data as a one-way hash on the filesystem
+- Use unencrypted data on the fly during playbook execution
+
+Typically used to store username and passwords on the control machine.
+
+```
+ntc@ntc:all$ ansible-vault create vaultfile.yml
+New Vault password: 
+Confirm New Vault password: 
+```
+
+---
+
+# Ansible Vault
+
+The unecrypted file itself, is standard `yaml` that contains structured YAML variables
+
+``` yaml
+---
+user: ntc
+pass: ntc123
+```
+
+The encrypted version of above data:
+
+```shell
+
+ntc@ntc:all$ ls
+vaultfile.yml
+ntc@ntc:all$ cat vaultfile.yml 
+$ANSIBLE_VAULT;1.1;AES256
+38353863306139626235623263313439653437646261393562323036356531336432323736646534
+3161333737316430396431313931633863646535303432660a353461636464303238353765343162
+31346366353766663063303636386265326665643331326632613536363831346364663065316462
+6365646337363838650a326563386465383662643733633930323264333065633034363338643735
+33323566656238633436623732623062313562386465666664333961386161313034
+
+```
+
+
+
+---
+class: ubuntu
+# Ansible Vault
+
+- Use the `--ask-vault-pass` flag while invoking the playbook. 
+- This will prompt you to enter the password used to encrypt the vault file.
+
+
+```
+ntc@ntc:ansible$ ansible-playbook -i inventory use_vault.yml --ask-vault-pass
+Vault password: 
+
+PLAY [USE ENCRYPTED LOGIN] *******************************************************************************************************
+
+TASK [COLLECT THE SERIAL NUMBER] ******************************************************************************************************
+ok: [csr1]
+ok: [csr2]
+ok: [csr3]
+
+....
+
+```
+
+---
+
+# Ansible Vault - Summary
+
+- Use to encrypt sensitive data on disk
+- Encrypt using the `ansible-vault` command
+- Invoke a playbook using flag `--ask-vault-pass`
+
 
 
 
