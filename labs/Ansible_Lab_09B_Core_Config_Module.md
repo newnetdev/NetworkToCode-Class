@@ -217,6 +217,7 @@ Update the first task to save the Loopback interface configuration to the device
 > Due to an open bug in [Ansible 2.4](https://github.com/ansible/ansible/issues/32619), the `save_when` will time out. As a workaround, manually login to the device and issue a `write memory` command manually.
 
 
+
 ``` yaml
 ---
 - name: VALIDATING INTENT ON IOS
