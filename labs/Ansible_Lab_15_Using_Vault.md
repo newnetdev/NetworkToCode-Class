@@ -3,7 +3,7 @@
 This lab will walk you through the Ansible Vault functionality, allowing you to store sensitive data as a one-way hash on the filesystem, that can be unecrypted on the fly during a playbook execution.
 
 
-### Task 1 - Collect the Serial Number from the CSR devices
+### Task 1 - Using vault encrypted credentials to login to devices
 
 ##### Step 1
 
@@ -21,14 +21,15 @@ ntc@ntc:group_vars$ mkdir all
 ntc@ntc:group_vars$ mv all.yml all/
 ntc@ntc:group_vars$ 
 ```
+> **IMPORTANT**: Remember that the group variables for any given inventory group can either be a file or a directory. In this exercise, rather than maintain the group variables for the "all" group within a file, we move it into a file within the "all" directory
 
 ##### Step 3
 
-Open the `group_vars/all/all.yml`  file using a text editor. Here, we will add our `un` and `pwd` variables. However, rather than assign them the value `ntc` and `ntc123`, we will point them to new variables `user` and `pass`.
+Open the `group_vars/all/all.yml`  file using a text editor. Here, we will add our `un` and `pwd` variables. However, rather than assign them the value `ntc` and `ntc123`, we will point them to new variables `vault_user` and `vault_pass`.
 
 ``` yaml
-un: "{{ user }}"
-pwd: "{{ pass }}"
+un: "{{ vault_user }}"
+pwd: "{{ vault_pass }}"
 
 provider:
   username: "{{ un }}"
@@ -37,6 +38,12 @@ provider:
 
 
 ```
+> Note: This is a level of indirection. We are pointing the variables `un` and `pwd` to 2 other variables called `vault_user` and `vault_pass`. 
+
+The "`vault`" variables will be encrypted using ansible-vault. The idea here is to help us identify the names of the variables inside the encrypted file while troubleshooting without actually revealing the username or password being used to log into the devices.
+
+> This way or "staging" the variables is an Ansible best practice and is a recommended way of storing vault encrypted variables.
+
 
 ##### Step 4
 
@@ -56,11 +63,11 @@ This will open a text editor where you can create the new variables whose data i
 
 
 ``` yaml
-user: ntc
-pass: ntc123
+vault_user: ntc
+vault_pass: ntc123
 ```
 
-Save an exit this file. Now if you try and view the `vaultfile.yml` it will contain an encrypted oneway hash of the username and password.
+Save and exit this file. Now if you try and view the `vaultfile.yml` it will contain an encrypted oneway hash of the username and password.
 
 ```
 ntc@ntc:all$ ls
@@ -113,7 +120,7 @@ provider:
 ```
 
 
-The `un` and `pwd` variables in the `all.yml` references the encrypted variables `user` and `pass` stored inside the `vaultfile.yml`
+The `un` and `pwd` variables in the `all.yml` references the encrypted variables `vault_user` and `vault_pass` stored inside the `vaultfile.yml`
 
 
 > Using a multi-stage variable like this is a best practice recommendation. This allows you to know what variables were defined inside your vault file without having to explicitly decrypting it.
