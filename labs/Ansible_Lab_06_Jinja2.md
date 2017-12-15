@@ -266,7 +266,7 @@ Add one more play to this playbook to also render the JUNOS specific commands us
 ```
 
 
-##### Step 7
+##### Step 9
 
 Now, run the playbook and validate that the configurations have been created in the `configs` directory.
 
@@ -321,12 +321,8 @@ provider:
 
 
 
+
 ##### Step 2
-
-Open the `render_snmp.yml` file using a text editor. Since we no longer need to render the configurations locally, go ahead and remove  the task from PLAY 1 and 2.
-
-
-##### Step 3
 
 Add a new task under PLAY 1, that uses the `ios_config` module to render and push the configurations.
 
@@ -340,6 +336,12 @@ Add a new task under PLAY 1, that uses the `ios_config` module to render and pus
   connection: local
 
   tasks:
+  
+    - name: GENERATE IOS SNMP CONFIGURATIONS
+      template:
+        src: 01-ios-snmp.j2
+        dest: "./configs/01_{{ inventory_hostname }}_snmp.cfg"
+
     - name: ENSURE THAT SNMP IS CONFIGURED ON AMER DEVICES
       ios_config:
         src: 01-ios-snmp.j2
@@ -349,7 +351,7 @@ Add a new task under PLAY 1, that uses the `ios_config` module to render and pus
 ```
 
 
-##### Step 4
+##### Step 3
 
 Similarly under PLAY 2, create a task that uses `junos_config` to render the template and push to the EMEA devices.
 
@@ -362,6 +364,13 @@ Similarly under PLAY 2, create a task that uses `junos_config` to render the tem
   connection: local
 
   tasks:
+
+    - name: GENERATE IOS SNMP CONFIGURATIONS
+      template:
+        src: 01-ios-snmp.j2
+        dest: "./configs/01_{{ inventory_hostname }}_snmp.cfg"
+
+  
     - name: ENSURE THAT SNMP IS CONFIGURED ON AMER DEVICES
       ios_config:
         src: 01-ios-snmp.j2
@@ -373,7 +382,13 @@ Similarly under PLAY 2, create a task that uses `junos_config` to render the tem
   connection: local
 
   tasks:
-    - name: ENSURE THAT SNMP IS CONFIGURED ON AMER DEVICES
+  
+    - name: GENERATE JUNOS SNMP CONFIGURATIONS
+      template:
+        src: 01-junos-snmp.j2
+        dest: "./configs/01_{{ inventory_hostname }}_snmp.cfg"
+  
+    - name: ENSURE THAT SNMP IS CONFIGURED ON EMEA DEVICES
       junos_config:
         src: 01-junos-snmp.j2
         provider: "{{ provider }}"
@@ -381,7 +396,7 @@ Similarly under PLAY 2, create a task that uses `junos_config` to render the tem
 ```
 
 
-##### Step 5
+##### Step 4
 
 Now run the playbook.
 
@@ -389,6 +404,11 @@ Now run the playbook.
 ntc@ntc:ansible$ ansible-playbook -i inventory render_snmp.yaml 
 
 PLAY [GENERATE SNMP CONFIGS USING JINJA2 - AMERICAS] **********************************************************************
+
+TASK [GENERATE IOS SNMP CONFIGURATIONS] ***********************************************************************************
+changed: [csr3]
+changed: [csr2]
+changed: [csr1]
 
 TASK [ENSURE THAT SNMP IS CONFIGURED ON AMER DEVICES] *******************************************************************
 changed: [csr1]
@@ -398,24 +418,30 @@ changed: [csr3]
 
 PLAY [GENERATE SNMP CONFIGS USING JINJA2 - EMEA] **************************************************************************
 
-TASK [ENSURE THAT SNMP IS CONFIGURED ON AMER DEVICES] *******************************************************************
+TASK [GENERATE JUNOS SNMP CONFIGURATIONS] *********************************************************************************
+changed: [vmx8]
+changed: [vmx7]
+changed: [vmx9]
+
+
+TASK [ENSURE THAT SNMP IS CONFIGURED ON EMEA DEVICES] *******************************************************************
 changed: [vmx7]
 changed: [vmx8]
 changed: [vmx9]
 
 PLAY RECAP **************************************************************************************************************
-csr1                       : ok=1    changed=1    unreachable=0    failed=0   
-csr2                       : ok=1    changed=0    unreachable=0    failed=0   
-csr3                       : ok=1    changed=0    unreachable=0    failed=0   
-vmx7                       : ok=1    changed=1    unreachable=0    failed=0   
-vmx8                       : ok=1    changed=0    unreachable=0    failed=0   
-vmx9                       : ok=1    changed=0    unreachable=0    failed=0   
+csr1                       : ok=2    changed=1    unreachable=0    failed=0   
+csr2                       : ok=2    changed=1    unreachable=0    failed=0   
+csr3                       : ok=2    changed=1    unreachable=0    failed=0   
+vmx7                       : ok=2    changed=1    unreachable=0    failed=0   
+vmx8                       : ok=2    changed=1    unreachable=0    failed=0   
+vmx9                       : ok=2    changed=1    unreachable=0    failed=0   
 
 ntc@ntc:ansible$ 
 
 ```
 
-##### Step 7
+##### Step 5
 
 Login to the devices to ensure that the configuration changes were implemented correctly
 
@@ -428,14 +454,14 @@ snmp-server community ntc-course RO
 snmp-server community private RW
 snmp-server community ntc-private RW
 snmp-server community public RO
-snmp-server location MILAN
+snmp-server location NYC
 snmp-server contact netops_team
 csr1#
 
 #vmx7
 
 ntc@vmx7> show configuration snmp | display set 
-set snmp location NYC
+set snmp location MILAN
 set snmp contact netops_team
 set snmp community public authorization read-only
 set snmp community ntc-course authorization read-only
