@@ -1,4 +1,4 @@
-## Lab 7 - Loops
+## Lab 6 - Loops
 
 ### Task 1 - Printing in a For Loop
 
