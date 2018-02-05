@@ -1,4 +1,4 @@
-## Lab 6 - Conditionals
+## Lab 7 - Conditionals
 
 ### Task 1 - Using the if Statement
 
