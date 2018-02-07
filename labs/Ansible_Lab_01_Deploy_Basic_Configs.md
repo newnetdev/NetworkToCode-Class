@@ -84,8 +84,6 @@ Add the following to your playbook.
 
       - name: TASK 1 in PLAY 1 - ENSURE SNMP COMMANDS EXIST ON IOS DEVICES
         ios_config:
-          provider:
-            host: "{{ inventory_hostname }}"
           commands:
             - snmp-server community ntc-course RO
             - snmp-server location NYC_HQ
@@ -100,7 +98,6 @@ In the task above, there are three SNMP commands defined.  This task will ensure
 
 Here are some other details on the task you should be aware of:
   * `ios_config` is the module name
-  * `provider` and `commands` are parameters the module supports, e.g. the parameters are passed into the module.  
   * Technically `lines` is the parameter and `commands` is an alias for `lines` since they are just "lines" within a config file.
   * Take note of the data type of each parameter.  `provider` is a dictionary - you can see this based on the indentation.  `commands` is a list as can be inferred from the hyphens in YAML.
   * `name` is an optional task attribute that maps to arbitrary text that is displayed when you run the playbook providing context on where in the playbook execution you are.  You'll see this in the next step!
@@ -200,8 +197,6 @@ Add a _second_ play to the playbook using the `junos_config` module to configure
 
       - name: TASK 1 in PLAY 2 - ENSURE SNMP COMMANDS EXIST ON JUNOS DEVICES
         junos_config:
-          provider:
-            host: "{{ inventory_hostname }}"
           lines:
             - set snmp community public authorization read-only
             - set snmp location NYC_HQ
@@ -222,8 +217,6 @@ After adding this new play, the full playbook will look like this:
 
       - name: TASK 1 in PLAY 1 - ENSURE SNMP COMMANDS EXIST ON IOS DEVICES
         ios_config:
-          provider:
-            host: "{{ inventory_hostname }}"
           commands:
             - snmp-server community ntc-course RO
             - snmp-server location NYC_HQ
@@ -238,8 +231,6 @@ After adding this new play, the full playbook will look like this:
 
       - name: TASK 1 in PLAY 2 - ENSURE SNMP COMMANDS EXIST ON JUNOS DEVICES
         junos_config:
-          provider:
-            host: "{{ inventory_hostname }}"
           lines:
             - set snmp community public authorization read-only
             - set snmp location NYC_HQ
@@ -324,13 +315,58 @@ You probably don't want to enter your credentials every time you run a playbook.
 
 While not recommended for production, the next for learning Ansible, is to put your credentials in your playbook.
 
-Update the `provider` parameter in both tasks to the following:
+Create a `provider` parameter in both tasks.  It is a dictionary that will be used to pass in the required credentials.  Note: `provider` is a dictionary and `username` and `password` are keys in that dictionary.
 
 ```yaml
           provider:
             host: "{{ inventory_hostname }}"
             username: ntc
             password: ntc123
+```
+
+> Note: `host` is technically optional, but is still used for some modules, so for uniformity, we can recommend using it still when using provider.
+
+After updating the playook, you will have the following tasks with `provider` being used in each.
+
+
+```yaml
+---
+
+  - name: PLAY 1 - DEPLOYING SNMP CONFIGURATIONS ON IOS
+    hosts: ios-xe
+    connection: local
+    gather_facts: no
+
+    tasks:
+
+      - name: TASK 1 in PLAY 1 - ENSURE SNMP COMMANDS EXIST ON IOS DEVICES
+        ios_config:
+          provider:
+            host: "{{ inventory_hostname }}"
+            username: ntc
+            password: ntc123
+          commands:
+            - snmp-server community ntc-course RO
+            - snmp-server location NYC_HQ
+            - snmp-server contact JOHN_SMITH
+
+  - name: PLAY 2 - DEPLOYING SNMP CONFIGURATIONS ON JUNOS
+    hosts: junos
+    connection: local
+    gather_facts: no
+
+    tasks:
+
+      - name: TASK 1 in PLAY 2 - ENSURE SNMP COMMANDS EXIST ON JUNOS DEVICES
+        junos_config:
+          provider:
+            host: "{{ inventory_hostname }}"
+            username: ntc
+            password: ntc123
+          lines:
+            - set snmp community public authorization read-only
+            - set snmp location NYC_HQ
+            - set snmp contact JOHN_SMITH
 ```
 
 
