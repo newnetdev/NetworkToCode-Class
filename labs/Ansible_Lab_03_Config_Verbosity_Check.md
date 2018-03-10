@@ -6,13 +6,14 @@ This lab builds on the first lab you did with sending SNMP configurations to net
 
 ##### Step 1
 
-Copy your original playbook called `snmp-config-01.yml` to `snmp-config-02.yml`.
+Copy your original playbook called `snmp-config-01.yml` to `snmp-config-03.yml`
 
 ```
-ntc@ntc:ansible$ cp snmp-config-01.yml snmp-config-02.yml
+ntc@ntc:ansible$ cp snmp-config-01.yml snmp-config-03.yml
 ntc@ntc:ansible$
 ```
 
+> Note: the `cp` command copies a file in Linux.
 
 ##### Step 2
 
@@ -28,7 +29,7 @@ Remove the second play (Junos), so you're left with the following in your playbo
 ---
 
   - name: PLAY 1 - DEPLOYING SNMP CONFIGURATIONS ON IOS
-    hosts: ios-xe
+    hosts: iosxe
     connection: local
     gather_facts: no
 
@@ -37,9 +38,6 @@ Remove the second play (Junos), so you're left with the following in your playbo
       - name: TASK 1 in PLAY 1 - ENSURE SNMP COMMANDS EXIST ON IOS DEVICES
         ios_config:
           provider:
-            host: "{{ inventory_hostname }}"
-            username: "{{ un }}"
-            password: "{{ pwd }}"
           commands:
             - snmp-server community ntc-course RO
             - snmp-server location NYC_HQ
@@ -52,7 +50,7 @@ Remove the second play (Junos), so you're left with the following in your playbo
 Verify the playbook is still functional (syntax, spacing) by executing the playbook.
 
 ```
-ntc@ntc:ansible$ ansible-playbook -i lab-inventory snmp-config-02.yml 
+ntc@ntc:ansible$ ansible-playbook -i inventory snmp-config-03.yml 
 
 # output omitted
 ```
@@ -78,11 +76,12 @@ Execute the playbook, but this time use the `-v` flag.  This will run the playbo
 > Note: every module returns JSON data and you can view that data by running the playbook in verbose mode.  You can add more levels of verbosity using doing `-vv`, `-vvv`, etc. up to 5 v's.
 
 
-The core `<os>_config` modules will return the commands being sent to the device when running the playbook in verbose mode.  Let's take a look:
+The core `<os>_config` modules will return the commands being sent to the device when running the playbook in verbose mode.  
 
+Let's take a look:
 
 ```
-ntc@ntc:ansible$ ansible-playbook -i lab-inventory snmp-config-02.yml -v
+ntc@ntc:ansible$ ansible-playbook -i inventory snmp-config-03.yml -v
 Using /etc/ansible/ansible.cfg as config file
 
 PLAY [PLAY 1 - DEPLOYING SNMP CONFIGURATIONS ON IOS] **********************************************************
@@ -108,7 +107,7 @@ This is telling us that Ansible is only sending ONE command to the device -- Ans
 Re-run the playbook once more verifying idempotency, e.g. no changes should be made.
 
 ```
-ntc@ntc:ansible$ ansible-playbook -i lab-inventory snmp-config-02.yml -v
+ntc@ntc:ansible$ ansible-playbook -i inventory snmp-config-03.yml -v
 Using /etc/ansible/ansible.cfg as config file
 
 PLAY [PLAY 1 - DEPLOYING SNMP CONFIGURATIONS ON IOS] **********************************************************
@@ -128,11 +127,11 @@ As you can see no commands were sent to the devices.
 
 ### Task 2 - Using Check Mode with Verbosity
 
-You've now seen how to see what commands Ansible is sending to the devices.  What if you want to see what Ansible _will do_? Luckily, Ansible supports a "dry run" or "check mode" to see what commands _would_ get sent if the playbook is run.  This is actually called **check mode** and you use the `-C` or `--check` flags on the command line to use check mode.
+You've now seen how to see what commands Ansible is sending to the devices.  What if you want to see what Ansible _will do_? Luckily, Ansible supports a "dry run" or "check mode" to see what commands _would_ get sent if the playbook is run.  This is called **check mode** and you use the `-C` or `--check` flags on the command line to use check mode.
 
 ##### Step 1
 
-Change the SNMP command for location to be NYC_HQ_COLO
+Change the SNMP command for location to be "NYC_HQ_COLO"
 
 ```yaml
 - snmp-server location NYC_HQ_COLO
@@ -144,7 +143,7 @@ So that the complete playbook looks like this:
 ---
 
   - name: PLAY 1 - DEPLOYING SNMP CONFIGURATIONS ON IOS
-    hosts: ios-xe
+    hosts: iosxe
     connection: local
     gather_facts: no
 
@@ -152,10 +151,6 @@ So that the complete playbook looks like this:
 
       - name: TASK 1 in PLAY 1 - ENSURE SNMP COMMANDS EXIST ON IOS DEVICES
         ios_config:
-          provider:
-            host: "{{ inventory_hostname }}"
-            username: "{{ un }}"
-            password: "{{ pwd }}"
           commands:
             - snmp-server community ntc-course RO
             - snmp-server community supersecret RW
@@ -170,7 +165,7 @@ So that the complete playbook looks like this:
 Execute the playbook just with the "check mode" flag set:
 
 ```
-ntc@ntc:ansible$ ansible-playbook -i lab-inventory snmp-config-02.yml --check
+ntc@ntc:ansible$ ansible-playbook -i inventory snmp-config-03.yml --check
 
 PLAY [PLAY 1 - DEPLOYING SNMP CONFIGURATIONS ON IOS] **********************************************************
 
@@ -218,7 +213,7 @@ Let's try it.
 Run the playbook with check mode and verbose mode.
 
 ```
-ntc@ntc:ansible$ ansible-playbook -i lab-inventory snmp-config-02.yml --check -v
+ntc@ntc:ansible$ ansible-playbook -i inventory snmp-config-03.yml --check -v
 Using /etc/ansible/ansible.cfg as config file
 
 PLAY [PLAY 1 - DEPLOYING SNMP CONFIGURATIONS ON IOS] **********************************************************
@@ -243,7 +238,7 @@ You now know which commands are going to get sent to the device.  This is super-
 Now that you, as a network engineer, "approved" the commands that will get sent to the device, you can remove check mode (feel free to keep verbose mode).
 
 ```
-ntc@ntc:ansible$ ansible-playbook -i lab-inventory snmp-config-02.yml -v        
+ntc@ntc:ansible$ ansible-playbook -i inventory snmp-config-03.yml -v        
 Using /etc/ansible/ansible.cfg as config file
 
 PLAY [PLAY 1 - DEPLOYING SNMP CONFIGURATIONS ON IOS] **********************************************************
@@ -266,7 +261,7 @@ ntc@ntc:ansible$
 Finally, run the playbook one more time for verifying idempotency.
 
 ```
-ntc@ntc:ansible$ ansible-playbook -i lab-inventory snmp-config-02.yml -v
+ntc@ntc:ansible$ ansible-playbook -i inventory snmp-config-03.yml -v
 Using /etc/ansible/ansible.cfg as config file
 
 PLAY [PLAY 1 - DEPLOYING SNMP CONFIGURATIONS ON IOS] **********************************************************
@@ -282,4 +277,7 @@ csr2                       : ok=1    changed=0    unreachable=0    failed=0
 csr3                       : ok=1    changed=0    unreachable=0    failed=0   
 
 ntc@ntc:ansible$
+```
+
+Nice work.
 

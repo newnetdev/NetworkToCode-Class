@@ -1,0 +1,21 @@
+  - name: DUMP COMMAND OUTPUTS TO FILE
+    hosts: iosxe
+    connection: local
+    gather_facts: no
+    tags: ios
+
+    tasks:
+
+      - name: ISSUE SHOW COMMANDS
+        ios_command:
+          commands:
+            - show version 
+            - show ip interface brief
+            - show interface Gi1
+            - show run | inc route
+        register: config_data
+
+      - name: SAVE OUTPUTS TO SINGLE FILE
+        template: 
+          src: multi-command-copy.j2
+          dest: ./command-outputs/{{ inventory_hostname}}-show_commands.txt

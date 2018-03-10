@@ -1,0 +1,35 @@
+---
+
+  - name: PLAY 1 - BUILD CONFIGS
+    hosts: iosxe,nxos
+    connection: local
+    gather_facts: no
+
+    tasks:
+
+      - name: BUILD CONFIGS
+        template: 
+          src: interfaces.j2
+          dest: ./configs/{{ inventory_hostname }}.cfg
+
+  - name: PLAY 2 - DEPLOY IOS
+    hosts: iosxe
+    connection: local
+    gather_facts: no
+
+    tasks:
+
+      - name: DEPLOY CONFIGURATION
+        ios_config:
+          src: ./configs/{{ inventory_hostname }}.cfg
+
+  - name: PLAY 3 - DEPLOY NXOS
+    hosts: nxos
+    connection: local
+    gather_facts: no
+
+    tasks:
+
+      - name: DEPLOY CONFIGURATION
+        nxos_config:
+          src: ./configs/{{ inventory_hostname }}.cfg
