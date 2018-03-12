@@ -24,7 +24,7 @@
 - [Lab 20 - Passing in User Input](labs/Lab_20_User_Input.md)
 - [Lab 21 - Exploring NX-API & eAPI ](labs/Lab_21_Exploring_eAPI_NXAPI.md)
 - [Lab 22 - Using Postman with IOS-XE RESTful API](labs/Lab_22_Postman_RESTCONF.md)
-- [Lab 23 - BONUS: Using Python requests for HTTP APIs ](labs/Lab_23_Python_requests.md)
+- [Lab 23 - Using Python requests for HTTP APIs ](labs/Lab_23_Python_requests.md)
 - [Lab 24 - BONUS: Getting Started with NAPALM](labs/Lab_24_NAPALM.md)
 
 
