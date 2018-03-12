@@ -6,7 +6,7 @@ In this lab, you will still deploy the generated configuration for SNMP to an en
 
 ##### Step 1
 
-The following was the solution from Lab 19.  Use the following code and save it into a new script called `interactive.py` in your `scripts` directory:
+Use the following code and save it into a new script called `interactive.py` in your `scripts` directory:
 
 > Ensure you have `/home/ntc/scripts/configs/snmp.cfg` as that will be deployed again in this lab.
 
@@ -24,7 +24,7 @@ def connect_to_device(hostname):
 def deploy_commands(device, hostname, config_file):
     print("Sending commands from file | {}".format(hostname))
     device.send_config_from_file(config_file)
-    
+
 def print_logger(message, hostname):
     print("{} | {}".format(message, hostname))
 
@@ -32,7 +32,7 @@ def main():
     devices = ['csr1', 'csr2', 'csr3']
 
     config_file = './configs/snmp.cfg'
-    
+
     for device in devices:
         net_device = connect_to_device(device)
 
@@ -47,7 +47,7 @@ if __name__ == "__main__":
 
 ##### Step 2
 
-Make two main changes the script.  
+Make two main changes the script.
 
 * Remove the for loop
 * Define the device to automate, credentials, and device type under `if __name__ == "__main__":` and pass them into `main()`.  Once you're passing them into `main()`, continue to pass them into `connect_to_device()` and use those parameter to connect to a device.
@@ -68,13 +68,13 @@ def connect_to_device(hostname, username, password, device_type):
 def deploy_commands(device, hostname, config_file):
     print("Sending commands from file | {}".format(hostname))
     device.send_config_from_file(config_file)
-    
+
 def print_logger(message, hostname):
     print("{} | {}".format(message, hostname))
 
 def main(device, username, password, device_type):
     config_file = './configs/snmp.cfg'
-    
+
     net_device = connect_to_device(device, username, password, device_type)
 
     deploy_commands(net_device, device, config_file)
@@ -184,7 +184,7 @@ You will replace them with the following:
     parser.add_argument('-p', '--password', help='Enter the password',
                         required=True)
 
-    # parse all args and render 
+    # parse all args and render
     args = parser.parse_args()
 
     device = args.ip
@@ -234,7 +234,7 @@ optional arguments:
 Finally, execute the script with all required inputs.
 
 ```
-ntc@ntc:scripts$ python user-flags.py -i csr1 -d cisco_ios -u ntc -p ntc123 
+ntc@ntc:scripts$ python user-flags.py -i csr1 -d cisco_ios -u ntc -p ntc123
 # output omitted
 ```
 
@@ -244,7 +244,7 @@ In this lab you have successfully used 2 ways to create a modular python script 
 
 ### Task 3 - Using sys.argv
 
-This task shows the quickest way to get started working with command line arguments.  While `argparse` is recommended for more user-friendly scripts, you may want to use `sys.argv` for a quick and easy to pass in args into a script. 
+This task shows the quickest way to get started working with command line arguments.  While `argparse` is recommended for more user-friendly scripts, you may want to use `sys.argv` for a quick and easy to pass in args into a script.
 
 This task shows how to get started with `sys.argv`
 
@@ -254,7 +254,7 @@ Create a new script called `basic_args.py` in the `scripts` directory.
 
 ##### Step 2
 
-In the script, `import sys`.  
+In the script, `import sys`.
 
 Add a print statement that says "HERE ARE MY ARGUMENTS: "
 
@@ -337,36 +337,36 @@ cisco
 
 As you can see, using the `sys` module with the `argv` variable, it is quite fast and easy to pass in arguments from the command line.
 
-One other trick is to use indexing with lists to only ever print everything BUT the first element.  
+One other trick is to use indexing with lists to only ever print everything BUT the first element.
 
 > You can use `[1:]` to access the list starting at index 1.  You can also do `[1:<ending index #>` too.
-> 
+>
 
 Take a look:
 
 ```python
 >>> args = ['basic_args.py', 'cisco', 'arista', 'juniper']
->>> 
+>>>
 >>> args[1:]
 ['cisco', 'arista', 'juniper']
->>> 
->>> 
+>>>
+>>>
 >>> limited = args[1:]
->>> 
+>>>
 >>> if limited:
 ...   'args were passed in'
-... 
+...
 'args were passed in'
->>> 
->>> 
+>>>
+>>>
 >>> args = ['basic_args.py']
->>> 
+>>>
 >>> limited = args[1:]
->>> 
+>>>
 >>> if limited:
 ...   'args were passed in'
-... 
->>> 
+...
+>>>
 ```
 
 

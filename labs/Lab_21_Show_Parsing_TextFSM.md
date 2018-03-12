@@ -8,7 +8,7 @@ As you've learned, TextFSM requires two inputs: a template (parser) and raw text
 
 ##### Step 1
 
-Capture the text output that will be used for testing the template.  
+Capture the text output that will be used for testing the template.
 
 > NOTE: these steps are exactly the same no matter what OS is running on the device from IOS to NXOS, EOS, JunOS, etc.
 
@@ -43,10 +43,10 @@ For this lab, we will define the *needs*, i.e. which values are important to ext
 
 ##### Step 3
 
-Determine the regular expression specifically for each piece of data we want to extract. The information structure we want to extract is always the same regardless of the interface type. For example, considering the first interface we will want to parse the following values:  
+Determine the regular expression specifically for each piece of data we want to extract. The information structure we want to extract is always the same regardless of the interface type. For example, considering the first interface we will want to parse the following values:
 
 INTERFACE = Vlan10
-IP = 10.20.10.1  
+IP = 10.20.10.1
 PROTOCOL = down
 STATUS = down
 ADMIN = down
@@ -105,7 +105,7 @@ Few points to note about the template:
 
 **It must begin with `Value` <value-name-that-you-define> (<regex for just the data being extracted>)**
 
-The RegEx created in Step 3 gets enclosed in parentheses right next to what will become the "header" name for that specific column (and Python dictionary key for that specific value).  "Value" denotes the data that will be extracted from the raw text.  The Value lines must all appear before any state definitions and must be contiguous lines, separated only by comments. 
+The RegEx created in Step 3 gets enclosed in parentheses right next to what will become the "header" name for that specific column (and Python dictionary key for that specific value).  "Value" denotes the data that will be extracted from the raw text.  The Value lines must all appear before any state definitions and must be contiguous lines, separated only by comments.
 
 **You must include the "Start" state and it must use a capital "S"**
 
@@ -199,7 +199,7 @@ Save the updated template.
 Re-run the textfsm.py script.
 
 ```bash
-ntc@ntc:~/textfsm$ python textfsm.py cisco_nxos_show_ip_interface_brief.template cisco_nxos_show_ip_interface_brief.raw 
+ntc@ntc:~/textfsm$ python textfsm.py cisco_nxos_show_ip_interface_brief.template cisco_nxos_show_ip_interface_brief.raw
 FSM Template:
 Value INTERFACE (\S+)
 Value IP (\d+\.\d+\.\d+\.\d+)
@@ -278,7 +278,7 @@ if __name__ == "__main__":
 
     template = TEMPLATES_PATH + 'cisco_ios_show_ip_int_brief.template'
     table = textfsm.TextFSM(open(template))
-    
+
     print "-" * 10
     print "ALL HEADER (KEYS) from TextFSM Values:"
     print table.header
@@ -308,7 +308,7 @@ if __name__ == "__main__":
 
 The previous step created a template for the Nexus `show ip int brief`.
 
-Now simply review a template that parses `show ip int brief` that does exactly what you did in Task 2 in Lab 28.
+Now simply review a template that parses `show ip int brief`.
 
 ```
 Value INTF (\S+)
@@ -331,52 +331,52 @@ This is a list of commands / templates of common commands.
 
 For an exact list of commands supported, navigate [here](https://github.com/networktocode/ntc-templates/templates)
 
-* arista_eos_show_clock.template                 
-* cisco_ios_show_ip_arp.template             
+* arista_eos_show_clock.template
+* cisco_ios_show_ip_arp.template
 * cisco_nxos_show_flogi_database.template
-* arista_eos_show_interfaces_status.template     
-* cisco_ios_show_ip_bgp_summary.template     
+* arista_eos_show_interfaces_status.template
+* cisco_ios_show_ip_bgp_summary.template
 * cisco_nxos_show_interface_brief.template
-* arista_eos_show_ip_access-lists.template       
-* cisco_ios_show_ip_bgp.template             
+* arista_eos_show_ip_access-lists.template
+* cisco_ios_show_ip_bgp.template
 * cisco_nxos_show_interface_status.template
-* arista_eos_show_ip_arp.template                
-* cisco_ios_show_ip_int_brief.template       
+* arista_eos_show_ip_arp.template
+* cisco_ios_show_ip_int_brief.template
 * cisco_nxos_show_inventory.template
-* arista_eos_show_ip_interface_brief.template    
-* cisco_ios_show_ip_ospf_neighbor.template   
+* arista_eos_show_ip_interface_brief.template
+* cisco_ios_show_ip_ospf_neighbor.template
 * cisco_nxos_show_ip_arp_detail.template
-* arista_eos_show_lldp_neighbors.template        
-* cisco_ios_show_ip_route.template           
+* arista_eos_show_lldp_neighbors.template
+* cisco_ios_show_ip_route.template
 * cisco_nxos_show_ip_ospf_neighbor_vrf.template
-* arista_eos_show_mlag.template                  
-* cisco_ios_show_lldp_neighbors.template     
+* arista_eos_show_mlag.template
+* cisco_ios_show_lldp_neighbors.template
 * cisco_nxos_show_ip_route.template
-* arista_eos_show_snmp_community.template        
-* cisco_ios_show_mac-address-table.template  
+* arista_eos_show_snmp_community.template
+* cisco_ios_show_mac-address-table.template
 * cisco_nxos_show_lldp_neighbors.template
-* arista_eos_show_vlan.template                  
-* cisco_ios_show_snmp_community.template     
+* arista_eos_show_vlan.template
+* cisco_ios_show_snmp_community.template
 * cisco_nxos_show_mac_address-table.template
-* cisco_ios_show_access-list.template            
-* cisco_ios_show_spanning-tree.template      
+* cisco_ios_show_access-list.template
+* cisco_ios_show_spanning-tree.template
 * cisco_nxos_show_port-channel_summary.template
-* cisco_ios_show_cdp_neighbors.template          
-* cisco_ios_show_standby_brief.template      
+* cisco_ios_show_cdp_neighbors.template
+* cisco_ios_show_standby_brief.template
 * cisco_nxos_show_version.template
-* cisco_ios_show_clock.template                  
-* cisco_ios_show_vtp_status.template         
+* cisco_ios_show_clock.template
+* cisco_ios_show_vtp_status.template
 * cisco_nxos_show_vlan.template
-* cisco_ios_show_interfaces_status.template      
-* cisco_nxos_show_access-lists.template      
+* cisco_ios_show_interfaces_status.template
+* cisco_nxos_show_access-lists.template
 * cisco_nxos_show_vpc.template
-* cisco_ios_show_interfaces.template             
-* cisco_nxos_show_cdp_neighbors.template     
+* cisco_ios_show_interfaces.template
+* cisco_nxos_show_cdp_neighbors.template
 * cisco_wlc_ssh_show_sysinfo.template
-* cisco_ios_show_interface_transceiver.template  
-* cisco_nxos_show_clock.template             
+* cisco_ios_show_interface_transceiver.template
+* cisco_nxos_show_clock.template
 * hp_comware_display_vlan_brief.template
-* cisco_ios_show_inventory.template              
+* cisco_ios_show_inventory.template
 * cisco_nxos_show_feature.template
 * View online for more templates
 

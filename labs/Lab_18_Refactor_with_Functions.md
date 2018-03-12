@@ -1,12 +1,12 @@
 ## Lab 18 - Re-factoring Code with Functions
 
-In the last lab, you learned how to use functions and even created a small functions that connects to devices using Netmiko.  You'll use that knowledge now to re-factor and modularize the two previously re-factored and added loopt to in Lab 17.
+In the last lab, you learned how to use functions and even created a small functions that connects to devices using Netmiko.  You'll use that knowledge now to re-factor and modularize the two scripts.
 
-### Task 1 - Updating the Backup Script
+### Task 1 - Modularize the Backup Script
 
 ##### Step 1
 
-The solution for the first task in **Lab 17**, which was called `backupv2.py` looked like this:
+We will begin with a backup script that looks like this:
 
 ```python
 #! /usr/bin/env python
@@ -15,7 +15,7 @@ from netmiko import ConnectHandler
 
 devices = ['csr1', 'csr2', 'csr3']
 
-for device in devices: 
+for device in devices:
     print("Connecting to device | {}".format(device))
 
     net_device = ConnectHandler(host=device, username='ntc', password='ntc123', device_type='cisco_ios')
@@ -57,7 +57,7 @@ from netmiko import ConnectHandler
 def main():
     devices = ['csr1', 'csr2', 'csr3']
 
-    for device in devices: 
+    for device in devices:
         print("Connecting to device | {}".format(device))
 
         net_device = ConnectHandler(host=device, username='ntc', password='ntc123', device_type='cisco_ios')
@@ -113,7 +113,7 @@ def connect_to_device(hostname):
 def main():
     devices = ['csr1', 'csr2', 'csr3']
 
-    for device in devices: 
+    for device in devices:
 
         net_device = connect_to_device(device)
 
@@ -166,7 +166,7 @@ def write_to_file():
 def main():
     devices = ['csr1', 'csr2', 'csr3']
 
-    for device in devices: 
+    for device in devices:
         net_device = connect_to_device(device)
 
         save_config(net_device, device)
@@ -204,7 +204,7 @@ The associated `main()` function would need to be changed to the following too:
 def main():
     devices = ['csr1', 'csr2', 'csr3']
 
-    for device in devices: 
+    for device in devices:
         net_device = connect_to_device(device)
         save_config(net_device, device)
 
@@ -261,15 +261,15 @@ def write_to_file(hostname, show_run):
 def main():
     devices = ['csr1', 'csr2', 'csr3']
 
-    for device in devices: 
+    for device in devices:
         net_device = connect_to_device(device)
 
         save_config(net_device, device)
-        
+
         config = backup_config(net_device, device)
-        
+
         write_to_file(device, config)
-        
+
         net_device.disconnect()
 
 main()
@@ -278,11 +278,11 @@ main()
 As you can tell, this code is much more modular and you can now re-use these functions as you need too, for example, if you need to do another save or backup somewhere else in the script.
 
 
-### Task 2 - Updating the SNMP Deploy
+### Task 2 - Modularize the SNMP Deploy
 
 ##### Step 1
 
-The solution for the second task of **Lab 17**, which was called `deploy-snmpv2.py` looked like this:
+Now we will modularixe an SNMP Deploy script.  The starting script looks like this:
 
 ```python
 from netmiko import ConnectHandler
@@ -305,7 +305,7 @@ for device in devices:
 Re-factor this script including the following functions:
   * `main()` - to act as the main program
   * `connect_to_device()` - same as last Task
-  * `deploy_commands` - which will send the commands from the file 
+  * `deploy_commands` - which will send the commands from the file
 
 Scroll for the solution.
 
@@ -375,10 +375,10 @@ def connect_to_device(hostname):
 def deploy_commands(device, hostname):
     print("Sending commands from file | {}".format(hostname))
     device.send_config_from_file("./configs/snmp.cfg")
-    
+
 def main():
     devices = ['csr1', 'csr2', 'csr3']
-    
+
     for device in devices:
         net_device = connect_to_device(device)
 
@@ -407,12 +407,12 @@ def connect_to_device(hostname):
 def deploy_commands(device, hostname, config_file):
     print("Sending commands from file | {}".format(hostname))
     device.send_config_from_file(config_file)
-    
+
 def main():
     devices = ['csr1', 'csr2', 'csr3']
 
     config_file = './configs/snmp.cfg'
-    
+
     for device in devices:
         net_device = connect_to_device(device)
 
@@ -444,7 +444,7 @@ def connect_to_device(hostname):
 def deploy_commands(device, hostname, config_file):
     print("Sending commands from file | {}".format(hostname))
     device.send_config_from_file(config_file)
-    
+
 def print_logger(message, hostname):
     print("{} | {}".format(message, hostname))
 
@@ -452,7 +452,7 @@ def main():
     devices = ['csr1', 'csr2', 'csr3']
 
     config_file = './configs/snmp.cfg'
-    
+
     for device in devices:
         net_device = connect_to_device(device)
 

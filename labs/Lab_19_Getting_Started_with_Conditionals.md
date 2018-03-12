@@ -4,16 +4,18 @@ This lab walks you through an introduction of using conditionals allowing you to
 
 ### Task 1 - Introduction to the if Statement
 
-We've already reviewed boolean expressions, so you already know how to build if statements.  Remember in Lab 6, Working with Booleans, we 
+We've already reviewed boolean expressions, so you already know how to build if statements.
+
+Examples:
 
 ```python
 >>> hostname != 'nxos-spine2'
-True 
+True
 >>>
 ```
 
 ```python
->>> "eth" in "Ethernet2/4" 
+>>> "eth" in "Ethernet2/4"
 False
 >>>
 ```
@@ -26,7 +28,7 @@ True
 
 ```python
 >>> vendor = ""
->>> 
+>>>
 ```
 
 Perform the same boolean check:
@@ -34,12 +36,12 @@ Perform the same boolean check:
 ```python
 >>> bool(vendor)
 False
->>> 
+>>>
 ```
 
 ```python
 >>> vendors = ['cisco']
->>> 
+>>>
 >>> bool(vendors)
 True
 >>>
@@ -52,13 +54,13 @@ Each of the expressions can easily be used in an `if` statement.
 Try the following examples that map what was done previously:
 
 ```python
->>> hostname = "nxos-spine1"    
->>> 
+>>> hostname = "nxos-spine1"
+>>>
 >>> if hostname == "nxos-spine1":
 ...     print("The hostname is correct.")
-... 
+...
 The hostname is correct.
->>> 
+>>>
 ```
 
 Notice how the only changes were adding the `if` statement, the trailing `:` colon, and then the code to execute if the expression is true.
@@ -67,12 +69,12 @@ Notice how the only changes were adding the `if` statement, the trailing `:` col
 
 ```python
 >>> platforms = ['nexus', 'catalyst', 'asa', 'csr', 'aci']
->>> 
+>>>
 >>> if 'catalyst' in platforms:
 ...     print("Catalyst has been found in the network.")
-... 
+...
 Catalyst has been found in the network.
->>> 
+>>>
 ```
 
 ##### Step 3
@@ -83,12 +85,12 @@ Determine which of the `platforms` are _supported platforms_ using a combination
 
 ```python
 >>> supported_platforms = ['nexus', 'catalyst']
->>> 
+>>>
 >>> for platform in platforms:
 ...     if platform in supported_platforms:
 ...         print("Platform {}  -- SUPPORTED".format(platform))
-...     
-... 
+...
+...
 Platform nexus  -- SUPPORTED
 Platform catalyst  -- SUPPORTED
 >>>
@@ -99,12 +101,12 @@ Platform catalyst  -- SUPPORTED
 Add an `else` statement to the previous example printing an equivalent statement so we can see even the invalid platforms.
 
 ```python
->>> for platform in platforms:                                 
-...     if platform in supported_platforms:                    
+>>> for platform in platforms:
+...     if platform in supported_platforms:
 ...         print("Platform {}  -- SUPPORTED".format(platform))
 ...     else:
 ...         print("Platform {}  -- NOT SUPPORTED".format(platform))
-... 
+...
 Platform nexus  -- SUPPORTED
 Platform catalyst  -- SUPPORTED
 Platform asa  -- NOT SUPPORTED
@@ -131,12 +133,12 @@ Pretty print it to make sure you understand it's data type.
 Print ONLY the VLAN name for VLAN 20.  Assume there are 100s of VLANs in this list and you don't know the VLANs index value.
 
 ```python
->>> for item in vlans:                                
-...     if item['id'] == 20:                          
+>>> for item in vlans:
+...     if item['id'] == 20:
 ...         print("VLAN NAME: {}".format(item['name']))
-... 
+...
 VLAN NAME: app
->>> 
+>>>
 ```
 
 
@@ -145,19 +147,19 @@ VLAN NAME: app
 Generate and print all required Cisco IOS commands to configure the list of desired VLANs:
 
 ```python
->>> for item in vlans:                
-...   vlan_id = item['id']            
-...   name = item['name']             
+>>> for item in vlans:
+...   vlan_id = item['id']
+...   name = item['name']
 ...   print("vlan {}".format(vlan_id))
-...   print(" name {}".format(name))   
-... 
+...   print(" name {}".format(name))
+...
 vlan 10
  name web
 vlan 20
  name app
 vlan 30
  name db
->>> 
+>>>
 ```
 
 ##### Step 7
@@ -167,7 +169,7 @@ Remove the VLAN name for VLAN 20.
 ```python
 >>> vlans[1].pop('name')
 'app'
->>> 
+>>>
 ```
 
 ##### Step 8
@@ -213,26 +215,26 @@ Does it work?
 
 When you use the `[]` notation it assumes the key is going to be there and if it's not (like for VLAN 20), a `KeyError` is raised.
 
-However, we did cover in the booleans lab AND the dictionary lab a method we can use to overcome this.
+However, we did cover in the booleans section AND the dictionary section a method we can use to overcome this.
 
 ALWAYS, if a dictionary key may not exist, do NOT use the notation like `dict['key']`.  Instead, you should use `dict.get('key')`
 
 Once you extract a value using `get`, you can perform a conditional check on it to see if it has a value assigned.  For reference scroll up and look at the examples before Step 1.
 
 ```python
->>> for item in vlans:                
-...   vlan_id = item['id']            
+>>> for item in vlans:
+...   vlan_id = item['id']
 ...   name = item.get('name')
 ...   print("vlan {}".format(vlan_id))
 ...   if name:
 ...     print(" name {}".format(name))
-... 
+...
 vlan 10
  name web
 vlan 20
 vlan 30
  name db
->>> 
+>>>
 ```
 
 See what happened here?  Since `get` returns `None` if the key doesn't exist, it's easy to use in an `if` statement to see if a value was in fact returned.
@@ -268,13 +270,13 @@ Make sure to use the `elif` statement in this example.
 ...         print("Vendor is Juniper")
 ...     else:
 ...         print("Unknown Vendor")
-... 
+...
 Vendor is Cisco
 Vendor is Cisco
 Vendor is Juniper
 Vendor is Juniper
 Unknown Vendor
->>> 
+>>>
 ```
 
 There are a few ways to handle this and we're showing two in this example.  You can check each platform separately as shown with Cisco or check them on the same line as shown with Juniper using an _or_ statement.
@@ -286,7 +288,7 @@ There is another way too if we pre-build a known platforms list per vendor.
 ```python
 >>> cisco_platforms = ['catalyst', 'nexus', 'aci']
 >>> juniper_platforms = ['mx', 'srx']
->>> 
+>>>
 >>> for item in devices:
 ...     platform = item.get('platform')
 ...     if platform in cisco_platforms:
@@ -295,13 +297,13 @@ There is another way too if we pre-build a known platforms list per vendor.
 ...         print("Vendor is Juniper")
 ...     else:
 ...         print("Unknown Vendor")
-... 
+...
 Vendor is Cisco
 Vendor is Cisco
 Vendor is Juniper
 Vendor is Juniper
 Unknown Vendor
->>> 
+>>>
 ```
 
 

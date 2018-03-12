@@ -10,7 +10,7 @@ Create a new variable called `is_layer3` and assign it the value of `True` (do n
 
 ```python
 >>> is_layer3 = True
->>> 
+>>>
 ```
 
 > If you use quotes, it will be a string.
@@ -22,7 +22,7 @@ Perform a type check on the variable:
 ```python
 >>> type(is_layer3)
 <type 'bool'>
->>> 
+>>>
 ```
 
 ##### Step 3
@@ -31,10 +31,10 @@ Create another variable called `needs_bgp` and assign it the value of `False`. T
 
 ```python
 >>> needs_bgp = False
->>> 
+>>>
 >>> print needs_bgp
 False
->>> 
+>>>
 ```
 
 Note that True and False using capital T and F without quotes are the only two boolean values.  Every object in Python always evaluates to either True or False.
@@ -44,14 +44,14 @@ Let's take a look at a few boolean expressions.
 
 ##### Step 4
 
-Create 3 variables called `hostname`, `vendor` and `interfaces`. 
+Create 3 variables called `hostname`, `vendor` and `interfaces`.
 
 
 ```python
 >>> hostname = 'nxos-spine1'
 >>> vendor = 'cisco'
 >>> interfaces = ['Ethernet2/1', 'Ethernet2/2', 'Ethernet2/3']
->>> 
+>>>
 ```
 
 We will use these to practice using boolean operators.
@@ -64,7 +64,7 @@ The `==` operator is used to see if one object _is equal_ to another object.
 
 ```python
 >>> hostname == 'nxos-spine2'
-False 
+False
 >>>
 >>> vendor == 'cisco'
 True
@@ -77,10 +77,10 @@ Use the `>` and `!=` operators to evaluate `interfaces`'s length with the `3` nu
 
 ```python
 >>> len(interfaces) > 3
-False 
+False
 >>>
 >>> len(interfaces) != 3
-False 
+False
 ```
 
 ##### Step 5
@@ -89,7 +89,7 @@ Note that `!=` says "does not equal", so you can also use this for the hostname 
 
 ```python
 >>> hostname != 'nxos-spine2'
-True 
+True
 >>>
 ```
 
@@ -99,7 +99,7 @@ Now use the `in` "containment" keyword to evaluate if "Ethernet2/4" is a valid i
 
 ```python
 >>> 'Ethernet2/4' in interfaces
-False 
+False
 >>>
 ```
 
@@ -112,7 +112,7 @@ You can also see if a sub-string exists in a string:
 ```python
 >>> "Eth" in "Ethernet2/4"
 True
->>> 
+>>>
 ```
 
 This checked to see if the string "Eth" exists in the larger string "Ethernet2/4".
@@ -120,9 +120,9 @@ This checked to see if the string "Eth" exists in the larger string "Ethernet2/4
 Note that it's case-sensitive:
 
 ```python
->>> "eth" in "Ethernet2/4" 
+>>> "eth" in "Ethernet2/4"
 False
->>> 
+>>>
 ```
 
 ##### Step 8
@@ -132,7 +132,7 @@ It's often good practice to normalize (if possible) before doing the comparison 
 ```python
 >>> "eth" in "Ethernet2/4".lower()
 True
->>> 
+>>>
 ```
 
 ##### Step 9
@@ -152,10 +152,10 @@ You can do a quick test to prove this:
 ```python
 >>> True and True and True and False
 False
->>> 
+>>>
 >>> True and True and True
 True
->>> 
+>>>
 ```
 
 ##### Step 10
@@ -164,21 +164,21 @@ When you use "or" only ONE element has to be True for the expression to be True:
 
 ```python
 >>> hostname == "nxos-spine2" or hostname == "nxos-spine10"
-True
+False
 >>>
 ```
 
 ```python
->>> vendor == "cisco" or hostname == "nxos-spine10"                         
+>>> vendor == "cisco" or hostname == "nxos-spine10"
 True
->>> 
+>>>
 ```
 
 ### Task 2 - Working with Booleans Part 2
 
 In this task, we'll explore the boolean value of a single variable.  This will be used heavily when you start using `if` statements in Python.
 
-In Python, a variable can evaluate to either True or False. 
+In Python, a variable can evaluate to either True or False.
 
 ##### Step 1
 
@@ -186,7 +186,7 @@ Create a new variable called `hostname` and assign it the value of "r1":
 
 ```python
 >>> hostname = "r1"
->>> 
+>>>
 ```
 
 Perform a boolean check on this varible using the `bool()` statement:
@@ -194,10 +194,10 @@ Perform a boolean check on this varible using the `bool()` statement:
 ```python
 >>> bool(hostname)
 True
->>> 
+>>>
 ```
 
-You may be wondering what's actually happening.  Yes, `hostname` is a string, but when used in a boolean expression, it would evaluate to True.  
+You may be wondering what's actually happening.  Yes, `hostname` is a string, but when used in a boolean expression, it would evaluate to True.
 
 Why?  Because it has a value of one or more characters.
 
@@ -207,7 +207,7 @@ Create a new variable called `vendor` and assign it the value of a null/empty st
 
 ```python
 >>> vendor = ""
->>> 
+>>>
 ```
 
 Perform the same boolean check:
@@ -215,7 +215,7 @@ Perform the same boolean check:
 ```python
 >>> bool(vendor)
 False
->>> 
+>>>
 ```
 
 See the difference?  As long as a "value" is assigned, it would evaluate to True when used in an expression.
@@ -228,7 +228,7 @@ Create a variable called `vendors` and assign it the value of `['cisco']`.  Afte
 
 ```python
 >>> vendors = ['cisco']
->>> 
+>>>
 >>> bool(vendors)
 True
 >>>
@@ -238,12 +238,12 @@ True
 
 Perform the same excercise by using an empty list as the value:
 
-```python 
+```python
 >>> vendors = []
->>> 
+>>>
 >>> bool(vendors)
 False
->>> 
+>>>
 ```
 
 With this logic, you'll be able to know if there is some value assigned to your variable when we start using conditional logic (if statements) in Python.

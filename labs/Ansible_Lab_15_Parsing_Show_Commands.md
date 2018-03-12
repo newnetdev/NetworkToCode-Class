@@ -10,7 +10,7 @@ In the first task, we'll parse show data on IOS using a pre-built TextFSM templa
 
 ##### Step 1
 
-Create a new playbook called `parse-ios.yml` in the `ansible` directory.  
+Create a new playbook called `parse-ios.yml` in the `ansible` directory.
 
 Use the following playbook to gather `show version` for the IOS devices.
 
@@ -53,7 +53,7 @@ Add two new tasks:
           show_version: "{{ config_data.stdout.0 | parse_cli_textfsm(show_version_path) }}"
 
       - debug:
-          var: show_version 
+          var: show_version
 ```
 
 ##### Step 3
@@ -61,7 +61,7 @@ Add two new tasks:
 Execute the playbook.
 
 ```
-ntc@ntc:ansible$ ansible-playbook -i inventory parse-ios.yml   
+ntc@ntc:ansible$ ansible-playbook -i inventory parse-ios.yml
 
 ```
 
@@ -72,17 +72,17 @@ TASK [debug] *******************************************************************
 ok: [csr1] => {
     "show_version": [
         {
-            "CONFIG_REGISTER": "0x2102", 
+            "CONFIG_REGISTER": "0x2102",
             "HARDWARE": [
                 "CSR1000V"
-            ], 
-            "HOSTNAME": "csr1", 
-            "ROMMON": "IOS-XE", 
-            "RUNNING_IMAGE": "packages.conf", 
+            ],
+            "HOSTNAME": "csr1",
+            "ROMMON": "IOS-XE",
+            "RUNNING_IMAGE": "packages.conf",
             "SERIAL": [
                 "9KIBQAQ3OPE"
-            ], 
-            "UPTIME": "50 minutes", 
+            ],
+            "UPTIME": "50 minutes",
             "VERSION": "16.6.2"
         }
     ]
@@ -118,7 +118,7 @@ Create a new sub-directory called `parsers` within the `ansible` directory and n
 ```
 ntc@ntc:ansible$ mkdir parsers
 ntc@ntc:ansible$ cd parsers
-ntc@ntc:parsers$ 
+ntc@ntc:parsers$
 ```
 
 ##### Step 2
@@ -132,7 +132,7 @@ keys:
   interfaces:
     value:
       key: "{{ item.iface_name }}"
-      values: 
+      values:
         interface: "{{ item.iface_name }}"
         ip_addr: "{{ item.ip_addr }}"
         status: "{{ item.status }}"
@@ -161,7 +161,7 @@ Add two more new tasks to the playbook to parse and print the required data.
           show_brief: "{{ output.stdout.0 | parse_cli('./parsers/show_ip_interface_brief-dict.yml') }}"
 
       - debug:
-          var: show_brief  
+          var: show_brief
 ```
 
 Add two new tasks:
@@ -181,39 +181,39 @@ ok: [csr1] => {
     "show_brief": {
         "interfaces": {
             "GigabitEthernet1": {
-                "interface": "GigabitEthernet1", 
-                "ip_addr": "10.0.0.51", 
-                "protocol": "up", 
+                "interface": "GigabitEthernet1",
+                "ip_addr": "10.0.0.51",
+                "protocol": "up",
                 "status": "up"
-            }, 
+            },
             "GigabitEthernet2": {
-                "interface": "GigabitEthernet2", 
-                "ip_addr": "10.254.13.1", 
-                "protocol": "up", 
+                "interface": "GigabitEthernet2",
+                "ip_addr": "10.254.13.1",
+                "protocol": "up",
                 "status": "up"
-            }, 
+            },
             "GigabitEthernet3": {
-                "interface": "GigabitEthernet3", 
-                "ip_addr": "unassigned", 
-                "protocol": "down", 
+                "interface": "GigabitEthernet3",
+                "ip_addr": "unassigned",
+                "protocol": "down",
                 "status": "administratively down"
-            }, 
+            },
             "GigabitEthernet4": {
-                "interface": "GigabitEthernet4", 
-                "ip_addr": "10.254.12.1", 
-                "protocol": "up", 
+                "interface": "GigabitEthernet4",
+                "ip_addr": "10.254.12.1",
+                "protocol": "up",
                 "status": "up"
-            }, 
+            },
             "Loopback100": {
-                "interface": "Loopback100", 
-                "ip_addr": "1.1.1.2", 
-                "protocol": "up", 
+                "interface": "Loopback100",
+                "ip_addr": "1.1.1.2",
+                "protocol": "up",
                 "status": "up"
-            }, 
+            },
             "Loopback101": {
-                "interface": "Loopback101", 
-                "ip_addr": "unassigned", 
-                "protocol": "up", 
+                "interface": "Loopback101",
+                "ip_addr": "unassigned",
+                "protocol": "up",
                 "status": "up"
             }
         }
@@ -232,7 +232,7 @@ Save the following into a new spec parser file called `show_ip_interface_brief-l
 keys:
   interfaces:
     type: list
-    value: 
+    value:
       interface: "{{ item.iface_name }}"
       ip_addr: "{{ item.ip_addr }}"
       status: "{{ item.status }}"
@@ -252,39 +252,39 @@ ok: [csr1] => {
     "show_brief": {
         "interfaces": [
             {
-                "interface": "GigabitEthernet1", 
-                "ip_addr": "10.0.0.51", 
-                "protocol": "up", 
+                "interface": "GigabitEthernet1",
+                "ip_addr": "10.0.0.51",
+                "protocol": "up",
                 "status": "up"
-            }, 
+            },
             {
-                "interface": "GigabitEthernet2", 
-                "ip_addr": "10.254.13.1", 
-                "protocol": "up", 
+                "interface": "GigabitEthernet2",
+                "ip_addr": "10.254.13.1",
+                "protocol": "up",
                 "status": "up"
-            }, 
+            },
             {
-                "interface": "GigabitEthernet3", 
-                "ip_addr": "unassigned", 
-                "protocol": "down", 
+                "interface": "GigabitEthernet3",
+                "ip_addr": "unassigned",
+                "protocol": "down",
                 "status": "administratively down"
-            }, 
+            },
             {
-                "interface": "GigabitEthernet4", 
-                "ip_addr": "10.254.12.1", 
-                "protocol": "up", 
+                "interface": "GigabitEthernet4",
+                "ip_addr": "10.254.12.1",
+                "protocol": "up",
                 "status": "up"
-            }, 
+            },
             {
-                "interface": "Loopback100", 
-                "ip_addr": "1.1.1.2", 
-                "protocol": "up", 
+                "interface": "Loopback100",
+                "ip_addr": "1.1.1.2",
+                "protocol": "up",
                 "status": "up"
-            }, 
+            },
             {
-                "interface": "Loopback101", 
-                "ip_addr": "unassigned", 
-                "protocol": "up", 
+                "interface": "Loopback101",
+                "ip_addr": "unassigned",
+                "protocol": "up",
                 "status": "up"
             }
         ]
@@ -293,5 +293,3 @@ ok: [csr1] => {
 ```
 
 Notice how the first output was a nested dictionary and this one is a list of dictionaries.
-
-**Check back to Python Lab 28 Task 2 and see how this RegEx compares to what you did there.**

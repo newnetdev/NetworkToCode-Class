@@ -1,11 +1,11 @@
 ## Lab 10 - Backup and Restore Network Configurations Part 2
 
-This lab builds on Lab 10 and will "re-store" the configuration files you previously backed up.
+This lab will "restore" the configuration files you previously backed up.
 
 For these two labs, we're using two main modules to do this:  one that is used to backup the configurations (ntc_show_command) and another that is used to deploy the configurations (NAPALM).
 
 
-### Task 1 - Restore Configuration 
+### Task 1 - Restore Configuration
 
 ##### Step 1
 
@@ -13,7 +13,7 @@ Create a new playbook called `restore.yml`.  In this file, and for the first exe
 
 ```yaml
 ---
-  
+
   - name: DEPLOY & RESTORE CONFIGS
     hosts: iosxe
     connection: local
@@ -28,7 +28,7 @@ Using `napalm_install_config`, push back these configurations. Since we didn't c
 
 ```yaml
 ---
-  
+
   - name: DEPLOY & RESTORE CONFIGS
     hosts: iosxe
     connection: local
@@ -51,7 +51,7 @@ Using `napalm_install_config`, push back these configurations. Since we didn't c
 Execute this new play:
 
 ```
-ntc@ntc:~/ansible$ ansible-playbook -i inventory restore.yml 
+ntc@ntc:~/ansible$ ansible-playbook -i inventory restore.yml
 
 PLAY [DEPLOY & RESTORE CONFIGS] **********************************************************
 
@@ -61,9 +61,9 @@ ok: [csr1]
 ok: [csr2]
 
 PLAY RECAP *********************************************************************
-csr1                       : ok=1    changed=0    unreachable=0    failed=0   
-csr2                       : ok=1    changed=0    unreachable=0    failed=0   
-csr3                       : ok=1    changed=0    unreachable=0    failed=0  
+csr1                       : ok=1    changed=0    unreachable=0    failed=0
+csr2                       : ok=1    changed=0    unreachable=0    failed=0
+csr3                       : ok=1    changed=0    unreachable=0    failed=0
 ```
 
 Notice how there were NO changes. This is because you just pushed exactly what was already on the device.
@@ -73,7 +73,7 @@ The full playbook should look like this for now:
 
 ```yaml
 ---
-  
+
   - name: DEPLOY & RESTORE CONFIGS
     hosts: iosxe
     connection: local
@@ -89,7 +89,7 @@ The full playbook should look like this for now:
           commit_changes: true
           dev_os: ios
 
-   
+
 ```
 
 
@@ -141,13 +141,13 @@ ok: [eos-leaf1]
 ok: [eos-leaf2]
 
 PLAY RECAP *********************************************************************
-csr1                       : ok=1    changed=0    unreachable=0    failed=0   
-csr2                       : ok=1    changed=0    unreachable=0    failed=0   
-csr3                       : ok=1    changed=0    unreachable=0    failed=0   
-eos-leaf1                  : ok=1    changed=0    unreachable=0    failed=0   
-eos-leaf2                  : ok=1    changed=0    unreachable=0    failed=0   
-eos-spine1                 : ok=1    changed=0    unreachable=0    failed=0   
-eos-spine2                 : ok=1    changed=0    unreachable=0    failed=0 
+csr1                       : ok=1    changed=0    unreachable=0    failed=0
+csr2                       : ok=1    changed=0    unreachable=0    failed=0
+csr3                       : ok=1    changed=0    unreachable=0    failed=0
+eos-leaf1                  : ok=1    changed=0    unreachable=0    failed=0
+eos-leaf2                  : ok=1    changed=0    unreachable=0    failed=0
+eos-spine1                 : ok=1    changed=0    unreachable=0    failed=0
+eos-spine2                 : ok=1    changed=0    unreachable=0    failed=0
 ```
 
 **IMPORTANT NOTE AGAIN:**
@@ -201,7 +201,7 @@ First, create a new directory called `diffs` in the `ansible` directory.
 
 ```
 ntc@ntc:~/ansible$ mkdir diffs
-ntc@ntc:~/ansible$ 
+ntc@ntc:~/ansible$
 ```
 
 This directory will store all diffs that will eventually get applied to the devices.
@@ -244,7 +244,7 @@ Note how are they are now __changed__.  It doesn't mean this made the change, ju
 
 ##### Step 11
 
-Navigate to the `diffs` directory and open the diff files. 
+Navigate to the `diffs` directory and open the diff files.
 
 For example, `csr1.diffs` will look like this.
 
@@ -283,7 +283,7 @@ Remove a particular configuration from the config files being used and see how t
 
 ##### Step 15
 
-Notice how the playbook has hard-coded the devices to be automated.  As you've seen you can modify this manually or use the "limit" flag to _limit_ the execution to a sub-set of devices.  
+Notice how the playbook has hard-coded the devices to be automated.  As you've seen you can modify this manually or use the "limit" flag to _limit_ the execution to a sub-set of devices.
 
 What if you wanted user input as in always forcing the user to pass in the device or group into the playbook on execution? You can do this with "extra vars".
 
@@ -337,4 +337,4 @@ Full and final playbook will look like this:
 ```
 
 
-  
+

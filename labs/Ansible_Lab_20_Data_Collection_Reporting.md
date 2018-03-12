@@ -8,7 +8,7 @@ On top of that, it also offers even great value when it comes to collecting data
 
 In the first task, you will use facts modules to gather device information such as OS version, hostname, serial number, neighbors, and IP addresses on the network devices.  The modules you will use in this task are all in Ansible core.  That means they come with Ansible when you install Ansible.
 
-Each module has the name of `<os>_facts`.  
+Each module has the name of `<os>_facts`.
 
   * For IOS devices, the module is `ios_facts`
   * For NXOS devices, the module is `nxos_facts`
@@ -19,7 +19,7 @@ Each module has the name of `<os>_facts`.
 
 ##### Step 1
 
-Create a playbook called `core-facts.yml` with a single task to execute against the `iosxe` group of devices.  
+Create a playbook called `core-facts.yml` with a single task to execute against the `iosxe` group of devices.
 
 In this task in the play, use the `ios_facts` module to gather the device facts.
 
@@ -43,7 +43,7 @@ In this task in the play, use the `ios_facts` module to gather the device facts.
 Execute the playbook.
 
 ```
-$ ansible-playbook -i inventory core-facts.yml 
+$ ansible-playbook -i inventory core-facts.yml
 
 PLAY [GATHER IOS FACTS] ********************************************************
 
@@ -53,9 +53,9 @@ ok: [csr2]
 ok: [csr1]
 
 PLAY RECAP *********************************************************************
-csr1                       : ok=1    changed=0    unreachable=0    failed=0   
-csr2                       : ok=1    changed=0    unreachable=0    failed=0   
-csr3                       : ok=1    changed=0    unreachable=0    failed=0   
+csr1                       : ok=1    changed=0    unreachable=0    failed=0
+csr2                       : ok=1    changed=0    unreachable=0    failed=0
+csr3                       : ok=1    changed=0    unreachable=0    failed=0
 
 
 ```
@@ -79,7 +79,7 @@ TASK [GET FACTS] ***************************************************************
 ok: [csr1] => {"ansible_facts": {"ansible_net_all_ipv4_addresses": ["10.0.0.51"], "ansible_net_all_ipv6_addresses": [], "ansible_net_filesystems": ["bootflash:"], "ansible_net_gather_subset": ["hardware", "default", "interfaces"], "ansible_net_hostname": "csr1", "ansible_net_image": "bootflash:packages.conf", "ansible_net_interfaces": {"GigabitEthernet1": {"bandwidth": 1000000, "description": null, "duplex": "Full", "ipv4": {"address": "10.0.0.51", "masklen": 24}, "lineprotocol": "up ", "macaddress": "2cc2.6009.d3a8", "mediatype": "RJ45", "mtu": 1500, "operstatus": "up", "type": "CSR vNIC"}, "GigabitEthernet2": {"bandwidth": 1000000, "description": null, "duplex": "Full", "ipv4": null, "lineprotocol": "down ", "macaddress": "2cc2.6049.c853", "mediatype": "RJ45", "mtu": 1500, "operstatus": "administratively down", "type": "CSR vNIC"}, "GigabitEthernet3": {"bandwidth": 1000000, "description": null, "duplex": "Full", "ipv4": null, "lineprotocol": "down ", "macaddress": "2cc2.601b.84ef", "mediatype": "RJ45", "mtu": 1500, "operstatus": "administratively down", "type": "CSR vNIC"}, "GigabitEthernet4": {"bandwidth": 1000000, "description": null, "duplex": "Full", "ipv4": null, "lineprotocol": "down ", "macaddress": "2cc2.605b.754f", "mediatype": "RJ45", "mtu": 1500, "operstatus": "administratively down", "type": "CSR vNIC"}}, "ansible_net_memfree_mb": 327297, "ansible_net_memtotal_mb": 2047264, "ansible_net_model": null, "ansible_net_neighbors": {"Gi1": [{"host": "csr2.ntc.com", "port": "Gi1"}, {"host": "eos-leaf1.ntc.com", "port": "Management1"}, {"host": "csr3.ntc.com", "port": "Gi1"}, {"host": "eos-leaf2.ntc.com", "port": "Management1"}, {"host": "eos-spine2.ntc.com", "port": "Management1"}, {"host": "eos-spine1.ntc.com", "port": "Management1"}]}, "ansible_net_serialnum": "9KXI0D7TVFI", "ansible_net_version": "16.3.1"}, "changed": false, "failed_commands": []}
 
 PLAY RECAP *********************************************************************
-csr1                       : ok=1    changed=0    unreachable=0    failed=0   
+csr1                       : ok=1    changed=0    unreachable=0    failed=0
 
 
 ```
@@ -108,9 +108,9 @@ The updated playbook should look like this:
       - name: GET FACTS
         ios_facts:
         register: ntc_ios_facts
-      
-      - debug: 
-          var: ntc_ios_facts    
+
+      - debug:
+          var: ntc_ios_facts
 
 ```
 
@@ -134,112 +134,112 @@ ok: [csr1] => {
         "ansible_facts": {
             "ansible_net_all_ipv4_addresses": [
                 "10.0.0.51"
-            ], 
-            "ansible_net_all_ipv6_addresses": [], 
+            ],
+            "ansible_net_all_ipv6_addresses": [],
             "ansible_net_filesystems": [
                 "bootflash:"
-            ], 
+            ],
             "ansible_net_gather_subset": [
-                "hardware", 
-                "default", 
+                "hardware",
+                "default",
                 "interfaces"
-            ], 
-            "ansible_net_hostname": "csr1", 
-            "ansible_net_image": "bootflash:packages.conf", 
+            ],
+            "ansible_net_hostname": "csr1",
+            "ansible_net_image": "bootflash:packages.conf",
             "ansible_net_interfaces": {
                 "GigabitEthernet1": {
-                    "bandwidth": 1000000, 
-                    "description": null, 
-                    "duplex": "Full", 
+                    "bandwidth": 1000000,
+                    "description": null,
+                    "duplex": "Full",
                     "ipv4": {
-                        "address": "10.0.0.51", 
+                        "address": "10.0.0.51",
                         "masklen": 24
-                    }, 
-                    "lineprotocol": "up ", 
-                    "macaddress": "2cc2.6009.d3a8", 
-                    "mediatype": "RJ45", 
-                    "mtu": 1500, 
-                    "operstatus": "up", 
+                    },
+                    "lineprotocol": "up ",
+                    "macaddress": "2cc2.6009.d3a8",
+                    "mediatype": "RJ45",
+                    "mtu": 1500,
+                    "operstatus": "up",
                     "type": "CSR vNIC"
-                }, 
+                },
                 "GigabitEthernet2": {
-                    "bandwidth": 1000000, 
-                    "description": null, 
-                    "duplex": "Full", 
-                    "ipv4": null, 
-                    "lineprotocol": "down ", 
-                    "macaddress": "2cc2.6049.c853", 
-                    "mediatype": "RJ45", 
-                    "mtu": 1500, 
-                    "operstatus": "administratively down", 
+                    "bandwidth": 1000000,
+                    "description": null,
+                    "duplex": "Full",
+                    "ipv4": null,
+                    "lineprotocol": "down ",
+                    "macaddress": "2cc2.6049.c853",
+                    "mediatype": "RJ45",
+                    "mtu": 1500,
+                    "operstatus": "administratively down",
                     "type": "CSR vNIC"
-                }, 
+                },
                 "GigabitEthernet3": {
-                    "bandwidth": 1000000, 
-                    "description": null, 
-                    "duplex": "Full", 
-                    "ipv4": null, 
-                    "lineprotocol": "down ", 
-                    "macaddress": "2cc2.601b.84ef", 
-                    "mediatype": "RJ45", 
-                    "mtu": 1500, 
-                    "operstatus": "administratively down", 
+                    "bandwidth": 1000000,
+                    "description": null,
+                    "duplex": "Full",
+                    "ipv4": null,
+                    "lineprotocol": "down ",
+                    "macaddress": "2cc2.601b.84ef",
+                    "mediatype": "RJ45",
+                    "mtu": 1500,
+                    "operstatus": "administratively down",
                     "type": "CSR vNIC"
-                }, 
+                },
                 "GigabitEthernet4": {
-                    "bandwidth": 1000000, 
-                    "description": null, 
-                    "duplex": "Full", 
-                    "ipv4": null, 
-                    "lineprotocol": "down ", 
-                    "macaddress": "2cc2.605b.754f", 
-                    "mediatype": "RJ45", 
-                    "mtu": 1500, 
-                    "operstatus": "administratively down", 
+                    "bandwidth": 1000000,
+                    "description": null,
+                    "duplex": "Full",
+                    "ipv4": null,
+                    "lineprotocol": "down ",
+                    "macaddress": "2cc2.605b.754f",
+                    "mediatype": "RJ45",
+                    "mtu": 1500,
+                    "operstatus": "administratively down",
                     "type": "CSR vNIC"
                 }
-            }, 
-            "ansible_net_memfree_mb": 327363, 
-            "ansible_net_memtotal_mb": 2047264, 
-            "ansible_net_model": null, 
+            },
+            "ansible_net_memfree_mb": 327363,
+            "ansible_net_memtotal_mb": 2047264,
+            "ansible_net_model": null,
             "ansible_net_neighbors": {
                 "Gi1": [
                     {
-                        "host": "csr2.ntc.com", 
+                        "host": "csr2.ntc.com",
                         "port": "Gi1"
-                    }, 
+                    },
                     {
-                        "host": "eos-leaf1.ntc.com", 
+                        "host": "eos-leaf1.ntc.com",
                         "port": "Management1"
-                    }, 
+                    },
                     {
-                        "host": "csr3.ntc.com", 
+                        "host": "csr3.ntc.com",
                         "port": "Gi1"
-                    }, 
+                    },
                     {
-                        "host": "eos-leaf2.ntc.com", 
+                        "host": "eos-leaf2.ntc.com",
                         "port": "Management1"
-                    }, 
+                    },
                     {
-                        "host": "eos-spine2.ntc.com", 
+                        "host": "eos-spine2.ntc.com",
                         "port": "Management1"
-                    }, 
+                    },
                     {
-                        "host": "eos-spine1.ntc.com", 
+                        "host": "eos-spine1.ntc.com",
                         "port": "Management1"
                     }
                 ]
-            }, 
-            "ansible_net_serialnum": "9KXI0D7TVFI", 
+            },
+            "ansible_net_serialnum": "9KXI0D7TVFI",
             "ansible_net_version": "16.3.1"
-        }, 
-        "changed": false, 
+        },
+        "changed": false,
         "failed_commands": []
     }
 }
 
 PLAY RECAP *********************************************************************
-csr1                       : ok=2    changed=0    unreachable=0    failed=0   
+csr1                       : ok=2    changed=0    unreachable=0    failed=0
 
 
 ```
@@ -308,13 +308,13 @@ ok: [csr1] => {
 
 ##### Step 10
 
-Repeat Steps 1 - 9 for each device type you've been using in the labs.  
+Repeat Steps 1 - 9 for each device type you've been using in the labs.
 
 **Add a new play for each one.** Tag each play accordingly so you can run them individually.
 
 
 **IMPORTANT**
-> Note: Ensure LLDP is enabled on the NXOS switches using the `feature lldp`.  You can also re-run the playbook from Lab 17 Step 1 which enables LLDP.  Unfortunately, LLDP configurations do not persist through a reboot on virtual Nexus switches :(.
+> Note: Ensure LLDP is enabled on the NXOS switches using the `feature lldp`.  Unfortunately, LLDP configurations do not persist through a reboot on virtual Nexus switches :(.
 
 If you don't run the playbook, here are the commands to run on **nxos-spine1** and **nxos-spine2**:
 
@@ -399,7 +399,7 @@ This is a sample playbook for running against all 4 device types (IOS, NXOS, JUN
 
       - name: DEBUG SHORTHAND OS VERSION
         debug:
-          var: ansible_net_version 
+          var: ansible_net_version
 
   - name: GATHER JUNOS FACTS
     hosts: vmx
@@ -428,7 +428,7 @@ This is a sample playbook for running against all 4 device types (IOS, NXOS, JUN
 
 ### Task 2 - Creating Automated Documentation and Reports
 
-In the previous task, you looked at exploring the core facts modules that specifically perform data collection.  You saw that all modules including facts modules return data; this data is JSON, and can be viewed running the playbook in verbose mode.  
+In the previous task, you looked at exploring the core facts modules that specifically perform data collection.  You saw that all modules including facts modules return data; this data is JSON, and can be viewed running the playbook in verbose mode.
 
 **Now we will look at using and consuming this data to create dynamic reports and documentation.**
 
@@ -447,11 +447,11 @@ Create a new playbook called `reports.yml`.  Create a play that requires the dir
 
     tasks:
 
-      - file: 
+      - file:
           path: ./docs/csv/
-          state: directory 
+          state: directory
 
-      - file: 
+      - file:
           path: ./docs/text/
           state: directory
 ```
@@ -467,7 +467,7 @@ Hostname:      csr3
 Vendor:        cisco
 Model:         UNKNOWN
 OS Version:    16.06.02
-Serial Number:  9KIBQAQ3OPE 
+Serial Number:  9KIBQAQ3OPE
 ```
 
 CSV Report:
@@ -485,14 +485,14 @@ Hostname:      {{ ansible_net_hostname }}
 Vendor:        {{ vendor }}
 Model:         {{ ansible_net_model or "UNKNOWN" }}
 OS Version:    {{ ansible_net_version }}
-Serial Number:  {{ ansible_net_serialnum or "UNKNOWN" }} 
+Serial Number:  {{ ansible_net_serialnum or "UNKNOWN" }}
 
 ```
 
 `facts-csv.j2`:
 
 ```
-{{ ansible_net_hostname }},{{ vendor }},{{ ansible_net_model or "UNKNOWN" }},{{ ansible_net_version }},{{ ansible_net_serialnum or "UNKNOWN" }} 
+{{ ansible_net_hostname }},{{ vendor }},{{ ansible_net_model or "UNKNOWN" }},{{ ansible_net_version }},{{ ansible_net_serialnum or "UNKNOWN" }}
 ```
 
 ##### Step 3
@@ -514,7 +514,7 @@ Add a new play to create reports for each IOS device (for both report types).
         template:
           src: facts-text.j2
           dest: ./docs/text/{{ inventory_hostname }}.md
-  
+
       - name: DUMP FACTS INTO CSV FILE
         template:
           src: facts-csv.j2
@@ -523,7 +523,7 @@ Add a new play to create reports for each IOS device (for both report types).
 
 ##### Step 4
 
-Exectute the playbook.  
+Exectute the playbook.
 
 View all files that have been created.
 
@@ -556,7 +556,7 @@ Note that this is running on `localhost` so it runs just once.
 
 ##### Step 6
 
-Execute the playbook. 
+Execute the playbook.
 
 View all files that have been created.
 
@@ -568,7 +568,7 @@ There is still one thing missing from the CSV.  That is to inser the headers for
         - name: INSERT COLUMNS INTO CSV REPORT
           lineinfile:
             path: ./docs/master-csv.csv
-            line: "Hostname,Vendor,Model,OS Version,Serial Number"    
+            line: "Hostname,Vendor,Model,OS Version,Serial Number"
             insertbefore: BOF
             state: present
 ```
@@ -583,7 +583,7 @@ View both final master reports.
 
 ##### Step 9
 
-Repeat Step 3 for all NXOS, EOS, and JUNOS devices so the master report contains all devices.  
+Repeat Step 3 for all NXOS, EOS, and JUNOS devices so the master report contains all devices.
 
 Note: The existing FINAL TASK (assemble) must remain the final task, so insert those three new plays just below the IOS play.
 
@@ -604,11 +604,11 @@ The final playbook should look like this:
 
     tasks:
 
-      - file: 
+      - file:
           path: ./docs/csv/
-          state: directory 
+          state: directory
 
-      - file: 
+      - file:
           path: ./docs/text/
           state: directory
 
@@ -626,7 +626,7 @@ The final playbook should look like this:
         template:
           src: facts-text.j2
           dest: ./docs/text/{{ inventory_hostname }}.md
-  
+
       - name: DUMP FACTS INTO CSV FILE
         template:
           src: facts-csv.j2
@@ -652,7 +652,7 @@ The final playbook should look like this:
         template:
           src: facts-csv.j2
           dest: ./docs/csv/{{ inventory_hostname }}.csv
-  
+
 
   - name: GATHER EOS FACTS
     hosts: eos
@@ -688,7 +688,7 @@ The final playbook should look like this:
         template:
           src: facts-text.j2
           dest: ./docs/text/{{ inventory_hostname }}.md
-  
+
       - name: DUMP FACTS INTO FILE
         template:
           src: facts-csv.j2
@@ -716,7 +716,7 @@ The final playbook should look like this:
         - name: INSERT COLUMNS INTO CSV REPORT
           lineinfile:
             path: ./docs/master-csv.csv
-            line: "Hostname,Vendor,Model,OS Version,Serial Number"    
+            line: "Hostname,Vendor,Model,OS Version,Serial Number"
             insertbefore: BOF
             state: present
 
@@ -726,98 +726,98 @@ The final playbook should look like this:
 The master CSV report generated will look like this:
 
 ```
-ntc@ntc:ansible$ cat docs/master-csv.csv 
+ntc@ntc:ansible$ cat docs/master-csv.csv
 Hostname,Vendor,Model,OS Version,Serial Number
-csr1,cisco,UNKNOWN,16.06.02,9KIBQAQ3OPE 
-csr2,cisco,UNKNOWN,16.06.02,9KIBQAQ3OPE 
-csr3,cisco,UNKNOWN,16.06.02,9KIBQAQ3OPE 
-eos-leaf1,arista,vEOS,4.20.0F-7058194.bloomingtonrel (engineering build),UNKNOWN 
-eos-leaf2,arista,vEOS,4.20.0F-7058194.bloomingtonrel (engineering build),UNKNOWN 
-eos-spine1,arista,vEOS,4.20.0F-7058194.bloomingtonrel (engineering build),UNKNOWN 
-eos-spine2,arista,vEOS,4.20.0F-7058194.bloomingtonrel (engineering build),UNKNOWN 
-nxos-spine1,cisco,NX-OSv Chassis,7.3(1)D1(1) [build 7.3(1)D1(0.10)],TM602622D6B 
-nxos-spine2,cisco,NX-OSv Chassis,7.3(1)D1(1) [build 7.3(1)D1(0.10)],TM604B14E3B 
-vmx7,juniper,vmx,15.1F4.15,VMX2c 
-vmx8,juniper,vmx,15.1F4.15,VMX63 
-vmx9,juniper,vmx,15.1F4.15,VMX39 
+csr1,cisco,UNKNOWN,16.06.02,9KIBQAQ3OPE
+csr2,cisco,UNKNOWN,16.06.02,9KIBQAQ3OPE
+csr3,cisco,UNKNOWN,16.06.02,9KIBQAQ3OPE
+eos-leaf1,arista,vEOS,4.20.0F-7058194.bloomingtonrel (engineering build),UNKNOWN
+eos-leaf2,arista,vEOS,4.20.0F-7058194.bloomingtonrel (engineering build),UNKNOWN
+eos-spine1,arista,vEOS,4.20.0F-7058194.bloomingtonrel (engineering build),UNKNOWN
+eos-spine2,arista,vEOS,4.20.0F-7058194.bloomingtonrel (engineering build),UNKNOWN
+nxos-spine1,cisco,NX-OSv Chassis,7.3(1)D1(1) [build 7.3(1)D1(0.10)],TM602622D6B
+nxos-spine2,cisco,NX-OSv Chassis,7.3(1)D1(1) [build 7.3(1)D1(0.10)],TM604B14E3B
+vmx7,juniper,vmx,15.1F4.15,VMX2c
+vmx8,juniper,vmx,15.1F4.15,VMX63
+vmx9,juniper,vmx,15.1F4.15,VMX39
 ntc@ntc:ansible$
 ```
 
 And the final text report will look like this:
 
 ```
-ntc@ntc:ansible$ cat docs/master-text.md 
+ntc@ntc:ansible$ cat docs/master-text.md
 Hostname:      csr1
 Vendor:        cisco
 Model:         UNKNOWN
 OS Version:    16.06.02
-Serial Number:  9KIBQAQ3OPE 
+Serial Number:  9KIBQAQ3OPE
 ---
 Hostname:      csr2
 Vendor:        cisco
 Model:         UNKNOWN
 OS Version:    16.06.02
-Serial Number:  9KIBQAQ3OPE 
+Serial Number:  9KIBQAQ3OPE
 ---
 Hostname:      csr3
 Vendor:        cisco
 Model:         UNKNOWN
 OS Version:    16.06.02
-Serial Number:  9KIBQAQ3OPE 
+Serial Number:  9KIBQAQ3OPE
 ---
 Hostname:      eos-leaf1
 Vendor:        arista
 Model:         vEOS
 OS Version:    4.20.0F-7058194.bloomingtonrel (engineering build)
-Serial Number:  UNKNOWN 
+Serial Number:  UNKNOWN
 ---
 Hostname:      eos-leaf2
 Vendor:        arista
 Model:         vEOS
 OS Version:    4.20.0F-7058194.bloomingtonrel (engineering build)
-Serial Number:  UNKNOWN 
+Serial Number:  UNKNOWN
 ---
 Hostname:      eos-spine1
 Vendor:        arista
 Model:         vEOS
 OS Version:    4.20.0F-7058194.bloomingtonrel (engineering build)
-Serial Number:  UNKNOWN 
+Serial Number:  UNKNOWN
 ---
 Hostname:      eos-spine2
 Vendor:        arista
 Model:         vEOS
 OS Version:    4.20.0F-7058194.bloomingtonrel (engineering build)
-Serial Number:  UNKNOWN 
+Serial Number:  UNKNOWN
 ---
 Hostname:      nxos-spine1
 Vendor:        cisco
 Model:         NX-OSv Chassis
 OS Version:    7.3(1)D1(1) [build 7.3(1)D1(0.10)]
-Serial Number:  TM602622D6B 
+Serial Number:  TM602622D6B
 ---
 Hostname:      nxos-spine2
 Vendor:        cisco
 Model:         NX-OSv Chassis
 OS Version:    7.3(1)D1(1) [build 7.3(1)D1(0.10)]
-Serial Number:  TM604B14E3B 
+Serial Number:  TM604B14E3B
 ---
 Hostname:      vmx7
 Vendor:        juniper
 Model:         vmx
 OS Version:    15.1F4.15
-Serial Number:  VMX2c 
+Serial Number:  VMX2c
 ---
 Hostname:      vmx8
 Vendor:        juniper
 Model:         vmx
 OS Version:    15.1F4.15
-Serial Number:  VMX63 
+Serial Number:  VMX63
 ---
 Hostname:      vmx9
 Vendor:        juniper
 Model:         vmx
 OS Version:    15.1F4.15
-Serial Number:  VMX39 
+Serial Number:  VMX39
 ntc@ntc:ansible$
 ```
 
