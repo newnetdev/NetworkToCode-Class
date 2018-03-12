@@ -1,4 +1,4 @@
-## Lab 22 - Exploring the IOS-XE RESTCONF API
+## Lab 23 - Exploring the IOS-XE RESTCONF API
 
 ### Task 1 - Browsing the IOS-XE Native Model with Postman
 

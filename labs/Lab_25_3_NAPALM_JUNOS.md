@@ -1,4 +1,4 @@
-## Lab 24.3 - NAPALM
+## Lab 25.3 - NAPALM
 
 ### Task 1 - Basic Configuration Merge with NAPALM
 
