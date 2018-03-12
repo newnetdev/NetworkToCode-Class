@@ -1,0 +1,14 @@
+---
+
+loopback_id: 200
+
+backup_command:
+  eos: show run
+  ios: show run
+  nxos: show run
+  junos: show config
+connection_details:
+  username: "{{ ansible_user }}"
+  password: "{{ ansible_ssh_pass }}"
+  host: "{{ inventory_hostname }}"
+

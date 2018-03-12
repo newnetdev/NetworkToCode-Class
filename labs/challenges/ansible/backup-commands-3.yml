@@ -1,0 +1,33 @@
+  - name: SAVE OUTPUTS TO INDIVIDUAL FILES
+    hosts: iosxe
+    connection: local
+    gather_facts: no
+
+    vars:
+      commands:
+        - show version 
+        - show ip interface brief
+        - show interface Gi1
+        - show run | include route
+
+    tasks:
+
+      - name: ENSURE DEVICE DIRS EXIST
+        file:
+          path: ./command-outputs/{{ inventory_hostname }}/
+          state: directory
+
+      - name: ISSUE COMMANDS
+        ios_command:
+          commands: "{{ item }}"
+        register: config_data
+        with_items: "{{ commands }}"
+
+      - debug: var=config_data  
+
+      - name: SAVE OUTPUTS TO INDIVIDUAL FILES
+        template: 
+          src: basic-copy-2.j2
+          dest: ./command-outputs/{{ inventory_hostname }}/{{ item.item | replace(' ','_') | replace('|', '') }}.txt
+        with_items: "{{ config_data.results }}"   
+  

@@ -1,0 +1,28 @@
+---
+  - name: COMPLIANCE VERIFICATION FOR NXOS
+    hosts: nxos-spines
+    connection: local
+    gather_facts: no
+
+    tasks:
+
+    - name: ENSURE LLDP IS ENABLED
+      nxos_feature:
+        feature: lldp
+        state: enabled 
+
+    - name: GATHER NEIGHBORS
+      nxos_command:
+        commands:
+          - "show lldp neighbors | json"
+      register: output
+
+    - name: DEBUG NEIGHBORS
+      debug: 
+        var: output
+        verbosity: 1
+
+    - name: VERIFY NEIGHBOR COUNT IS CORRECT
+      assert:
+        that:
+          - output.stdout[0]['TABLE_nbor']['ROW_nbor']|length == 4

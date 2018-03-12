@@ -1,0 +1,6 @@
+{% for interface, config in interfaces.items() %}
+interface {{ interface }}
+  description {{ config.description }}
+  ip address {{ config.ipaddr }} {{ config.mask }}
+  no shutdown
+{% endfor %}

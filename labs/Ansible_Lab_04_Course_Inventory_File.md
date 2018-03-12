@@ -6,32 +6,23 @@ This lab builds on previous labs and shows how to build a more robust Ansible in
 
 > If there are certain devices that are not in your course, please do not include them in your inventory file.
 
-### Task 1 - Create an Ansible Inventory File
+### Task 1 - Create Inventory Device Groups
 
-In this task, you will create the Ansible inventory file that is used throughout the rest of this course.
+##### Step 1
 
 Navigate to the Ansible directory.
 
 ```
 ntc@ntc:~$ cd ansible
+ntc@ntc:ansible$
 ```
+
+##### Step 2
+
+Open the inventory file in your text editor.
+
 
 ##### Step 3
-
-Create a file called `inventory`
-
-```
-ntc@ntc:ansible$ touch inventory
-```
-
-The name of this file is arbitrary, but we use `inventory` for the master course inventory.
-
-##### Step 4
-
-Open the file in your text editor.
-
-
-### Task 2 - Create the Required Device Groups
 
 Create the following groups with the proper devices in them in your inventory file.  Each parent bullet is a group name and the sub-bullets are the devices in that particular group.
 
@@ -104,7 +95,9 @@ vmx[7:9]
 ```
 
 
-### Task 3 - Create Parent/Child (Nested) Groups
+### Task 2 - Create Parent/Child (Nested) Groups
+
+##### Step 1
 
 You may have noticed we didn't create a group that has **all** Nexus switches or **all** Arista switches.  We can list the same device in two groups, but that is a bit redundant.  Another option is to use child groups in the inventory file.
 
@@ -116,7 +109,11 @@ eos-spines
 eos-leaves
 ```
 
-Do this for both Arista EOS and Cisco NXOS groups. Additionally create a group called `AMER` that contains all the csrs and a group called `EMEA` that contains all the vmxs
+**Do this for both Arista EOS and Cisco NXOS groups.**  Note that there are Arista Spines and Leaves, but only Cisco Nexus Spines.
+
+##### Step 2
+
+Additionally create a group called `AMER` that contains all the csrs and a group called `EMEA` that contains all the vmxs
 
 The updated inventory file should look like this:
 
@@ -157,24 +154,25 @@ vmx
 
 ```
 
-> We have often NX-OS leaf switches too.  When they aren't used *nxos* is basically the same as *nxos-spines*.
+> In this case, the group *nxos* is basically the same as *nxos-spines*.
 
 
-### Task 5 - Create Group Based Variables for the *all* group
+### Task 3 - Create Group Based Variables for the *all* group
 
 In this task, you'll create group based variables that will be used throughout the course.  Do NOT forget there is an implicit group that always exists called **all**.
 
-Create two group variables in the **all** group:
+Ensure you have two group variables in the **all** group that are used for authentication:
 
 ```
 [all:vars]
-un=ntc
-pwd=ntc123
+ansible_user=ntc
+ansible_pass=ntc123
+
 ```
 
 All devices in the course use these credentials.
 
-### Task 6 - Create Group Based Variables for the *eos* group
+### Task 4 - Create Group Based Variables for the *eos* group
 
 Create the variables required in the **eos** group:
 
@@ -187,7 +185,7 @@ vendor=arista
 
 We'll use these variables in a variety of ways throughout the course.
 
-### Task 7 - Create Group Variables for the *nxos* group
+### Task 5 - Create Group Variables for the *nxos* group
 
 
 Create the variables required in the **nxos** group:
@@ -198,7 +196,7 @@ Create the variables required in the **nxos** group:
 
 We'll use these variables in a variety of ways throughout the course.
 
-### Task 8 - Create Group Variables for the *iosxe* group
+### Task 6 - Create Group Variables for the *iosxe* group
 
 
 Create the variables required in the **iosxe** group:
@@ -210,7 +208,7 @@ Create the variables required in the **iosxe** group:
 We'll use these variables in a variety of ways throughout the course as well.
 
 
-### Task 9 - Create Group Variables for the *vmx* group
+### Task 7 - Create Group Variables for the *vmx* group
 
 Create the variables required in the **vmx** group:
 
@@ -221,7 +219,7 @@ Create the variables required in the **vmx** group:
 
 We'll use these variables in a variety of ways throughout the course.
 
-### Task 10 - Status Check
+### Task 8 - Status Check
 
 After adding all group variables, your inventory file should look like this (note that order doesn't matter):
 
@@ -230,8 +228,8 @@ After adding all group variables, your inventory file should look like this (not
 ```
 
 [all:vars]
-un=ntc
-pwd=ntc123
+ansible_user=ntc
+ansible_ssh_pass=ntc123
 
 
 [eos:children]
