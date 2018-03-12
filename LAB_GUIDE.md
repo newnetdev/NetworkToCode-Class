@@ -22,10 +22,11 @@
 - [Lab 18 - Re-factoring Code with Functions](labs/Lab_18_Refactor_with_Functions.md)
 - [Lab 19 - Using Conditionals](labs/Lab_19_Getting_Started_with_Conditionals.md)
 - [Lab 20 - Passing in User Input](labs/Lab_20_User_Input.md)
-- [Lab 21 - Exploring NX-API & eAPI ](labs/Lab_21_Exploring_eAPI_NXAPI.md)
-- [Lab 22 - Using Postman with IOS-XE RESTful API](labs/Lab_22_Postman_RESTCONF.md)
-- [Lab 23 - Using Python requests for HTTP APIs ](labs/Lab_23_Python_requests.md)
-- [Lab 24 - BONUS: Getting Started with NAPALM](labs/Lab_24_NAPALM.md)
+- [Lab 21 - Parsing show commands with TextFSM](labs/Lab_21_Show_Parsing_TextFSM.md)
+- [Lab 22 - Exploring NX-API & eAPI ](labs/Lab_22_Exploring_eAPI_NXAPI.md)
+- [Lab 23 - Using Postman with IOS-XE RESTful API](labs/Lab_23_Postman_RESTCONF.md)
+- [Lab 24 - Using Python requests for HTTP APIs ](labs/Lab_23_Python_requests.md)
+- [Lab 25 - BONUS: Getting Started with NAPALM](labs/Lab_24_NAPALM.md)
 
 
 ## Ansible Labs
