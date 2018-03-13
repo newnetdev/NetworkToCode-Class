@@ -1,4 +1,4 @@
-## Lab 15 - Getting Started with For Loops
+## Lab 16 - Getting Started with For Loops
 
 This lab walks you through an introduction of using for loops iterating over a list of strings, a dictionaries, and finally, a list of dictionaries.
 

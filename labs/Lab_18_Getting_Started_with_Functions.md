@@ -1,4 +1,4 @@
-## Lab 17 - Getting Started with Functions
+## Lab 18 - Getting Started with Functions
 
 This lab walks you through an introduction of using functions so you can start writing more modular code and eliminate any duplicate code in your scripts.
 

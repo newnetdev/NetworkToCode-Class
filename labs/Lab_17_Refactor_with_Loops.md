@@ -1,4 +1,4 @@
-## Lab 16 - Re-factoring Code Using Loops
+## Lab 17 - Re-factoring Code Using Loops
 
 In the last lab, you learned how to use a for loop and looped over a list of strings, list of dictionaries, and even a dictionary.  You'll use that knowledge now to re-factor your last two challenge labs.
 

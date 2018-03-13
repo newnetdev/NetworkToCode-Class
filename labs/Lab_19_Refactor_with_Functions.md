@@ -1,4 +1,4 @@
-## Lab 18 - Re-factoring Code with Functions
+## Lab 19 - Re-factoring Code with Functions
 
 In the last lab, you learned how to use functions and even created a small functions that connects to devices using Netmiko.  You'll use that knowledge now to re-factor and modularize the two scripts.
 

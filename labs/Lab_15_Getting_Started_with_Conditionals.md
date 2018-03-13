@@ -1,4 +1,4 @@
-## Lab 19 - Getting Started with Conditionals
+## Lab 15 - Getting Started with Conditionals
 
 This lab walks you through an introduction of using conditionals allowing you to add more intelligence and business logic into your code.
 
