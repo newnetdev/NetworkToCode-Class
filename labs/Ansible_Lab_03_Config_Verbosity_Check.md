@@ -50,7 +50,7 @@ Remove the second play (Junos), so you're left with the following in your playbo
 Verify the playbook is still functional (syntax, spacing) by executing the playbook.
 
 ```
-ntc@ntc:ansible$ ansible-playbook -i inventory snmp-config-03.yml 
+ntc@ntc:ansible$ ansible-playbook -i inventory snmp-config-03.yml
 
 # output omitted
 ```
@@ -76,7 +76,7 @@ Execute the playbook, but this time use the `-v` flag.  This will run the playbo
 > Note: every module returns JSON data and you can view that data by running the playbook in verbose mode.  You can add more levels of verbosity using doing `-vv`, `-vvv`, etc. up to 5 v's.
 
 
-The core `<os>_config` modules will return the commands being sent to the device when running the playbook in verbose mode.  
+The core `<os>_config` modules will return the commands being sent to the device when running the playbook in verbose mode.
 
 Let's take a look:
 
@@ -92,11 +92,11 @@ changed: [csr2] => {"banners": {}, "changed": true, "commands": ["snmp-server co
 changed: [csr3] => {"banners": {}, "changed": true, "commands": ["snmp-server community supersecret RW"], "failed": false, "updates": ["snmp-server community supersecret RW"]}
 
 PLAY RECAP ****************************************************************************************************
-csr1                       : ok=1    changed=1    unreachable=0    failed=0   
-csr2                       : ok=1    changed=1    unreachable=0    failed=0   
-csr3                       : ok=1    changed=1    unreachable=0    failed=0   
+csr1                       : ok=1    changed=1    unreachable=0    failed=0
+csr2                       : ok=1    changed=1    unreachable=0    failed=0
+csr3                       : ok=1    changed=1    unreachable=0    failed=0
 
-ntc@ntc:ansible$ 
+ntc@ntc:ansible$
 
 ```
 
@@ -118,9 +118,9 @@ ok: [csr3] => {"changed": false, "failed": false}
 ok: [csr2] => {"changed": false, "failed": false}
 
 PLAY RECAP ****************************************************************************************************
-csr1                       : ok=1    changed=0    unreachable=0    failed=0   
-csr2                       : ok=1    changed=0    unreachable=0    failed=0   
-csr3                       : ok=1    changed=0    unreachable=0    failed=0   
+csr1                       : ok=1    changed=0    unreachable=0    failed=0
+csr2                       : ok=1    changed=0    unreachable=0    failed=0
+csr3                       : ok=1    changed=0    unreachable=0    failed=0
 ```
 
 As you can see no commands were sent to the devices.
@@ -175,11 +175,11 @@ changed: [csr1]
 changed: [csr2]
 
 PLAY RECAP ****************************************************************************************************
-csr1                       : ok=1    changed=1    unreachable=0    failed=0   
-csr2                       : ok=1    changed=1    unreachable=0    failed=0   
-csr3                       : ok=1    changed=1    unreachable=0    failed=0   
+csr1                       : ok=1    changed=1    unreachable=0    failed=0
+csr2                       : ok=1    changed=1    unreachable=0    failed=0
+csr3                       : ok=1    changed=1    unreachable=0    failed=0
 
-ntc@ntc:ansible$ 
+ntc@ntc:ansible$
 ```
 
 Notice that this says "changed" for each device, but no change actually took place!!
@@ -224,11 +224,11 @@ changed: [csr2] => {"banners": {}, "changed": true, "commands": ["snmp-server lo
 changed: [csr1] => {"banners": {}, "changed": true, "commands": ["snmp-server location NYC_HQ_COLO"], "failed": false, "updates": ["snmp-server location NYC_HQ_COLO"]}
 
 PLAY RECAP ****************************************************************************************************
-csr1                       : ok=1    changed=1    unreachable=0    failed=0   
-csr2                       : ok=1    changed=1    unreachable=0    failed=0   
-csr3                       : ok=1    changed=1    unreachable=0    failed=0   
+csr1                       : ok=1    changed=1    unreachable=0    failed=0
+csr2                       : ok=1    changed=1    unreachable=0    failed=0
+csr3                       : ok=1    changed=1    unreachable=0    failed=0
 
-ntc@ntc:ansible$ 
+ntc@ntc:ansible$
 ```
 
 You now know which commands are going to get sent to the device.  This is super-handy when troubleshooting syntax issues, typos, and bad commands.
@@ -238,7 +238,7 @@ You now know which commands are going to get sent to the device.  This is super-
 Now that you, as a network engineer, "approved" the commands that will get sent to the device, you can remove check mode (feel free to keep verbose mode).
 
 ```
-ntc@ntc:ansible$ ansible-playbook -i inventory snmp-config-03.yml -v        
+ntc@ntc:ansible$ ansible-playbook -i inventory snmp-config-03.yml -v
 Using /etc/ansible/ansible.cfg as config file
 
 PLAY [PLAY 1 - DEPLOYING SNMP CONFIGURATIONS ON IOS] **********************************************************
@@ -249,11 +249,11 @@ changed: [csr3] => {"banners": {}, "changed": true, "commands": ["snmp-server lo
 changed: [csr2] => {"banners": {}, "changed": true, "commands": ["snmp-server location NYC_HQ_COLO"], "failed": false, "updates": ["snmp-server location NYC_HQ_COLO"]}
 
 PLAY RECAP ****************************************************************************************************
-csr1                       : ok=1    changed=1    unreachable=0    failed=0   
-csr2                       : ok=1    changed=1    unreachable=0    failed=0   
-csr3                       : ok=1    changed=1    unreachable=0    failed=0   
+csr1                       : ok=1    changed=1    unreachable=0    failed=0
+csr2                       : ok=1    changed=1    unreachable=0    failed=0
+csr3                       : ok=1    changed=1    unreachable=0    failed=0
 
-ntc@ntc:ansible$ 
+ntc@ntc:ansible$
 ```
 
 ##### Step 7
@@ -272,9 +272,9 @@ ok: [csr1] => {"changed": false, "failed": false}
 ok: [csr2] => {"changed": false, "failed": false}
 
 PLAY RECAP ****************************************************************************************************
-csr1                       : ok=1    changed=0    unreachable=0    failed=0   
-csr2                       : ok=1    changed=0    unreachable=0    failed=0   
-csr3                       : ok=1    changed=0    unreachable=0    failed=0   
+csr1                       : ok=1    changed=0    unreachable=0    failed=0
+csr2                       : ok=1    changed=0    unreachable=0    failed=0
+csr3                       : ok=1    changed=0    unreachable=0    failed=0
 
 ntc@ntc:ansible$
 ```

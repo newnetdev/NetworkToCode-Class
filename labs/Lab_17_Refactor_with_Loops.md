@@ -83,7 +83,7 @@ from netmiko import ConnectHandler
 
 devices = ['csr1']
 
-for device in devices: 
+for device in devices:
     print("Connecting to device | {}".format(device))
 
     csr1 = ConnectHandler(host=device, username='ntc', password='ntc123', device_type='cisco_ios')
@@ -128,7 +128,7 @@ with open("/home/ntc/scripts/configs/csr1.cfg", "w") as config_file:
 Execute the script ensuring it still works as expected:
 
 ```
-ntc@ntc:scripts$ python backupv2.py 
+ntc@ntc:scripts$ python backupv2.py
 Connecting to device | csr1
 Saving configuration | csr1
 Backing up configuration | csr1
@@ -155,7 +155,7 @@ from netmiko import ConnectHandler
 
 devices = ['csr1', 'csr2']
 
-for device in devices: 
+for device in devices:
     print("Connecting to device | {}".format(device))
 
     csr1 = ConnectHandler(host=device, username='ntc', password='ntc123', device_type='cisco_ios')
@@ -188,7 +188,7 @@ from netmiko import ConnectHandler
 
 devices = ['csr1', 'csr2']
 
-for device in devices: 
+for device in devices:
     print("Connecting to device | {}".format(device))
 
     net_device = ConnectHandler(host=device, username='ntc', password='ntc123', device_type='cisco_ios')
@@ -227,7 +227,7 @@ from netmiko import ConnectHandler
 
 devices = ['csr1', 'csr2', 'csr3']
 
-for device in devices: 
+for device in devices:
     print("Connecting to device | {}".format(device))
 
     net_device = ConnectHandler(host=device, username='ntc', password='ntc123', device_type='cisco_ios')
@@ -249,137 +249,3 @@ for device in devices:
     net_device.disconnect()
 
 ```
-
-
-### Task 2 - Re-factor Challenge Lab 15
-
-The goal is to update this script eliminating all of the duplicate code introducing a for loop that iterates over **csr1** and **csr2**.
-
-The final code for **Challenge 15** was this:
-
-```python
-from netmiko import ConnectHandler
-
-print("Connecting to device | CSR1")
-csr1 = ConnectHandler(host='csr1', username='ntc', password='ntc123', device_type='cisco_ios')
-
-print("Connecting to device | CSR2")
-csr2 = ConnectHandler(host='csr2', username='ntc', password='ntc123', device_type='cisco_ios')
-
-print("Connecting to device | CSR3")
-csr3 = ConnectHandler(host='csr3', username='ntc', password='ntc123', device_type='cisco_ios')
-
-print("Sending commands from file | CSR1")
-csr1.send_config_from_file("./configs/snmp.cfg")
-
-print("Sending commands from file | CSR2")
-csr2.send_config_from_file("./configs/snmp.cfg")
-
-print("Sending commands from file | CSR3")
-csr3.send_config_from_file("./configs/snmp.cfg")
-
-print("Disconnecting from device | CSR1")
-csr1.disconnect()
-
-print("Disconnecting from device | CSR2")
-csr2.disconnect()
-
-print("Disconnecting from device | CSR3")
-csr3.disconnect()
-
-```
-
-##### Step 1
-
-Your goal is to re-factor this script using a for loop.  
-
-Save your new script `deploy-snmpv2.py`.
-
-Scroll down for the solution:
-
-```
-.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-from netmiko import ConnectHandler
-
-devices = ['csr1', 'csr2', 'csr3']
-
-for device in devices:
-    print("Connecting to device | {}".format(device))
-    net_device = ConnectHandler(host=device, username='ntc', password='ntc123', device_type='cisco_ios')
-
-    print("Sending commands from file | {}".format(device))
-    net_device.send_config_from_file("./configs/snmp.cfg")
-
-    print("Disconnecting from device | {}".format(device))
-    net_device.disconnect()
-```
-
-

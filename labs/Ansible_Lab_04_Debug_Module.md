@@ -1,4 +1,4 @@
-## Lab 5 - Using the debug module
+## Lab 4 - Using the debug module
 
 ### Task 1 - Debugging Variables
 
@@ -12,21 +12,21 @@ Navigate to the `ansible` directory.
 
 ```
 ntc@ntc:~$ cd ansible/
-ntc@ntc:ansible$ 
+ntc@ntc:ansible$
 ```
 
 ##### Step 2
 
-Create a playbook file called `debug.yml`.  
+Create a playbook file called `debug.yml`.
 
 ```
 ntc@ntc:ansible$ touch debug.yml
-ntc@ntc:ansible$ 
+ntc@ntc:ansible$
 ```
 
 Open the file in your text editor.
 
-The playbook will consist of a single play and a single task.  
+The playbook will consist of a single play and a single task.
 
 
 ##### Step 3
@@ -55,7 +55,7 @@ Save and execute the playbook.
 You should see the following output.
 
 ```
-ntc@ntc:ansible$ ansible-playbook -i inventory debug.yml 
+ntc@ntc:ansible$ ansible-playbook -i inventory debug.yml
 
 PLAY [USING THE DEBUG MODULE] ***************************************************
 
@@ -71,9 +71,9 @@ ok: [csr3] => {
 }
 
 PLAY RECAP **********************************************************************
-csr1                       : ok=1    changed=0    unreachable=0    failed=0   
-csr2                       : ok=1    changed=0    unreachable=0    failed=0   
-csr3                       : ok=1    changed=0    unreachable=0    failed=0   
+csr1                       : ok=1    changed=0    unreachable=0    failed=0
+csr2                       : ok=1    changed=0    unreachable=0    failed=0
+csr3                       : ok=1    changed=0    unreachable=0    failed=0
 
 ntc@ntc:ansible$
 ```
@@ -95,7 +95,7 @@ Save and execute the playbook.
 You should see the following output.
 
 ```
-ntc@ntc:ansible$ ansible-playbook -i inventory debug.yml 
+ntc@ntc:ansible$ ansible-playbook -i inventory debug.yml
 
 PLAY [USING THE DEBUG MODULE] ***************************************************
 
@@ -138,18 +138,18 @@ ok: [nxos-spine2] => {
 }
 
 PLAY RECAP **********************************************************************
-csr1                       : ok=1    changed=0    unreachable=0    failed=0   
-csr2                       : ok=1    changed=0    unreachable=0    failed=0   
-csr3                       : ok=1    changed=0    unreachable=0    failed=0   
-eos-leaf1                  : ok=1    changed=0    unreachable=0    failed=0   
-eos-leaf2                  : ok=1    changed=0    unreachable=0    failed=0   
-eos-spine1                 : ok=1    changed=0    unreachable=0    failed=0   
-eos-spine2                 : ok=1    changed=0    unreachable=0    failed=0   
-nxos-spine1                : ok=1    changed=0    unreachable=0    failed=0   
-nxos-spine2                : ok=1    changed=0    unreachable=0    failed=0   
-vmx7                       : ok=1    changed=0    unreachable=0    failed=0   
-vmx8                       : ok=1    changed=0    unreachable=0    failed=0   
-vmx9                       : ok=1    changed=0    unreachable=0    failed=0   
+csr1                       : ok=1    changed=0    unreachable=0    failed=0
+csr2                       : ok=1    changed=0    unreachable=0    failed=0
+csr3                       : ok=1    changed=0    unreachable=0    failed=0
+eos-leaf1                  : ok=1    changed=0    unreachable=0    failed=0
+eos-leaf2                  : ok=1    changed=0    unreachable=0    failed=0
+eos-spine1                 : ok=1    changed=0    unreachable=0    failed=0
+eos-spine2                 : ok=1    changed=0    unreachable=0    failed=0
+nxos-spine1                : ok=1    changed=0    unreachable=0    failed=0
+nxos-spine2                : ok=1    changed=0    unreachable=0    failed=0
+vmx7                       : ok=1    changed=0    unreachable=0    failed=0
+vmx8                       : ok=1    changed=0    unreachable=0    failed=0
+vmx9                       : ok=1    changed=0    unreachable=0    failed=0
 
 ntc@ntc:ansible$
 ```
@@ -199,7 +199,7 @@ Add a task to the playbook to debug the `device_type` variable so the playbook r
 Save and execute the following:
 
 ```
-ntc@ntc:ansible$ ansible-playbook -i inventory debug.yml 
+ntc@ntc:ansible$ ansible-playbook -i inventory debug.yml
 
 ```
 
@@ -272,7 +272,7 @@ device_type=n7kv
 Save and execute the following:
 
 ```
-ntc@ntc:ansible$ ansible-playbook -i inventory debug.yml 
+ntc@ntc:ansible$ ansible-playbook -i inventory debug.yml
 
 ```
 
@@ -397,7 +397,7 @@ Take a minute to think about the variable priority occurring.  The **all** group
 
 This task will introduce the `msg` parameter for the `debug` module.  Using `var` is mutually exclusive with the `var` parameter.
 
-When you just want to print a single variable, you use the `var` parameter.  If you want to add context (add a full sentence), you should use the `msg` parameter. 
+When you just want to print a single variable, you use the `var` parameter.  If you want to add context (add a full sentence), you should use the `msg` parameter.
 
 ##### Step 1
 

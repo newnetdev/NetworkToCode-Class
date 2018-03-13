@@ -1,7 +1,7 @@
 layout: true
 
 .footer-picture[![Network to Code Logo](slides/media/Footer2.PNG)]
-.footnote-left[(C) 2015 Network to Code, LLC. All Rights Reserved. ]
+.footnote-left[(C) 2018 Network to Code, LLC. All Rights Reserved. ]
 .footnote-con[CONFIDENTIAL]
 
 ---
@@ -21,7 +21,7 @@ class: center, middle, title
 - Open source DevOps Configuration management, automation, and orchestration platform
 - Low barrier to entry with no programming skills necessary
 - Batteries included
-- 600+ modules
+- 900+ modules
 - Built its home for application deployments in cloud environments
 - Rapidly gaining traction for network automation
 
@@ -161,7 +161,8 @@ Note: The `provider` is covered soon.
       - name: PERFORM THE UPGRADE
         nxos_install_os:
           system_image_file: nxos.7.0.3.I2.2d.bin
-        provider: "{{ nxos_provider }}"
+          provider: "{{ nxos_provider }}"
+
 ```
 
 Note: a more seamless upgrade requires a few more tasks.
@@ -182,8 +183,8 @@ Note: a more seamless upgrade requires a few more tasks.
       - name: BACKUP CONFIGS
         ntc_save_config:
           host={{ inventory_hostname }}
-          username={{ un }}
-          password={{ pwd }}
+          username={{ ansible_user }}
+          password={{ ansible_ssh_pass }}
           local_file=backups/{{ inventory_hostname }}.cfg
           platform={{ vendor }}_{{ os }}_{{ api }}
         tags: backup
@@ -191,8 +192,8 @@ Note: a more seamless upgrade requires a few more tasks.
       - name: DEPLOY CONFIGS
         napalm_install_config:
           hostname={{ inventory_hostname }}
-          username={{ un }}
-          password={{ pwd }}
+          username={{ ansible_user }}
+          password={{ ansible_ssh_pass }}
           config_file=backups/{{ inventory_hostname }}.cfg
           diff_file=diffs/{{ inventory_hostname }}.diffs
           replace_config=true
@@ -304,13 +305,13 @@ Inventory Basics
 
 .left-column[
 - ini like file that statically defines which devices are automated
-- Uses IP addresses or FQDNs 
-- The name of the inventory file is arbitrary 
+- Uses IP addresses or FQDNs
+- The name of the inventory file is arbitrary
 ]
 
 
 .right-column[.big-code[
-```yaml
+```ini
 10.1.1.1
 switch1.ntc.com
 r1.ntc.com
@@ -438,8 +439,8 @@ Location of group variables does not matter
 
 ```yaml
 [all:vars]
-username=ntc
-password=ntc123
+ansible_user=ntc
+ansible_ssh_pass=ntc123
 snmp_ro=networktocode
 
 [nyc:children]
@@ -470,8 +471,8 @@ Define host variables on the same line as the host.
 
 ```yaml
 [all:vars]
-username=ntc
-password=ntc123
+ansible_user=ntc
+ansible_ssh_pass=ntc123
 snmp_ro=networktocode
 
 [nyc:children]
@@ -502,18 +503,18 @@ snmp_ro=netcode-routers
 ```bash
 [all:vars]
 location=AMERS
-username=admin
-password=admin
+ansible_user=admin
+ansible_ssh_pass=admin
 
 [routers]
 r1.ntc.com  mgmt_ip=1.1.1.1
 r2.ntc.com  mgmt_ip=1.1.1.2
 
 [routers:vars]
-password=secret
+ansible_ssh_pass=secret
 
 [switches]
-s1.ntc.com  mgmt_ip=1.1.2.1  password=supersecret
+s1.ntc.com  mgmt_ip=1.1.2.1  ansible_ssh_pass=supersecret
 s2.ntc.com  mgmt_ip=1.1.2.2
 
 [switches:vars]
@@ -621,7 +622,7 @@ Two files are required to get started:
 
 .left-column[
 - Contains instruction set on tasks to be automated
-- name of the playbook is arbitrary 
+- name of the playbook is arbitrary
 - Uses YAML data format
 - Playbook contains one or more plays
 ]
@@ -739,7 +740,7 @@ Two files are required to get started:
 
 # Modules, Parameters, and Variables
 
-.left-column2[
+.left-column[
 - Modules
   - Idempotent
   - Mostly written in Python
@@ -749,7 +750,7 @@ Two files are required to get started:
 - `inventory_hostname` - built-in variable referencing device name in inventory file
 ]
 
-.right-column2[.med-code[
+.right-column[.med-code[
 ```yaml
 ---
 
@@ -766,8 +767,8 @@ Two files are required to get started:
         name: web_vlan
         state: present
         host: "{{ inventory_hostname }}"
-        username: "{{ username }}"
-        password: "{{ password }}"
+        username: "{{ ansible_user }}"
+        password: "{{ ansible_ssh_pass }}"
 
 ```
 ]]
@@ -832,7 +833,7 @@ class: center, middle
         password: "{{ password }}"
 
     # no curly braces used with var parameter
-    - debug: 
+    - debug:
         var: inventory_hostname
 
 ```
@@ -862,7 +863,7 @@ class: center, middle
     - name: ensure VLAN exists
       nxos_vlan: vlan_id=10 host={{ inventory_hostname }} username={{ username }} password={{ password }}
 
-    # no curly braces used with var parameter  
+    # no curly braces used with var parameter
     - debug: var=inventory_hostname
 
 ```
@@ -870,7 +871,7 @@ class: center, middle
 
 ---
 
-# Idempotency 
+# Idempotency
 
 * Modules that perform a change _should_ only make the change once (the first execution)
 * You can run the task a 1000 and it'll only occur once
@@ -882,7 +883,8 @@ class: center, middle
 
 - Lab 1 - Deploying basic configs with Ansible
   - Write Your First Ansible Playbook that will configure SNMP setting on 6 devices! 3 IOS and 3 JUNOS devices
-
+- Lab 2 - Deploying Configs From a File
+  - Shows how to push configuration using files.
 
 ---
 
@@ -901,11 +903,11 @@ class: middle
 # inventory
 
 [all:vars]
-un=ntc
-pwd=ntc123
+anisble_user=ntc
+ansible_ssh_pass=ntc123
 
 [datacenter]
-leaf1 mgmt_ip=10.1.1.1 pwd=admin123
+leaf1 mgmt_ip=10.1.1.1 ansible_ssh_pass=admin123
 leaf2 mgmt_ip=10.1.1.2
 
 ```
@@ -940,7 +942,7 @@ leaf2 mgmt_ip=10.1.1.2
 .right-column[
 .ubuntu[
 ```
-$ ansible-playbook -i inventory debug.yml 
+$ ansible-playbook -i inventory debug.yml
 
 PLAY [DEBUGGING VARIABLES] *****************************************************
 
@@ -953,8 +955,8 @@ ok: [leaf2] => {
 }
 
 PLAY RECAP *********************************************************************
-leaf1                      : ok=1    changed=0    unreachable=0    failed=0   
-leaf2                      : ok=1    changed=0    unreachable=0    failed=0    
+leaf1                      : ok=1    changed=0    unreachable=0    failed=0
+leaf2                      : ok=1    changed=0    unreachable=0    failed=0
 ```
 ]
 
@@ -971,11 +973,11 @@ leaf2                      : ok=1    changed=0    unreachable=0    failed=0
 # inventory
 
 [all:vars]
-un=ntc
-pwd=ntc123
+ansible_user=ntc
+ansible_ssh_pass=ntc123
 
 [datacenter]
-leaf1 mgmt_ip=10.1.1.1 pwd=admin123
+leaf1 mgmt_ip=10.1.1.1 ansible_ssh_pass=admin123
 leaf2 mgmt_ip=10.1.1.2
 
 ```
@@ -992,7 +994,7 @@ leaf2 mgmt_ip=10.1.1.2
     tasks:
 
       - name: PRINT PASSWORD
-        debug: var=pwd
+        debug: var=ansible_ssh_pass
 ```
 
 .largeubuntu[
@@ -1010,21 +1012,21 @@ leaf2 mgmt_ip=10.1.1.2
 .right-column[
 .ubuntu[
 ```
-$ ansible-playbook -i inventory debug.yml 
+$ ansible-playbook -i inventory debug.yml
 
 PLAY [DEBUGGING VARIABLES] *****************************************************
 
 TASK [PRINT INVENTORY HOSTNAME] ************************************************
 ok: [leaf1] => {
-    "pwd": "admin123"
+    "ansible_ssh_pass": "admin123"
 }
 ok: [leaf2] => {
-    "pwd": "ntc123"
+    "ansible_ssh_pass": "ntc123"
 }
 
 PLAY RECAP *********************************************************************
-leaf1                      : ok=1    changed=0    unreachable=0    failed=0   
-leaf2                      : ok=1    changed=0    unreachable=0    failed=0     
+leaf1                      : ok=1    changed=0    unreachable=0    failed=0
+leaf2                      : ok=1    changed=0    unreachable=0    failed=0
 ```
 ]
 
@@ -1041,11 +1043,11 @@ leaf2                      : ok=1    changed=0    unreachable=0    failed=0
 # inventory
 
 [all:vars]
-un=ntc
-pwd=ntc123
+ansible_user=ntc
+ansible_ssh_pass=ntc123
 
 [datacenter]
-leaf1 mgmt_ip=10.1.1.1 pwd=admin123
+leaf1 mgmt_ip=10.1.1.1 ansible_ssh_pass=admin123
 leaf2 mgmt_ip=10.1.1.2
 
 ```
@@ -1080,7 +1082,7 @@ leaf2 mgmt_ip=10.1.1.2
 .right-column[
 .ubuntu[
 ```
-$ ansible-playbook -i inventory debug.yml 
+$ ansible-playbook -i inventory debug.yml
 
 PLAY [DEBUGGING VARIABLES] *****************************************************
 
@@ -1093,10 +1095,10 @@ ok: [leaf2] => {
 }
 
 PLAY RECAP *********************************************************************
-leaf1                      : ok=1    changed=0    unreachable=0    failed=0   
-leaf2                      : ok=1    changed=0    unreachable=0    failed=0   
+leaf1                      : ok=1    changed=0    unreachable=0    failed=0
+leaf2                      : ok=1    changed=0    unreachable=0    failed=0
 
-    
+
 ```
 ]
 
@@ -1136,7 +1138,7 @@ nxos-spine1                : ok=3    changed=0    unreachable=0    failed=0
 
 ---
 
-# Understanding the "check" mode 
+# Understanding the "check" mode
 
 * Does not make configuration changes - dry run
 * Verbose mode in combination with the `--check` flag shows the actual commands
@@ -1157,8 +1159,8 @@ nxos-spine1                : ok=3    changed=0    unreachable=0    failed=0
         ios_config:
           provider:
             host: "{{ inventory_hostname }}"
-            username: "{{ un }}"
-            password: "{{ pwd }}"
+            username: "{{ ansible_user }}"
+            password: "{{ ansible_ssh_pass }}"
           commands:
             - snmp-server community ntc-course RO
             - snmp-server community supersecret RW
@@ -1182,11 +1184,11 @@ changed: [csr2] => {"banners": {}, "changed": true, "commands": ["snmp-server lo
 changed: [csr1] => {"banners": {}, "changed": true, "commands": ["snmp-server location NYC_HQ_COLO"], "failed": false, "updates": ["snmp-server location NYC_HQ_COLO"]}
 
 PLAY RECAP ****************************************************************************************************
-csr1                       : ok=1    changed=1    unreachable=0    failed=0   
-csr2                       : ok=1    changed=1    unreachable=0    failed=0   
-csr3                       : ok=1    changed=1    unreachable=0    failed=0   
+csr1                       : ok=1    changed=1    unreachable=0    failed=0
+csr2                       : ok=1    changed=1    unreachable=0    failed=0
+csr3                       : ok=1    changed=1    unreachable=0    failed=0
 
-ntc@ntc:ansible$ 
+ntc@ntc:ansible$
 
 ```
 ]
@@ -1208,9 +1210,8 @@ ntc@ntc:ansible$
 ---
 # Lab Time
 
-- Lab 2 - Using the debug module
-- Lab 3 - Understanding "check mode" and verbosity
-
+- Lab 3 - Using Check Mode and Verbosity
+- Lab 4 - Using the debug module
 
 ---
 
@@ -1434,7 +1435,7 @@ tr:nth-child(even) {
 # Extra Variables
 
 - Known as "extra vars"
-- Variables passed into a playbook upon execution.  
+- Variables passed into a playbook upon execution.
 - Highest priority
 
 ```yaml
@@ -1460,9 +1461,82 @@ $ ansible-playbook -i inventory playbook.yml --extra-vars "devices=eos"
 
 
 ---
+
 # Lab Time
 
-- Lab 4 - Building the course inventory file 
+- Lab 5 - Building the course inventory file
+
+---
+
+# Jinja2 Templates
+### Ansible for Network Automation
+
+
+---
+
+
+# Templating
+
+
+- Manual method:
+  - Enterprises have golden configuration standard for type of device, location of device etc
+  - This is updated and deployed, for a new device coming into the network
+
+
+- Automated templates:
+  - Jinja2 provides a way to write these golden configs as skeleton templates with variables
+  - Ansible provides the variables to the template and renders configuration using the `template` module.
+
+
+
+---
+
+class: ubuntu
+
+# The Ansible template module
+The basic usage of the template module in Ansible:
+
+
+```yaml
+
+    - name: RENDER CONFIGURATIONS
+      template:
+        src: device_config.j2
+        dest: "./configs/{{ inventory_hostname }}.cfg
+
+```
+
+---
+
+class: ubuntu
+
+# Jinja2 and the *_config modules
+
+Within the network core config modules (like ios_config, junos_config etc). You can specify a Jinja2 template as a src file rather than a config file.
+
+```yaml
+    - name: ENSURE THAT SNMP IS CONFIGURED ON IOS DEVICES
+      ios_config:
+        src: 02-ios-snmp.j2
+        provider: "{{ provider }}"
+
+```
+
+```yaml
+    - name: ENSURE THAT SNMP IS CONFIGURED ON JUNOS DEVICES
+      junos_config:
+        src: 02-junos-snmp.j2
+        provider: "{{ provider }}"
+
+```
+
+---
+
+# Lab Time
+
+- Lab 7 - Getting Started with Jinja2 Templating in Ansible
+- Lab 8 - Using Improved Jinja2 Templates
+
 
 ---
 
@@ -1491,8 +1565,8 @@ class: middle, segue
           platform: cisco_ios
           command: show running
           host: "{{ inventory_hostname }}"
-          username: "{{ username }}"
-          password: "{{ password }}"
+          username: "{{ ansible_user }}"
+          password: "{{ ansible_ssh_pass }}"
           local_file: ./backups/{{ inventory_hostname }}.cfg
 
 ```
@@ -1611,31 +1685,31 @@ class: ubuntu
 
 class: ubuntu
 
-# NAPALM Facts 
+# NAPALM Facts
 
 Network Device Facts
 
 ```
 {
-    "os_version": "4.15.2F-2663444.4152F", 
-    "uptime": 5837, 
+    "os_version": "4.15.2F-2663444.4152F",
+    "uptime": 5837,
     "interface_list": [
-        "Ethernet1", 
-        "Ethernet2", 
-        "Ethernet3", 
-        "Ethernet4", 
-        "Ethernet5", 
-        "Ethernet6", 
-        "Ethernet7", 
+        "Ethernet1",
+        "Ethernet2",
+        "Ethernet3",
+        "Ethernet4",
+        "Ethernet5",
+        "Ethernet6",
+        "Ethernet7",
         "Management1"
-    ], 
-    "vendor": "Arista", 
-    "serial_number": "", 
-    "model": "vEOS", 
-    "hostname": "eos-spine1", 
+    ],
+    "vendor": "Arista",
+    "serial_number": "",
+    "model": "vEOS",
+    "hostname": "eos-spine1",
     "fqdn": "eos-spine1.ntc.com"
 }
->>> 
+>>>
 ```
 
 ---
@@ -1649,29 +1723,29 @@ class: ubuntu
 ```
 {
     "Management1": {
-        "is_enabled": true, 
-        "description": "", 
-        "last_flapped": 1467419703.0212176, 
-        "is_up": true, 
-        "mac_address": "2c:c2:60:0d:52:90", 
+        "is_enabled": true,
+        "description": "",
+        "last_flapped": 1467419703.0212176,
+        "is_up": true,
+        "mac_address": "2c:c2:60:0d:52:90",
         "speed": 1000
-    }, 
+    },
     "Ethernet2": {
-        "is_enabled": true, 
-        "description": "", 
-        "last_flapped": 1467419702.7812023, 
-        "is_up": true, 
-        "mac_address": "2c:c2:60:12:98:52", 
+        "is_enabled": true,
+        "description": "",
+        "last_flapped": 1467419702.7812023,
+        "is_up": true,
+        "mac_address": "2c:c2:60:12:98:52",
         "speed": 1000
-    }, 
+    },
     "Ethernet3": {
-        "is_enabled": true, 
-        "description": "", 
-        "last_flapped": 1467419702.7812028, 
-        "is_up": true, 
-        "mac_address": "2c:c2:60:60:20:9b", 
+        "is_enabled": true,
+        "description": "",
+        "last_flapped": 1467419702.7812028,
+        "is_up": true,
+        "mac_address": "2c:c2:60:60:20:9b",
         "speed": 1000
-    }, 
+    },
 ```
 ]
 
@@ -1679,27 +1753,27 @@ class: ubuntu
 
 ```
     "Ethernet1": {
-        "is_enabled": true, 
-        "description": "", 
-        "last_flapped": 1467419702.781203, 
-        "is_up": true, 
-        "mac_address": "2c:c2:60:48:80:70", 
+        "is_enabled": true,
+        "description": "",
+        "last_flapped": 1467419702.781203,
+        "is_up": true,
+        "mac_address": "2c:c2:60:48:80:70",
         "speed": 1000
-    }, 
+    },
     "Ethernet5": {
-        "is_enabled": true, 
-        "description": "", 
-        "last_flapped": 1467419702.8092043, 
-        "is_up": true, 
-        "mac_address": "2c:c2:60:40:8d:10", 
+        "is_enabled": true,
+        "description": "",
+        "last_flapped": 1467419702.8092043,
+        "is_up": true,
+        "mac_address": "2c:c2:60:40:8d:10",
         "speed": 1000
-    }, 
+    },
     "Ethernet4": {
-        "is_enabled": true, 
-        "description": "", 
-        "last_flapped": 1467419702.7692015, 
-        "is_up": true, 
-        "mac_address": "2c:c2:60:2e:c6:f8", 
+        "is_enabled": true,
+        "description": "",
+        "last_flapped": 1467419702.7692015,
+        "is_up": true,
+        "mac_address": "2c:c2:60:2e:c6:f8",
         "speed": 1000
     }
 }
@@ -1735,22 +1809,22 @@ Get Interfaces IP Addresses
 
 class: ubuntu
 
-# Environment 
+# Environment
 
 Device Environment Status
 
 ```
 {
-    "fans": {}, 
+    "fans": {},
     "cpu": {
         "0": {
             "%usage": 5.4
         }
-    }, 
-    "temperature": {}, 
-    "power": {}, 
+    },
+    "temperature": {},
+    "power": {},
     "memory": {
-        "available_ram": 99060, 
+        "available_ram": 99060,
         "used_ram": 1798476
     }
 }
@@ -1803,7 +1877,7 @@ Focus on desired configuration commands.
 There are no `no` commands used.  The underlying OS generates the diffs (for most NAPALM drivers).
 
 ```bash
-$ more diffs/csr1.diffs 
+$ more diffs/csr1.diffs
 +hostname csr1
 -hostname csr_old_name
 -interface Loopback100
@@ -1818,18 +1892,18 @@ Full configuration is sent to the device, but only diffs are applied. You do not
 
 ---
 
-# Configuration Merge 
+# Configuration Merge
 
-You can use NAPALM for declarative management for a sectional config too. 
+You can use NAPALM for declarative management for a sectional config too.
 
 .left-column[
 Current BGP Config
 ```bash
 router bgp 65512
    neighbor 10.0.0.0 remote-as 65500
-   neighbor 10.0.0.0 maximum-routes 12000 
+   neighbor 10.0.0.0 maximum-routes 12000
    neighbor 10.0.0.1 remote-as 65512
-   neighbor 10.0.0.1 maximum-routes 12000 
+   neighbor 10.0.0.1 maximum-routes 12000
    network 20.20.20.0/24
 !
 ```
@@ -1855,13 +1929,13 @@ router bgp 65512
 
 Diff Generated by NAPALM
 ```bash
-    neighbor 10.0.0.0 maximum-routes 12000 
+    neighbor 10.0.0.0 maximum-routes 12000
     neighbor 10.0.0.1 remote-as 65512
-    neighbor 10.0.0.1 maximum-routes 12000 
+    neighbor 10.0.0.1 maximum-routes 12000
 +   neighbor 10.0.0.2 remote-as 65500
-+   neighbor 10.0.0.2 maximum-routes 12000 
++   neighbor 10.0.0.2 maximum-routes 12000
 +   neighbor 10.0.0.10 remote-as 65512
-+   neighbor 10.0.0.10 maximum-routes 12000 
++   neighbor 10.0.0.10 maximum-routes 12000
     network 20.20.20.0/24
 +   network 100.0.100.0/24
  !
@@ -1877,16 +1951,16 @@ Diff Generated by NAPALM
 
 # Configuration Merge (Advanced)
 
-You can use NAPALM for declarative management for a sectional config too. 
+You can use NAPALM for declarative management for a sectional config too.
 
 .left-column[
 Current BGP Config
 ```bash
 router bgp 65512
    neighbor 10.0.0.0 remote-as 65500
-   neighbor 10.0.0.0 maximum-routes 12000 
+   neighbor 10.0.0.0 maximum-routes 12000
    neighbor 10.0.0.1 remote-as 65512
-   neighbor 10.0.0.1 maximum-routes 12000 
+   neighbor 10.0.0.1 maximum-routes 12000
    network 20.20.20.0/24
 !
 ```
@@ -1915,14 +1989,14 @@ Diff Generated by NAPALM
 ```bash
  router bgp 65512
 -   neighbor 10.0.0.0 remote-as 65500
--   neighbor 10.0.0.0 maximum-routes 12000 
+-   neighbor 10.0.0.0 maximum-routes 12000
     neighbor 10.0.0.1 remote-as 65512
-    neighbor 10.0.0.1 maximum-routes 12000 
+    neighbor 10.0.0.1 maximum-routes 12000
 -   network 20.20.20.0/24
 +   neighbor 10.0.0.2 remote-as 65500
-+   neighbor 10.0.0.2 maximum-routes 12000 
++   neighbor 10.0.0.2 maximum-routes 12000
 +   neighbor 10.0.0.10 remote-as 65512
-+   neighbor 10.0.0.10 maximum-routes 12000 
++   neighbor 10.0.0.10 maximum-routes 12000
 +   network 100.0.100.0/24
  !
 
@@ -1941,7 +2015,7 @@ Be cautious of device support.  This is based on NAPALM driver implementation wh
 
 # NAPALM Ansible Module (cont'd)
 
-* NAPALM module using a task attribute called `tags`.  
+* NAPALM module using a task attribute called `tags`.
 * Tags are used to selectively run particular tasks
 
 ```yaml
@@ -1953,12 +2027,12 @@ Be cautious of device support.  This is based on NAPALM driver implementation wh
       dev_os={{ os }}
       config_file=./backups/{{ inventory_hostname }}.cfg   # file with commands to apply
       commit_changes=true                                  # apply changes (or only generate diffs)
-      replace_config=true                                  # full config replace or merge (just a few commands) 
+      replace_config=true                                  # full config replace or merge (just a few commands)
       diff_file=./diffs/{{ inventory_hostname }}.diffs     # file to save diffs.  You can view diffs before committing changes
       hostname={{ inventory_hostname }}
-      username={{ un  }}
-      password={{ pwd }}
-    tags: deploy  
+      username={{ ansible_user  }}
+      password={{ ansible_ssh_pass }}
+    tags: deploy
 ```
 
 Save and Run the playbook.
@@ -2028,7 +2102,7 @@ ansible-playbook -i inventory playbook.yml --tags=datacenter
 - Insert before/after
 
 ```yaml
-- name: Ensure a line does not exist 
+- name: Ensure a line does not exist
   lineinfile: line="Building configuration..." dest=backups/{{ inventory_hostname }}.cfg state=absent
 ```
 
@@ -2054,76 +2128,8 @@ hostname nycr01
 
 # Lab Time
 
-- Lab 5 - Backing Up and Restoring Configurations
-
-
----
-
-class: middle, segue
-
-# Jinja2 Templates
-### Ansible for Network Automation
-
-
----
-
-
-# Templating
-
-
-- Manual method: 
-  - Enterprises have golden configuration standard for type of device, location of device etc
-  - This is updated and deployed, for a new device coming into the network
-  
-  
-- Automated templates:
-  - Jinja2 provides a way to write these golden configs as skeleton templates with variables
-  - Ansible provides the variables to the template and renders configuration using the `template` module.
-  
-
-
----
-
-class: ubuntu
-
-# The Ansible template module
-The basic usage of the template module in Ansible:
-
-
-```yaml
-
-    - name: RENDER CONFIGURATIONS
-      template:
-        src: device_config.j2
-        dest: "./configs/{{ inventory_hostname }}.cfg
-        
-```
-
----
-
-class: ubuntu
-
-# Jinja2 and the *_config modules
-
-Within the network core config modules (like ios_config, junos_config etc). You can specify a Jinja2 template as a src file rather than a config file.
-
-```yaml
-    - name: ENSURE THAT SNMP IS CONFIGURED ON IOS DEVICES
-      ios_config:
-        src: 02-ios-snmp.j2
-        provider: "{{ provider }}"
-
-```
-
-```yaml
-    - name: ENSURE THAT SNMP IS CONFIGURED ON JUNOS DEVICES
-      junos_config:
-        src: 02-junos-snmp.j2
-        provider: "{{ provider }}"
-
-```
-
-
+- Lab 9 - Backup and Restore Network Configurations Part 1
+- Lab 10 - Backup and Restore Network Configurations Part 2
 
 ---
 
@@ -2151,7 +2157,7 @@ class: middle, segue
   - VLANs
   - Interfaces
   - SNMP
-- Create template(s)  
+- Create template(s)
 - Create YAML Variable(s) files
 - Render templates with variables
 
@@ -2517,8 +2523,8 @@ interface {{ interface.name }}
     - name: DEPLOY MERGE
       napalm_install_config:
         hostname={{ inventory_hostname }}
-        username={{ un }}
-        password={{ pwd }}
+        username={{ ansible_user }}
+        password={{ ansible_ssh_pass }}
         dev_os=eos
         config_file=configs/{{ inventory_hostname }}/{{ inventory_hostname }}.conf
         commit_changes=true
@@ -2576,8 +2582,8 @@ leaf6
     - name: DEPLOY MERGE
       napalm_install_config:
         hostname={{ inventory_hostname }}
-        username={{ un }}
-        password={{ pwd }}
+        username={{ ansible_user }}
+        password={{ ansible_ssh_pass }}
         dev_os=eos
         config_file=configs/{{ inventory_hostname }}/{{ inventory_hostname }}.conf
         commit_changes=true
@@ -2612,16 +2618,16 @@ $ ansible-playbook build-push.yml
 
 ---
 
-class: ubuntu 
+class: ubuntu
 
 # Executing the Playbook (cont'd)
 
 ```
 $ ansible-playbook -i inventory build-push.yml
 
-PLAY [BUILD configs] ********************************************************** 
+PLAY [BUILD configs] **********************************************************
 
-TASK: [ENSURE DIRs created per device] **************************************** 
+TASK: [ENSURE DIRs created per device] ****************************************
 changed: [leaf1]
 changed: [leaf2]
 changed: [leaf3]
@@ -2629,21 +2635,21 @@ changed: [leaf4]
 changed: [leaf5]
 changed: [leaf6]
 
-TASK: [BUILD service configs using template modules] ************************** 
+TASK: [BUILD service configs using template modules] **************************
 changed: [leaf1] => (item=/home/ntc/ansible/templates/02_vlans.j2)
 changed: [leaf1] => (item=/home/ntc/ansible/templates/01_snmp.j2)
 changed: [leaf1] => (item=/home/ntc/ansible/templates/03_interfaces.j2)
 
-TASK: [ASSEMBLE CONFIGS per device] ******************************************* 
+TASK: [ASSEMBLE CONFIGS per device] *******************************************
 changed: [leaf1]
 
-PLAY [Push configs] *********************************************************** 
+PLAY [Push configs] ***********************************************************
 
-TASK: [deploy configs] ******************************************************** 
+TASK: [deploy configs] ********************************************************
 changed: [leaf1]
 
-PLAY RECAP ******************************************************************** 
-leaf1                      : ok=4    changed=4    unreachable=0    failed=0  
+PLAY RECAP ********************************************************************
+leaf1                      : ok=4    changed=4    unreachable=0    failed=0
 
 ```
 
@@ -2740,7 +2746,7 @@ playbook: build-push.yml
   - Template per service per role
   - Templates could become fragile
   - Good for initial device configuration
-  - Possible to use ALL the time (install_config)  
+  - Possible to use ALL the time (install_config)
 - Push
   - NAPALM provides a nice abstraction for pushing full and partial configurations to several device types
   - Always always test
@@ -2749,7 +2755,7 @@ playbook: build-push.yml
 
 # Lab Time
 
-- Lab 6 - Building and Pushing Network Configuration Files
+- Lab 11 - Build / Push with Ansible
   - You will use the "template" and "napalm_install_config" modules
   - Choose any *1* vendor to complete this lab
 
@@ -2833,8 +2839,8 @@ Convenience parameter that allows all nxos arguments to be passed as a dict obje
 
     vars:
       nxos_provider:
-        username: "{{ un }}"
-        password: "{{ pwd }}"
+        username: "{{ ansible_user }}"
+        password: "{{ ansible_ssh_pass }}"
         host: "{{ inventory_hostname }}"
         transport: "{{ transport }}"
 
@@ -2843,7 +2849,7 @@ Convenience parameter that allows all nxos arguments to be passed as a dict obje
       - nxos_command:
           commands:
             - 'show version'
-          provider: "{{ nxos_provider }}" 
+          provider: "{{ nxos_provider }}"
 ```
 
 ---
@@ -2921,9 +2927,9 @@ ok: [csr2]
 ok: [csr3]
 
 PLAY RECAP *********************************************************************
-csr1            : ok=1    changed=0    unreachable=0    failed=0   
-csr2            : ok=1    changed=0    unreachable=0    failed=0   
-csr3            : ok=1    changed=0    unreachable=0    failed=0   
+csr1            : ok=1    changed=0    unreachable=0    failed=0
+csr2            : ok=1    changed=0    unreachable=0    failed=0
+csr3            : ok=1    changed=0    unreachable=0    failed=0
 
 ```
 ]
@@ -2942,7 +2948,7 @@ class: center, middle, title
 
 # Viewing Response Data
 
-There are two ways to view data returned from a module.  
+There are two ways to view data returned from a module.
 
 Remember every module returns JSON data.
 <br>
@@ -2969,14 +2975,12 @@ There are two ways to see it:
 ```
 ]
 
-
 ---
-
 
 # *_command
 
 * Run arbitrary commands on devices.
-* Based on transport type, the return data will be a string or structured data 
+* Based on transport type, the return data will be a string or structured data
 * Show command data stored in `stdout` (always a list)
 
 .left-column[
@@ -2987,9 +2991,9 @@ There are two ways to see it:
       commands:
         - 'show version'
       provider: "{{ ios_provider }}"
-    register: output  
+    register: output
 
-  - debug: var=output  
+  - debug: var=output
 
 ```
 ]
@@ -3045,7 +3049,15 @@ ok: [nxos-spine1] => {
 
 # Lab Time
 
-- Lab 7 - Using the Ansible Command Module
+- Lab 12 - Using the Core Command Module
+- Lab 13 - Issuing Ping Commands and Saving the Responses
+- Lab 14 - Continuous Compliance with IOS
+
+---
+
+# ADD CONTENT LAB 15 & 16
+
+
 
 ---
 
@@ -3057,7 +3069,7 @@ By default, it compares the lines against the running configuration
 
 You can pass commands into the module a few different ways:
 
-- Using the `lines` parameter 
+- Using the `lines` parameter
 - Using the `src` parameter and point to a pre-built config file
 - Using the `src` parameter and point to a Jinja2 template
 
@@ -3265,7 +3277,7 @@ Powerful Ansible plugin that is used access data from outside sources
   * INI
   * DNS Lookup
   * MongoDB and many more
-  
+
 Can be used to assign values to variables
 ]
 
@@ -3278,7 +3290,7 @@ vars:
   config_file: "{{ lookup('file', './backups/{{ inventory_hostname }}.cfg') }}"
 
 tasks:
-  - debug: 
+  - debug:
       msg: "The file name is {{ config_file }}"
 ```
 
@@ -3296,7 +3308,7 @@ ok: [csr1] => {
 }
 
 PLAY RECAP ***********************************************************************************************************************
-csr1                       : ok=1    changed=0    unreachable=0    failed=0   
+csr1                       : ok=1    changed=0    unreachable=0    failed=0
 
 
 ```
@@ -3418,8 +3430,8 @@ snmp-server community {{ snmp.community }} group {{ snmp.group }}
   vars:
     nxos_provider:
       host: "{{ inventory_hostname }}"
-      username: "{{ un }}"
-      password: "{{ pwd }}"
+      username: "{{ ansible_user }}"
+      password: "{{ ansible_ssh_pass }}"
       transport: "{{ transport }}"
 
   tasks:
@@ -3463,7 +3475,7 @@ snmp-server community ntc-private group network-admin
       register: output
 
     - name: GET EXISTING SNMP COMMUNITIES AND SET FACT
-      set_fact: existing_snmp_communities="{{ output.stdout[0] | regex_findall('snmp-server community (\S+)') }}" 
+      set_fact: existing_snmp_communities="{{ output.stdout[0] | regex_findall('snmp-server community (\S+)') }}"
 
     - debug: var=existing_snmp_communities
 ```
@@ -3557,8 +3569,7 @@ changed: [nxos] => (item=networktocode)
 
 # Lab Time
 
-- Lab 8 - Using the Ansible Config Module
-
+- Lab 17 - Using the Config Module
 
 ---
 
@@ -3589,7 +3600,7 @@ changed: [nxos] => (item=networktocode)
       snmp_ro_comm_strings:
         - networktocode
         - public
-        - public123       
+        - public123
         - private123
         - private
 
@@ -3598,7 +3609,7 @@ changed: [nxos] => (item=networktocode)
         ios_config:
           commands:
             -  "snmp-server community {{ item }} RO"
-          provider: "{{ ios_provider }}"  
+          provider: "{{ ios_provider }}"
         with_items: "{{ snmp_ro_comm_strings }}"
 ```
 
@@ -3624,7 +3635,7 @@ changed: [nxos] => (item=networktocode)
     snmp_comm_strings:
       - community: public
         type: RO
-      - community: public123  
+      - community: public123
         type: RO
       - community: private123
         type: RW
@@ -3640,7 +3651,7 @@ changed: [nxos] => (item=networktocode)
         ios_config:
           commands:
             -  "snmp-server community {{ item.community }} {{ item.type }}"
-          provider: "{{ ios_provider }}"  
+          provider: "{{ ios_provider }}"
         with_items: "{{ snmp_comm_strings }}"
 
 ```
@@ -3665,16 +3676,16 @@ changed: [nxos] => (item=networktocode)
         public:
           type: RO
           tool: prime
-        private: 
-          type: RW   
-          tool: prime    
+        private:
+          type: RW
+          tool: prime
 
     tasks:
       - name: ENSURE RO COMM STRINGS ARE GOOD
         ios_config:
           commands:
             -  "snmp-server community {{ item.key }} {{ item.value.type }}"
-          provider: "{{ ios_provider }}"  
+          provider: "{{ ios_provider }}"
         with_dict: "{{ snmp_comm_strings_dict }}"
 ```
 
@@ -3732,8 +3743,8 @@ nxos_overlay_global.py          nxos_switchport.py      nxos_gir.py             
   vars:
     nxos_provider:
       host: "{{ inventory_hostname }}"
-      username: "{{ un }}"
-      password: "{{ pwd }}"
+      username: "{{ ansible_user }}"
+      password: "{{ ansible_ssh_pass }}"
       transport: nxapi
 
   tasks:
@@ -3813,7 +3824,7 @@ nxos_overlay_global.py          nxos_switchport.py      nxos_gir.py             
   - min_links
   - members (list)
   - mode
-- Complex args as a parameter must use YAML format  
+- Complex args as a parameter must use YAML format
 
 ```yaml
 # ensure port-channel 100 exists
@@ -3953,11 +3964,11 @@ class: middle, segue
 
 ```yaml
 - name: GET CONFIG
-  junos_get_config: user={{ un }} passwd={{ pwd }} host={{ inventory_hostname }} filter="interfaces" dest=configs/interfaces.conf
+  junos_get_config: user={{ ansible_user }} passwd={{ ansible_ssh_pass }} host={{ inventory_hostname }} filter="interfaces" dest=configs/interfaces.conf
 ```
 ```yaml
 - name: GET CONFIG
-  junos_get_config: user={{ un }} passwd={{ pwd }} host={{ inventory_hostname }} filter="interfaces/protocols" dest=configs/intf_proto.conf
+  junos_get_config: user={{ ansible_user }} passwd={{ ansible_ssh_pass }} host={{ inventory_hostname }} filter="interfaces/protocols" dest=configs/intf_proto.conf
 ```
 
 ---
@@ -4013,14 +4024,14 @@ class: middle, segue
 - Always test the modules
 - Vendors and community are always adding new features
 - Understand module idempotency
-- Understand if the module supports check mode  
+- Understand if the module supports check mode
 
 ---
 
 # Lab Time
 
 - Lab 9 - Choose One:
-  - 9.1 - Cisco NXOS Modules - building out spine configurations 
+  - 9.1 - Cisco NXOS Modules - building out spine configurations
   - 9.2 - Juniper Modules - Get tables/views, Get configuration stanzas, and push Configuration stanzas and files
 
 ---
@@ -4102,23 +4113,23 @@ class: ubuntu
 ```
 $ ansible-playbook -i hosts test-playbook.yml -v
 
-PLAY [GET STRUCTURED DATA BACK FROM CLI DEVICES] ****************************** 
+PLAY [GET STRUCTURED DATA BACK FROM CLI DEVICES] ******************************
 
-TASK: [GET DATA] ************************************************************** 
+TASK: [GET DATA] **************************************************************
 ok: [csr1] => {"changed": false, "response": [{"intf": "GigabitEthernet1", "ipaddr": "10.0.0.50", "proto": "up", "status": "up"}, {"intf": "GigabitEthernet2", "ipaddr": "10.254.13.1", "proto": "up", "status": "up"}, {"intf": "GigabitEthernet3", "ipaddr": "unassigned", "proto": "down", "status": "administratively down"}, {"intf": "GigabitEthernet4", "ipaddr": "10.254.12.1", "proto": "up", "status": "up"}, {"intf": "Loopback100", "ipaddr": "1.1.1.1", "proto": "up", "status": "up"}]}
 
-PLAY RECAP ******************************************************************** 
-csr1                       : ok=1    changed=0    unreachable=0    failed=0 
+PLAY RECAP ********************************************************************
+csr1                       : ok=1    changed=0    unreachable=0    failed=0
 
 ```
 
 ```
 csr1#show ip int brief
 Interface              IP-Address      OK? Method Status                Protocol
-GigabitEthernet1       10.0.0.50       YES NVRAM  up                    up      
-GigabitEthernet2       10.254.13.1     YES NVRAM  up                    up      
-GigabitEthernet3       unassigned      YES NVRAM  administratively down down    
-GigabitEthernet4       10.254.12.1     YES NVRAM  up                    up      
+GigabitEthernet1       10.0.0.50       YES NVRAM  up                    up
+GigabitEthernet2       10.254.13.1     YES NVRAM  up                    up
+GigabitEthernet3       unassigned      YES NVRAM  administratively down down
+GigabitEthernet4       10.254.12.1     YES NVRAM  up                    up
 Loopback100            1.1.1.1         YES manual up                    up
 ```
 
@@ -4162,7 +4173,7 @@ Loopback100            1.1.1.1         YES manual up                    up
 # ntc_get_facts
 
 .left-column[
-Facts returned include: 
+Facts returned include:
   - uptime (string)
   - uptime (seconds)
   - model
@@ -4274,7 +4285,7 @@ Reboot a network device, optionally on a timer.
     kickstart_image_file: n3000-uk9-kickstart.6.0.2.U6.5.bin
 
 - ntc_install_os:
-    platform: cisco_ios_ssh 
+    platform: cisco_ios_ssh
     provider: "{{ ntc_provider }}"
     system_image_file: c2800nm-adventerprisek9_ivs_li-mz.151-3.T4.bin
 ```
@@ -4374,14 +4385,14 @@ Reboot a network device, optionally on a timer.
           - nxos_vlan:
               vlan_id: 5000
               provider: "{{ provider }}"
-        rescue:    
+        rescue:
           - name: ROLLBACK TO CHECKPOINT FILE UPON ERROR
             ntc_rollback:
               rollback_to: last_known_good.conf
               platform: "{{ vendor }}_{{ os }}_{{ api }}"
               provider: "{{ ntc_provider }}"
 
-              
+
 
 ```
 
@@ -4396,6 +4407,9 @@ Reboot a network device, optionally on a timer.
 
 ---
 
+# ADD CONTENT LAB 18 & 19
+
+---
 
 
 class: middle, segue
@@ -4412,7 +4426,7 @@ class: middle, segue
   - eos_facts
   - junos_facts
   - ios_facts
-- 3rd Party Facts and Data Collection  
+- 3rd Party Facts and Data Collection
   - ntc_get_facts
   - ntc_show_command
   - napalm_get_facts
@@ -4495,9 +4509,9 @@ Sample playbook gathering IOS facts:
       - name: GET FACTS
         ios_facts:
           provider: "{{ ios_provider }}"
-        register: ntc_ios_facts  
+        register: ntc_ios_facts
 
-      - debug: var=ntc_ios_facts  
+      - debug: var=ntc_ios_facts
 ```
 
 ---
@@ -4512,27 +4526,27 @@ Sample playbook gathering IOS facts:
         "ansible_facts": {
             "ansible_net_all_ipv4_addresses": [
                 "10.0.0.53"
-            ], 
-            "ansible_net_all_ipv6_addresses": [], 
+            ],
+            "ansible_net_all_ipv6_addresses": [],
             "ansible_net_filesystems": [
                 "bootflash:"
-            ], 
-            "ansible_net_hostname": "csr3", 
-            "ansible_net_image": "bootflash:packages.conf", 
+            ],
+            "ansible_net_hostname": "csr3",
+            "ansible_net_image": "bootflash:packages.conf",
             "ansible_net_interfaces": {
                 "GigabitEthernet1": {
-                    "bandwidth": 1000000, 
-                    "description": null, 
-                    "duplex": "Full", 
+                    "bandwidth": 1000000,
+                    "description": null,
+                    "duplex": "Full",
                     "ipv4": {
-                        "address": "10.0.0.53", 
+                        "address": "10.0.0.53",
                         "masklen": 24
-                    }, 
-                    "lineprotocol": "up ", 
-                    "macaddress": "2cc2.604c.4e06", 
-                    "mediatype": "RJ45", 
-                    "mtu": 1500, 
-                    "operstatus": "up", 
+                    },
+                    "lineprotocol": "up ",
+                    "macaddress": "2cc2.604c.4e06",
+                    "mediatype": "RJ45",
+                    "mtu": 1500,
+                    "operstatus": "up",
                     "type": "CSR vNIC"
                 }
             }
@@ -4540,22 +4554,22 @@ Sample playbook gathering IOS facts:
 ]
 .right-column[
 ```bash
-            "ansible_net_memfree_mb": 322777, 
-            "ansible_net_memtotal_mb": 2047264, 
-            "ansible_net_model": null, 
+            "ansible_net_memfree_mb": 322777,
+            "ansible_net_memtotal_mb": 2047264,
+            "ansible_net_model": null,
             "ansible_net_neighbors": {
                 "Gi1": [
                     {
-                        "host": "eos-leaf1.ntc.com", 
+                        "host": "eos-leaf1.ntc.com",
                         "port": "Management1"
-                    }, 
+                    },
                     {
-                        "host": "eos-leaf2.ntc.com", 
+                        "host": "eos-leaf2.ntc.com",
                         "port": "Management1"
                     }
                 ]
-            }, 
-            "ansible_net_serialnum": "9KXI0D7TVFI", 
+            },
+            "ansible_net_serialnum": "9KXI0D7TVFI",
             "ansible_net_version": "16.3.1"
         }
 
@@ -4576,9 +4590,9 @@ Sample playbook gathering IOS facts:
 - name: GET FACTS
   ios_facts:
     provider: "{{ ios_provider }}"
-  register: ntc_ios_facts  
+  register: ntc_ios_facts
 
-- debug: var=ntc_ios_facts  
+- debug: var=ntc_ios_facts
 
 - debug: var=ntc_ios_facts['ansible_facts']['ansible_net_hostname']
 ```
@@ -4606,11 +4620,11 @@ Sample playbook gathering IOS facts:
         "ansible_facts": {
             "ansible_net_all_ipv4_addresses": [
                 "10.0.0.53"
-            ], 
-            "ansible_net_all_ipv6_addresses": [], 
+            ],
+            "ansible_net_all_ipv6_addresses": [],
             "ansible_net_filesystems": [
                 "bootflash:"
-            ], 
+            ],
             "ansible_net_hostname": "csr3",
 ```
 ]
@@ -4661,7 +4675,7 @@ tasks:
 
 ---
 
-class: ubuntu 
+class: ubuntu
 
 # ntc_show_command
 
@@ -4669,7 +4683,7 @@ class: ubuntu
 - Use as inputs to other modules or in templates (docs)
 
 ```
-TASK: [GET DATA] ************************************************************** 
+TASK: [GET DATA] **************************************************************
 ok: [n9k1] => {"changed": false, "response": [{"name": "default", "status": "active", "vlan_id": "1"}, {"name": "VLAN0002", "status": "active", "vlan_id": "2"}, {"name": "VLAN0003", "status": "active", "vlan_id": "3"}, {"name": "VLAN0004", "status": "active", "vlan_id": "4"}, {"name": "VLAN0005", "status": "active", "vlan_id": "5"}, {"name": "VLAN0006", "status": "active", "vlan_id": "6"}, {"name": "VLAN0007", "status": "active", "vlan_id": "7"}, {"name": "VLAN0008", "status": "active", "vlan_id": "8"}, {"name": "VLAN0009", "status": "active", "vlan_id": "9"}, {"name": "VLAN10_WEB", "status": "active", "vlan_id": "10"}, {"name": "VLAN0011", "status": "active", "vlan_id": "11"}, {"name": "VLAN0012", "status": "active", "vlan_id": "12"}, {"name": "VLAN0013", "status": "active", "vlan_id": "13"}, {"name": "VLAN0014", "status": "active", "vlan_id": "14"}, {"name": "VLAN0015", "status": "active", "vlan_id": "15"}, {"name": "VLAN0016", "status": "active", "vlan_id": "16"}, {"name": "VLAN0017", "status": "active", "vlan_id": "17"}, {"name": "VLAN0018", "status": "active", "vlan_id": "18"}, {"name": "VLAN0019", "status": "active", "vlan_id": "19"}, {"name": "peer_keepalive", "status": "active", "vlan_id": "20"}, {"name": "VLAN0022", "status": "active", "vlan_id": "22"}, {"name": "VLAN0030", "status": "active", "vlan_id": "30"}, {"name": "VLAN0040", "status": "active", "vlan_id": "40"}, {"name": "native", "status": "active", "vlan_id": "99"}, {"name": "VLAN0100", "status": "active", "vlan_id": "100"}, {"name": "VLAN0101", "status": "active", "vlan_id": "101"}, {"name": "VLAN0102", "status": "active", "vlan_id": "102"}, {"name": "VLAN0103", "status": "active", "vlan_id": "103"}, {"name": "VLAN0104", "status": "active", "vlan_id": "104"}, {"name": "VLAN0105", "status": "active", "vlan_id": "105"}, {"name": "VLAN0123", "status": "active", "vlan_id": "123"}, {"name": "VLAN0200", "status": "active", "vlan_id": "200"}]}
 ```
 
@@ -4680,7 +4694,7 @@ ok: [n9k1] => {"changed": false, "response": [{"name": "default", "status": "act
 - Multi-vendor module that retrieves:
   - os (type)
   - vendor
-  - device version (sw rev) 
+  - device version (sw rev)
 
 ```yaml
 tasks:
@@ -4691,13 +4705,13 @@ tasks:
 ```
 $ ansible-playbook -i inventory testpb.yml -v
 
-PLAY [DC P1] ****************************************************************** 
+PLAY [DC P1] ******************************************************************
 
-TASK: [snmp_device_version host={{ inventory_hostname }} version=2c community=networktocode] *** 
+TASK: [snmp_device_version host={{ inventory_hostname }} version=2c community=networktocode] ***
 ok: [n9k1] => {"ansible_facts": {"ansible_device_os": "nxos", "ansible_device_vendor": "cisco", "ansible_device_version": "7.0(3)I2(1)"}, "changed": false}
 
-PLAY RECAP ******************************************************************** 
-n9k1                       : ok=1    changed=0    unreachable=0    failed=0  
+PLAY RECAP ********************************************************************
+n9k1                       : ok=1    changed=0    unreachable=0    failed=0
 ```
 ]
 
@@ -4840,7 +4854,7 @@ LOCAL INTERFACE:    {{ neighbor.local_interace }}
       - ntc_show_command:
           provider: "{{ ntc_provider }}"
           command: "show lldp neighbor"
-        register: ntc_neighbors  
+        register: ntc_neighbors
       - template: src=neighbors.j2 dest=files/neighbors.md
 
 ```
@@ -4885,7 +4899,7 @@ LOCAL INTERFACE:    Ethernet7
 
 .left-column[
 
-- Template 
+- Template
 
 ```bash
 # neighbors-table.j2
@@ -4940,241 +4954,12 @@ LOCAL INTERFACE:    Ethernet7
 
 # Lab Time
 
-- Lab 11 - Data Collection Modules & Reporting
+- Lab 20 - Data Collection Modules & Reporting
   - Facts Data Collection Modules
   - Structured Data from CLI Devices (ntc_show_command)
   - Inventory Report
 
-
 ---
-
-
-class: middle, segue
-
-# Dynamic Inventory
-### Ansible for Network Automation
-
----
-
-# Inventory
-
-- Ansible Inventory files are static
-- Managing large YAML files doesn't scale
-- Manage lots of YAML files doesn't scale
-- Users usually already have a CMDB, NMS, etc.
-- What if you have a dynamic environment? 
-  - AWS, Rackspace, VMs
-- **Enter Dynamic Inventory**
-
----
-
-# Executing Playbooks
-
-.left-column[
-- You currently use the `-i` flag to specify the inventory file
-- You can also specify a script that is used to generate an inventory
-  - Needs to return JSON k/v pairs
-- `ansible-playbook -i dynamic_script.py site.yml`
-- Script needs to be an executable (x)
-]
-
-.right-column[
-- Sample Inventory generated from a script
-- Groups, group vars, hosts, host vars (not shown)
-
-.smubuntu[
-```
-{
-    "hp": {
-        "hosts": [
-            "hp1.ntc.com", 
-            "hp2.ntc.com", 
-            "hp3.ntc.com", 
-            "hp4.ntc.com"
-        ], 
-        "vars": {
-            "platform": "comware7"
-        }
-    }, 
-    "cisco": {
-        "hosts": [
-            "n9k1.ntc.com", 
-            "n9k2.ntc.com"
-        ], 
-        "vars": {
-            "platform": "nexus"
-        }
-    }, 
-    "juniper": [
-        "jnprfw.ntc.com"
-    ], 
-    "arista": [
-        "arista1.ntc.com", 
-        "arista2.ntc.com"
-    ]
-}
-```
-]
-]
-
----
-
-# Multiple Sources
-
-- If the parameter used with the `-i` flag is a directory, multiple sources can be used
-  - inventory file with scripts
-  - multiple scripts
-
----
-
-# Example Script
-
-```python
-
-#!/usr/bin/env python
-
-import requests
-
-import json
-
-requests.packages.urllib3.disable_warnings()
-
-def main():
-
-    url = 'https://2z3oa80l2c.execute-api.us-east-1.amazonaws.com/prod/switch'
-
-    inventory = requests.get(url, verify=False)
-
-    return inventory.text
-
-if __name__ == "__main__":
-
-    rsp = main()
-
-    print rsp
-
-
-```
-
----
-
-# Executing a Playbook 
-
-```yaml
----
-
-  - name: test playbook for dynamic inventory
-    connection: local
-    gather_facts: no
-    hosts: all
-
-
-    tasks:
-
-      - debug: var=inventory_hostname
-
-```
-
----
-
-# Viewing the Results
-
-.left-column[
-
-- JSON data generated from script
-
-```json
-{
-    "cisco": {
-        "hosts": [
-            "n9k1.ntc.com", 
-            "n9k2.ntc.com"
-        ], 
-        "vars": {
-            "platform": "nexus"
-        }
-    }, 
-    "arista": [
-        "arista1.ntc.com", 
-        "arista2.ntc.com"
-    ],
-    "apic": [
-        "aci.ntc.com"
-    ]
-}
-```
-
-]
-
-
-
-.right-column[
-
-.xsmubuntu[
-
-- Playbook output
-
-```
-ansible-playbook -i dynamo.py site.yml 
-
-PLAY [test playbook for dynamic inventory] ************************************ 
-
-TASK: [debug var=inventory_hostname] ****************************************** 
-ok: [n9k2.ntc.com] => {
-    "var": {
-        "inventory_hostname": "n9k2.ntc.com"
-    }
-}
-ok: [n9k1.ntc.com] => {
-    "var": {
-        "inventory_hostname": "n9k1.ntc.com"
-    }
-}
-ok: [arista1.ntc.com] => {
-    "var": {
-        "inventory_hostname": "arista1.ntc.com"
-    }
-}
-ok: [aci.ntc.com] => {
-    "var": {
-        "inventory_hostname": "aci.ntc.com"
-    }
-}
-ok: [arista2.ntc.com] => {
-    "var": {
-        "inventory_hostname": "arista2.ntc.com"
-    }
-}
-
-PLAY RECAP ******************************************************************** 
-aci.ntc.com                : ok=1    changed=0    unreachable=0    failed=0   
-arista1.ntc.com            : ok=1    changed=0    unreachable=0    failed=0   
-arista2.ntc.com            : ok=1    changed=0    unreachable=0    failed=0       
-n9k1.ntc.com               : ok=1    changed=0    unreachable=0    failed=0   
-n9k2.ntc.com               : ok=1    changed=0    unreachable=0    failed=0   
-```
-
-]
-]
-
----
-
-# Summary
-
-- YAML files do the trick _most_ of the time, especially for testing
-- Custom dev work required for dynamic network inventories, i.e. HPOV, Solar Winds, etc.
-- As with modules, can be done in any language
-  - Just need to return JSON in the proper format
-
----
-
-# Lab Time
-
-- Lab 13 - Using a Dynamic Inventory Script
-  - You will execute a playbook that uses a pre-created inventory script that queries a public REST API
-
----
-
 
 class: middle, segue
 
@@ -5430,7 +5215,7 @@ vlans:
 
 ```bash
 [datacenter]
-spine1 vendor=arista 
+spine1 vendor=arista
 n9k1 vendor=cisco
 ```
 
@@ -5466,8 +5251,235 @@ vlans:
 
 # Lab Time
 
-- Lab 12 - Creating an Ansible Role
+- Lab 21 - Creating an Ansible Role
   - Create a multi-vendor VLAN role that works with Cisco and Arista devices
+
+---
+
+
+class: middle, segue
+
+# Dynamic Inventory
+### Ansible for Network Automation
+
+---
+
+# Inventory
+
+- Ansible Inventory files are static
+- Managing large YAML files doesn't scale
+- Manage lots of YAML files doesn't scale
+- Users usually already have a CMDB, NMS, etc.
+- What if you have a dynamic environment?
+  - AWS, Rackspace, VMs
+- **Enter Dynamic Inventory**
+
+---
+
+# Executing Playbooks
+
+.left-column[
+- You currently use the `-i` flag to specify the inventory file
+- You can also specify a script that is used to generate an inventory
+  - Needs to return JSON k/v pairs
+- `ansible-playbook -i dynamic_script.py site.yml`
+- Script needs to be an executable (x)
+]
+
+.right-column[
+- Sample Inventory generated from a script
+- Groups, group vars, hosts, host vars (not shown)
+
+.smubuntu[
+```
+{
+    "hp": {
+        "hosts": [
+            "hp1.ntc.com",
+            "hp2.ntc.com",
+            "hp3.ntc.com",
+            "hp4.ntc.com"
+        ],
+        "vars": {
+            "platform": "comware7"
+        }
+    },
+    "cisco": {
+        "hosts": [
+            "n9k1.ntc.com",
+            "n9k2.ntc.com"
+        ],
+        "vars": {
+            "platform": "nexus"
+        }
+    },
+    "juniper": [
+        "jnprfw.ntc.com"
+    ],
+    "arista": [
+        "arista1.ntc.com",
+        "arista2.ntc.com"
+    ]
+}
+```
+]
+]
+
+---
+
+# Multiple Sources
+
+- If the parameter used with the `-i` flag is a directory, multiple sources can be used
+  - inventory file with scripts
+  - multiple scripts
+
+---
+
+# Example Script
+
+```python
+
+#!/usr/bin/env python
+
+import requests
+
+import json
+
+requests.packages.urllib3.disable_warnings()
+
+def main():
+
+    url = 'https://2z3oa80l2c.execute-api.us-east-1.amazonaws.com/prod/switch'
+
+    inventory = requests.get(url, verify=False)
+
+    return inventory.text
+
+if __name__ == "__main__":
+
+    rsp = main()
+
+    print rsp
+
+
+```
+
+---
+
+# Executing a Playbook
+
+```yaml
+---
+
+  - name: test playbook for dynamic inventory
+    connection: local
+    gather_facts: no
+    hosts: all
+
+
+    tasks:
+
+      - debug: var=inventory_hostname
+
+```
+
+---
+
+# Viewing the Results
+
+.left-column[
+
+- JSON data generated from script
+
+```json
+{
+    "cisco": {
+        "hosts": [
+            "n9k1.ntc.com",
+            "n9k2.ntc.com"
+        ],
+        "vars": {
+            "platform": "nexus"
+        }
+    },
+    "arista": [
+        "arista1.ntc.com",
+        "arista2.ntc.com"
+    ],
+    "apic": [
+        "aci.ntc.com"
+    ]
+}
+```
+
+]
+
+
+
+.right-column[
+
+.xsmubuntu[
+
+- Playbook output
+
+```
+ansible-playbook -i dynamo.py site.yml
+
+PLAY [test playbook for dynamic inventory] ************************************
+
+TASK: [debug var=inventory_hostname] ******************************************
+ok: [n9k2.ntc.com] => {
+    "var": {
+        "inventory_hostname": "n9k2.ntc.com"
+    }
+}
+ok: [n9k1.ntc.com] => {
+    "var": {
+        "inventory_hostname": "n9k1.ntc.com"
+    }
+}
+ok: [arista1.ntc.com] => {
+    "var": {
+        "inventory_hostname": "arista1.ntc.com"
+    }
+}
+ok: [aci.ntc.com] => {
+    "var": {
+        "inventory_hostname": "aci.ntc.com"
+    }
+}
+ok: [arista2.ntc.com] => {
+    "var": {
+        "inventory_hostname": "arista2.ntc.com"
+    }
+}
+
+PLAY RECAP ********************************************************************
+aci.ntc.com                : ok=1    changed=0    unreachable=0    failed=0
+arista1.ntc.com            : ok=1    changed=0    unreachable=0    failed=0
+arista2.ntc.com            : ok=1    changed=0    unreachable=0    failed=0
+n9k1.ntc.com               : ok=1    changed=0    unreachable=0    failed=0
+n9k2.ntc.com               : ok=1    changed=0    unreachable=0    failed=0
+```
+
+]
+]
+
+---
+
+# Summary
+
+- YAML files do the trick _most_ of the time, especially for testing
+- Custom dev work required for dynamic network inventories, i.e. HPOV, Solar Winds, etc.
+- As with modules, can be done in any language
+  - Just need to return JSON in the proper format
+
+---
+
+# Lab Time
+
+- Lab 22 - Using a Dynamic Inventory Script
+  - You will execute a playbook that uses a pre-created inventory script that queries a public REST API
 
 
 ---
@@ -5484,7 +5496,7 @@ class: middle
 
 class: middle
 
-# EXTRA - BONUS 
+# EXTRA - BONUS
 # Creating Custom Ansible Modules
 ### Ansible for Network Automation
 
@@ -5657,7 +5669,7 @@ main()
 - required_one_of
 - mutually_exclusive
 - **supports_check_mode**
-- module.exit_json(key=value, vlan=vlan_id)  
+- module.exit_json(key=value, vlan=vlan_id)
 - module.fail_json(msg='foo', key=value)
 ]
 
@@ -5681,12 +5693,12 @@ def main():
 
         # extract values from module.params
         username = module.params['username']
-  
+
         # application code / from your script
         # call you rmethods, use your libs,etc.
 
         results = dict()
-        # return dictionary  
+        # return dictionary
         module.exit_json(**results)
 
 ```
@@ -5825,7 +5837,7 @@ What's needed?
 
 class: middle
 
-# EXTRA - BONUS 
+# EXTRA - BONUS
 # Using the Ansible Vault Feature
 ### Ansible for Network Automation
 
@@ -5842,8 +5854,8 @@ Typically used to store username and passwords on the control machine.
 
 ```
 ntc@ntc:all$ ansible-vault create vaultfile.yml
-New Vault password: 
-Confirm New Vault password: 
+New Vault password:
+Confirm New Vault password:
 ```
 
 ---
@@ -5864,7 +5876,7 @@ The encrypted version of above data:
 
 ntc@ntc:all$ ls
 vaultfile.yml
-ntc@ntc:all$ cat vaultfile.yml 
+ntc@ntc:all$ cat vaultfile.yml
 $ANSIBLE_VAULT;1.1;AES256
 38353863306139626235623263313439653437646261393562323036356531336432323736646534
 3161333737316430396431313931633863646535303432660a353461636464303238353765343162
@@ -5880,13 +5892,13 @@ $ANSIBLE_VAULT;1.1;AES256
 class: ubuntu
 # Ansible Vault
 
-- Use the `--ask-vault-pass` flag while invoking the playbook. 
+- Use the `--ask-vault-pass` flag while invoking the playbook.
 - This will prompt you to enter the password used to encrypt the vault file.
 
 
 ```
 ntc@ntc:ansible$ ansible-playbook -i inventory use_vault.yml --ask-vault-pass
-Vault password: 
+Vault password:
 
 PLAY [USE ENCRYPTED LOGIN] *******************************************************************************************************
 
