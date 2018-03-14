@@ -735,13 +735,12 @@ Two files are required to get started:
 ```
 ]]
 
-
 ---
 
 # Idempotency
 
-* Modules that perform a change _should_ only make the change once (the first execution)
-* You can run the task a 1000 and it'll only occur once
+- Modules that perform a change _should_ only make the change once (the first execution)
+- You can run the task a 1000 and it'll only occur once
 
 ---
 
@@ -877,6 +876,17 @@ class: center, middle
 
 ---
 
+# Module Documentation
+
+* Mini-demo
+* Understand the parameters each module supports
+  * Choices, defaults, and description
+* [docs.ansible.com](docs.ansible.com)
+* `ansible-doc nxos_vlan`
+
+
+---
+
 # Lab Time
 
 - Lab 1 - Deploying basic configs with Ansible
@@ -925,8 +935,8 @@ leaf2 mgmt_ip=10.1.1.2
         debug: var=inventory_hostname
 ```
 
-.largeubuntu[
-```
+.med-code[
+```bash
 .
 ├── inventory
 ├── test-pb.yml
@@ -938,8 +948,7 @@ leaf2 mgmt_ip=10.1.1.2
 --
 
 .right-column[
-.ubuntu[
-```
+```bash
 $ ansible-playbook -i inventory debug.yml
 
 PLAY [DEBUGGING VARIABLES] *****************************************************
@@ -956,7 +965,6 @@ PLAY RECAP *********************************************************************
 leaf1                      : ok=1    changed=0    unreachable=0    failed=0
 leaf2                      : ok=1    changed=0    unreachable=0    failed=0
 ```
-]
 
 
 ]
@@ -995,8 +1003,8 @@ leaf2 mgmt_ip=10.1.1.2
         debug: var=ansible_ssh_pass
 ```
 
-.largeubuntu[
-```
+.med-code[
+```bash
 .
 ├── inventory
 ├── test-pb.yml
@@ -1008,8 +1016,7 @@ leaf2 mgmt_ip=10.1.1.2
 --
 
 .right-column[
-.ubuntu[
-```
+```bash
 $ ansible-playbook -i inventory debug.yml
 
 PLAY [DEBUGGING VARIABLES] *****************************************************
@@ -1026,7 +1033,6 @@ PLAY RECAP *********************************************************************
 leaf1                      : ok=1    changed=0    unreachable=0    failed=0
 leaf2                      : ok=1    changed=0    unreachable=0    failed=0
 ```
-]
 
 
 ]
@@ -1065,8 +1071,8 @@ leaf2 mgmt_ip=10.1.1.2
         debug: msg="THE MGMT IP IS {{ mgmt_ip }}"
 ```
 
-.largeubuntu[
-```
+.med-code[
+```bash
 .
 ├── inventory
 ├── test-pb.yml
@@ -1078,8 +1084,7 @@ leaf2 mgmt_ip=10.1.1.2
 --
 
 .right-column[
-.ubuntu[
-```
+```bash
 $ ansible-playbook -i inventory debug.yml
 
 PLAY [DEBUGGING VARIABLES] *****************************************************
@@ -1101,9 +1106,6 @@ leaf2                      : ok=1    changed=0    unreachable=0    failed=0
 ]
 
 
-]
-
-
 
 
 ---
@@ -1114,15 +1116,20 @@ leaf2                      : ok=1    changed=0    unreachable=0    failed=0
 * You can view this data by running a playbook in verbose mode (`-v`)
 * For example, data returned includes commands being sent to the network device
 
-.ubuntu[
-```
+
+```bash
 PLAY [MANAGE VLANS] ************************************************************
 
 TASK [ensure VLAN exists] ******************************************************
-changed: [nxos-spine1] => {"changed": true, "end_state": {"admin_state": "up", "mapped_vni": "", "name": "VLAN0010", "vlan_id": "10", "vlan_state": "active"}, "end_state_vlans_list": ["1", "10"], "existing": {}, "existing_vlans_list": ["1"], "proposed": {}, "proposed_vlans_list": ["10"], "updates": ["vlan 10", "exit"]}
+changed: [nxos-spine1] => {"changed": true, "end_state": {"admin_state": "up", "mapped_vni": "", "name": "VLAN0010",
+"vlan_id": "10", "vlan_state": "active"}, "end_state_vlans_list": ["1", "10"], "existing": {},
+"existing_vlans_list": ["1"], "proposed": {}, "proposed_vlans_list": ["10"], "updates": ["vlan 10", "exit"]}
 
 TASK [ensure VLAN exists] ******************************************************
-ok: [nxos-spine1] => {"changed": false, "end_state": {"admin_state": "up", "mapped_vni": "", "name": "VLAN0010", "vlan_id": "10", "vlan_state": "active"}, "end_state_vlans_list": ["1", "10"], "existing": {"admin_state": "up", "mapped_vni": "", "name": "VLAN0010", "vlan_id": "10", "vlan_state": "active"}, "existing_vlans_list": ["1", "10"], "proposed": {}, "proposed_vlans_list": ["10"], "updates": []}
+ok: [nxos-spine1] => {"changed": false, "end_state": {"admin_state": "up", "mapped_vni": "", "name": "VLAN0010",
+"vlan_id": "10", "vlan_state": "active"}, "end_state_vlans_list": ["1", "10"], "existing": {"admin_state": "up",
+"mapped_vni": "", "name": "VLAN0010", "vlan_id": "10", "vlan_state": "active"}, "existing_vlans_list": ["1", "10"],
+"proposed": {}, "proposed_vlans_list": ["10"], "updates": []}
 
 TASK [debug] *******************************************************************
 ok: [nxos-spine1] => {
@@ -1132,7 +1139,6 @@ ok: [nxos-spine1] => {
 PLAY RECAP *********************************************************************
 nxos-spine1                : ok=3    changed=0    unreachable=0    failed=0
 ```
-]
 
 ---
 
@@ -1168,20 +1174,22 @@ nxos-spine1                : ok=3    changed=0    unreachable=0    failed=0
 ]
 ]
 .right-column[
-.ubuntu[
 .small-code[
-```
+```bash
 ntc@ntc:ansible$ ansible-playbook -i lab-inventory snmp-config-02.yml --check -v
 Using /etc/ansible/ansible.cfg as config file
 
-PLAY [PLAY 1 - DEPLOYING SNMP CONFIGURATIONS ON IOS] **********************************************************
+PLAY [PLAY 1 - DEPLOYING SNMP CONFIGURATIONS ON IOS] *********************************
 
-TASK [TASK 1 in PLAY 1 - ENSURE SNMP COMMANDS EXIST ON IOS DEVICES] *******************************************
-changed: [csr3] => {"banners": {}, "changed": true, "commands": ["snmp-server location NYC_HQ_COLO"], "failed": false, "updates": ["snmp-server location NYC_HQ_COLO"]}
-changed: [csr2] => {"banners": {}, "changed": true, "commands": ["snmp-server location NYC_HQ_COLO"], "failed": false, "updates": ["snmp-server location NYC_HQ_COLO"]}
-changed: [csr1] => {"banners": {}, "changed": true, "commands": ["snmp-server location NYC_HQ_COLO"], "failed": false, "updates": ["snmp-server location NYC_HQ_COLO"]}
+TASK [TASK 1 in PLAY 1 - ENSURE SNMP COMMANDS EXIST ON IOS DEVICES] ******************
+changed: [csr3] => {"banners": {}, "changed": true, "commands": ["snmp-server location
+ NYC_HQ_COLO"], "failed": false, "updates": ["snmp-server location NYC_HQ_COLO"]}
+changed: [csr2] => {"banners": {}, "changed": true, "commands": ["snmp-server location
+ NYC_HQ_COLO"], "failed": false, "updates": ["snmp-server location NYC_HQ_COLO"]}
+changed: [csr1] => {"banners": {}, "changed": true, "commands": ["snmp-server location
+ NYC_HQ_COLO"], "failed": false, "updates": ["snmp-server location NYC_HQ_COLO"]}
 
-PLAY RECAP ****************************************************************************************************
+PLAY RECAP ***************************************************************************
 csr1                       : ok=1    changed=1    unreachable=0    failed=0
 csr2                       : ok=1    changed=1    unreachable=0    failed=0
 csr3                       : ok=1    changed=1    unreachable=0    failed=0
@@ -1191,19 +1199,6 @@ ntc@ntc:ansible$
 ```
 ]
 ]
-]
-
----
-
-# Module Documentation
-
-* Mini-demo
-* Understand the parameters each module supports
-  * Choices, defaults, and description
-* [docs.ansible.com](docs.ansible.com)
-* `ansible-doc nxos_vlan`
-
-
 
 ---
 # Lab Time
@@ -1251,15 +1246,15 @@ csr1
 csr2
 ```
 
-.largeubuntu[
-```
+.med-code[
+```bash
 .
 ├── inventory
 ├── pb.yml
 ├── group_vars
-|   ├── all.yml
-|   ├── eos.yml
-|   └── ios.yml
+│   ├── all.yml
+│   ├── eos.yml
+│   └── ios.yml
 ```
 ]
 
@@ -1281,8 +1276,8 @@ csr1
 csr2
 ```
 
-.largeubuntu[
-```
+.med-code[
+```bash
 .
 ├── inventory
 ├── pb.yml
@@ -1305,23 +1300,22 @@ csr2
 - Variables that are specific to a host.
 - Accessible within playbooks and templates
 
-.largeubuntu[
-```
+.big-code[
+```bash
 .
 ├── inventory
 ├── pb.yml
 ├── group_vars
-|   ├── all.yml
-|   ├── eos.yml
-|   └── ios.yml
+│   ├── all.yml
+│   ├── eos.yml
+│   └── ios.yml
 ├── host_vars
-|   ├── csr1.yml
-|   ├── csr2.yml
-|   ├── eos-spine1.yml
-|   └── eos-spine2.yml
+│   ├── csr1.yml
+│   ├── csr2.yml
+│   ├── eos-spine1.yml
+│   └── eos-spine2.yml
 ```
 ]
-
 
 ---
 
@@ -1330,8 +1324,8 @@ csr2
 
 - You can alternatively create a directory equal to the host name and have individual files in that directory
 
-.largeubuntu[
-```
+.big-code[
+```bash
 .
 ├── inventory
 ├── pb.yml
