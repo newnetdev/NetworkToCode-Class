@@ -1458,14 +1458,34 @@ $ ansible-playbook -i inventory playbook.yml -e "devices=eos"
 $ ansible-playbook -i inventory playbook.yml --extra-vars "devices=eos"
 ```
 
+---
 
+# User Input
+
+You can request user input and capture the user response as a variable using the `var_prompt` module.  The `name` under `vars_prompt` is the variable name where the user input will be captured.
+
+```yaml
+---
+
+- name: COLLECT USERNAME AND PASSWORD
+  hosts: csr1
+  gather_facts: no
+  connection: local
+
+  vars_prompt:
+    - name: un
+      prompt: "Please enter the username"
+      private: no
+```
+
+By default Ansible does not echo user input back to the terminal.  To allow user input to be echoed back to to the terminal set the `private` parameter to `no`.
 
 ---
 
 # Lab Time
 
 - Lab 5 - Building the course inventory file
-
+- Lab 6 - Prompting the User for Input
 ---
 
 # Jinja2 Templates
@@ -3057,7 +3077,7 @@ ok: [nxos-spine1] => {
 
 # ADD CONTENT LAB 15 & 16
 
-
+# Parsing
 
 ---
 
