@@ -1476,7 +1476,10 @@ ntc@ntc:ansible$
 - Lab 4 - Building the course inventory file
 - Lab 5 - Using the debug module
 - Lab 6 - Prompting the User for Input
+
 ---
+
+class: middle, segue
 
 # Jinja2 Templates
 ### Ansible for Network Automation
