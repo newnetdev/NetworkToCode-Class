@@ -738,6 +738,14 @@ Two files are required to get started:
 
 ---
 
+# Idempotency
+
+* Modules that perform a change _should_ only make the change once (the first execution)
+* You can run the task a 1000 and it'll only occur once
+
+---
+
+
 # Modules, Parameters, and Variables
 
 .left-column[
@@ -774,8 +782,6 @@ Two files are required to get started:
 ]]
 
 ---
-
-
 
 # Executing a Playbook
 
@@ -868,14 +874,6 @@ class: center, middle
 
 ```
 ]
-
----
-
-# Idempotency
-
-* Modules that perform a change _should_ only make the change once (the first execution)
-* You can run the task a 1000 and it'll only occur once
-
 
 ---
 

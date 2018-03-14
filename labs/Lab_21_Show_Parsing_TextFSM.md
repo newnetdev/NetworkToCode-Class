@@ -320,7 +320,7 @@ Start
   ^${INTF}\s+${IPADDR}\s+\w+\s+\w+\s+${STATUS}\s+${PROTO} -> Record
 ```
 
-Which do you prefer?  TextFSM or using `re`?
+Which do you prefer?  TextFSM or using Pyhton with Regex?
 
 
 ##### Step 3
