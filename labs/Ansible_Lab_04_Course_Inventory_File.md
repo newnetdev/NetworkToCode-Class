@@ -1,4 +1,4 @@
-## Lab 5 - Ansible Inventory File
+## Lab 4 - Ansible Inventory File
 
 This lab builds on previous labs and shows how to build a more robust Ansible inventory file.  You'll learn how to create groups, nested groups, and group based variables all within the inventory file.
 

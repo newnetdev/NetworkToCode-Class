@@ -1,4 +1,4 @@
-## Lab 4 - Using the debug module
+## Lab 5 - Using the debug module
 
 ### Task 1 - Debugging Variables
 

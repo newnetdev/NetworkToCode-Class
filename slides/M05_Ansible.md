@@ -894,6 +894,274 @@ class: center, middle
 - Lab 2 - Deploying Configs From a File
   - Shows how to push configuration using files.
 
+
+---
+
+class: middle, segue
+
+# Understanding Variables
+### Ansible for Network Automation
+
+
+---
+
+# Variables
+
+- Group based variables
+- Host based variables
+- Special variables
+- Extra variables
+
+<br>
+
+There are more types that we'll cover, but we're still just getting started.
+
+---
+
+# Group Based Variables
+
+- They can be defined in the inventory file or within a directory called `group_vars`
+- Variables that are specific to a group.
+- Accessible within playbooks and templates
+
+```bash
+# inventory
+[eos]
+eos-spine1
+eos-spine2
+
+[ios]
+csr1
+csr2
+```
+
+.med-code[
+```bash
+.
+├── inventory
+├── pb.yml
+├── group_vars
+│   ├── all.yml
+│   ├── eos.yml
+│   └── ios.yml
+```
+]
+
+
+---
+
+# Group Based Variables (cont'd)
+
+- You can alternatively create a directory equal to the group name and have individual files in that directory
+
+```bash
+# inventory
+[eos]
+eos-spine1
+eos-spine2
+
+[ios]
+csr1
+csr2
+```
+
+.med-code[
+```bash
+.
+├── inventory
+├── pb.yml
+├── group_vars
+│   ├── eos
+│   │   ├── aaa.yml
+│   │   └── interfaces.yml
+│   └── ios
+│       ├── aaa.yml
+│       └── interfaces.yml
+
+```
+]
+
+---
+
+# Host Based Variables
+
+- They can be defined in the inventory file or within a directory called `host_vars`
+- Variables that are specific to a host.
+- Accessible within playbooks and templates
+
+.big-code[
+```bash
+.
+├── inventory
+├── pb.yml
+├── group_vars
+│   ├── all.yml
+│   ├── eos.yml
+│   └── ios.yml
+├── host_vars
+│   ├── csr1.yml
+│   ├── csr2.yml
+│   ├── eos-spine1.yml
+│   └── eos-spine2.yml
+```
+]
+
+---
+
+
+# Host Based Variables (cont'd)
+
+- You can alternatively create a directory equal to the host name and have individual files in that directory
+
+.big-code[
+```bash
+.
+├── inventory
+├── pb.yml
+├── host_vars
+│   ├── csr1
+│   │   ├── aaa.yml
+│   │   └── interfaces.yml
+│   └── eos-spine1
+│       ├── aaa.yml
+│       └── interfaces.yml
+
+```
+]
+
+---
+
+
+# Variable Priority
+
+- You can define host and group variables in the inventory file and respective host vars and group vars files
+- The file take priority
+
+<br>
+
+**Proving** variable priority: use the **debug** module
+
+
+---
+
+# Special (Built-in) Variables
+
+**Ansible has several built-in, _special_, variables**
+
+<html>
+<head>
+<style>
+table {
+    font-family: arial, sans-serif;
+    font-size: 18px;
+    border-collapse: collapse;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
+</style>
+</head>
+<body>
+
+<table>
+  <tr>
+    <th>Variable</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>inventory_hostname</td>
+    <td>Name of the current host as defined in the inventory file.</td>
+  </tr>
+  <tr>
+    <td>ansible_host</td>
+    <td>Helpful if inventory hostname is not in DNS or /etc/hosts.  Set to IP address of host and use instead of inventory_hostname to access IP/FQDN</td>
+  </tr>
+  <tr>
+    <td>hostvars</td>
+    <td>Dictionary- it's keys are Ansible host names (inventory_hostname) and values is dictionary of every variable that host has (flattend)</td>
+  </tr>
+  <tr>
+    <td>play_hosts</td>
+    <td>A list of inventory hostnames that are in scope for the current play </td>
+  </tr>
+  <tr>
+    <td>group_names</td>
+    <td>List of all groups that the current host is a member of</td>
+  </tr>
+  <tr>
+    <td>groups</td>
+    <td>A dictionary- keys are all group names defined in the inventory file and values are list of host names that are members of the group.</td>
+  </tr>
+  <tr>
+    <td>ansible_version</td>
+    <td>Dictionary representing Ansible major, minor, revision of the release.</td>
+  </tr>
+</table>
+
+</body>
+</html>
+
+---
+
+# Extra Variables
+
+- Known as "extra vars"
+- Variables passed into a playbook upon execution.
+- Highest priority
+
+```yaml
+---
+
+  - name: DEMO PLAYBOOK
+    hosts: "{{ devices }}"
+
+    tasks:
+      ...
+      ...
+      ...
+```
+
+Pass variables using `-e` or `--extra-vars`
+
+```bash
+$ ansible-playbook -i inventory playbook.yml -e "devices=all"
+$ ansible-playbook -i inventory playbook.yml -e "devices=eos"
+$ ansible-playbook -i inventory playbook.yml --extra-vars "devices=eos"
+```
+
+---
+
+# User Input
+
+You can request user input and capture the user response as a variable using the `var_prompt` module.  The `name` under `vars_prompt` is the variable name where the user input will be captured.
+
+```yaml
+---
+
+- name: COLLECT USERNAME AND PASSWORD
+  hosts: csr1
+  gather_facts: no
+  connection: local
+
+  vars_prompt:
+    - name: un
+      prompt: "Please enter the username"
+      private: no
+```
+
+By default Ansible does not echo user input back to the terminal.  To allow user input to be echoed back to to the terminal set the `private` parameter to `no`.
+
+
 ---
 
 class: middle
@@ -1201,282 +1469,12 @@ ntc@ntc:ansible$
 ]
 
 ---
+
 # Lab Time
 
 - Lab 3 - Using Check Mode and Verbosity
-- Lab 4 - Using the debug module
-
----
-
-class: middle, segue
-
-# Understanding Variables
-### Ansible for Network Automation
-
-
----
-
-# Variables
-
-- Group based variables
-- Host based variables
-- Special variables
-- Extra variables
-
-<br>
-
-There are more types that we'll cover, but we're still just getting started.
-
----
-
-# Group Based Variables
-
-- They can be defined in the inventory file or within a directory called `group_vars`
-- Variables that are specific to a group.
-- Accessible within playbooks and templates
-
-```bash
-# inventory
-[eos]
-eos-spine1
-eos-spine2
-
-[ios]
-csr1
-csr2
-```
-
-.med-code[
-```bash
-.
-├── inventory
-├── pb.yml
-├── group_vars
-│   ├── all.yml
-│   ├── eos.yml
-│   └── ios.yml
-```
-]
-
-
----
-
-# Group Based Variables (cont'd)
-
-- You can alternatively create a directory equal to the group name and have individual files in that directory
-
-```bash
-# inventory
-[eos]
-eos-spine1
-eos-spine2
-
-[ios]
-csr1
-csr2
-```
-
-.med-code[
-```bash
-.
-├── inventory
-├── pb.yml
-├── group_vars
-│   ├── eos
-│   │   ├── aaa.yml
-│   │   └── interfaces.yml
-│   └── ios
-│       ├── aaa.yml
-│       └── interfaces.yml
-
-```
-]
-
----
-
-# Host Based Variables
-
-- They can be defined in the inventory file or within a directory called `host_vars`
-- Variables that are specific to a host.
-- Accessible within playbooks and templates
-
-.big-code[
-```bash
-.
-├── inventory
-├── pb.yml
-├── group_vars
-│   ├── all.yml
-│   ├── eos.yml
-│   └── ios.yml
-├── host_vars
-│   ├── csr1.yml
-│   ├── csr2.yml
-│   ├── eos-spine1.yml
-│   └── eos-spine2.yml
-```
-]
-
----
-
-
-# Host Based Variables (cont'd)
-
-- You can alternatively create a directory equal to the host name and have individual files in that directory
-
-.big-code[
-```bash
-.
-├── inventory
-├── pb.yml
-├── host_vars
-│   ├── csr1
-│   │   ├── aaa.yml
-│   │   └── interfaces.yml
-│   └── eos-spine1
-│       ├── aaa.yml
-│       └── interfaces.yml
-
-```
-]
-
----
-
-
-# Variable Priority
-
-- You can define host and group variables in the inventory file and respective host vars and group vars files
-- The file take priority
-
-<br>
-
-**Proving** variable priority: use the **debug** module
-
-
----
-
-# Special (Built-in) Variables
-
-**Ansible has several built-in, _special_, variables**
-
-<html>
-<head>
-<style>
-table {
-    font-family: arial, sans-serif;
-    font-size: 18px;
-    border-collapse: collapse;
-    width: 80%;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-td, th {
-    border: 1px solid #dddddd;
-    text-align: left;
-    padding: 8px;
-}
-
-tr:nth-child(even) {
-    background-color: #dddddd;
-}
-</style>
-</head>
-<body>
-
-<table>
-  <tr>
-    <th>Variable</th>
-    <th>Description</th>
-  </tr>
-  <tr>
-    <td>inventory_hostname</td>
-    <td>Name of the current host as defined in the inventory file.</td>
-  </tr>
-  <tr>
-    <td>ansible_host</td>
-    <td>Helpful if inventory hostname is not in DNS or /etc/hosts.  Set to IP address of host and use instead of inventory_hostname to access IP/FQDN</td>
-  </tr>
-  <tr>
-    <td>hostvars</td>
-    <td>Dictionary- it's keys are Ansible host names (inventory_hostname) and values is dictionary of every variable that host has (flattend)</td>
-  </tr>
-  <tr>
-    <td>play_hosts</td>
-    <td>A list of inventory hostnames that are in scope for the current play </td>
-  </tr>
-  <tr>
-    <td>group_names</td>
-    <td>List of all groups that the current host is a member of</td>
-  </tr>
-  <tr>
-    <td>groups</td>
-    <td>A dictionary- keys are all group names defined in the inventory file and values are list of host names that are members of the group.</td>
-  </tr>
-  <tr>
-    <td>ansible_version</td>
-    <td>Dictionary representing Ansible major, minor, revision of the release.</td>
-  </tr>
-</table>
-
-</body>
-</html>
-
----
-
-# Extra Variables
-
-- Known as "extra vars"
-- Variables passed into a playbook upon execution.
-- Highest priority
-
-```yaml
----
-
-  - name: DEMO PLAYBOOK
-    hosts: "{{ devices }}"
-
-    tasks:
-      ...
-      ...
-      ...
-```
-
-Pass variables using `-e` or `--extra-vars`
-
-```bash
-$ ansible-playbook -i inventory playbook.yml -e "devices=all"
-$ ansible-playbook -i inventory playbook.yml -e "devices=eos"
-$ ansible-playbook -i inventory playbook.yml --extra-vars "devices=eos"
-```
-
----
-
-# User Input
-
-You can request user input and capture the user response as a variable using the `var_prompt` module.  The `name` under `vars_prompt` is the variable name where the user input will be captured.
-
-```yaml
----
-
-- name: COLLECT USERNAME AND PASSWORD
-  hosts: csr1
-  gather_facts: no
-  connection: local
-
-  vars_prompt:
-    - name: un
-      prompt: "Please enter the username"
-      private: no
-```
-
-By default Ansible does not echo user input back to the terminal.  To allow user input to be echoed back to to the terminal set the `private` parameter to `no`.
-
----
-
-# Lab Time
-
-- Lab 5 - Building the course inventory file
+- Lab 4 - Building the course inventory file
+- Lab 5 - Using the debug module
 - Lab 6 - Prompting the User for Input
 ---
 
