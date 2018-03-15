@@ -3068,9 +3068,281 @@ ok: [nxos-spine1] => {
 
 ---
 
-# ADD CONTENT LAB 15 & 16
+# Parsing Response Data
 
-# Parsing
+When running commands use the core command module it is often necessary to parse needed information from the command response data.
+
+The following methods can be used to parse the response data:
+
+- `parse_cli`
+- `parse_cli_textfsm`
+- `regex_search`
+- `regex_findall`
+
+You will notice that these methods are the same as methods used to parse data in Python.
+
+
+---
+
+# Parsing Data Using parse_cli_textfsm
+
+The `parse_cli_textfsm` Jinja2 filter can use the same `textfsm` templates that are used in Python to parse data in Ansible.
+
+```yaml
+---
+
+  - name: TEST PARSE USING PARSE_CLI_TEXTFSM
+    hosts: csr1
+    connection: local
+    gather_facts: no
+
+    vars:
+      template_path: "/etc/ntc/ansible/library/ntc-ansible/ntc-templates/templates/"
+      show_version_path: "{{ template_path }}cisco_ios_show_version.template"
+
+    tasks:
+
+      - name: GET SHOW COMMANDS
+        ios_command:
+          commands: show version
+        register: config_data
+
+      - set_fact:
+          show_version: "{{ config_data.stdout.0 | parse_cli_textfsm(show_version_path) }}"
+
+      - debug:
+          var: show_version
+```
+
+
+---
+
+# Parsing Data Using parse_cli_textfsm
+
+You will see that `parse_cli_textfsm` will return structured data.
+
+```bash
+TASK [debug] ***************************************************
+ok: [csr1] => {
+    "show_version": [
+        {
+            "CONFIG_REGISTER": "0x2102",
+            "HARDWARE": [
+                "CSR1000V"
+            ],
+            "HOSTNAME": "csr1",
+            "ROMMON": "IOS-XE",
+            "RUNNING_IMAGE": "packages.conf",
+            "SERIAL": [
+                "9KIBQAQ3OPE"
+            ],
+            "UPTIME": "6 hours, 18 minutes",
+            "VERSION": "16.6.2"
+        }
+    ]
+}
+```
+
+
+---
+
+# Parsing Data Using parse_cli
+
+The `parse_cli` Jinja2 filter uses RegEx "spec" files to parse data into a structured format.
+
+These files are in the YAML format.
+
+```yaml
+---
+
+keys:
+  interfaces:
+    value:
+      key: "{{ item.iface_name }}"
+      values:
+        interface: "{{ item.iface_name }}"
+        ip_addr: "{{ item.ip_addr }}"
+        status: "{{ item.status }}"
+        protocol: "{{ item.protocol }}"
+    items: "^(?P<iface_name>(\\S+))\\s+(?P<ip_addr>(\\S+)|(\\w+))\\s+(?P<ok>(\\w+))\\s+(?P<method>(\\S+))\\s+(?P<status>
+      (administratively down|\\w+))\\s+(?P<protocol>(\\S+))"
+```
+
+You will see that the spec file specifies how the data should be structured.  Then `items` is defined using the regex string to match the variables in the structure.
+
+---
+
+# Parsing Data Using parse_cli
+
+Now you can reference the new parser using `parse_cli`:
+
+```yaml
+---
+
+  - name: TEST PARSE USING PARSE_CLI
+    hosts: csr1
+    connection: local
+    gather_facts: no
+
+    tasks:
+
+      - name: GET SHOW COMMANDS
+        ios_command:
+          commands: show ip interface brief
+        register: output
+
+      - set_fact:
+          show_brief: "{{ output.stdout.0 | parse_cli('./parsers/show_ip_interface_brief-dict.yml') }}"
+
+      - debug:
+          var: show_brief
+```
+
+
+---
+
+# Parsing Data Using parse_cli
+
+The filter will return data structured as a nested dictionary.
+
+```bash
+TASK [debug] ********************************************************************************
+ok: [csr1] => {
+    "show_brief": {
+        "interfaces": {
+            "GigabitEthernet1": {
+                "interface": "GigabitEthernet1",
+                "ip_addr": "10.0.0.51",
+                "protocol": "up",
+                "status": "up"
+            },
+            "GigabitEthernet2": {
+                "interface": "GigabitEthernet2",
+                "ip_addr": "10.254.13.1",
+                "protocol": "up",
+                "status": "up"
+            },
+            < output omitted>
+        }
+    }
+}
+```
+
+
+---
+
+# Parsing Data Using parse_cli
+
+You can adjust the spec file to ouput the data as a list of dicitonaries:
+
+```yaml
+---
+
+keys:
+  interfaces:
+    type: list
+    value:
+      interface: "{{ item.iface_name }}"
+      ip_addr: "{{ item.ip_addr }}"
+      status: "{{ item.status }}"
+      protocol: "{{ item.protocol }}"
+    items: "^(?P<iface_name>(\\S+))\\s+(?P<ip_addr>(\\S+)|(\\w+))\\s+(?P<ok>(\\w+))\\s+(?P<method>(\\S+))\\s+(?P<status>
+      (administratively down|\\w+))\\s+(?P<protocol>(\\S+))"
+```
+
+
+---
+
+# Parsing Data Using parse_cli
+
+Output form new spec file:
+
+```bash
+ok: [csr1] => {
+    "show_brief": {
+        "interfaces": [
+            {
+                "interface": "GigabitEthernet1",
+                "ip_addr": "10.0.0.51",
+                "protocol": "up",
+                "status": "up"
+            },
+            {
+                "interface": "GigabitEthernet2",
+                "ip_addr": "10.254.13.1",
+                "protocol": "up",
+                "status": "up"
+            },
+            {
+                "interface": "GigabitEthernet3",
+                "ip_addr": "unassigned",
+                "protocol": "down",
+                "status": "administratively down"
+            },
+            <output ommited>
+        ]
+    }
+}
+```
+
+---
+
+# Parsing Data Using regex_search and regex_findall
+
+You can also use the `regex_search` and `regex_findall` Jinja2 filters to parse data.
+
+In this example we issued the ping command from an IOS device and want to parse out the success precentage.
+
+```yaml
+---
+
+ - name: PING TEST AND TRACEROUTE
+    hosts: csr1
+    connection: local
+    gather_facts: no
+
+    vars:
+      dest: "8.8.8.8"
+
+    tasks:
+
+    - name: ISSUE PING
+      ios_command:
+        commands: "ping vrf MANAGEMENT {{ dest }} repeat 2"
+      register: output
+```
+
+We are registering the response from the ping command to the `output` variable.
+
+---
+
+# Parsing Data Using regex_search and regex_findall
+
+Using `regex_search` we can parse the `stdout` from the `output` variable to find the success percentage.
+
+```yaml
+    - name: PARSE PING RESPONSE TO OBTAIN % OF SUCCESS
+      set_fact:
+        ping_pct: "{{ output.stdout.0 | regex_search('Success rate is (\\d+)\\s+percent') | regex_search('(\\d+)') }}"
+```
+
+The filter has two back-to-back `regex_search` commands.  The first captures the `Success rate...` line and the second captures the percentage within the first capture and registers that value in the `ping_pct` variable.
+
+
+---
+
+# Parsing Data Using regex_search and regex_findall
+
+Using `regex_findall` is another way to parse the `stdout` from the `output` variable to find the success percentage.
+
+```yaml
+    - name: PARSE PING RESPONSE TO OBTAIN % OF SUCCESS
+      set_fact:
+        ping_pct: "{{ output.stdout.0 | regex_findall('Success rate is (\\d+)\\s+percent') | first }}"
+```
+
+The filter has captures the success line and registers the percentage (\\d+) capture group.  The `first` filter returns the first caputre group as the result.  This result is assigned to the variable `ping_pct`.
+
 
 ---
 
