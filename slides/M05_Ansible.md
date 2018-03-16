@@ -4699,10 +4699,96 @@ Reboot a network device, optionally on a timer.
 
 ---
 
-# ADD CONTENT LAB 18 & 19
+class: middle, segue
+
+# Making REST API Calls from Ansible
 
 ---
 
+# Using the URI Module
+
+The `uri` module can be used to make HTTP-based API calls.
+
+```yaml
+      - name: GET INTERFACE IP ADDRESS
+        uri:
+          url: https://{{ inventory_hostname }}/restconf/data/Cisco-IOS-XE-native:native/interface=GigabitEthernet/1/ip/address
+          method: GET
+          user: "{{ ansible_user }}"
+          password: "{{ ansible_ssh_pass }}"
+          return_content: yes
+          validate_certs: no
+          headers:
+            Content-Type: application/yang-data+json
+            Accept: application/yang-data+json
+        register: response
+```
+
+This example shows how to make an API call against an IOSXE device to pull the IP address information for the `GigabitEthernet1` interface and assigning the returned value to the `response` variable.
+
+You can test all of these settings using Postman before building your Ansible tasks.
+
+---
+
+class: middle, segue
+
+# Device Discovery and Dynamic Groups
+
+---
+
+# Device Discovery Using SNMP
+
+The `snmp_device_version` module can be used to discover the device vendor, os, and version.  These items are returned as variables `ansible_device_vendor`, `ansible_device_os`, and `ansible_device_version`.
+
+Example Task:
+
+```yaml
+      - name: QUERY DEVICE VIA SNMP
+        snmp_device_version:
+          community: networktocode
+          version: 2c
+          host: "{{ inventory_hostname }}"
+```
+
+You can use these discovered variables for further processing devices in a dynamic fashion.
+
+---
+
+# Creating Dynamic Groups
+
+You are able to create dynamic groups within Ansible using the `group_by` module.  Using the data collected by the `snmp_device_discovery` module we are able to dynamically group devices by vendor, os, or version.
+
+In this example we are grouping the devices by vendor.  This will create a group named `vendor_` followed by the vendor name.  This group can be used in subsiquent plays within the playbook.
+
+```yaml
+---
+
+  - name: DISCOVER VENDOR
+    hosts: iosxe,nxos,vmx
+    connection: local
+    gather_facts: no
+
+    tasks:
+
+      - name: QUERY DEVICE VIA SNMP
+        snmp_device_version:
+          community: networktocode
+          version: 2c
+          host: "{{ inventory_hostname }}"
+        tags: snmp
+
+      - group_by:
+          key: vendor_{{ ansible_device_vendor }}
+```
+
+---
+
+# Lab Time
+
+- Lab 18 - Making REST API Calls from Ansible
+- Lab 19 - Discovering Device Types and Dynamically Creating Groups
+
+---
 
 class: middle, segue
 
