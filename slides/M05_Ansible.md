@@ -3346,6 +3346,13 @@ The filter has captures the success line and registers the percentage (\\d+) cap
 
 ---
 
+# Lab Time
+
+- Lab 15 - Parsing Show Commands
+- Lab 16 - Performing a Conditional Traceroute
+
+---
+
 # *_config
 
 .left-column[
