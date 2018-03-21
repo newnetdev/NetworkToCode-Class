@@ -1,7 +1,7 @@
 layout: true
 
 .footer-picture[![Network to Code Logo](data/media/Footer2.PNG)]
-.footnote-left[(C) 2015 Network to Code, LLC. All Rights Reserved. ]
+.footnote-left[(C) 2018 Network to Code, LLC. All Rights Reserved. ]
 .footnote-con[CONFIDENTIAL]
 
 ---
@@ -15,16 +15,16 @@ class: center, middle, title
 
 # Agenda
 
-* HTTP-Based APIs 
+* HTTP-Based APIs
 * non-RESTful HTTP-Based APIs
   * Cisco Nexus NX-API
   * Arista eAPI
-* RESTful HTTP-Based APIs 
+* RESTful HTTP-Based APIs
   * Cisco IOS-XE RESTCONF
-  * Using Postman 
+  * Using Postman
 * Consuming HTTP-Based APIs with Python requests
 * Vendor Libraries
-  * Juniper XML API (NETCONF) & PyEZ 
+  * Juniper XML API (NETCONF) & PyEZ
   * Arista pyeapi
 
 ---
@@ -45,7 +45,7 @@ class: middle, segue
 
 In other words, those that adhere to the principles of REST and those that do not.
 
-Both use HTTP(s) as transport.  
+Both use HTTP(s) as transport.
 
 ---
 
@@ -145,7 +145,7 @@ Body: {'interface': "Eth1", "admin_state": "down"}
 
 ---
 
-# Data Encoding 
+# Data Encoding
 
 **Data is sent over the wire as XML or JSON**
 
@@ -195,14 +195,14 @@ class: ubuntu
 
 ```
 >>> facts = {'vendor': 'cisco'}
->>> 
+>>>
 >>> import json
->>> 
+>>>
 >>> test = json.dumps(facts, indent=4)
->>> 
+>>>
 >>> type(test)
 <type 'str'>
->>> 
+>>>
 ```
 
 
@@ -234,11 +234,11 @@ if __name__ == "__main__":
 
 .right-column[
 .ubuntu[```
-$ python json_test.py 
+$ python json_test.py
 {'hostname': 'nxos-spine1', 'os': '7.3', 'location': 'New_York'}
 {
-    "hostname": "nxos-spine1", 
-    "os": "7.3", 
+    "hostname": "nxos-spine1",
+    "os": "7.3",
     "location": "New_York"
 }
 7.3
@@ -306,12 +306,12 @@ TypeError: string indices must be integers, not str
 
 .left-column[
 - Supported by many vendors who implement web based (REST) APIs
-- Certain CLIs allow you to pipe commands to JSON 
+- Certain CLIs allow you to pipe commands to JSON
 
 .ubuntu[```
 nxos-spine1# show hostname
-nxos-spine1.ntc.com 
-nxos-spine1# 
+nxos-spine1.ntc.com
+nxos-spine1#
 ```
 ]
 
@@ -321,7 +321,7 @@ nxos-spine1# show vlan brief
 VLAN Name                             Status    Ports
 ---- -------------------------------- --------- -------------------------------
 1    default                          active    Eth2/5, Eth2/6
-100  web_vlan                         active    
+100  web_vlan                         active
 
 nxos-spine1#
 ```
@@ -346,15 +346,15 @@ nxos-spine1# show vlan brief | json
   "TABLE_vlanbriefxbrief": {
     "ROW_vlanbriefxbrief": [
       {
-        "vlanshowbr-vlanid": 16777216, 
-        "vlanshowbr-vlanid-utf": 1, 
-        "vlanshowbr-vlanname": "default", 
-        "vlanshowbr-vlanstate": "active", 
-      }, 
+        "vlanshowbr-vlanid": 16777216,
+        "vlanshowbr-vlanid-utf": 1,
+        "vlanshowbr-vlanname": "default",
+        "vlanshowbr-vlanstate": "active",
+      },
       {
-        "vlanshowbr-vlanid": 1677721600, 
-        "vlanshowbr-vlanid-utf": 100, 
-        "vlanshowbr-vlanname": "web_vlan", 
+        "vlanshowbr-vlanid": 1677721600,
+        "vlanshowbr-vlanid-utf": 100,
+        "vlanshowbr-vlanname": "web_vlan",
       }
     ]
 output modified for brevity
@@ -378,7 +378,7 @@ class: ubuntu
 ...   "hostname": "nxos-spine1.ntc.com"
 ... }
 ... """
->>> 
+>>>
 ```
 
 **Perform your tests**
@@ -386,15 +386,15 @@ class: ubuntu
 ```
 >>> type(test_var)
 <type 'str'>
->>> 
+>>>
 >>> response = json.loads(test_var)
->>> 
+>>>
 >>> type(response)
 <type 'dict'>
->>> 
+>>>
 >>> print response['hostname']
 nxos-spine1.ntc.com
->>> 
+>>>
 ```
 
 
@@ -426,7 +426,7 @@ In the context of networking, pay attention to the following:
 We are going to look at two non-RESTful APIs:  **Cisco Nexus NX-API (CLI)** and **Arista eAPI**.
 
 * All API requests are POSTs
-* All API requests use the same URL 
+* All API requests use the same URL
 
 
 ---
@@ -616,7 +616,7 @@ class: middle, segue
 # RESTful APIs
 
 * URL maps to a particular resource
-* HTTP Request Type specifies requested operation 
+* HTTP Request Type specifies requested operation
 
 We are going to look at the IOS-XE RESTCONF API.
 
@@ -634,11 +634,11 @@ We are going to look at the IOS-XE RESTCONF API.
   * application/vnd.yang.data+xml
 
 
-**Note: Must exit configuration mode after making a change for it to be readable via RESTCONF** 
+**Note: Must exit configuration mode after making a change for it to be readable via RESTCONF**
 
 ---
 
-# RESTCONF on IOS-XE 
+# RESTCONF on IOS-XE
 
 Enabling RESTCONF
 
@@ -847,9 +847,9 @@ BODY Used for POST, PATCH, PUT:
 # RESTCONF Example 4 - The Result
 
 
-**Request 1**: 
+**Request 1**:
 
-POST   http://csr1/restconf/api/config/native/interface/ 
+POST   http://csr1/restconf/api/config/native/interface/
 
 **Response**: 409; Error: Object Already Exists; No change in config
 
@@ -857,7 +857,7 @@ POST   http://csr1/restconf/api/config/native/interface/
 
 **Request 2**:
 
-PATCH http://csr1/restconf/api/config/native/interface/Loopback 
+PATCH http://csr1/restconf/api/config/native/interface/Loopback
 
 **Response** 204; No change in config
 
@@ -865,7 +865,7 @@ PATCH http://csr1/restconf/api/config/native/interface/Loopback
 
 **Request 3**:
 
-PUT     http://csr1/restconf/api/config/native/interface/Loopback/100 
+PUT     http://csr1/restconf/api/config/native/interface/Loopback/100
 
 
 **Response** 204;
@@ -893,7 +893,7 @@ Using RESTCONF to manage static route configuration
 Starting Configuration:
 
 ```bash
-csr1kv# show run | inc route 
+csr1kv# show run | inc route
  ip route 0.0.0.0 0.0.0.0 10.0.0.2
 ```
 
@@ -941,9 +941,9 @@ Body:
 Resulting New Configuration:
 
 ```bash
-csr1kv# show run | inc route 
+csr1kv# show run | inc route
 ip route 0.0.0.0 0.0.0.0 10.0.0.2
-ip route 10.0.100.0 255.255.255.0 192.168.1.1 
+ip route 10.0.100.0 255.255.255.0 192.168.1.1
 ip route 172.16.0.0 255.255.0.0 192.168.1.1
 ```
 
@@ -955,9 +955,9 @@ Starting Configuration:
 
 ```bash
 
-csr1kv#show run | inc route 
+csr1kv#show run | inc route
 ip route 0.0.0.0 0.0.0.0 10.0.0.51
-ip route 10.0.100.0 255.255.255.0 192.168.1.1 
+ip route 10.0.100.0 255.255.255.0 192.168.1.1
 ip route 172.16.0.0 255.255.0.0 192.168.1.1
 ```
 
@@ -996,7 +996,7 @@ Body:
 Resulting New Configuration:
 
 ```bash
-csr1kv# show run | inc route 
+csr1kv# show run | inc route
 ip route 0.0.0.0 0.0.0.0 10.0.0.2
 ```
 
@@ -1025,12 +1025,12 @@ class: middle, segue
 # Postman
 
 * Google Chrome application that provides a user intuitive GUI application to interact with HTTP-based APIs.
-* Primarily Used for testing and learning 
-* You can create a job collection 
+* Primarily Used for testing and learning
+* You can create a job collection
 
 
 ---
---- 
+---
 
 # Postman (cont'd)
 
@@ -1049,7 +1049,7 @@ class: middle, segue
 
 # Lab Time
 
-* Lab 17 - Using Postman 
+* Lab 17 - Using Postman
   * Exploring the IOS-XE RESTCONF API
 
 
@@ -1059,7 +1059,7 @@ Note: Feel free to test it with NX-API or eAPI.
 
 class: middle, segue
 
-# Bonus Material 
+# Bonus Material
 ## Consuming HTTP APIs with Python requests
 #### Network APIs
 
@@ -1094,11 +1094,11 @@ response = requests.get('http://<device>', headers=headers, auth=auth)
 
 ---
 
-# Python requests 
+# Python requests
 
 * `data` must be a JSON string - must use `json.dumps()`
 * `data`, `headers`, and `auth` are defined parameters that must be used within the requests library
-* `payload` is an arbitrary variable that maps back to device API requirements 
+* `payload` is an arbitrary variable that maps back to device API requirements
 
 ```py
 import requests
@@ -1169,22 +1169,22 @@ if __name__ == "__main__":
 ```python
 Status Code: 200
 {
-    "jsonrpc": "2.0", 
+    "jsonrpc": "2.0",
     "result": [
         {
-            "memTotal": 3895836, 
-            "version": "4.15.2F", 
-            "internalVersion": "4.15.2F-2663444.4152F", 
-            "serialNumber": "", 
-            "systemMacAddress": "2c:c2:60:28:54:dd", 
-            "bootupTimestamp": 1477365548.64, 
-            "memFree": 1621108, 
-            "modelName": "vEOS", 
-            "architecture": "i386", 
-            "internalBuildId": "0ebbad93-563f-4920-8ecb-731057802b9c", 
+            "memTotal": 3895836,
+            "version": "4.15.2F",
+            "internalVersion": "4.15.2F-2663444.4152F",
+            "serialNumber": "",
+            "systemMacAddress": "2c:c2:60:28:54:dd",
+            "bootupTimestamp": 1477365548.64,
+            "memFree": 1621108,
+            "modelName": "vEOS",
+            "architecture": "i386",
+            "internalBuildId": "0ebbad93-563f-4920-8ecb-731057802b9c",
             "hardwareRevision": ""
         }
-    ], 
+    ],
     "id": "ntc"
 }
 ```
@@ -1233,7 +1233,7 @@ if __name__ == "__main__":
 --
 
 .right-column[
-- The **cmds** request parameter is a list. 
+- The **cmds** request parameter is a list.
 - Run *show hostname* and *show vlan* at the same time.
 - *result* is a list and can be used to print individual command output.
 
@@ -1242,16 +1242,16 @@ if __name__ == "__main__":
 ```python
 Status Code: 200
 Hostname:  {
-    "hostname": "eos-spine1", 
+    "hostname": "eos-spine1",
     "fqdn": "eos-spine1.ntc.com"
 }
 VLANs:  {
-    "sourceDetail": "", 
+    "sourceDetail": "",
     "vlans": {
         "1": {
-            "status": "active", 
-            "interfaces": {}, 
-            "dynamic": false, 
+            "status": "active",
+            "interfaces": {},
+            "dynamic": false,
             "name": "default"
         }
     }

@@ -1,13 +1,13 @@
 layout: true
 
-.footer-picture[![Network to Code Logo](slides/media/Footer2.PNG)]
-.footnote-left[(C) 2017 Network to Code, LLC. All Rights Reserved. ]
+.footer-picture[![Network to Code Logo](data/media/Footer2.PNG)]
+.footnote-left[(C) 2018 Network to Code, LLC. All Rights Reserved. ]
 .footnote-con[CONFIDENTIAL]
 
 ---
 
 class: center, middle, title
-.footer-picture[<img src="slides/media/Footer1.PNG" alt="Blue Logo" style="alight:middle;width:350px;height:60px;">]
+.footer-picture[<img src="data/media/Footer1.PNG" alt="Blue Logo" style="alight:middle;width:350px;height:60px;">]
 
 # Data Types, JSON, and YAML
 
@@ -440,7 +440,7 @@ var['switches']['snmp']['info']['location'] = 'nyc'
 ---
 
 class: center, middle, title
-.footer-picture[<img src="slides/media/Footer1.PNG" alt="Blue Logo" style="alight:middle;width:350px;height:60px;">]
+.footer-picture[<img src="data/media/Footer1.PNG" alt="Blue Logo" style="alight:middle;width:350px;height:60px;">]
 
 # YAML Basics
 
@@ -822,7 +822,7 @@ snmp_communities:
 # Demo
 
 - Validate YAML
-- http://yamllint.com/ 
+- http://yamllint.com/
 - YAML to JSON Conversion
 - JSON to YAML Conversion
 - https://www.json2yaml.com
