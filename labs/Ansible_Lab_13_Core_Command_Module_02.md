@@ -95,7 +95,7 @@ Remember, this task plus `target_ips` is equivalent to the following:
       - name: SEND PING COMMANDS TO DEVICES
         ios_command:
           commands: "ping vrf MANAGEMENT {{ item }} repeat 2"
-          with_items:
+        with_items:
           - "8.8.8.8"
           - "4.4.4.4"
           - "198.6.1.4"
