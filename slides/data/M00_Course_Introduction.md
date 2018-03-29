@@ -53,7 +53,7 @@ layout: true
 
 # Target Audience
 
-This course was built for Network Engineers that are looking to gain an introduction into Python and Ansible exploring its relevance with respect to Network Automation & Programmability.  
+This course was built for Network Engineers that are looking to gain an introduction into Python and Ansible exploring its relevance with respect to Network Automation & Programmability.
 
 The course does not assume any background in programming or software development methodologies, but the student should have some experience in the networking field as examples pertain to managing network devices such as switches and routers.
 
@@ -65,7 +65,7 @@ The course does not assume any background in programming or software development
 * Module 1 – Getting Started with Python
 * Module 2 – Automating Network Devices with SSH
 * Module 3 – Automating Network Devices with NETCONF & RESTful APIs
-* Module 4 – Network Automation with Ansible 
+* Module 4 – Network Automation with Ansible
 * Module 5 – Challenge Labs (inter-weaved)
 
 _Topics such as YAML, JSON, XML, and Jinja2 template are reviewed in several sections._
@@ -73,14 +73,14 @@ _Topics such as YAML, JSON, XML, and Jinja2 template are reviewed in several sec
 
 ---
 
-# Course Summary  
+# Course Summary
 .left-column[
 - Getting Started with Python
   - Data Types
   - Conditionals, Loops, Functions
   - Writing Scripts
   - Command Line Arguments
-  - Working with Files 
+  - Working with Files
   - Python Libraries
   - Open Source Network Libraries
   - NETCONF & HTTP-Based and RESTful APIs
@@ -138,7 +138,7 @@ _Topics such as YAML, JSON, XML, and Jinja2 template are reviewed in several sec
 .left-column[
 - Module 4 - Ansible
   - YAML
-  - Overview  
+  - Overview
   - Inventory File
   - Variables
   - Playbooks
@@ -179,7 +179,7 @@ Everyone has a virtual topology that will be hosted in the public cloud for the 
 
 # Introductions
 
-- Name 
+- Name
 - Job/Role
 - Experience
   - Programming/Automation/NetEng Experience

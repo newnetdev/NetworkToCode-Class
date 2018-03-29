@@ -1,13 +1,13 @@
 layout: true
 
-.footer-picture[![Network to Code Logo](slides/media/Footer2.PNG)]
+.footer-picture[![Network to Code Logo](data/media/Footer2.PNG)]
 .footnote-left[(C) 2018 Network to Code, LLC. All Rights Reserved. ]
 .footnote-con[CONFIDENTIAL]
 
 ---
 
 class: center, middle, title
-.footer-picture[<img src="slides/media/Footer1.PNG" alt="Blue Logo" style="alight:middle;width:350px;height:60px;">]
+.footer-picture[<img src="data/media/Footer1.PNG" alt="Blue Logo" style="alight:middle;width:350px;height:60px;">]
 
 # Introduction to Ansible by RedHat
 
@@ -44,7 +44,7 @@ class: center, middle, title
 
 # How Ansible Works
 .center[
-<img src="slides/media/how-ansible-works.png" alt="How Ansible Works" style="alight:middle;width:1025px;height:475px;">
+<img src="data/media/how-ansible-works.png" alt="How Ansible Works" style="alight:middle;width:1025px;height:475px;">
 ]
 
 ---
@@ -68,14 +68,14 @@ class: center, middle, title
 ]
 
 .right-column[
-<img src="slides/media/ansible_ssh_both.png" alt="Ansible SSH" style="alight:right;width:500px;height:480px;">
+<img src="data/media/ansible_ssh_both.png" alt="Ansible SSH" style="alight:right;width:500px;height:480px;">
 ]
 ---
 
 # Ansible Architecture
 
 .center[
-<img src="slides/media/ansible-arch.png" alt="Ansible Architecture" style="alight:middle;width:700px;height:480px;">
+<img src="data/media/ansible-arch.png" alt="Ansible Architecture" style="alight:middle;width:700px;height:480px;">
 ]
 
 
@@ -84,7 +84,7 @@ class: center, middle, title
 # Ansible Tower
 
 .center[
-<img src="slides/media/ansible-arch-tower.png" alt="Ansible Tower" style="alight:middle;width:700px;height:475px;">
+<img src="data/media/ansible-arch-tower.png" alt="Ansible Tower" style="alight:middle;width:700px;height:475px;">
 ]
 
 ---
@@ -92,7 +92,7 @@ class: center, middle, title
 
 class: center, middle, title
 
-.footer-picture[<img src="slides/media/Footer1.PNG" alt="Blue Logo" style="alight:middle;width:350px;height:60px;">]
+.footer-picture[<img src="data/media/Footer1.PNG" alt="Blue Logo" style="alight:middle;width:350px;height:60px;">]
 
 
 # What's Possible with Ansible?
@@ -238,7 +238,7 @@ Configure interface descriptions based on active neighbors
 ---
 
 class: center, middle, title
-.footer-picture[<img src="slides/media/Footer1.PNG" alt="Blue Logo" style="alight:middle;width:350px;height:60px;">]
+.footer-picture[<img src="data/media/Footer1.PNG" alt="Blue Logo" style="alight:middle;width:350px;height:60px;">]
 
 # Ansible for Network Automation
 
@@ -889,7 +889,7 @@ class: center, middle
 
 # Lab Time
 
-- Lab 1 - Deploying basic configs with Ansible
+- Lab 1 - Deploying "Basic" Configurations with Ansible
   - Write Your First Ansible Playbook that will configure SNMP setting on 6 devices! 3 IOS and 3 JUNOS devices
 - Lab 2 - Deploying Configs From a File
   - Shows how to push configuration using files.
@@ -1215,13 +1215,13 @@ leaf2 mgmt_ip=10.1.1.2
 ]
 --
 
-.right-column[
+.right-column[.s2-code[
 ```bash
 $ ansible-playbook -i inventory debug.yml
 
-PLAY [DEBUGGING VARIABLES] *****************************************************
+PLAY [DEBUGGING VARIABLES] **************************************************
 
-TASK [PRINT INVENTORY HOSTNAME] ************************************************
+TASK [PRINT INVENTORY HOSTNAME] *********************************************
 ok: [leaf1] => {
     "inventory_hostname": "leaf1"
 }
@@ -1229,12 +1229,12 @@ ok: [leaf2] => {
     "inventory_hostname": "leaf2"
 }
 
-PLAY RECAP *********************************************************************
+PLAY RECAP ******************************************************************
 leaf1                      : ok=1    changed=0    unreachable=0    failed=0
 leaf2                      : ok=1    changed=0    unreachable=0    failed=0
 ```
 
-
+]
 ]
 
 ---
@@ -1283,13 +1283,13 @@ leaf2 mgmt_ip=10.1.1.2
 ]
 --
 
-.right-column[
+.right-column[.s2-code[
 ```bash
 $ ansible-playbook -i inventory debug.yml
 
-PLAY [DEBUGGING VARIABLES] *****************************************************
+PLAY [DEBUGGING VARIABLES] **************************************************
 
-TASK [PRINT INVENTORY HOSTNAME] ************************************************
+TASK [PRINT INVENTORY HOSTNAME] *********************************************
 ok: [leaf1] => {
     "ansible_ssh_pass": "admin123"
 }
@@ -1297,12 +1297,12 @@ ok: [leaf2] => {
     "ansible_ssh_pass": "ntc123"
 }
 
-PLAY RECAP *********************************************************************
+PLAY RECAP ******************************************************************
 leaf1                      : ok=1    changed=0    unreachable=0    failed=0
 leaf2                      : ok=1    changed=0    unreachable=0    failed=0
 ```
 
-
+]
 ]
 
 
@@ -1351,13 +1351,13 @@ leaf2 mgmt_ip=10.1.1.2
 ]
 --
 
-.right-column[
+.right-column[.s2-code[
 ```bash
 $ ansible-playbook -i inventory debug.yml
 
-PLAY [DEBUGGING VARIABLES] *****************************************************
+PLAY [DEBUGGING VARIABLES] **************************************************
 
-TASK [PRINT MGMT IP] ***********************************************************
+TASK [PRINT MGMT IP] ********************************************************
 ok: [leaf1] => {
     "msg": "THE MGMT IP IS 10.1.1.1"
 }
@@ -1365,14 +1365,14 @@ ok: [leaf2] => {
     "msg": "THE MGMT IP IS 10.1.1.2"
 }
 
-PLAY RECAP *********************************************************************
+PLAY RECAP ******************************************************************
 leaf1                      : ok=1    changed=0    unreachable=0    failed=0
 leaf2                      : ok=1    changed=0    unreachable=0    failed=0
 
 
 ```
 ]
-
+]
 
 
 
@@ -1416,7 +1416,7 @@ nxos-spine1                : ok=3    changed=0    unreachable=0    failed=0
 * Verbose mode in combination with the `--check` flag shows the actual commands
 
 .left-column[
-.small-code[
+.s2-code[
 ``` yaml
 ---
 
@@ -1504,7 +1504,6 @@ class: middle, segue
 
 ---
 
-class: ubuntu
 
 # The Ansible template module
 The basic usage of the template module in Ansible:
@@ -1521,7 +1520,6 @@ The basic usage of the template module in Ansible:
 
 ---
 
-class: ubuntu
 
 # Jinja2 and the *_config modules
 
@@ -1644,7 +1642,7 @@ Three core functions:
 All three are done in a uniform and vendor-neutral fashion
 ]
 
-.right-column[.center[![NAPALM](slides/media/napalm-logo.png)]
+.right-column[.center[![NAPALM](data/media/napalm-logo.png)]
 ]
 
 
@@ -1696,13 +1694,12 @@ class: ubuntu
 
 ---
 
-class: ubuntu
 
 # NAPALM Facts
 
 Network Device Facts
 
-```
+```bash
 {
     "os_version": "4.15.2F-2663444.4152F",
     "uptime": 5837,
@@ -1727,13 +1724,12 @@ Network Device Facts
 
 ---
 
-class: ubuntu
 
 # Interfaces
 
 .left-column[
 
-```
+```bash
 {
     "Management1": {
         "is_enabled": true,
@@ -1764,7 +1760,7 @@ class: ubuntu
 
 .right-column[
 
-```
+```bash
     "Ethernet1": {
         "is_enabled": true,
         "description": "",
@@ -1797,13 +1793,13 @@ class: ubuntu
 
 ---
 
-class: ubuntu
 
 # Layer 3 Interfaces
 
 Get Interfaces IP Addresses
 
-```
+.big-code[
+```bash
 {
    "Management1":{
       "ipv4":{
@@ -1817,16 +1813,18 @@ Get Interfaces IP Addresses
    }
 }
 ```
+]
 
 ---
 
-class: ubuntu
+
 
 # Environment
 
 Device Environment Status
 
-```
+.big-code[
+```bash
 {
     "fans": {},
     "cpu": {
@@ -1842,6 +1840,8 @@ Device Environment Status
     }
 }
 ```
+]
+
 
 ---
 
@@ -1889,6 +1889,7 @@ Focus on desired configuration commands.
 
 There are no `no` commands used.  The underlying OS generates the diffs (for most NAPALM drivers).
 
+.big-code[
 ```bash
 $ more diffs/csr1.diffs
 +hostname csr1
@@ -1899,6 +1900,7 @@ $ more diffs/csr1.diffs
  -ip address 22.2.1.1 255.255.255.255
 -ip route 10.1.1.0 255.255.255.0 192.0.1.1
 ```
+]
 
 Full configuration is sent to the device, but only diffs are applied. You do not need to worry about going from A to B - you just focus on B.
 
@@ -1910,6 +1912,7 @@ Full configuration is sent to the device, but only diffs are applied. You do not
 You can use NAPALM for declarative management for a sectional config too.
 
 .left-column[
+.med-code[
 Current BGP Config
 ```bash
 router bgp 65512
@@ -1933,13 +1936,13 @@ router bgp 65512
 !
 
 ```
-
+]
 ]
 
 --
 
 .right-column[
-
+.med-code[
 Diff Generated by NAPALM
 ```bash
     neighbor 10.0.0.0 maximum-routes 12000
@@ -1957,7 +1960,7 @@ Diff Generated by NAPALM
 
 ```
 
-
+]
 ]
 
 ---
@@ -1991,13 +1994,11 @@ router bgp 65512
 !
 
 ```
-
 ]
 
 --
 
 .right-column[
-
 Diff Generated by NAPALM
 ```bash
  router bgp 65512
@@ -2022,7 +2023,7 @@ Be cautious of device support.  This is based on NAPALM driver implementation wh
 
 # NAPALM Ansible Module
 
-.center[<img src="slides/media/napalm-install-config.png" alt="NAPALM install_config" style="alight:middle;width:525px;height:515px;">]
+.center[<img src="data/media/napalm-install-config.png" alt="NAPALM install_config" style="alight:middle;width:525px;height:515px;">]
 
 ---
 
@@ -2159,7 +2160,7 @@ class: middle, segue
 - Especially useful for initial device provisioning
 
 .center[
-<img src="slides/media/build-push.png" alt="Build Push" style="alight:middle;width:900px;height:400px;">
+<img src="data/media/build-push.png" alt="Build Push" style="alight:middle;width:900px;height:400px;">
 ]
 
 ---
@@ -2179,7 +2180,7 @@ class: middle, segue
 # Network Configuration Building
 
 .center[
-<img src="slides/media/ansible-templating.png" alt="Ansible Templating" style="alight:middle;width:600px;height:405px;">
+<img src="data/media/ansible-templating.png" alt="Ansible Templating" style="alight:middle;width:600px;height:405px;">
 ]
 
 ---
@@ -2386,8 +2387,8 @@ vlans:
 ```
 --
 
-.ubuntu[
-```
+
+```bash
 .
 ├── build-push.yml
 ├── configs
@@ -2402,7 +2403,7 @@ vlans:
     └── config.j2
 
 ```
-]
+
 
 ---
 
@@ -2499,6 +2500,7 @@ interface {{ interface.name }}
 
 # Play 1 - _BUILD_
 
+.s2-code[
 ```yaml
 ---
 
@@ -2520,12 +2522,13 @@ interface {{ interface.name }}
       - name: ASSEMBLE PARTIAL CONFIGURATIONS PER DEVICE INTO SINGLE CONFIG FILE
         assemble: src=configs/{{ inventory_hostname }}/partials dest=configs/{{ inventory_hostname }}/{{ inventory_hostname }}.conf
 ```
+]
 
 ---
 # Play 2 - _PUSH_
 
 ```yaml
-
+---
 
   - name: DEPLOY CONFIGURATIONS USING NAPALM
     hosts: all
@@ -2609,33 +2612,30 @@ leaf6
 
 ---
 
-class: ubuntu
-
 # Executing the Playbook
 
-
-```
+.med-code[
+```bash
 $ ansible-playbook build-push.yml --tags=build
 ```
 
 - Only the push tasks
 
-```
+```bash
 $ ansible-playbook build-push.yml --tags=push
 ```
 - All
 
-```
+```bash
 $ ansible-playbook build-push.yml
 ```
+]
 
 ---
 
-class: ubuntu
-
 # Executing the Playbook (cont'd)
 
-```
+```bash
 $ ansible-playbook -i inventory build-push.yml
 
 PLAY [BUILD configs] **********************************************************
@@ -2668,7 +2668,6 @@ leaf1                      : ok=4    changed=4    unreachable=0    failed=0
 
 ---
 
-class: ubuntu
 
 # Executing the Playbook (cont'd)
 
@@ -2677,7 +2676,7 @@ class: ubuntu
 
 BEFORE:
 
-```
+```bash
 .
 ├── build-push.yml
 ├── configs
@@ -2695,7 +2694,7 @@ BEFORE:
 AFTER (for 2 devices):
 
 
-```
+```bash
 .
 ├── build-push.yml
 ├── configs
@@ -2727,13 +2726,12 @@ AFTER (for 2 devices):
 ---
 
 
-class: ubuntu
 # List Tasks
 
 - View all tasks that will be executed
 - Great for architecture discussions and planning playbooks
 
-```
+```bash
 $ ansible-playbook -i inventory build-push.yml --list-tasks
 
 playbook: build-push.yml
@@ -2768,7 +2766,7 @@ playbook: build-push.yml
 
 # Lab Time
 
-- Lab 11 - Build / Push with Ansible
+- Lab 11 - Build / Push with NAPALM
   - You will use the "template" and "napalm_install_config" modules
   - Choose any *1* vendor to complete this lab
 
@@ -2813,6 +2811,7 @@ The _command modules are often used to execute show commands and gather data fro
 ]
 
 .right-column[
+.med-code[
 ```yaml
 ---
 
@@ -2839,6 +2838,7 @@ The _command modules are often used to execute show commands and gather data fro
 
 ```
 ]
+]
 
 ---
 
@@ -2846,6 +2846,7 @@ The _command modules are often used to execute show commands and gather data fro
 
 Convenience parameter that allows all nxos arguments to be passed as a dict object. All constraints (required, choices, etc) must be met either by individual arguments or values in this dict.
 
+.med-code[
 ```yaml
   - name: SAMPLE PLAYBOOK
     hosts: nxos
@@ -2864,12 +2865,14 @@ Convenience parameter that allows all nxos arguments to be passed as a dict obje
             - 'show version'
           provider: "{{ nxos_provider }}"
 ```
+]
 
 ---
 
 # *_command (cont'd)
 
 .left-column[
+.med-code[
 ```yaml
     - name: SINGLE COMMAND
       nxos_command:
@@ -2894,10 +2897,11 @@ Convenience parameter that allows all nxos arguments to be passed as a dict obje
         provider: "{{ nxos_provider }}"
 
 ```
-
+]
 ]
 
 .right-column[
+.med-code[
 ```yaml
   - hosts: junos
     connection: local
@@ -2921,6 +2925,7 @@ Convenience parameter that allows all nxos arguments to be passed as a dict obje
           provider: "{{ junos_provider }}"
 ```
 ]
+]
 
 ---
 
@@ -2928,8 +2933,8 @@ Convenience parameter that allows all nxos arguments to be passed as a dict obje
 
 Sample playbook execution:
 
-.ubuntu[
-```
+.med-code[
+```bash
 $ ansible-playbook -i inventory gather.yml
 
 PLAY [RUN COMMANDS] *********************************************************************
@@ -2947,12 +2952,11 @@ csr3            : ok=1    changed=0    unreachable=0    failed=0
 ```
 ]
 
-
 ---
 
 
 class: center, middle, title
-.footer-picture[<img src="slides/media/Footer1.PNG" alt="Blue Logo" style="alight:middle;width:350px;height:60px;">]
+.footer-picture[<img src="data/media/Footer1.PNG" alt="Blue Logo" style="alight:middle;width:350px;height:60px;">]
 
 # How do you see the data being gathered?
 
@@ -2976,6 +2980,7 @@ There are two ways to see it:
 ]
 
 .right-column[
+.med-code[
 ```yaml
     - name: EXECUTE COMMANDS
       nxos_command:
@@ -2986,6 +2991,7 @@ There are two ways to see it:
 
     - debug: var=output
 ```
+]
 ]
 
 ---
@@ -3012,9 +3018,10 @@ There are two ways to see it:
 ]
 
 .right-column[
+.s2-code[
 ```yaml
 
-TASK [debug] *******************************************************************
+TASK [debug] ********************************************************
 ok: [nxos-spine1] => {
     "output": {
         "changed": false,
@@ -3035,6 +3042,7 @@ ok: [nxos-spine1] => {
 
 ```
 ]
+]
 
 ---
 
@@ -3044,6 +3052,7 @@ ok: [nxos-spine1] => {
 - Leverage data that you previously _registered_
 - Validate routes exist, changes happen, and configuration is as desired
 
+.med-code[
 ```yaml
   - name: IOS show version
     ios_command:
@@ -3058,13 +3067,17 @@ ok: [nxos-spine1] => {
         - "'Version 16.03.01' in output.stdout[0]"
 
 ```
+]
+
+
 ---
 
 # Lab Time
 
-- Lab 12 - Using the Core Command Module
-- Lab 13 - Issuing Ping Commands and Saving the Responses
-- Lab 14 - Continuous Compliance with IOS
+- Lab 12 - Getting Started with the Command Module
+- Lab 13 - Validating Reachability with the Command Module
+- Lab 14 - Continuous Compliance with Ansible
+
 
 ---
 
@@ -3464,7 +3477,8 @@ You can pass commands into the module a few different ways:
 
 .right-column[
 ```yaml
-# this would remove any other commands previously covered for the other ASN
+# this would remove any other commands previously covered for
+# the other ASN
     - name: ENSURE BGP CONFIG IS CORRECT
       ios_config:
         before: ['no router bgp 65512']
@@ -3539,8 +3553,8 @@ Introduced in Ansible 2.4. Test running configuration against:
         provider: "{{ provider }}"
         diff_against: startup
 ```
-.ubuntu[
-```
+
+```bash
 TASK [COMPARE RUNNING CONFIG WITH STARTUP] **************************************
 --- before
 +++ after
@@ -3555,7 +3569,6 @@ TASK [COMPARE RUNNING CONFIG WITH STARTUP] *************************************
   ip address 10.0.0.51 255.255.255.0
 
 ```
-]
 
 ---
 
@@ -3575,7 +3588,7 @@ Can be used to assign values to variables
 
 .right-column[
 
-.small-code[
+.s2-code[
 
 ``` yaml
 vars:
@@ -3592,14 +3605,14 @@ tasks:
 ```
 ntc@ntc:ansible$ ansible-playbook -i inventory file_lookup_demo.yml
 
-PLAY [DEMO FILE LOOKUPS] *********************************************************************************************************
+PLAY [DEMO FILE LOOKUPS] ****************************************************
 
-TASK [debug] *********************************************************************************************************************
+TASK [debug] ****************************************************************
 ok: [csr1] => {
     "msg": "The file name is snmp-server community PUBLIC123 RO 5\nsnmp-server community PRIVATE123 RW 95\nsnmp-server location GLOBAL\nsnmp-server contact LOCAL_ADMIN\nsnmp-server host 1.1.1.1\n\nvlan 10\n name web_servers\nvlan 20\nvlan 30\n name db_servers"
 }
 
-PLAY RECAP ***********************************************************************************************************************
+PLAY RECAP ******************************************************************
 csr1                       : ok=1    changed=0    unreachable=0    failed=0
 
 
@@ -3624,9 +3637,9 @@ csr1                       : ok=1    changed=0    unreachable=0    failed=0
         provider: "{{ provider }}"
 
 ```
-.ubuntu[
 
-```
+
+```bash
 TASK [VALIDATE CONFIGURATION INTENT] **************************************
 --- before
 +++ after
@@ -3641,10 +3654,6 @@ TASK [VALIDATE CONFIGURATION INTENT] **************************************
   ip address 10.0.0.51 255.255.255.0
 
 ```
-
-]
-
-
 
 
 ---
@@ -3663,9 +3672,9 @@ TASK [VALIDATE CONFIGURATION INTENT] **************************************
         diff_against: running
 ```
 
-.ubuntu[
 
-```
+
+```bash
 TASK [ENSURE THAT LOOPBACK 222 IS CONFIGURED]
 **************************************
 +++ after
@@ -3680,7 +3689,6 @@ TASK [ENSURE THAT LOOPBACK 222 IS CONFIGURED]
   ip address 10.0.0.51 255.255.255.0
 
 ```
-]
 
 **Note: This task will actually make changes to the running config!**
 
@@ -3690,6 +3698,7 @@ TASK [ENSURE THAT LOOPBACK 222 IS CONFIGURED]
 
 - Data model
 
+.med-code[
 ```yaml
 snmp_communities:
   - community: ntc-public
@@ -3705,6 +3714,8 @@ snmp_communities:
 snmp-server community {{ snmp.community }} group {{ snmp.group }}
 {% endfor %}
 ```
+]
+
 
 ---
 
@@ -3734,7 +3745,8 @@ snmp-server community {{ snmp.community }} group {{ snmp.group }}
 ```
 
 - snmp-config.cfg
-```shell
+
+```bash
 snmp-server community ntc-public group network-operator
 snmp-server community ntc-private group network-admin
 ```
@@ -3745,12 +3757,15 @@ snmp-server community ntc-private group network-admin
 
 - Push configuration
 
+.med-code[
 ```yaml
     - name: PUSH SNMP COMMUNITIES
       nxos_config:
         provider: "{{ nxos_provider }}"
         src: "./snmp-config.cfg"
 ```
+]
+
 
 ---
 
@@ -3772,6 +3787,7 @@ snmp-server community ntc-private group network-admin
     - debug: var=existing_snmp_communities
 ```
 
+.s2-code[
 ```bash
 TASK [GET CONFIG FOR SNMP PARSING] *********************************************
 ok: [nxos]
@@ -3790,6 +3806,7 @@ ok: [nxos] => {
 }
 
 ```
+]
 
 ---
 
@@ -3798,6 +3815,7 @@ ok: [nxos] => {
 - **public** and **networktocode** communities are not part of the data model. Therefore, they may be undesired and need to be removed
 - Calculate communities to remove
 
+.s2-code[
 ```yaml
     - name: SET FACT FOR PROPOSED (DESIRED) COMMUNITIES
       set_fact:
@@ -3825,13 +3843,14 @@ ok: [nxos] => {
     ]
 }
 ```
-
+]
 
 ---
 
 # Declarative Configuration (cont'd)
 
 - Remove undesired communities
+
 
 ```yaml
     - name: PURGE SNMP COMMUNITIES
@@ -3981,814 +4000,10 @@ changed: [nxos] => (item=networktocode)
         with_dict: "{{ snmp_comm_strings_dict }}"
 ```
 
----
-
-class: middle, segue
-
-# Cisco Nexus Ansible Modules
-### Ansible for Network Automation
-
----
-
-# Cisco Nexus Modules
-
-All of these are in Ansible Core.
-
-```bash
-nxos_aaa_server_host.py         nxos_hsrp.py            nxos_pim.py             nxos_udld_interface.py
-nxos_aaa_server.py              nxos_igmp_interface.py  nxos_pim_rp_address.py  nxos_udld.py
-nxos_acl_interface.py           nxos_igmp.py            nxos_ping.py            nxos_vlan.py
-nxos_acl.py                     nxos_igmp_snooping.py   nxos_portchannel.py     nxos_vpc_interface.py
-nxos_bgp_af.py                  nxos_install_os.py      nxos_reboot.py          nxos_vpc.py
-nxos_bgp_neighbor_af.py         nxos_interface_ospf.py  nxos_rollback.py        nxos_vrf_af.py
-nxos_bgp_neighbor.py            nxos_interface.py       nxos_smu.py             nxos_vrf_interface.py
-nxos_bgp.py                     nxos_ip_interface.py    nxos_snapshot.py        nxos_vrf.py
-nxos_command.py                 nxos_mtu.py             nxos_snmp_community.py  nxos_vrrp.py
-nxos_config.py                  nxos_ntp_auth.py        nxos_snmp_contact.py    nxos_vtp_domain.py
-nxos_evpn_global.py             nxos_ntp_options.py     nxos_snmp_host.py       nxos_vtp_password.py
-nxos_evpn_vni.py                nxos_ntp.py             nxos_snmp_location.py   nxos_vtp_version.py
-nxos_facts.py                   nxos_nxapi.py           nxos_snmp_traps.py      nxos_vxlan_vtep.py
-nxos_feature.py                 nxos_ospf.py            nxos_snmp_user.py       nxos_vxlan_vtep_vni.py
-nxos_file_copy.py               nxos_ospf_vrf.py        nxos_static_route.py    nxos_gir_profile_management.py
-nxos_overlay_global.py          nxos_switchport.py      nxos_gir.py             nxos_pim_interface.py
-
-```
-
-
----
-
-# nxos_facts
-
-.left-column[
-- Gathers facts from Nexus devices
-  - fan_info
-  - hostname
-  - uptime
-  - interfaces
-  - last reboot reason
-  - operating system
-  - vlan_list
-]
-
-.right-column[
-```yaml
-  vars:
-    nxos_provider:
-      host: "{{ inventory_hostname }}"
-      username: "{{ ansible_user }}"
-      password: "{{ ansible_ssh_pass }}"
-      transport: nxapi
-
-  tasks:
-    - nxos_facts:
-        provider: "{{ nxos_provider }}"
-```
-]
-
----
-
-# nxos_vlan
-
-- Manages VLAN resources on a Nexus switch
-- Parameters:
-  - admin_state
-  - name
-  - vlan_id
-  - vlan_state
-
-
-```yaml
-# ensure vlan 110 exists with a name configured
-- nxos_vlan:
-    vlan_id: 110
-    name: DB_VLAN
-    provider: "{{ nxos_provider }}"
-```
-
----
-
-# nxos_feature
-
-- Manages features on a Nexus switch
-- Parameters:
-  - feature
-
-```yaml
-# ensure eigrp is disabled
-- nxos_feature:
-    feature: eigrp
-    state: disabled
-    provider: "{{ nxos_provider }}"
-```
-
-```yaml
-# ensure lacp is enabled
-- nxos_feature:
-    feature: lacp
-    state: enabled
-    provider: "{{ nxos_provider }}"
-```
-
----
-
-# nxos_file_copy
-
-- Copies a local file to bootflash (by default) of NXOS device using SCP
-- Parameters
-  - dest_file
-  - source_file
-
-
-```yaml
-# copy latest NX-OS to NXOS switch
-- nxos_file_copy:
-    source_file: /home/cisco/Downloads/nxos.7.0.3.I2.1.bin
-    provider: "{{ nxos_provider }}"
-```
-
----
-
-# nxos_portchannel
-
-- Manage port-channel interfaces on Nexus devices
-- Parameters:
-  - group
-  - min_links
-  - members (list)
-  - mode
-- Complex args as a parameter must use YAML format
-
-```yaml
-# ensure port-channel 100 exists
-- nxos_portchannel:
-    group: 100
-    min_links: 2
-    members:
-      - Ethernet1/28
-      - Ethernet1/29
-    provider: "{{ nxos_provider }}"
-```
----
-
-# nxos_vpc
-
-.left-column[
-- Manages global VPC configuration
-- Parameters:
-  - domain
-  - role_priority
-  - system_priority
-  - pkl_src
-  - pkl_dest
-  - pkl_vrf
-  - peer_gw
-  - auto_recovery
-  - delay_restore
-]
-.right-column[
-```yaml
-# ensure port-channel 100 exists
-- nxos_vpc:
-    domain: 100
-    role_priority: 1000
-    system_priority: 2000
-    pkl_dest: 192.168.100.4
-    pkl_src: 10.1.100.20
-    peer_gw: true
-    auto_recovery: true
-    provider: "{{ nxos_provider }}"
-```
-]
-
----
-
-# nxos_vpc_interface
-
-- Manages interface VPC configuration
-- Parameters:
-  - portchannel
-  - vpc
-  - peer_link
-
-
-```yaml
-# ensure port-channel 100 exists
-- nxos_vpc_interface:
-    portchannel: 10
-    vpc: 100
-    provider: "{{ nxos_provider }}"
-```
-
 
 ---
 
 
-class: middle, segue
-
-# Juniper Modules
-### Ansible for Network Automation
-
----
-
-
-
-# Juniper Modules
-
-.left-column[
-* **junos_commit** — Commit candidate configuration on device.
-* **junos_get_config** — Retrieve configuration of device.
-* **junos_get_facts** — Retrieve device-specific information from the host.
-* **junos_install_config** — Modify the configuration of a device running Junos OS.
-* **junos_install_os** — Install a Junos OS software package.
-* **junos_rollback** — Rollback configuration of device.
-* **junos_shutdown** — Shut down or reboot a device running Junos OS.
-
-]
-
-.right-column[
-* **junos_srx_cluster** — Enable/Disable cluster mode for SRX devices
-* **junos_zeroize** — Remove all configuration information and reset all key values on a device.
-* **junos_cli** - Execute CLI command on device and save file locally
-* **junos_rpc** - Execute Junos RPC on device and save file locally
-* **junos_get_table** - Retrieve data from device using Junos Tables/Views
-
-]
-
----
-
-# junos_commit
-
-- Commit candidate configuration on device.
-
-```yaml
-- name: COMMIT JUNOS CONFIGURATION
-  junos_commit:
-   host={{ inventory_hostname }}
-   logfile=changes.log
-   comment="Commit existing candidate"
-```
-
-
----
-
-# junos_rollback
-
-- Rollback configuration of device.
-- Parameters:
-  - confirm - confirmation in minutes to the commit of the configuration
-  - diffs_file - location where diffs are stored
-
-```yaml
-- junos_rollback:
-   host: "{{ inventory_hostname }}"
-   logfile=rollback.log
-   diffs_file=rollback.diff
-   rollback=1
-   comment="Rolled back by Ansible"
-   confirm=5
-```
-
----
-
-# junos_get_config
-
-- Retrieve configuration of device.
-
-```yaml
-- name: GET CONFIG
-  junos_get_config: user={{ ansible_user }} passwd={{ ansible_ssh_pass }} host={{ inventory_hostname }} filter="interfaces" dest=configs/interfaces.conf
-```
-```yaml
-- name: GET CONFIG
-  junos_get_config: user={{ ansible_user }} passwd={{ ansible_ssh_pass }} host={{ inventory_hostname }} filter="interfaces/protocols" dest=configs/intf_proto.conf
-```
-
----
-
-# junos_install_config
-
-- Modify the configuration of a device running Junos OS.
-
-```yaml
-# load merge a change to the Junos OS configuration using NETCONF
-- junos_install_config:
-    host={{ inventory_hostname }}
-    file=banner.conf
-
-# load overwrite a new Junos OS configuration using the CONSOLE port
-- junos_install_config:
-    host={{ inventory_hostname }}
-    console="--telnet={{TERMSERV}},{{TERMSERV_PORT}}"
-    file=default_new_switch.conf
-    overwrite=yes
-
-# load replace a change to the Junos OS configuration using NETCONF
-- junos_install_config:
-    host={{ inventory_hostname }}
-    file=snmp.conf
-    replace=yes
-```
-
----
-
-# junos_install_os
-
-- Install a Junos OS software package.
-- Parameters:
-    - reboot - booelan; reboots after the installation completes.
-    - reboot_pause - Amount of time in seconds to wait after the reboot is issued.  default=10
-    - version - Junos OS version string as it would be reported by the show version command
-    - package - Absolute path on the local server to the Junos OS software package
-
-```yaml
-- junos_install_os:
-    host={{ inventory_hostname }}
-    version=12.1X46-D10.2
-    package=/usr/local/junos/images/junos-vsrx-12.1X46-D10.2-domestic.tgz
-```
-
-
-
----
-
-# Summary
-
-- Always test the modules
-- Vendors and community are always adding new features
-- Understand module idempotency
-- Understand if the module supports check mode
-
----
-
-# Lab Time
-
-- Lab 9 - Choose One:
-  - 9.1 - Cisco NXOS Modules - building out spine configurations
-  - 9.2 - Juniper Modules - Get tables/views, Get configuration stanzas, and push Configuration stanzas and files
-
----
-
-class: middle, segue
-
-# ntc-ansible Modules
-### Ansible for Network Automation
-
----
-
-# ntc-ansible Modules
-
-- These are modules that are primarily built off of `pyntc`.
-- NTC Modules  (covered here)
-  - ntc_show_command - send arbitrary show commands and get back structured data
-  - ntc_config_command - send arbitrary configuration commands
-  - ntc_facts - gather facts
-  - ntc_save_config - Save & backup configs
-  - ntc_reboot - Reboot devices
-  - ntc_file_copy - Copy files to devices
-  - ntc_install_os - Upgrade devices
-  - ntc_rollback  - creates local backup and restores upon failure in subsequent task
-
----
-
-# Supported Parameters
-
-Common module parameters between NTC Modules:
-  * `platform`, `host`, `username`, `password`
-
-IMPORTANT:
-.left-column[
-
-* `platform` values for **ntc_show_command** and **ntc_config_command**:
- * `{{ vendor }}_{{ os }}`
- * matches what Netmiko supports: **cisco_ios**, **cisco_nxos**, **arista_eos** (optionally _ssh can be added too, e.g. **cisco_ios_ssh**)
- * Anything Netmiko supports for `device_type` is supported here (all SSH)
-]
-
-.right-column[
-* `platform` values for all other modules must be one of the following:
-  * **cisco_ios_ssh**
-  * **cisco_nxos_nxapi**
-  * **arista_eos_eapi**
-  * **juniper_junos_netconf**
-]
-
----
-
-# ntc_show_command
-
-- Multi-vendor Ansible module to streamline converting raw text into JSON key/value pairs
-- Leverages TextFSM
-- netmiko is used for transport to enable support for all device
-
-```yaml
-  tasks:
-
-    - name: GET DATA
-      ntc_show_command:
-        connection=ssh          # can be offline; if offline uses file parameter for parsing
-        platform=cisco_ios
-        command='show ip interface brief'
-        provider={{ ntc_provider }}
-        template_dir: "/etc/ntc/ansible/library/ntc-ansible/ntc-templates/templates"
-        use_templates: yes
-```
-
----
-
-class: ubuntu
-
-# ntc_show_command
-
-- JSON data now available to re-use
-- Use as inputs to other modules or in templates (docs)
-
-```
-$ ansible-playbook -i hosts test-playbook.yml -v
-
-PLAY [GET STRUCTURED DATA BACK FROM CLI DEVICES] ******************************
-
-TASK: [GET DATA] **************************************************************
-ok: [csr1] => {"changed": false, "response": [{"intf": "GigabitEthernet1", "ipaddr": "10.0.0.50", "proto": "up", "status": "up"}, {"intf": "GigabitEthernet2", "ipaddr": "10.254.13.1", "proto": "up", "status": "up"}, {"intf": "GigabitEthernet3", "ipaddr": "unassigned", "proto": "down", "status": "administratively down"}, {"intf": "GigabitEthernet4", "ipaddr": "10.254.12.1", "proto": "up", "status": "up"}, {"intf": "Loopback100", "ipaddr": "1.1.1.1", "proto": "up", "status": "up"}]}
-
-PLAY RECAP ********************************************************************
-csr1                       : ok=1    changed=0    unreachable=0    failed=0
-
-```
-
-```
-csr1#show ip int brief
-Interface              IP-Address      OK? Method Status                Protocol
-GigabitEthernet1       10.0.0.50       YES NVRAM  up                    up
-GigabitEthernet2       10.254.13.1     YES NVRAM  up                    up
-GigabitEthernet3       unassigned      YES NVRAM  administratively down down
-GigabitEthernet4       10.254.12.1     YES NVRAM  up                    up
-Loopback100            1.1.1.1         YES manual up                    up
-```
-
-
----
-
-# ntc_config_command
-
-- Send config command from a list or from a file
-- This is simply a _wrapper_ for Netmiko
-- If Netmiko supports it, ntc_config_command does
-- Not idempotent (use core _config modules if they exist for your OS)
-
-.left-column[
-```yaml
-# write from a command list
-- ntc_config_command:
-    connection: ssh
-    platform: cisco_ios
-    commands:
-      - vlan 10
-      - name vlan_10
-      - end
-    provider: "{{ ntc_provider }}"
-```
-]
-
-.right-column[
-```yaml
-# write config from file
-- ntc_config_command:
-    connection: ssh
-    platform: cisco_ios
-    commands_file: "dynamically_created_config.txt"
-    provider: "{{ ntc_provider }}"
-
-```
-]
----
-
-# ntc_get_facts
-
-.left-column[
-Facts returned include:
-  - uptime (string)
-  - uptime (seconds)
-  - model
-  - vendor
-  - os_version
-  - serial_number
-  - hostname
-  - fqdn
-  - vlans
-  - interfaces
-]
-
-.right-column[
-```yaml
-- ntc_get_facts:
-    platform: cisco_nxos_nxapi
-    provider: "{{ ntc_provider }}"
-    transport: http
-
-- ntc_get_facts:
-    platform: cisco_ios
-    provider: "{{ ntc_provider }}"
-```
-]
-
----
-
-
-# ntc_save_config
-
-- Save the running configuration as the startup configuration or to a file on the network device.
-  - Performs a commit on Juniper devices / copy run start on others
-- **Optionally, save the running configuration as a file to the Ansible control host.**
-
-```yaml
-# does a copy run start
-- ntc_save_config:
-    platform: cisco_nxos_nxapi
-    provider: "{{ ntc_provider }}"
-    local_file: ./backups/{{ inventory_hostname }}.cfg
-```
-
-
-
----
-
-# ntc_reboot
-
-Reboot a network device, optionally on a timer.
-
-```yaml
-# reboots the device in 5 minutes
-- ntc_reboot:
-    platform: cisco_ios
-    confirm: true
-    timer: 5
-    provider: "{{ ntc_provider }}"
-```
-
-```yaml
-# reboot immediately
-- ntc_reboot:
-    platform: cisco_ios
-    confirm: true
-    provider: "{{ ntc_provider }}"
-```
-
----
-
-# ntc_file_copy
-
-- Copy local files to remote network devices using SCP
-- Supported platforms
-  - Cisco Nexus switches with NX-API
-  - Arista switches with eAPI.
-  - Cisco IOS switches or routers
-
-```yaml
-- ntc_file_copy:
-    platform: cisco_nxos_nxapi
-    local_file: ./images/{{ os }}/{{ os_version }}
-    provider: "{{ ntc_provider }}"
-    transport: http
-
-- ntc_file_copy:
-    platform=cisco_ios
-    local_file=./images/c2800nm-adventerprisek9_ivs_li-mz.151-3.T4.bin
-    provider: "{{ ntc_provider }}"
-
-```
-
----
-
-# ntc_install_os
-
-- Set boot commands and/or upgrade devices (not supported on Juniper)
-
-```yaml
-- ntc_install_os:
-    platform: cisco_nxos_nxapi
-    provider: "{{ ntc_provider }}"
-    transport: http
-    system_image_file: n9000-dk9.6.1.2.I3.1.bin
-
-- ntc_install_os:
-    platform: cisco_nxos_nxapi
-    provider: "{{ ntc_provider }}"
-    system_image_file: n3000-uk9.6.0.2.U6.5.bin
-    kickstart_image_file: n3000-uk9-kickstart.6.0.2.U6.5.bin
-
-- ntc_install_os:
-    platform: cisco_ios_ssh
-    provider: "{{ ntc_provider }}"
-    system_image_file: c2800nm-adventerprisek9_ivs_li-mz.151-3.T4.bin
-```
-
----
-
-# Upgrade Workflow
-
-.left-column[
-```yaml
-
-# BACKUP CONFIG FILE
-
-- ntc_save_config:
-    platform: cisco_ios
-    provider: "{{ ntc_provider }}"
-    local_file: {{ inventory_hostname }}.cfg
-
-
-# COPY IMAGE TO DEVICE
-
-- ntc_file_copy:
-    platform: cisco_ios
-    local_file: "{{ image_file }}"
-    provider: "{{ ntc_provider }}"
-
-
-
-.
-```
-]
-
-.right-column[
-```yaml
-
-# UPGRADE AND/OR JUST SET BOOT FILE
-
-- ntc_install_os:
-    platform: cisco_nxos_nxapi
-    provider: "{{ ntc_provider }}"
-    transport: http
-    system_image_file: n9000-dk9.6.1.2.I3.1.bin
-
-# OPTIONAL REBOOT: not needed for nxos
-
-- ntc_reboot:
-    platform: cisco_ios
-    confirm: true
-    timer: 5
-    provider: "{{ ntc_provider }}"
-```
-]
-
----
-
-# ntc_rollback
-
-- Create checkpoint files
-- Rollback to previously created checkpoint file
-
-.left-column[
-```yaml
-- ntc_rollback:
-    checkpoint_file: backup.cfg
-    platform: cisco_nxos_nxapi
-    provider: "{{ ntc_provider }}"
-
-- ntc_rollback:
-    rollback_to: backup.cfg
-    platform: cisco_nxos_nxapi
-    provider: "{{ ntc_provider }}"
-
-```
-]
-
-
-
----
-
-# ntc_rollback
-
-- Prior to Ansible 2.0, you would use ntc_rollback for a single task (as also done in an upcoming lab)
-- Ansible 2.0 introduced blocks and error handling (`block`,`rescue`, `always`)
-
-
-```yaml
-    tasks:
-      - block:
-          - name: CREATE LAST KNOWN GOOD (CHECKPOINT)
-            ntc_rollback:
-              checkpoint_file=last_known_good.conf
-              platform: "{{ vendor }}_{{ os }}_{{ api }}"
-              provider: "{{ ntc_provider }}"
-          - nxos_vlan:
-              vlan_id: 500
-              provider: "{{ provider }}"
-          - nxos_vlan:
-              vlan_id: 5000
-              provider: "{{ provider }}"
-        rescue:
-          - name: ROLLBACK TO CHECKPOINT FILE UPON ERROR
-            ntc_rollback:
-              rollback_to: last_known_good.conf
-              platform: "{{ vendor }}_{{ os }}_{{ api }}"
-              provider: "{{ ntc_provider }}"
-
-
-
-```
-
----
-
-# Lab Time
-
-* Exploring NTC Ansible Modules
-
-  - Lab 10 - Ansible NTC Modules (IOS, NX-OS, EOS)
-
-
----
-
-class: middle, segue
-
-# Making REST API Calls from Ansible
-
----
-
-# Using the URI Module
-
-The `uri` module can be used to make HTTP-based API calls.
-
-```yaml
-      - name: GET INTERFACE IP ADDRESS
-        uri:
-          url: https://{{ inventory_hostname }}/restconf/data/Cisco-IOS-XE-native:native/interface=GigabitEthernet/1/ip/address
-          method: GET
-          user: "{{ ansible_user }}"
-          password: "{{ ansible_ssh_pass }}"
-          return_content: yes
-          validate_certs: no
-          headers:
-            Content-Type: application/yang-data+json
-            Accept: application/yang-data+json
-        register: response
-```
-
-This example shows how to make an API call against an IOSXE device to pull the IP address information for the `GigabitEthernet1` interface and assigning the returned value to the `response` variable.
-
-You can test all of these settings using Postman before building your Ansible tasks.
-
----
-
-class: middle, segue
-
-# Device Discovery and Dynamic Groups
-
----
-
-# Device Discovery Using SNMP
-
-The `snmp_device_version` module can be used to discover the device vendor, os, and version.  These items are returned as variables `ansible_device_vendor`, `ansible_device_os`, and `ansible_device_version`.
-
-Example Task:
-
-```yaml
-      - name: QUERY DEVICE VIA SNMP
-        snmp_device_version:
-          community: networktocode
-          version: 2c
-          host: "{{ inventory_hostname }}"
-```
-
-You can use these discovered variables for further processing devices in a dynamic fashion.
-
----
-
-# Creating Dynamic Groups
-
-You are able to create dynamic groups within Ansible using the `group_by` module.  Using the data collected by the `snmp_device_discovery` module we are able to dynamically group devices by vendor, os, or version.
-
-In this example we are grouping the devices by vendor.  This will create a group named `vendor_` followed by the vendor name.  This group can be used in subsiquent plays within the playbook.
-
-```yaml
----
-
-  - name: DISCOVER VENDOR
-    hosts: iosxe,nxos,vmx
-    connection: local
-    gather_facts: no
-
-    tasks:
-
-      - name: QUERY DEVICE VIA SNMP
-        snmp_device_version:
-          community: networktocode
-          version: 2c
-          host: "{{ inventory_hostname }}"
-        tags: snmp
-
-      - group_by:
-          key: vendor_{{ ansible_device_vendor }}
-```
-
----
-
-# Lab Time
-
-- Lab 18 - Making REST API Calls from Ansible
-- Lab 19 - Discovering Device Types and Dynamically Creating Groups
-
----
 
 class: middle, segue
 
@@ -4808,8 +4023,9 @@ class: middle, segue
   - ntc_get_facts
   - ntc_show_command
   - napalm_get_facts
-  - snmp_device_version
   - snmp_facts
+  - snmp_device_version
+- Dynamics Groups & REST APIs
 
 ---
 
@@ -5067,40 +4283,6 @@ ok: [n9k1] => {"changed": false, "response": [{"name": "default", "status": "act
 
 ---
 
-# snmp_device_version
-
-- Multi-vendor module that retrieves:
-  - os (type)
-  - vendor
-  - device version (sw rev)
-
-```yaml
-tasks:
-  - snmp_device_version: host={{ inventory_hostname }} version=2c community=networktocode
-```
-
-.ubuntu[
-```
-$ ansible-playbook -i inventory testpb.yml -v
-
-PLAY [DC P1] ******************************************************************
-
-TASK: [snmp_device_version host={{ inventory_hostname }} version=2c community=networktocode] ***
-ok: [n9k1] => {"ansible_facts": {"ansible_device_os": "nxos", "ansible_device_vendor": "cisco", "ansible_device_version": "7.0(3)I2(1)"}, "changed": false}
-
-PLAY RECAP ********************************************************************
-n9k1                       : ok=1    changed=0    unreachable=0    failed=0
-```
-]
-
-```yaml
-  - ntc_show_command:
-      platform: "{{ ansible_device_vendor }}_{{ ansible_device_os }}"
-      ...
-```
-
----
-
 # snmp_facts
 
 - Multi-vendor fact gathering using SNMP
@@ -5114,6 +4296,88 @@ n9k1                       : ok=1    changed=0    unreachable=0    failed=0
 ```yaml
 - snmp_facts: host={{ inventory_hostname }} version=v2c community=networktocode
 ```
+
+
+---
+
+
+# snmp_device_version
+
+The `snmp_device_version` module can be used to discover the device vendor, os, and version.  These items are returned as variables `ansible_device_vendor`, `ansible_device_os`, and `ansible_device_version`.
+
+Example Task:
+
+```yaml
+      - name: QUERY DEVICE VIA SNMP
+        snmp_device_version:
+          community: networktocode
+          version: 2c
+          host: "{{ inventory_hostname }}"
+```
+
+You can use these discovered variables for further processing devices in a dynamic fashion.
+
+```yaml
+  - ntc_show_command:
+      platform: "{{ ansible_device_vendor }}_{{ ansible_device_os }}"
+      ...
+```
+
+---
+
+
+# Creating Dynamic Groups
+
+You are able to create dynamic groups within Ansible using the `group_by` module.  Using the data collected by the `snmp_device_discovery` module we are able to dynamically group devices by vendor, os, or version.
+
+In this example we are grouping the devices by vendor.  This will create a group named `vendor_` followed by the vendor name.  This group can be used in subsiquent plays within the playbook.
+
+```yaml
+---
+
+  - name: DISCOVER VENDOR
+    hosts: iosxe,nxos,vmx
+    connection: local
+    gather_facts: no
+
+    tasks:
+
+      - name: QUERY DEVICE VIA SNMP
+        snmp_device_version:
+          community: networktocode
+          version: 2c
+          host: "{{ inventory_hostname }}"
+        tags: snmp
+
+      - group_by:
+          key: vendor_{{ ansible_device_vendor }}
+```
+
+
+---
+
+# Using the URI Module
+
+The `uri` module can be used to make HTTP-based API calls.
+
+```yaml
+      - name: GET INTERFACE IP ADDRESS
+        uri:
+          url: https://{{ inventory_hostname }}/restconf/data/Cisco-IOS-XE-native:native/interface=GigabitEthernet/1/ip/address
+          method: GET
+          user: "{{ ansible_user }}"
+          password: "{{ ansible_ssh_pass }}"
+          return_content: yes
+          validate_certs: no
+          headers:
+            Content-Type: application/yang-data+json
+            Accept: application/yang-data+json
+        register: response
+```
+
+This example shows how to make an API call against an IOSXE device to pull the IP address information for the `GigabitEthernet1` interface and assigning the returned value to the `response` variable.
+
+You can test all of these settings using Postman before building your Ansible tasks.
 
 
 ---
@@ -5220,6 +4484,7 @@ LOCAL INTERFACE:    {{ neighbor.local_interace }}
 ```
 - Playbook
 
+.s2-code[
 ```yaml
 ---
 
@@ -5236,6 +4501,7 @@ LOCAL INTERFACE:    {{ neighbor.local_interace }}
       - template: src=neighbors.j2 dest=files/neighbors.md
 
 ```
+]
 ]
 
 --
@@ -5310,7 +4576,7 @@ LOCAL INTERFACE:    Ethernet7
 .right-column[
 - Markdown generated table
 .center[
-<img src="slides/media/neighbor-table.png" alt="Neighbors Markdown Table" style="alight:middle;width:440px;height:340px;">
+<img src="data/media/neighbor-table.png" alt="Neighbors Markdown Table" style="alight:middle;width:440px;height:340px;">
 ]
 ]
 
@@ -5318,6 +4584,7 @@ LOCAL INTERFACE:    Ethernet7
 
 # Summary
 
+- Understand the various ways to collect data about the network.
 - Templating is great for documentation (not just configurations)
 - Know your variables
   - Any variable can be used in the playbook **and** template
@@ -5332,6 +4599,8 @@ LOCAL INTERFACE:    Ethernet7
 
 # Lab Time
 
+- Lab 18 - Making REST API Calls from Ansible
+- Lab 19 - Discovering Device Types and Dynamically Creating Groups
 - Lab 20 - Data Collection Modules & Reporting
   - Facts Data Collection Modules
   - Structured Data from CLI Devices (ntc_show_command)
@@ -5417,9 +4686,9 @@ class: middle, segue
 - Ansible Galaxy shares roles
 
 
-.left-column[.ubuntu[
+.left-column[
 
-```
+```bash
 site.yml
 inventory
 roles/
@@ -5443,7 +4712,7 @@ roles/
      tasks/
      vars/
 ```
-]]
+]
 
 .right-column[
 
@@ -5586,7 +4855,6 @@ vlans:
   nxos_vlan: vlan_id={{ item.id }} host={{ inventory_hostname }}
   with_items: "{{ vlans }}"
 ```
-
 ]
 
 .right-column[
@@ -5668,8 +4936,8 @@ class: middle, segue
 - Sample Inventory generated from a script
 - Groups, group vars, hosts, host vars (not shown)
 
-.smubuntu[
-```
+.small-code[
+```bash
 {
     "hp": {
         "hosts": [
@@ -5701,7 +4969,7 @@ class: middle, segue
 }
 ```
 ]
-]
+
 
 ---
 
@@ -5796,11 +5064,11 @@ if __name__ == "__main__":
 
 .right-column[
 
-.xsmubuntu[
 
 - Playbook output
 
-```
+.small-code[
+```bash
 ansible-playbook -i dynamo.py site.yml
 
 PLAY [test playbook for dynamic inventory] ************************************
@@ -5839,7 +5107,6 @@ arista2.ntc.com            : ok=1    changed=0    unreachable=0    failed=0
 n9k1.ntc.com               : ok=1    changed=0    unreachable=0    failed=0
 n9k2.ntc.com               : ok=1    changed=0    unreachable=0    failed=0
 ```
-
 ]
 ]
 
@@ -6298,6 +5565,707 @@ ok: [csr3]
 - Invoke a playbook using flag `--ask-vault-pass`
 
 
+---
+
+class: middle, segue
+
+# EXTRA - BONUS
+# Cisco Nexus Ansible Modules
+### Ansible for Network Automation
+
+---
+
+# Cisco Nexus Modules
+
+All of these are in Ansible Core.
+
+```bash
+nxos_aaa_server_host.py         nxos_hsrp.py            nxos_pim.py             nxos_udld_interface.py
+nxos_aaa_server.py              nxos_igmp_interface.py  nxos_pim_rp_address.py  nxos_udld.py
+nxos_acl_interface.py           nxos_igmp.py            nxos_ping.py            nxos_vlan.py
+nxos_acl.py                     nxos_igmp_snooping.py   nxos_portchannel.py     nxos_vpc_interface.py
+nxos_bgp_af.py                  nxos_install_os.py      nxos_reboot.py          nxos_vpc.py
+nxos_bgp_neighbor_af.py         nxos_interface_ospf.py  nxos_rollback.py        nxos_vrf_af.py
+nxos_bgp_neighbor.py            nxos_interface.py       nxos_smu.py             nxos_vrf_interface.py
+nxos_bgp.py                     nxos_ip_interface.py    nxos_snapshot.py        nxos_vrf.py
+nxos_command.py                 nxos_mtu.py             nxos_snmp_community.py  nxos_vrrp.py
+nxos_config.py                  nxos_ntp_auth.py        nxos_snmp_contact.py    nxos_vtp_domain.py
+nxos_evpn_global.py             nxos_ntp_options.py     nxos_snmp_host.py       nxos_vtp_password.py
+nxos_evpn_vni.py                nxos_ntp.py             nxos_snmp_location.py   nxos_vtp_version.py
+nxos_facts.py                   nxos_nxapi.py           nxos_snmp_traps.py      nxos_vxlan_vtep.py
+nxos_feature.py                 nxos_ospf.py            nxos_snmp_user.py       nxos_vxlan_vtep_vni.py
+nxos_file_copy.py               nxos_ospf_vrf.py        nxos_static_route.py    nxos_gir_profile_management.py
+nxos_overlay_global.py          nxos_switchport.py      nxos_gir.py             nxos_pim_interface.py
+
+```
+
+
+---
+
+# nxos_facts
+
+.left-column[
+- Gathers facts from Nexus devices
+  - fan_info
+  - hostname
+  - uptime
+  - interfaces
+  - last reboot reason
+  - operating system
+  - vlan_list
+]
+
+.right-column[
+```yaml
+  vars:
+    nxos_provider:
+      host: "{{ inventory_hostname }}"
+      username: "{{ ansible_user }}"
+      password: "{{ ansible_ssh_pass }}"
+      transport: nxapi
+
+  tasks:
+    - nxos_facts:
+        provider: "{{ nxos_provider }}"
+```
+]
+
+---
+
+# nxos_vlan
+
+- Manages VLAN resources on a Nexus switch
+- Parameters:
+  - admin_state
+  - name
+  - vlan_id
+  - vlan_state
+
+
+```yaml
+# ensure vlan 110 exists with a name configured
+- nxos_vlan:
+    vlan_id: 110
+    name: DB_VLAN
+    provider: "{{ nxos_provider }}"
+```
+
+---
+
+# nxos_feature
+
+- Manages features on a Nexus switch
+- Parameters:
+  - feature
+
+```yaml
+# ensure eigrp is disabled
+- nxos_feature:
+    feature: eigrp
+    state: disabled
+    provider: "{{ nxos_provider }}"
+```
+
+```yaml
+# ensure lacp is enabled
+- nxos_feature:
+    feature: lacp
+    state: enabled
+    provider: "{{ nxos_provider }}"
+```
+
+---
+
+# nxos_file_copy
+
+- Copies a local file to bootflash (by default) of NXOS device using SCP
+- Parameters
+  - dest_file
+  - source_file
+
+
+```yaml
+# copy latest NX-OS to NXOS switch
+- nxos_file_copy:
+    source_file: /home/cisco/Downloads/nxos.7.0.3.I2.1.bin
+    provider: "{{ nxos_provider }}"
+```
+
+---
+
+# nxos_portchannel
+
+- Manage port-channel interfaces on Nexus devices
+- Parameters:
+  - group
+  - min_links
+  - members (list)
+  - mode
+- Complex args as a parameter must use YAML format
+
+```yaml
+# ensure port-channel 100 exists
+- nxos_portchannel:
+    group: 100
+    min_links: 2
+    members:
+      - Ethernet1/28
+      - Ethernet1/29
+    provider: "{{ nxos_provider }}"
+```
+---
+
+# nxos_vpc
+
+.left-column[
+- Manages global VPC configuration
+- Parameters:
+  - domain
+  - role_priority
+  - system_priority
+  - pkl_src
+  - pkl_dest
+  - pkl_vrf
+  - peer_gw
+  - auto_recovery
+  - delay_restore
+]
+.right-column[
+```yaml
+# ensure port-channel 100 exists
+- nxos_vpc:
+    domain: 100
+    role_priority: 1000
+    system_priority: 2000
+    pkl_dest: 192.168.100.4
+    pkl_src: 10.1.100.20
+    peer_gw: true
+    auto_recovery: true
+    provider: "{{ nxos_provider }}"
+```
+]
+
+---
+
+# nxos_vpc_interface
+
+- Manages interface VPC configuration
+- Parameters:
+  - portchannel
+  - vpc
+  - peer_link
+
+
+```yaml
+# ensure port-channel 100 exists
+- nxos_vpc_interface:
+    portchannel: 10
+    vpc: 100
+    provider: "{{ nxos_provider }}"
+```
+
+
+---
+
+
+class: middle, segue
+
+# EXTRA - BONUS
+# Juniper Modules
+### Ansible for Network Automation
+
+---
+
+
+
+# Juniper Modules
+
+.left-column[
+* **junos_commit** — Commit candidate configuration on device.
+* **junos_get_config** — Retrieve configuration of device.
+* **junos_get_facts** — Retrieve device-specific information from the host.
+* **junos_install_config** — Modify the configuration of a device running Junos OS.
+* **junos_install_os** — Install a Junos OS software package.
+* **junos_rollback** — Rollback configuration of device.
+* **junos_shutdown** — Shut down or reboot a device running Junos OS.
+
+]
+
+.right-column[
+* **junos_srx_cluster** — Enable/Disable cluster mode for SRX devices
+* **junos_zeroize** — Remove all configuration information and reset all key values on a device.
+* **junos_cli** - Execute CLI command on device and save file locally
+* **junos_rpc** - Execute Junos RPC on device and save file locally
+* **junos_get_table** - Retrieve data from device using Junos Tables/Views
+
+]
+
+---
+
+# junos_commit
+
+- Commit candidate configuration on device.
+
+```yaml
+- name: COMMIT JUNOS CONFIGURATION
+  junos_commit:
+   host={{ inventory_hostname }}
+   logfile=changes.log
+   comment="Commit existing candidate"
+```
+
+
+---
+
+# junos_rollback
+
+- Rollback configuration of device.
+- Parameters:
+  - confirm - confirmation in minutes to the commit of the configuration
+  - diffs_file - location where diffs are stored
+
+```yaml
+- junos_rollback:
+   host: "{{ inventory_hostname }}"
+   logfile=rollback.log
+   diffs_file=rollback.diff
+   rollback=1
+   comment="Rolled back by Ansible"
+   confirm=5
+```
+
+---
+
+# junos_get_config
+
+- Retrieve configuration of device.
+
+```yaml
+- name: GET CONFIG
+  junos_get_config: user={{ ansible_user }} passwd={{ ansible_ssh_pass }} host={{ inventory_hostname }} filter="interfaces" dest=configs/interfaces.conf
+```
+```yaml
+- name: GET CONFIG
+  junos_get_config: user={{ ansible_user }} passwd={{ ansible_ssh_pass }} host={{ inventory_hostname }} filter="interfaces/protocols" dest=configs/intf_proto.conf
+```
+
+---
+
+# junos_install_config
+
+- Modify the configuration of a device running Junos OS.
+
+```yaml
+# load merge a change to the Junos OS configuration using NETCONF
+- junos_install_config:
+    host={{ inventory_hostname }}
+    file=banner.conf
+
+# load overwrite a new Junos OS configuration using the CONSOLE port
+- junos_install_config:
+    host={{ inventory_hostname }}
+    console="--telnet={{TERMSERV}},{{TERMSERV_PORT}}"
+    file=default_new_switch.conf
+    overwrite=yes
+
+# load replace a change to the Junos OS configuration using NETCONF
+- junos_install_config:
+    host={{ inventory_hostname }}
+    file=snmp.conf
+    replace=yes
+```
+
+---
+
+# junos_install_os
+
+- Install a Junos OS software package.
+- Parameters:
+    - reboot - booelan; reboots after the installation completes.
+    - reboot_pause - Amount of time in seconds to wait after the reboot is issued.  default=10
+    - version - Junos OS version string as it would be reported by the show version command
+    - package - Absolute path on the local server to the Junos OS software package
+
+```yaml
+- junos_install_os:
+    host={{ inventory_hostname }}
+    version=12.1X46-D10.2
+    package=/usr/local/junos/images/junos-vsrx-12.1X46-D10.2-domestic.tgz
+```
+
+
+
+---
+
+# Summary
+
+- Always test the modules
+- Vendors and community are always adding new features
+- Understand module idempotency
+- Understand if the module supports check mode
+
+---
+
+class: middle, segue
+
+# EXTRA - BONUS
+# ntc-ansible Modules
+### Ansible for Network Automation
+
+---
+
+# ntc-ansible Modules
+
+- These are modules that are primarily built off of `pyntc`.
+- NTC Modules  (covered here)
+  - ntc_show_command - send arbitrary show commands and get back structured data
+  - ntc_config_command - send arbitrary configuration commands
+  - ntc_facts - gather facts
+  - ntc_save_config - Save & backup configs
+  - ntc_reboot - Reboot devices
+  - ntc_file_copy - Copy files to devices
+  - ntc_install_os - Upgrade devices
+  - ntc_rollback  - creates local backup and restores upon failure in subsequent task
+
+---
+
+# Supported Parameters
+
+Common module parameters between NTC Modules:
+  * `platform`, `host`, `username`, `password`
+
+IMPORTANT:
+.left-column[
+
+* `platform` values for **ntc_show_command** and **ntc_config_command**:
+ * `{{ vendor }}_{{ os }}`
+ * matches what Netmiko supports: **cisco_ios**, **cisco_nxos**, **arista_eos** (optionally _ssh can be added too, e.g. **cisco_ios_ssh**)
+ * Anything Netmiko supports for `device_type` is supported here (all SSH)
+]
+
+.right-column[
+* `platform` values for all other modules must be one of the following:
+  * **cisco_ios_ssh**
+  * **cisco_nxos_nxapi**
+  * **arista_eos_eapi**
+  * **juniper_junos_netconf**
+]
+
+---
+
+# ntc_show_command
+
+- Multi-vendor Ansible module to streamline converting raw text into JSON key/value pairs
+- Leverages TextFSM
+- netmiko is used for transport to enable support for all device
+
+```yaml
+  tasks:
+
+    - name: GET DATA
+      ntc_show_command:
+        connection=ssh          # can be offline; if offline uses file parameter for parsing
+        platform=cisco_ios
+        command='show ip interface brief'
+        provider={{ ntc_provider }}
+        template_dir: "/etc/ntc/ansible/library/ntc-ansible/ntc-templates/templates"
+        use_templates: yes
+```
+
+---
+
+class: ubuntu
+
+# ntc_show_command
+
+- JSON data now available to re-use
+- Use as inputs to other modules or in templates (docs)
+
+```
+$ ansible-playbook -i hosts test-playbook.yml -v
+
+PLAY [GET STRUCTURED DATA BACK FROM CLI DEVICES] ******************************
+
+TASK: [GET DATA] **************************************************************
+ok: [csr1] => {"changed": false, "response": [{"intf": "GigabitEthernet1", "ipaddr": "10.0.0.50", "proto": "up", "status": "up"}, {"intf": "GigabitEthernet2", "ipaddr": "10.254.13.1", "proto": "up", "status": "up"}, {"intf": "GigabitEthernet3", "ipaddr": "unassigned", "proto": "down", "status": "administratively down"}, {"intf": "GigabitEthernet4", "ipaddr": "10.254.12.1", "proto": "up", "status": "up"}, {"intf": "Loopback100", "ipaddr": "1.1.1.1", "proto": "up", "status": "up"}]}
+
+PLAY RECAP ********************************************************************
+csr1                       : ok=1    changed=0    unreachable=0    failed=0
+
+```
+
+```
+csr1#show ip int brief
+Interface              IP-Address      OK? Method Status                Protocol
+GigabitEthernet1       10.0.0.50       YES NVRAM  up                    up
+GigabitEthernet2       10.254.13.1     YES NVRAM  up                    up
+GigabitEthernet3       unassigned      YES NVRAM  administratively down down
+GigabitEthernet4       10.254.12.1     YES NVRAM  up                    up
+Loopback100            1.1.1.1         YES manual up                    up
+```
+
+
+---
+
+# ntc_config_command
+
+- Send config command from a list or from a file
+- This is simply a _wrapper_ for Netmiko
+- If Netmiko supports it, ntc_config_command does
+- Not idempotent (use core _config modules if they exist for your OS)
+
+.left-column[
+```yaml
+# write from a command list
+- ntc_config_command:
+    connection: ssh
+    platform: cisco_ios
+    commands:
+      - vlan 10
+      - name vlan_10
+      - end
+    provider: "{{ ntc_provider }}"
+```
+]
+
+.right-column[
+```yaml
+# write config from file
+- ntc_config_command:
+    connection: ssh
+    platform: cisco_ios
+    commands_file: "dynamically_created_config.txt"
+    provider: "{{ ntc_provider }}"
+
+```
+]
+---
+
+# ntc_get_facts
+
+.left-column[
+Facts returned include:
+  - uptime (string)
+  - uptime (seconds)
+  - model
+  - vendor
+  - os_version
+  - serial_number
+  - hostname
+  - fqdn
+  - vlans
+  - interfaces
+]
+
+.right-column[
+```yaml
+- ntc_get_facts:
+    platform: cisco_nxos_nxapi
+    provider: "{{ ntc_provider }}"
+    transport: http
+
+- ntc_get_facts:
+    platform: cisco_ios
+    provider: "{{ ntc_provider }}"
+```
+]
+
+---
+
+
+# ntc_save_config
+
+- Save the running configuration as the startup configuration or to a file on the network device.
+  - Performs a commit on Juniper devices / copy run start on others
+- **Optionally, save the running configuration as a file to the Ansible control host.**
+
+```yaml
+# does a copy run start
+- ntc_save_config:
+    platform: cisco_nxos_nxapi
+    provider: "{{ ntc_provider }}"
+    local_file: ./backups/{{ inventory_hostname }}.cfg
+```
+
+
+
+---
+
+# ntc_reboot
+
+Reboot a network device, optionally on a timer.
+
+```yaml
+# reboots the device in 5 minutes
+- ntc_reboot:
+    platform: cisco_ios
+    confirm: true
+    timer: 5
+    provider: "{{ ntc_provider }}"
+```
+
+```yaml
+# reboot immediately
+- ntc_reboot:
+    platform: cisco_ios
+    confirm: true
+    provider: "{{ ntc_provider }}"
+```
+
+---
+
+# ntc_file_copy
+
+- Copy local files to remote network devices using SCP
+- Supported platforms
+  - Cisco Nexus switches with NX-API
+  - Arista switches with eAPI.
+  - Cisco IOS switches or routers
+
+```yaml
+- ntc_file_copy:
+    platform: cisco_nxos_nxapi
+    local_file: ./images/{{ os }}/{{ os_version }}
+    provider: "{{ ntc_provider }}"
+    transport: http
+
+- ntc_file_copy:
+    platform=cisco_ios
+    local_file=./images/c2800nm-adventerprisek9_ivs_li-mz.151-3.T4.bin
+    provider: "{{ ntc_provider }}"
+
+```
+
+---
+
+# ntc_install_os
+
+- Set boot commands and/or upgrade devices (not supported on Juniper)
+
+```yaml
+- ntc_install_os:
+    platform: cisco_nxos_nxapi
+    provider: "{{ ntc_provider }}"
+    transport: http
+    system_image_file: n9000-dk9.6.1.2.I3.1.bin
+
+- ntc_install_os:
+    platform: cisco_nxos_nxapi
+    provider: "{{ ntc_provider }}"
+    system_image_file: n3000-uk9.6.0.2.U6.5.bin
+    kickstart_image_file: n3000-uk9-kickstart.6.0.2.U6.5.bin
+
+- ntc_install_os:
+    platform: cisco_ios_ssh
+    provider: "{{ ntc_provider }}"
+    system_image_file: c2800nm-adventerprisek9_ivs_li-mz.151-3.T4.bin
+```
+
+---
+
+# Upgrade Workflow
+
+.left-column[
+```yaml
+
+# BACKUP CONFIG FILE
+
+- ntc_save_config:
+    platform: cisco_ios
+    provider: "{{ ntc_provider }}"
+    local_file: {{ inventory_hostname }}.cfg
+
+
+# COPY IMAGE TO DEVICE
+
+- ntc_file_copy:
+    platform: cisco_ios
+    local_file: "{{ image_file }}"
+    provider: "{{ ntc_provider }}"
+
+
+
+.
+```
+]
+
+.right-column[
+```yaml
+
+# UPGRADE AND/OR JUST SET BOOT FILE
+
+- ntc_install_os:
+    platform: cisco_nxos_nxapi
+    provider: "{{ ntc_provider }}"
+    transport: http
+    system_image_file: n9000-dk9.6.1.2.I3.1.bin
+
+# OPTIONAL REBOOT: not needed for nxos
+
+- ntc_reboot:
+    platform: cisco_ios
+    confirm: true
+    timer: 5
+    provider: "{{ ntc_provider }}"
+```
+]
+
+---
+
+# ntc_rollback
+
+- Create checkpoint files
+- Rollback to previously created checkpoint file
+
+.left-column[
+```yaml
+- ntc_rollback:
+    checkpoint_file: backup.cfg
+    platform: cisco_nxos_nxapi
+    provider: "{{ ntc_provider }}"
+
+- ntc_rollback:
+    rollback_to: backup.cfg
+    platform: cisco_nxos_nxapi
+    provider: "{{ ntc_provider }}"
+
+```
+]
+
+
+
+---
+
+# ntc_rollback
+
+- Prior to Ansible 2.0, you would use ntc_rollback for a single task (as also done in an upcoming lab)
+- Ansible 2.0 introduced blocks and error handling (`block`,`rescue`, `always`)
+
+
+```yaml
+    tasks:
+      - block:
+          - name: CREATE LAST KNOWN GOOD (CHECKPOINT)
+            ntc_rollback:
+              checkpoint_file=last_known_good.conf
+              platform: "{{ vendor }}_{{ os }}_{{ api }}"
+              provider: "{{ ntc_provider }}"
+          - nxos_vlan:
+              vlan_id: 500
+              provider: "{{ provider }}"
+          - nxos_vlan:
+              vlan_id: 5000
+              provider: "{{ provider }}"
+        rescue:
+          - name: ROLLBACK TO CHECKPOINT FILE UPON ERROR
+            ntc_rollback:
+              rollback_to: last_known_good.conf
+              platform: "{{ vendor }}_{{ os }}_{{ api }}"
+              provider: "{{ ntc_provider }}"
+
+
+
+```
 
 
 
