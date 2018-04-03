@@ -242,7 +242,7 @@ Perform a type check:
 Print the dictionary using `json.dumps`:
 
 ```python
->>> print json.dumps(data, indent=4)
+>>> print(json.dumps(data, indent=4))
 {
     "jsonrpc": "2.0",
     "result": [
@@ -270,7 +270,7 @@ Print the dictionary using `json.dumps`:
 Print the system MAC address.
 
 ```python
->>> print data['result'][0]['systemMacAddress']
+>>> print(data['result'][0]['systemMacAddress'])
 2c:c2:60:28:54:dd
 >>>
 ```
@@ -282,7 +282,7 @@ Extract everything from the actual output in a variable first and then print the
 ```python
 >>> result = data['result'][0]
 >>>
->>> print result.get('systemMacAddress')
+>>> print(result.get('systemMacAddress'))
 2c:c2:60:28:54:dd
 >>>
 ```
@@ -315,7 +315,7 @@ Print the JSON object using `json.dumps` out when complete.
 >>>
 >>> data = json.loads(response.text)
 >>>
->>> print json.dumps(data, indent=4)
+>>> print(json.dumps(data, indent=4))
 {
     "jsonrpc": "2.0",
     "result": [
@@ -356,7 +356,7 @@ Save the VLAN object as a new variable called `vlans`.
 ```python
 >>> vlans = data['result'][0]
 >>>
->>>  print json.dumps(vlans, indent=4)
+>>>  print(json.dumps(vlans, indent=4))
 {
     "sourceDetail": "",
     "vlans": {
@@ -388,7 +388,7 @@ Save the VLAN object as a new variable called `vlans`.
 Print out the vlan name for VLAN 1.
 
 ```python
->>> print vlans['vlans']['1']['name']
+>>> print(vlans['vlans']['1']['name'])
 default
 ```
 
@@ -430,7 +430,7 @@ You'll notice this process becomes repetitive, so you'd want to store a few of t
 >>>
 >>> data = json.loads(response.text)
 >>>
->>> print json.dumps(data, indent=4)
+>>> print(json.dumps(data, indent=4))
 {
     "jsonrpc": "2.0",
     "result": [
@@ -569,7 +569,7 @@ While building this dictionary, you will also convert keys as described above.
 Pretty print neighbors_list.
 
 ```python
->>> print json.dumps(neighbors_list, indent=4)
+>>> print(json.dumps(neighbors_list, indent=4))
 [
     {
         "neighbor_interface": "Ethernet1",
@@ -875,7 +875,7 @@ def main():
         response = eapi_request(dev, commands)
         neighbors[dev] = get_eos_neighbors(response)
 
-    print json.dumps(neighbors, indent=4)
+    print(json.dumps(neighbors, indent=4))
 
 if __name__ == "__main__":
     main()

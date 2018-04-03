@@ -47,7 +47,7 @@ Open the `vlan_ids.conf` file for reading and use the variable name `vlan_file` 
 
 ```python
 >>> vlan_file = open('vlan_ids.conf', 'r')
->>> 
+>>>
 ```
 
 ##### Step 5
@@ -83,7 +83,7 @@ Since the file is still open, read in all data as a list using the built-in meth
 
 ```python
 >>> data = vlan_file.read()
->>> 
+>>>
 ```
 
 This reads the file as one big string.
@@ -93,13 +93,13 @@ This reads the file as one big string.
 Print the variable called `data`:
 
 ```python
->>> print data
+>>> print(data)
 vlan 1
 vlan 2
 vlan 10
 vlan 20
 vlan 50
->>> 
+>>>
 
 ```
 
@@ -111,7 +111,7 @@ Close the file properly using the `close` method.
 
 ```python
 >>> vlan_file.close()
->>> 
+>>>
 ```
 
 
@@ -125,7 +125,7 @@ Open a file for writing using the "w" value instead "r" for reading:
 
 ```python
 >>> out_file = open('interface.cfg', 'w')
->>> 
+>>>
 ```
 
 ##### Step 2
@@ -140,7 +140,7 @@ Add 3 interface commands and write them to the file:
 >>> out_file.write("interface Eth1\n")
 >>> out_file.write(" speed 100\n")    
 >>> out_file.write(" duplex full\n")
->>> 
+>>>
 ```
 
 ##### Step 3
@@ -149,7 +149,7 @@ Close the file for writing:
 
 ```python
 >>> out_file.close()
->>> 
+>>>
 ```
 
 ##### Step 4
@@ -157,7 +157,7 @@ Close the file for writing:
 In another terminal windows, use `cat` to view the file just created:
 
 ```bash
-ntc@ntc:~$ cat interface.cfg 
+ntc@ntc:~$ cat interface.cfg
 interface Eth1
  speed 100
  duplex full
@@ -170,7 +170,7 @@ This task introduces the `with` statement to manage the file open and closing pr
 
 > Note: when you use `open('filename', 'w')`, the file gets written to only when the file is closed.  If you happen to forget to close the file, it could be an interesting time troubleshooting that!
 
-When you use the `with` statement, all file closes happen automatically as soon as you un-indent from the `with` block. 
+When you use the `with` statement, all file closes happen automatically as soon as you un-indent from the `with` block.
 
 The following is the same example as above showing it using the `with` statement:
 
@@ -189,13 +189,13 @@ Here is also another example to try for reading the file using the context manag
 >>> with open("vlan_ids.conf", "r") as vlan_file:
 ...     data = vlan_file.read()
 ...
->>> print data
+>>> print(data)
 vlan 1
 vlan 2
 vlan 10
 vlan 20
 vlan 50
->>> 
+>>>
 ```
 
 

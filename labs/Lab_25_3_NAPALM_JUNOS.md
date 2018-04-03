@@ -10,7 +10,7 @@ Create a new file called `snmp.conf` in your home directory and open the file in
 
 ##### Step 2
 
-Take the config snippet below and save it in the file just created (`snmp.conf`). These commands will be used to directly configure the switches. 
+Take the config snippet below and save it in the file just created (`snmp.conf`). These commands will be used to directly configure the switches.
 
 ```
 set snmp community networktocode authorization read-only
@@ -30,12 +30,12 @@ Enter the Python shell **from your home directory**.
 ```python
 ntc@ntc:~$ python
 
-Python 2.7.6 (default, Jun 22 2015, 17:58:13) 
+Python 2.7.6 (default, Jun 22 2015, 17:58:13)
 [GCC 4.8.2] on linux2
 Type "help", "copyright", "credits" or "license" for more information.
 
->>> 
->>> 
+>>>
+>>>
 ```
 
 ##### Step 4
@@ -46,7 +46,7 @@ Load the correct NAPALM driver.  Since we're using the Arista switch in this lab
 >>> from napalm import get_network_driver
 >>>
 >>> driver = get_network_driver('junos')
->>> 
+>>>
 ```
 
 ##### Step 5
@@ -55,7 +55,7 @@ Create an **junos** device object for **vmx7** using the previously loaded drive
 
 ```python
 >>> device = driver('vmx7', 'ntc', 'ntc123')
->>> 
+>>>
 ```
 
 ##### Step 6
@@ -114,7 +114,7 @@ Open a connection to the device.  This is done using the `open()` method.
 
 ```python
 >>> device.open()
->>> 
+>>>
 ```
 
 ##### Step 8
@@ -125,7 +125,7 @@ This is done by using the `load_merge_candiate` method of the device object.
 
 ```python
 >>> device.load_merge_candidate(filename='snmp.conf')
->>> 
+>>>
 ```
 
 As soon as you hit enter in this step, NAPALM is loading this configuration onto the device, but NOT committing it to the running configuration.  **How** this happens is different for every OS.  For JUNOS, NAPALM depends on the candidate configuration feature, prior to committing the configuration.
@@ -148,7 +148,7 @@ You can then generate a diff on the EOS CLI, if desired, using the command:
 
 
 ```
-ntc@vmx7# show | compare 
+ntc@vmx7# show | compare
 [edit snmp]
 +  location SYDNEY;
 +  contact JOHN_SMITH;
@@ -169,20 +169,20 @@ ntc@vmx7# show | compare
 
 ##### Step 9
 
-Commit the config to the device while back at the Python shell. 
+Commit the config to the device while back at the Python shell.
 
 This is when the configuration will be activated and _committed_ to the running configuration.
 
 ```python
 >>> device.commit_config()
->>> 
+>>>
 ```
 
 > If you wanted to discard this change rather than commit, alternatively you **could** have ran the following:
 
 ```python
 >>> device.discard_config()
->>> 
+>>>
 ```
 
 
@@ -195,7 +195,7 @@ Feel free to view the config on the CLI of the device before and after you issue
 
 ```python
 >>> device.rollback()
->>> 
+>>>
 ```
 
 ##### Step 11
@@ -207,14 +207,14 @@ Re-load the configuration on the device.
 
 ```python
 >>> device.load_merge_candidate(filename='snmp.conf')
->>> 
+>>>
 ```
 
 After it's loaded, view the diffs with the `compare_config` method.
 
 ```python
 >>> diffs = device.compare_config()
->>> 
+>>>
 >>> print(diffs)
 [edit snmp]
 +  location SYDNEY;
@@ -227,7 +227,7 @@ After it's loaded, view the diffs with the `compare_config` method.
 +   community supersecret {
 +       authorization read-write;
 +   }
->>> 
+>>>
 
 ```
 
@@ -244,7 +244,7 @@ Use a for loop to build the proper NAPALM device object as well as load and comm
 
 In this task, you will use NAPALM to declaratively configure BGP on an a Juniper vMX router.  Normally, NAPALM is known for declaratively managing _full_ configuration files, but we'll show you can still use NAPALM to declaratively manage a single section.
 
-> Note: this is 100% dependent on the OS being used. 
+> Note: this is 100% dependent on the OS being used.
 
 ##### Step 1
 
@@ -253,7 +253,7 @@ Use SSH to manully log to vmx8 router.
 Load the following BGP configuration onto the device:
 
 ```bash
-ntc@vmx8# show protocols bgp 
+ntc@vmx8# show protocols bgp
 group NTC_INTERNAL {
     type internal;
     neighbor 10.0.0.1;
@@ -269,8 +269,8 @@ group NTC_EXTERNAL {
 }
 
 [edit]
-ntc@vmx8# 
-ntc@vmx8# show routing-options autonomous-system 
+ntc@vmx8#
+ntc@vmx8# show routing-options autonomous-system
 65512;
 ```
 
@@ -320,7 +320,7 @@ Enter the Python shell from your home directory, import the *junos* napalm drive
 ```python
 ntc@ntc:~$ python
 
-Python 2.7.6 (default, Jun 22 2015, 17:58:13) 
+Python 2.7.6 (default, Jun 22 2015, 17:58:13)
 [GCC 4.8.2] on linux2
 Type "help", "copyright", "credits" or "license" for more information.
 
@@ -336,7 +336,7 @@ Open a connection to the device.
 
 ```python
 >>> device.open()
->>> 
+>>>
 ```
 
 ##### Step 6
@@ -347,7 +347,7 @@ All of these steps are no different than Task 1.
 
 ```python
 >>> device.load_merge_candidate(filename='bgp.conf')
->>> 
+>>>
 ```
 
 ##### Step 7
@@ -357,7 +357,7 @@ Use the `compare_config` method to show the configuration diffs.
 This is where you get to see the real power of EOS and NAPALM working together.
 
 ```python
->>> print device.compare_config()                   
+>>> print(device.compare_config())
 [edit protocols bgp group NTC_INTERNAL]
       neighbor 10.0.0.5 { ... }
 +     neighbor 10.0.0.99;
@@ -368,7 +368,7 @@ This is where you get to see the real power of EOS and NAPALM working together.
 +     neighbor 10.0.0.102;
 -     neighbor 10.0.0.10;
 -     neighbor 10.0.0.12;
->>> 
+>>>
 ```
 
 Notice how the commands aren't just getting pushed.  BGP is NOT getting un-configured and re-configured.  Simply, the commands required to get BGP into its final are the only commands actually being used EOS.
@@ -379,7 +379,7 @@ Finally, commit the config to the device.
 
 ```python
 >>> device.commit_config()
->>> 
+>>>
 ```
 
 Feel free to log back to the device and verify the configuration has been applied correctly.
@@ -441,7 +441,7 @@ Import `json` library and pretty print facts for all devices.
 ```python
 >>> import json
 >>>
->>> print json.dumps(ios_device.get_facts(), indent=4)
+>>> print(json.dumps(ios_device.get_facts(), indent=4))
 {
     "os_version": "CSR1000V Software (X86_64_LINUX_IOSD-UNIVERSALK9-M), Version 16.3.1, RELEASE SOFTWARE (fc3)",
     "uptime": 56880,
@@ -464,7 +464,7 @@ Import `json` library and pretty print facts for all devices.
 
 
 ```python
->>> print json.dumps(eos_device.get_facts(), indent=4)
+>>> print(json.dumps(eos_device.get_facts(), indent=4))
 {
     "os_version": "4.15.2F-2663444.4152F",
     "uptime": 57154,
@@ -492,7 +492,7 @@ Import `json` library and pretty print facts for all devices.
 Print all interfaces for all devices.
 
 ```python
->>> print json.dumps(ios_device.get_interfaces(), indent=4)
+>>> print(json.dumps(ios_device.get_interfaces(), indent=4))
 {
     "GigabitEthernet4": {
         "is_enabled": false,
@@ -543,13 +543,13 @@ Print all interfaces for all devices.
         "speed": 8000
     }
 }
->>> 
+>>>
 ```
 `
 
 ```python
->>> 
->>> print json.dumps(eos_device.get_interfaces(), indent=4)
+>>>
+>>> print(json.dumps(eos_device.get_interfaces(), indent=4))
 {
     "Management1": {
         "is_enabled": true,

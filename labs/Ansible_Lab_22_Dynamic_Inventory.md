@@ -42,7 +42,7 @@ if __name__ == "__main__":
 
     rsp = main()
 
-    print rsp
+    print(rsp)
 
 
 ```
@@ -60,7 +60,7 @@ The scripts executes, but you still have access to the variables in scope within
 For example, you can print rsp:
 
 ```python
->>> print rsp
+>>> print(rsp)
 {
 "cisco"   : {
     "hosts"   : [ "n9k1.ntc.com", "n9k2.ntc.com" ],
@@ -87,15 +87,15 @@ Use `json.loads` to work with it as a Python dictionary.
 
 ```python
 >>> import json
->>> 
+>>>
 >>> inv = json.loads(rsp)
->>> 
+>>>
 >>> inv
 {u'hp': {u'hosts': [u'hp1.ntc.com', u'hp2.ntc.com', u'hp3.ntc.com', u'hp4.ntc.com'], u'vars': {u'platform': u'comware7'}}, u'cisco': {u'hosts': [u'n9k1.ntc.com', u'n9k2.ntc.com'], u'vars': {u'platform': u'nexus'}}, u'juniper': [u'jnprfw.ntc.com'], u'arista': [u'arista1.ntc.com', u'arista2.ntc.com'], u'apic': [u'aci.ntc.com']}
->>> 
+>>>
 >>> inv.get('hp')
 {u'hosts': [u'hp1.ntc.com', u'hp2.ntc.com', u'hp3.ntc.com', u'hp4.ntc.com'], u'vars': {u'platform': u'comware7'}}
->>> 
+>>>
 >>> inv.get('arista')
 [u'arista1.ntc.com', u'arista2.ntc.com']
 ```
@@ -130,14 +130,14 @@ In this directory there is also a sample playbook called `site.yml`
 Run the playbook using the dynamic inventory script.
 
 ```
-ntc@ntc:~/dynamic_inv$ ansible-playbook -i dynamo.py site.yml 
+ntc@ntc:~/dynamic_inv$ ansible-playbook -i dynamo.py site.yml
 ```
 
 ```
 
-PLAY [test playbook for dynamic inventory] ************************************ 
+PLAY [test playbook for dynamic inventory] ************************************
 
-TASK: [debug var=inventory_hostname] ****************************************** 
+TASK: [debug var=inventory_hostname] ******************************************
 ok: [n9k1.ntc.com] => {
     "var": {
         "inventory_hostname": "n9k1.ntc.com"
@@ -189,7 +189,7 @@ ok: [aci.ntc.com] => {
     }
 }
 
-PLAY RECAP ******************************************************************** 
+PLAY RECAP ********************************************************************
 aci.ntc.com                : ok=1    changed=0    unreachable=0    failed=0   
 arista1.ntc.com            : ok=1    changed=0    unreachable=0    failed=0   
 arista2.ntc.com            : ok=1    changed=0    unreachable=0    failed=0   

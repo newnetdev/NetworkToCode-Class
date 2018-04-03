@@ -69,7 +69,7 @@ Showing the result copied in successfully:
 ...             "description": "Connect to csr1"
 ...         }
 ...   }
->>> 
+>>>
 ```
 
 
@@ -80,17 +80,17 @@ We need to make sure you understand using an object like this.  Let's walk throu
 Print all configuration parameters for **csr1** followed by it's IP Address and mask:
 
 ```python
->>> print INTERFACE_MAP['csr1']
+>>> print(INTERFACE_MAP['csr1'])
 {'interface': 'GigabitEthernet4', 'mask': '255.255.255.0', 'ipaddr': '10.100.12.1.1', 'description': 'Connect to csr2'}
->>> 
->>> 
->>> print INTERFACE_MAP['csr1']['ipaddr']
+>>>
+>>>
+>>> print(INTERFACE_MAP['csr1']['ipaddr'])
 10.100.12.1.1
->>> 
->>> 
->>> print INTERFACE_MAP['csr1']['mask']  
+>>>
+>>>
+>>> print(INTERFACE_MAP['csr1']['mask'])
 255.255.255.0
->>> 
+>>>
 ```
 
 ##### Step 8
@@ -98,13 +98,13 @@ Print all configuration parameters for **csr1** followed by it's IP Address and 
 Repeat Step 7 for **csr2**
 
 ```python
->>> print INTERFACE_MAP['csr2']
+>>> print(INTERFACE_MAP['csr2'])
 {'interface': 'GigabitEthernet4', 'mask': '255.255.255.0', 'ipaddr': '10.100.1.2', 'description': 'Connect to csr1'}
->>> 
->>> print INTERFACE_MAP['csr2']['ipaddr']
+>>>
+>>> print(INTERFACE_MAP['csr2']['ipaddr'])
 10.100.1.2
->>> 
->>> print INTERFACE_MAP['csr2']['mask']
+>>>
+>>> print(INTERFACE_MAP['csr2']['mask'])
 255.255.255.0
 >>>
 ```
@@ -191,8 +191,8 @@ csr2.send_config_set(csr2_commands)
 Validate L2 reachability for these two interfaces.
 
 ```python
-print csr1.send_command("ping {}".format(INTERFACE_MAP['csr2']['ipaddr']))
-print csr2.send_command("ping {}".format(INTERFACE_MAP['csr1']['ipaddr']))
+print(csr1.send_command("ping {}".format(INTERFACE_MAP['csr2']['ipaddr'])))
+print(csr2.send_command("ping {}".format(INTERFACE_MAP['csr1']['ipaddr'])))
 ```
 
 
@@ -247,14 +247,10 @@ csr2_commands = [csr2_interface_command, csr2_ipaddr_command, csr2_descr_command
 csr1.send_config_set(csr1_commands)
 csr2.send_config_set(csr2_commands)
 
-print csr1.send_command("ping {}".format(INTERFACE_MAP['csr2']['ipaddr']))
-print csr2.send_command("ping {}".format(INTERFACE_MAP['csr1']['ipaddr']))
+print(csr1.send_command("ping {}".format(INTERFACE_MAP['csr2']['ipaddr'])))
+print(csr2.send_command("ping {}".format(INTERFACE_MAP['csr1']['ipaddr'])))
 
 csr1.disconnect()
 csr2.disconnect()
 
 ```
-
-
-
-I

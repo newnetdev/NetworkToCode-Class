@@ -4,7 +4,7 @@ In programming languages, you often need to "import" other libraries to get adde
 
 Take note that a Python library may be a:
 
-  * Python module - which is a file that has Python code 
+  * Python module - which is a file that has Python code
   * Python package - which is a collection of Python modules
 
 
@@ -16,7 +16,7 @@ Create a dictionary called `facts`:
 
 ```python
 >>> facts = {'platform': 'nexus', 'version': '7.3', 'vendor': 'cisco', 'device_type': 'switch', 'os': 'nxos'}
->>> 
+>>>
 ```
 
 ##### Step 2
@@ -26,12 +26,12 @@ Print the dictionary.
 ```python
 >>> print(facts)
 {'platform': 'nexus', 'version': '7.3', 'vendor': 'cisco', 'device_type': 'switch', 'os': 'nxos'}
->>> 
+>>>
 ```
 
 The larger the dictionary, the harder this will be to read.
 
-Let's introduce a Python module that helps in pretty printing Python objects like dictionaries. 
+Let's introduce a Python module that helps in pretty printing Python objects like dictionaries.
 
 ##### Step 3
 
@@ -47,12 +47,12 @@ First, import the `json` module using the `import` keyword.
 Using the `dumps` function in the `json` module to pretty print the dictionary. We'll use an indent of 4.
 
 ```python
->>> print json.dumps(facts, indent=4)
+>>> print(json.dumps(facts, indent=4))
 {
-    "platform": "nexus", 
-    "version": "7.3", 
-    "vendor": "cisco", 
-    "device_type": "switch", 
+    "platform": "nexus",
+    "version": "7.3",
+    "vendor": "cisco",
+    "device_type": "switch",
     "os": "nxos"
 }
 >>>
@@ -63,24 +63,24 @@ Using the `dumps` function in the `json` module to pretty print the dictionary. 
 We'll see 4 for every example in the course, but feel free to try 10 and 20 and see what happens:
 
 ```python
->>> print json.dumps(facts, indent=10)
+>>> print(json.dumps(facts, indent=10))
 {
-          "platform": "nexus", 
-          "version": "7.3", 
-          "vendor": "cisco", 
-          "device_type": "switch", 
+          "platform": "nexus",
+          "version": "7.3",
+          "vendor": "cisco",
+          "device_type": "switch",
           "os": "nxos"
 }
->>> 
->>> print json.dumps(facts, indent=20)
+>>>
+>>> print(json.dumps(facts, indent=20))
 {
-                    "platform": "nexus", 
-                    "version": "7.3", 
-                    "vendor": "cisco", 
-                    "device_type": "switch", 
+                    "platform": "nexus",
+                    "version": "7.3",
+                    "vendor": "cisco",
+                    "device_type": "switch",
                     "os": "nxos"
 }
->>> 
+>>>
 ```
 
 Using `json.dumps` is going to help tremendously when trying to read larger dictionary objects in the next section.
@@ -97,7 +97,7 @@ Import the `time` module.
 
 ```python
 >>> import time
->>> 
+>>>
 ```
 
 
@@ -107,7 +107,7 @@ Insert a pause for 5 seconds using the `sleep` function.
 
 ```python
 >>> time.sleep(5)
->>> 
+>>>
 ```
 
 Notice how the keyboard hangs for 5 seconds.  This comes in handy when you're writing Python scripts (which we'll do soon).
@@ -122,8 +122,8 @@ Here is one example of how to print the local time:
 
 ```python
 >>> local_time = time.asctime(time.localtime(time.time()))
->>> 
->>> print local_time
+>>>
+>>> print(local_time)
 Sat January 27 19:21:47 2018
 >>>
 ```
@@ -141,7 +141,7 @@ Import the `os` module:
 
 ```python
 >>> import os
->>> 
+>>>
 ```
 
 ##### Step 2
@@ -151,7 +151,7 @@ You can check to see your current working directory with the `getcwd()` function
 ```python
 >>> os.getcwd()
 '/home/ntc'
->>> 
+>>>
 
 ```
 
@@ -161,10 +161,10 @@ You can also change your working directory with `chdir()`
 
 ```python
 >>> os.chdir('/home/ntc/files')
->>> 
+>>>
 >>> os.getcwd()
 '/home/ntc/files'
->>> 
+>>>
 ```
 
 ##### Step 4
@@ -174,7 +174,7 @@ You can also access your OS ENVIRONMENT variables. Here we're accessing an envir
 ```python
 >>> os.getenv('HOME')
 '/home/ntc'
->>> 
+>>>
 ```
 
 In a separate Linux terminal window, you can type `env` to see other environment variables you can check from Python.
@@ -186,7 +186,7 @@ You can also list the contents of a given directory from Python:
 ```python
 >>> os.listdir('/home/ntc')
 # output omitted
->>> 
+>>>
 ```
 
 ##### Step 6

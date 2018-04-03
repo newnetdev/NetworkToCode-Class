@@ -10,7 +10,7 @@ Create a new file called `snmp.conf` in your home directory and open the file in
 
 ##### Step 2
 
-Take the config snippet below and save it in the file just created (`snmp.conf`). These commands will be used to directly configure the switches. 
+Take the config snippet below and save it in the file just created (`snmp.conf`). These commands will be used to directly configure the switches.
 
 ```
 snmp-server community networktocode ro
@@ -30,12 +30,12 @@ Enter the Python shell **from your home directory**.
 ```python
 ntc@ntc:~$ python
 
-Python 2.7.6 (default, Jun 22 2015, 17:58:13) 
+Python 2.7.6 (default, Jun 22 2015, 17:58:13)
 [GCC 4.8.2] on linux2
 Type "help", "copyright", "credits" or "license" for more information.
 
->>> 
->>> 
+>>>
+>>>
 ```
 
 ##### Step 4
@@ -46,7 +46,7 @@ Load the correct NAPALM driver.  Since we're using the Arista switch in this lab
 >>> from napalm import get_network_driver
 >>>
 >>> driver = get_network_driver('eos')
->>> 
+>>>
 ```
 
 ##### Step 5
@@ -55,7 +55,7 @@ Create an **eos** device object for **eos-spine1** using the previously loaded d
 
 ```python
 >>> device = driver('eos-spine1', 'ntc', 'ntc123')
->>> 
+>>>
 ```
 
 ##### Step 6
@@ -113,7 +113,7 @@ Open a connection to the device.  This is done using the `open()` method.
 
 ```python
 >>> device.open()
->>> 
+>>>
 ```
 
 > Note: technically this is not required for Arista devices as there is not a persistent connection used to connect to the device as opposed to protocols such as SSH and NETCONF.
@@ -126,7 +126,7 @@ This is done by using the `load_merge_candiate` method of the device object.
 
 ```python
 >>> device.load_merge_candidate(filename='snmp.conf')
->>> 
+>>>
 ```
 
 As soon as you hit enter in this step, NAPALM is loading this configuration onto the device, but NOT committing it to the running configuration.  **How** this happens is different for every OS.  For Arista EOS, the feature called **configuration sessions** is being used.
@@ -134,12 +134,12 @@ As soon as you hit enter in this step, NAPALM is loading this configuration onto
 At this step you can verify the changes manually by going to the device to view the preview of configs to be pushed too. As already stated, in the NAPALM implementation for Arista, the _session_ feature is being used, so first you can use view the pending session using the command `show configuration sessions`:
 
 ```
-eos-spine1#show configuration sessions 
+eos-spine1#show configuration sessions
 Maximum number of completed sessions: 1
 Maximum number of pending sessions: 5
 
-  Name             State         User    Terminal 
-  ------------- ------------- ---------- -------- 
+  Name             State         User    Terminal
+  ------------- ------------- ---------- --------
   napalm_243001    pending                        
 
 ```
@@ -147,13 +147,13 @@ Maximum number of pending sessions: 5
 You can then generate a diff on the EOS CLI, if desired, using the command:
 
 ```
-show session-config named <name> diffs 
+show session-config named <name> diffs
 ```
 
 > These commands are exactly what NAPALM does for you.
 
 ```
-eos-spine1#show session-config named napalm_243001 diffs 
+eos-spine1#show session-config named napalm_243001 diffs
 --- system:/running-config
 +++ session:/napalm_243001-session-config
 @@ -7,7 +7,12 @@
@@ -176,20 +176,20 @@ eos-spine1#
 
 ##### Step 9
 
-Commit the config to the device while back at the Python shell. 
+Commit the config to the device while back at the Python shell.
 
 This is when the configuration will be activated and _committed_ to the running configuration.
 
 ```python
 >>> device.commit_config()
->>> 
+>>>
 ```
 
 > If you wanted to discard this change rather than commit, alternatively you **could** have ran the following:
 
 ```python
 >>> device.discard_config()
->>> 
+>>>
 ```
 
 
@@ -202,7 +202,7 @@ Feel free to view the config on the CLI of the device before and after you issue
 
 ```python
 >>> device.rollback()
->>> 
+>>>
 ```
 
 ##### Step 11
@@ -214,15 +214,15 @@ Re-load the configuration on the device.
 
 ```python
 >>> device.load_merge_candidate(filename='snmp.conf')
->>> 
+>>>
 ```
 
 After it's loaded, view the diffs with the `compare_config` method.
 
 ```python
 >>> diffs = device.compare_config()
->>> 
->>> print diffs
+>>>
+>>> print(diffs)
 @@ -7,7 +7,12 @@
  hostname eos-spine1
  ip domain-name ntc.com
@@ -236,7 +236,7 @@ After it's loaded, view the diffs with the `compare_config` method.
  !
  spanning-tree mode mstp
  !
->>> 
+>>>
 ```
 
 Now NAPALM is generating the diffs using the same CLI command you just tried in Step 8.
@@ -252,7 +252,7 @@ Use a for loop to build the proper NAPALM device object as well as load and comm
 
 In this task, you will use NAPALM to declaratively configure BGP on an Arista switch.  Normally, NAPALM is known for declaratively managing _full_ configuration files, but we'll show you can still use NAPALM to declaratively manage a single section.
 
-> Note: this is 100% dependent on the OS being used. 
+> Note: this is 100% dependent on the OS being used.
 
 ##### Step 1
 
@@ -300,7 +300,7 @@ Enter the Python shell from your home directory, import the *eos* napalm driver 
 ```python
 ntc@ntc:~$ python
 
-Python 2.7.6 (default, Jun 22 2015, 17:58:13) 
+Python 2.7.6 (default, Jun 22 2015, 17:58:13)
 [GCC 4.8.2] on linux2
 Type "help", "copyright", "credits" or "license" for more information.
 
@@ -316,7 +316,7 @@ Open a connection to the device.
 
 ```python
 >>> device.open()
->>> 
+>>>
 ```
 
 ##### Step 6
@@ -327,7 +327,7 @@ All of these steps are no different than Task 1.
 
 ```python
 >>> device.load_merge_candidate(filename='bgp.conf')
->>> 
+>>>
 ```
 
 ##### Step 7
@@ -337,20 +337,20 @@ Use the `compare_config` method to show the configuration diffs.
 This is where you get to see the real power of EOS and NAPALM working together.
 
 ```python
->>> print device.compare_config()
+>>> print(device.compare_config())
 @@ -44,11 +44,13 @@
  ip routing vrf MANAGEMENT
  !
  router bgp 65512
 -   neighbor 10.0.0.0 remote-as 65500
--   neighbor 10.0.0.0 maximum-routes 12000 
+-   neighbor 10.0.0.0 maximum-routes 12000
     neighbor 10.0.0.1 remote-as 65512
-    neighbor 10.0.0.1 maximum-routes 12000 
+    neighbor 10.0.0.1 maximum-routes 12000
 -   network 20.20.20.0/24
 +   neighbor 10.0.0.2 remote-as 65500
-+   neighbor 10.0.0.2 maximum-routes 12000 
++   neighbor 10.0.0.2 maximum-routes 12000
 +   neighbor 10.0.0.10 remote-as 65512
-+   neighbor 10.0.0.10 maximum-routes 12000 
++   neighbor 10.0.0.10 maximum-routes 12000
 +   network 100.0.100.0/24
  !
  management api http-commands
@@ -365,7 +365,7 @@ Finally, commit the config to the device.
 
 ```python
 >>> device.commit_config()
->>> 
+>>>
 ```
 
 Feel free to log back to the device and verify the configuration has been applied correctly.
@@ -428,7 +428,7 @@ Import `json` library and pretty print facts for all devices.
 ```python
 >>> import json
 >>>
->>> print json.dumps(ios_device.get_facts(), indent=4)
+>>> print(json.dumps(ios_device.get_facts(), indent=4))
 {
     "os_version": "CSR1000V Software (X86_64_LINUX_IOSD-UNIVERSALK9-M), Version 16.3.1, RELEASE SOFTWARE (fc3)",
     "uptime": 56880,
@@ -451,7 +451,7 @@ Import `json` library and pretty print facts for all devices.
 
 
 ```python
->>> print json.dumps(nxos_device.get_facts(), indent=4)
+>>> print(json.dumps(nxos_device.get_facts(), indent=4))
 {
     "uptime": 57153,
     "vendor": "Cisco",
@@ -614,7 +614,7 @@ Import `json` library and pretty print facts for all devices.
 
 
 ```python
->>> print json.dumps(eos_device.get_facts(), indent=4)
+>>> print(json.dumps(eos_device.get_facts(), indent=4))
 {
     "os_version": "4.15.2F-2663444.4152F",
     "uptime": 57154,
@@ -642,7 +642,7 @@ Import `json` library and pretty print facts for all devices.
 Print all interfaces for all devices.
 
 ```python
->>> print json.dumps(ios_device.get_interfaces(), indent=4)
+>>> print(json.dumps(ios_device.get_interfaces(), indent=4))
 {
     "GigabitEthernet4": {
         "is_enabled": false,
@@ -693,12 +693,12 @@ Print all interfaces for all devices.
         "speed": 8000
     }
 }
->>> 
+>>>
 ```
 
 
 ```python
->>> print json.dumps(nxos_device.get_interfaces(), indent=4)
+>>> print(json.dumps(nxos_device.get_interfaces(), indent=4))
 {
     "Ethernet3/21": {
         "is_enabled": false,
@@ -1869,13 +1869,13 @@ Print all interfaces for all devices.
         "speed": 1000
     }
 }
->>> 
->>> 
+>>>
+>>>
 ```
 
 ```python
->>> 
->>> print json.dumps(eos_device.get_interfaces(), indent=4)
+>>>
+>>> print(json.dumps(eos_device.get_interfaces(), indent=4))
 {
     "Management1": {
         "is_enabled": true,

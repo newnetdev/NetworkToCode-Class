@@ -244,7 +244,7 @@ See what happened here?  Since `get` returns `None` if the key doesn't exist, it
 Create the variable called `devices` as such:
 
 ```python
->>> print devices
+>>> print(devices)
 [{'platform': 'nexus', 'hostname': 'nycr01'}, {'platform': 'catalyst', 'hostname': 'nycsw02'}, {'platform': 'mx', 'hostname': 'nycr03'}, {'platform': 'srx', 'hostname': 'nycfw01'}, {'platform': 'asa', 'hostname': 'nycfw02'}]
 >>>
 ```
@@ -305,11 +305,3 @@ Vendor is Juniper
 Unknown Vendor
 >>>
 ```
-
-
-
-
-
-
-
-

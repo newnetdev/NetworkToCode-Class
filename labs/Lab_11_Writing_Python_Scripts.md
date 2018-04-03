@@ -94,7 +94,7 @@ facts3 = {'vendor': 'arista', 'os': 'eos', 'ipaddr': '10.1.1.2'}
 
 devices = [facts1, facts2, facts3]
 
-print json.dumps(devices, indent=4)
+print(json.dumps(devices, indent=4))
 
 ```
 
@@ -106,18 +106,18 @@ Execute the script.
 ntc@ntc:~/scripts$ python print_facts.py
 [
     {
-        "os": "nxos", 
-        "ipaddr": "10.1.1.1", 
+        "os": "nxos",
+        "ipaddr": "10.1.1.1",
         "vendor": "cisco"
-    }, 
+    },
     {
-        "os": "ios", 
-        "ipaddr": "10.2.1.1", 
+        "os": "ios",
+        "ipaddr": "10.2.1.1",
         "vendor": "cisco"
-    }, 
+    },
     {
-        "os": "eos", 
-        "ipaddr": "10.1.1.2", 
+        "os": "eos",
+        "ipaddr": "10.1.1.2",
         "vendor": "arista"
     }
 ]
@@ -127,5 +127,3 @@ ntc@ntc:~/scripts$
 The point in this lab is to showcase the transition going from learning to write code on the Python shell.
 
 We'll now move onto more useful scripts.
-
-

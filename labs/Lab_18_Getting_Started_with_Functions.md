@@ -30,7 +30,7 @@ def get_vlans():
 
 vlans = get_vlans()
 
-print vlans
+print(vlans)
 ```
 
 Save the script.
@@ -40,7 +40,7 @@ Save the script.
 Execute the script.  You'll see a basic output:
 
 ```
-ntc@ntc:scripts$ python functions.py 
+ntc@ntc:scripts$ python functions.py
 [1, 5, 10, 20]
 ntc@ntc:scripts$
 ```
@@ -59,13 +59,13 @@ def get_vlans():
 
 vlans = get_vlans()
 
-print vlans
+print(vlans)
 
 def vlan_exists(vlan_id):
     return vlan_id in [1, 5, 10, 20]
 
-print vlan_exists(10)
-print vlan_exists(12)
+print(vlan_exists(10))
+print(vlan_exists(12))
 ```
 
 
@@ -93,10 +93,10 @@ The function header and layout should look like this while just printing all par
 
 ```python
 def ez_cisco(hostname, username, password, show_command):
-    print hostname
-    print username
-    print password
-    print show_command
+    print(hostname)
+    print(username)
+    print(password)
+    print(show_command)
 ```
 
 
@@ -117,19 +117,19 @@ def get_vlans():
 
 vlans = get_vlans()
 
-print vlans
+print(vlans)
 
 def vlan_exists(vlan_id):
     return vlan_id in [1, 5, 10, 20]
 
-print vlan_exists(10)
-print vlan_exists(12)
+print(vlan_exists(10))
+print(vlan_exists(12))
 
 def ez_cisco(hostname, username, password, show_command):
-    print hostname
-    print username
-    print password
-    print show_command
+    print(hostname)
+    print(username)
+    print(password)
+    print(show_command)
 
 ez_cisco('csr1', 'ntc', 'ntc123', 'show version')
 
@@ -140,7 +140,7 @@ ez_cisco('csr1', 'ntc', 'ntc123', 'show version')
 Save and Execute the script.  You should see the following:
 
 ```
-ntc@ntc:scripts$ python functions.py 
+ntc@ntc:scripts$ python functions.py
 [1, 5, 10, 20]
 True
 False
@@ -159,10 +159,10 @@ Remove the latest function called `ez_cisco` and put it into a new script called
 #! /usr/bin/env python
 
 def ez_cisco(hostname, username, password, show_command):
-    print hostname
-    print username
-    print password
-    print show_command
+    print(hostname)
+    print(username)
+    print(password)
+    print(show_command)
 
 ez_cisco('csr1', 'ntc', 'ntc123', 'show version')
 ```
@@ -171,8 +171,8 @@ ez_cisco('csr1', 'ntc', 'ntc123', 'show version')
 
 Make the following changes to the script:
 
-* Import the `ConnectHandler` netmiko object 
-* Perform the desired action 
+* Import the `ConnectHandler` netmiko object
+* Perform the desired action
 * The function should return show command as a string
 * Test the script by issuing the `show version` to **csr1**
 
@@ -184,15 +184,15 @@ from netmiko import ConnectHandler
 def ez_cisco(hostname, username, password, show_command):
     platform = "cisco_ios"
     device = ConnectHandler(ip=hostname, username=username, password=password, device_type=platform)
-    
+
     output = device.send_command(show_command)
     device.disconnect()
 
     return output
-    
+
 response = ez_cisco('csr1', 'ntc', 'ntc123', 'show version')
 
-print response
+print(response)
 ```
 
 
@@ -208,12 +208,12 @@ from netmiko import ConnectHandler
 def ez_cisco(hostname, show_command, username='ntc', password='ntc123'):
     platform = "cisco_ios"
     device = ConnectHandler(ip=hostname, username=username, password=password, device_type=platform)
-    
+
     output = device.send_command(show_command)
     device.disconnect()
 
     return output
-    
+
 response = ez_cisco('csr1', 'show version')
 
 print response
@@ -248,10 +248,10 @@ from netmiko import ConnectHandler
 def ez_cisco(hostname, show_command, username='ntc', password='ntc123'):
     platform = "cisco_ios"
     device = ConnectHandler(ip=hostname, username=username, password=password, device_type=platform)
-    
+
     output = device.send_command(show_command)
     return output
-    
+
 response = ez_cisco('csr1', 'show version')
 print response
 
@@ -261,7 +261,3 @@ print response
 response = ez_cisco('csr3', 'show run | inc snmp')
 print response
 ```
-
-
-
-
