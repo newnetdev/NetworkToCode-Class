@@ -9,6 +9,17 @@ In this lab, you will still deploy the generated configuration for SNMP to an en
 Use the following code and save it into a new script called `interactive.py` in your `scripts` directory:
 
 > Ensure you have `/home/ntc/scripts/configs/snmp.cfg` as that will be deployed again in this lab.
+> If this file does not exist, create this file and add the following lines to it:
+
+```
+snmp-server community networktocode RO
+snmp-server community public RO
+snmp-server community ntcrw RW
+snmp-server community supersecret RW
+snmp-server location new_york
+snmp-server contact jane_smith
+
+```
 
 ```python
 from netmiko import ConnectHandler
