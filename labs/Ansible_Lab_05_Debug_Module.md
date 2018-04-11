@@ -395,7 +395,7 @@ Take a minute to think about the variable priority occurring.  The **all** group
 
 ### Task 4 - Using the msg Parameter
 
-This task will introduce the `msg` parameter for the `debug` module.  Using `var` is mutually exclusive with the `var` parameter.
+This task will introduce the `msg` parameter for the `debug` module.  Using `msg` is mutually exclusive with the `var` parameter.
 
 When you just want to print a single variable, you use the `var` parameter.  If you want to add context (add a full sentence), you should use the `msg` parameter.
 
