@@ -2,16 +2,16 @@ class: center, middle, title
 .footnote-con[CONFIDENTIAL]
 <br>
 
-# Network Automation Bootcamp
+# Network Programming & Automation
 
 <br>
 <br>
 
-Ajay Chenampara
+Jason Edelman
 
-ajay@networktocode.com
+jason@networktocode.com
 
-@termlen0
+@jedelman8
 
 <br><br>
 
@@ -64,9 +64,8 @@ The course does not assume any background in programming or software development
 
 * Module 1 – Getting Started with Python
 * Module 2 – Automating Network Devices with SSH
-* Module 3 – Automating Network Devices with NETCONF & RESTful APIs
+* Module 3 – Automating Network Devices with APIs
 * Module 4 – Network Automation with Ansible
-* Module 5 – Challenge Labs (inter-weaved)
 
 _Topics such as YAML, JSON, XML, and Jinja2 template are reviewed in several sections._
 
@@ -83,7 +82,7 @@ _Topics such as YAML, JSON, XML, and Jinja2 template are reviewed in several sec
   - Working with Files
   - Python Libraries
   - Open Source Network Libraries
-  - NETCONF & HTTP-Based and RESTful APIs
+  - HTTP-Based and RESTful APIs
   - Vendor APIs
 
 ]
@@ -122,8 +121,7 @@ _Topics such as YAML, JSON, XML, and Jinja2 template are reviewed in several sec
 .right-column[
 
 - Module 3 - Network APIs & Vendor Libraries
-  - NETCONF/YANG
-  - RESTful HTTP-Based APIs
+  - HTTP-Based APIs
   - Arista eAPI
   - Nexus NX-API
   - IOS-XE RESTCONF
