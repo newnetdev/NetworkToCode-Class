@@ -247,7 +247,7 @@ Additionally, we will collect as user input the location of the TextFSM template
 
 Navigate to the `textfsm` directory while on the Linux shell.
 
-Copy and paste the following script into a new file called `netmiko-clitable-ios.py` in the `textfsm` directory.
+Copy and paste the following script into a new file called `netmiko-parse-ios.py` in the `textfsm` directory.
 
 ```python
 #! /usr/bin/env python
