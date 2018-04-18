@@ -226,9 +226,9 @@ if __name__ == "__main__":
         'os': '7.3',
         'location': 'New_York'
     }
-    print facts
-    print json.dumps(facts, indent=4)
-    print facts['os']
+    print(facts)
+    print(json.dumps(facts, indent=4))
+    print(facts['os'])
 ```
 ]
 
@@ -259,13 +259,13 @@ $ python json_test.py
 
 ```python
 facts = '{"hostname": "nxos-spine1", "os": "7.3", "location": "New_York"}'
-print facts
-print type(facts)
-print facts['os']
+print(facts)
+print(type(facts))
+print(facts['os'])
 
 factsd = json.loads(facts)
-print factsd
-print factsd['os']
+print(factsd)
+print(factsd['os'])
 ```
 ]
 
@@ -392,7 +392,7 @@ class: ubuntu
 >>> type(response)
 <type 'dict'>
 >>>
->>> print response['hostname']
+>>> print(response['hostname'])
 nxos-spine1.ntc.com
 >>>
 ```
@@ -1152,7 +1152,7 @@ if __name__ == "__main__":
     url = 'http://eos-spine1/command-api'
     response = requests.post(url, data=json.dumps(payload), headers=headers, auth=auth)
     rx_object = json.loads(response.text)
-    print 'Status Code: ' + str(response.status_code)
+    print('Status Code: ' + str(response.status_code))
 
 ```
 ]
@@ -1223,10 +1223,10 @@ if __name__ == "__main__":
     url = 'http://eos-spine1/command-api'
     response = requests.post(url, data=json.dumps(payload), headers=headers, auth=auth)
     rx_object = json.loads(response.text)
-    print 'Status Code: ' + str(response.status_code)
+    print('Status Code: ' + str(response.status_code))
     result = rx_object['result']
-    print "Hostname: ", json.dumps(result[0], indent=4)
-    print "VLANs: ", json.dumps(result[1], indent=4)
+    print("Hostname: ", json.dumps(result[0], indent=4))
+    print("VLANs: ", json.dumps(result[1], indent=4))
 ```
 ]
 
@@ -1280,8 +1280,8 @@ if __name__ == "__main__":
 
     url = 'http://csr1/restconf/api/config/native/interface'
     response = requests.get(url, headers=headers, auth=auth)
-    print 'Status Code: ' + str(response.status_code)
-    print "\nInterfaces Object: ", response.text
+    print('Status Code: ' + str(response.status_code))
+    print("\nInterfaces Object: ", response.text)
 ```
 ]
 
@@ -1320,5 +1320,3 @@ Status Code: 200
   * 18.1 - requests using eAPI
   * 18.2 - requests using NX-API
 * Lab 18.3 - requests using RESTCONF on XE
-
-

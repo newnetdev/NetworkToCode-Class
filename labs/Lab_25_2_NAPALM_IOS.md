@@ -24,7 +24,7 @@ Create a new file called `snmp.conf` in your home directory and open the file in
 
 ##### Step 3
 
-Take the config snippet below and save it in the file just created (`snmp.conf`). These commands will be used to directly configure the routers. 
+Take the config snippet below and save it in the file just created (`snmp.conf`). These commands will be used to directly configure the routers.
 
 ```
 no snmp-server community NTC ro
@@ -57,7 +57,7 @@ Load the correct NAPALM driver.  Since we're using the Cisco router in this lab,
 >>> from napalm import get_network_driver
 >>>
 >>> driver = get_network_driver('ios')
->>> 
+>>>
 ```
 
 ##### Step 6
@@ -66,7 +66,7 @@ Create an **ios** device object for **csr1** using the previously loaded driver.
 
 ```python
 >>> device = driver('csr1', 'ntc', 'ntc123')
->>> 
+>>>
 ```
 
 ##### Step 7
@@ -142,7 +142,7 @@ Open a connection to the device.  This is done using the `open()` method.
 
 ```python
 >>> device.open()
->>> 
+>>>
 ```
 
 ##### Step 9
@@ -153,7 +153,7 @@ This is done by using the `load_merge_candiate` method of the device object.
 
 ```python
 >>> device.load_merge_candidate(filename='snmp.conf')
->>> 
+>>>
 ```
 
 As soon as you hit enter in this step, NAPALM is loading this configuration onto the device, but NOT committing it to the running configuration.  **How** this happens is different for every OS.
@@ -164,7 +164,7 @@ Use `compare_config()` to show candidate configuration diffs.
 ```python
 >>> diffs = device.compare_config()
 >>>
->>> print diffs
+>>> print(diffs)
 -no snmp-server community NTC ro
 +snmp-server community private ro
 +snmp-server community supersecret ro
@@ -176,20 +176,20 @@ As stated before, these changes are not applied to the running configuration yet
 
 ##### Step 11
 
-Commit the config to the device while from the Python shell. 
+Commit the config to the device while from the Python shell.
 
 This is when the configuration will be activated and _committed_ to the running configuration.
 
 ```python
 >>> device.commit_config()
->>> 
+>>>
 ```
 
 > If you wanted to discard this change rather than commit, alternatively you **could** have ran the following:
 
 ```python
 >>> device.discard_config()
->>> 
+>>>
 ```
 
 
@@ -201,7 +201,7 @@ Feel free to view the config on the CLI of the device before and after you issue
 
 ```python
 >>> device.rollback()
->>> 
+>>>
 ```
 
 ##### Step 13
@@ -268,7 +268,7 @@ Import `json` library and pretty print facts for all devices.
 ```python
 >>> import json
 >>>
->>> print json.dumps(ios_device.get_facts(), indent=4)
+>>> print(json.dumps(ios_device.get_facts(), indent=4))
 {
     "os_version": "CSR1000V Software (X86_64_LINUX_IOSD-UNIVERSALK9-M), Version 16.3.1, RELEASE SOFTWARE (fc3)",
     "uptime": 56880,
@@ -291,7 +291,7 @@ Import `json` library and pretty print facts for all devices.
 
 
 ```python
->>> print json.dumps(nxos_device.get_facts(), indent=4)
+>>> print(json.dumps(nxos_device.get_facts(), indent=4))
 {
     "uptime": 57153,
     "vendor": "Cisco",
@@ -454,7 +454,7 @@ Import `json` library and pretty print facts for all devices.
 
 
 ```python
->>> print json.dumps(eos_device.get_facts(), indent=4)
+>>> print(json.dumps(eos_device.get_facts(), indent=4))
 {
     "os_version": "4.15.2F-2663444.4152F",
     "uptime": 57154,
@@ -482,7 +482,7 @@ Import `json` library and pretty print facts for all devices.
 Print all interfaces for all devices.
 
 ```python
->>> print json.dumps(ios_device.get_interfaces(), indent=4)
+>>> print(json.dumps(ios_device.get_interfaces(), indent=4))
 {
     "GigabitEthernet4": {
         "is_enabled": false,
@@ -533,12 +533,12 @@ Print all interfaces for all devices.
         "speed": 8000
     }
 }
->>> 
+>>>
 ```
 
 
 ```python
->>> print json.dumps(nxos_device.get_interfaces(), indent=4)
+>>> print(json.dumps(nxos_device.get_interfaces(), indent=4))
 {
     "Ethernet3/21": {
         "is_enabled": false,
@@ -598,13 +598,13 @@ Print all interfaces for all devices.
         "speed": 1000
     }
 }
->>> 
->>> 
+>>>
+>>>
 ```
 
 ```python
->>> 
->>> print json.dumps(eos_device.get_interfaces(), indent=4)
+>>>
+>>> print(json.dumps(eos_device.get_interfaces(), indent=4))
 {
     "Management1": {
         "is_enabled": true,
@@ -682,12 +682,9 @@ Try printing just the "running" configuration of each device using the `get_conf
 
 ```python
 >>> ios_config = ios_device.get_config()
->>> 
+>>>
 ```
 
 What object type is it?  
 
 Does it store more than the running configuration?  Just print the "running" configuration now.
-
-
-

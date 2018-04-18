@@ -140,7 +140,7 @@ Print the Keys & Values:
 
 ```python
 >>> for key, value in interface.items():
-...     print key, value
+...     print(key, value)
 ...
 duplex full
 speed 100
@@ -156,7 +156,7 @@ This also works just fine:
 
 ```python
 >>> for feature, configured_value in interface.items():
-...     print feature, configured_value
+...     print(feature, configured_value)
 ...
 duplex full
 speed 100)
@@ -217,9 +217,9 @@ Loop through first by just printing each key on one line, the value on the next,
 
 ```python
 >>> for hostname, config in INTERFACE_MAP.items():
-...     print hostname
-...     print config
-...     print '-----'
+...     print(hostname)
+...     print(config)
+...     print('-----')
 ...
 csr1
 {'interface': 'GigabitEthernet4', 'mask': '255.255.255.0', 'ipaddr': '10.100.12.1', 'description': 'Connect to csr2'}
@@ -281,7 +281,7 @@ Create the list of VLANs.  Remember, this will be a list of dictionaries.
 Print the `vlans` variable to see what you just created:
 
 ```python
->>> print vlans
+>>> print(vlans)
 [{'name': 'web', 'id': '10'}, {'name': 'app', 'id': '20'}, {'name': 'db', 'id': '30'}]
 >>>
 ```
@@ -293,7 +293,7 @@ Pretty print the `vlans` list:
 ```python
 >>> import json
 >>>
->>> print json.dumps(vlans, indent=4)
+>>> print(json.dumps(vlans, indent=4))
 [
     {
         "name": "web",
@@ -371,4 +371,3 @@ vlan 30
  name db
 >>>
 ```
-

@@ -4,7 +4,7 @@
 
 In this task, you will explore working with the Python requests module built to simplify working with HTTP-based (REST) APIs.
 
-For this lab, you will use two Cisco Nexus switches. 
+For this lab, you will use two Cisco Nexus switches.
 
 ##### Step 1
 
@@ -22,11 +22,11 @@ Enter the Python shell.
 ```python
 $ python
 
-Python 2.7.6 (default, Jun 22 2015, 17:58:13) 
+Python 2.7.6 (default, Jun 22 2015, 17:58:13)
 [GCC 4.8.2] on linux2
 Type "help", "copyright", "credits" or "license" for more information.
 
->>> 
+>>>
 ```
 
 ##### Step 3
@@ -37,7 +37,7 @@ Import the `requests` module while on the Python shell.  In addition, import the
 >>> import requests
 >>> from requests.auth import HTTPBasicAuth
 >>> import json
->>> 
+>>>
 ```
 
 ##### Step 4
@@ -61,19 +61,19 @@ FILE
 DESCRIPTION
     Requests HTTP library
     ~~~~~~~~~~~~~~~~~~~~~
-    
+
     Requests is an HTTP library, written in Python, for human beings. Basic GET
     usage:
-    
+
        >>> import requests
        >>> r = requests.get('https://www.python.org')
        >>> r.status_code
        200
        >>> 'Python is a programming language' in r.content
        True
-    
+
     ... or POST:
-    
+
        >>> payload = dict(key1='value1', key2='value2')
        >>> r = requests.post('http://httpbin.org/post', data=payload)
        >>> print(r.text)
@@ -88,14 +88,14 @@ DESCRIPTION
 ```
 
 
-You can also do a `dir(requests)` to see available attributes and built-in methods. 
+You can also do a `dir(requests)` to see available attributes and built-in methods.
 
 
 ##### Step 5
 
 Navigate to the NX-API Sandbox.  
 
-Set the message format to `json` and command type is `cli_show`.  Enter the command "show version" into the text box. 
+Set the message format to `json` and command type is `cli_show`.  Enter the command "show version" into the text box.
 
 You should see the following Request object in the bottom left:
 
@@ -137,12 +137,12 @@ The summary up until this point is the following:
 >>> import requests
 >>> import json
 >>> from requests.auth import HTTPBasicAuth
->>> 
+>>>
 >>> auth = HTTPBasicAuth('ntc', 'ntc123')
 >>> headers = {
 ...     'Content-Type': 'application/json'
 ... }
->>> 
+>>>
 >>> payload = {
 ...     "ins_api": {
 ...         "version": "1.0",
@@ -153,9 +153,9 @@ The summary up until this point is the following:
 ...         "output_format": "json"
 ...     }
 ... }
->>> 
+>>>
 >>> url = 'http://nxos-spine1/ins'
->>> 
+>>>
 ```
 
 At this point, we are ready to make a HTTP API call to the Nexus switch.  Remember the Nexus switch only supports HTTP POSTs even though we are _getting_ data back. This is why it's non-RESTful HTTP API.
@@ -166,7 +166,7 @@ Make the API call to the device using the `post` function of `requests` as shown
 
 ```python
 >>> response = requests.post(url, data=json.dumps(payload), headers=headers, auth=auth)
->>> 
+>>>
 ```
 
 This made the API call and returned data back stored as response.
@@ -176,7 +176,7 @@ You can verify the type of response and see it's still a Requests object:
 ```python
 >>> type(response)
 <class 'requests.models.Response'>
->>> 
+>>>
 ```
 
 ##### Step 8
@@ -188,17 +188,17 @@ First, let's validate the API call was successful.  If it was we should see an H
 ```python
 >>> response.status_code
 200
->>> 
+>>>
 ```
 
 Now, let's see the actual response from the switch using the `text` attribute.
 
 ```python
 >>> rsp = response.text
->>> 
+>>>
 >>> type(rsp)
 <type 'unicode'>
->>> 
+>>>
 ```
 
 > Whenever, you see `unicode`, you can think of it as a different type of encoding for a string.
@@ -215,7 +215,7 @@ u'{\n\t"ins_api":\t{\n\t\t"type":\t"cli_show",\n\t\t"version":\t"1.2",\n\t\
 version",\n\t\t\t\t"msg":\t"Success",\n\t\t\t\t"code":\t"200",\n\t\t\t\t"body"
 \t{\n\t\t\t\t\t"header_str":\t"Cisco Nexus Operating System (NX-OS)
 Software\\nTAC support: http://www.cisco.com/tac\\nDocuments: http://www.cisco
-com/en/US/products/ps9372/tsd_products_support_series_home.html\\nCopyright 
+com/en/US/products/ps9372/tsd_products_support_series_home.html\\nCopyright
 c) 2002-2016, Cisco Systems, Inc. All rights reserved.\\nThe copyrights to
 certain works contained herein are owned by\\nother third parties and are used
 and distributed under license.\\nSome parts of this software are covered under
@@ -236,7 +236,7 @@ cpu_name":\t"Intel(R) Xeon(R) CPU @ 2.50G",\n\t\t\t\t\t"memory":\t4002312,\n\
 \t\t"kern_uptm_days":\t0,\n\t\t\t\t\t"kern_uptm_hrs":\t2,\n\t\t\t\t\t
 kern_uptm_mins":\t17,\n\t\t\t\t\t"kern_uptm_secs":\t42,\n\t\t\t\t\t
 manufacturer":\t"Cisco Systems, Inc."\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n}'
->>> 
+>>>
 
 ```
 
@@ -248,7 +248,7 @@ Load the response **JSON string** and convert it to a dictionary:
 
 ```python
 >>> data = json.loads(response.text)
->>> 
+>>>
 ```
 
 ##### Step 10
@@ -258,7 +258,7 @@ Perform a type check:
 ```python
 >>> type(data)
 <type 'dict'>
->>> 
+>>>
 ```
 
 ##### Step 11
@@ -266,47 +266,47 @@ Perform a type check:
 Print the dictionary using `json.dumps`:
 
 ```python
->>> print json.dumps(data, indent=4)
+>>> print(json.dumps(data, indent=4))
 {
     "ins_api": {
         "outputs": {
             "output": {
-                "msg": "Success", 
-                "input": "show version", 
-                "code": "200", 
+                "msg": "Success",
+                "input": "show version",
+                "code": "200",
                 "body": {
-                    "kern_uptm_secs": 42, 
-                    "kick_file_name": "bootflash:///titanium-d1-kickstart.7.3.1.D1.0.10.bin", 
-                    "loader_ver_str": "N/A", 
-                    "module_id": "NX-OSv Supervisor Module", 
-                    "kick_tmstmp": "02/22/2016 23:39:33", 
-                    "isan_file_name": "bootflash:///titanium-d1.7.3.1.D1.0.10.bin", 
-                    "sys_ver_str": "7.3(1)D1(1) [build 7.3(1)D1(0.10)]", 
-                    "bootflash_size": 1582402, 
-                    "kickstart_ver_str": "7.3(1)D1(1) [build 7.3(1)D1(0.10)]", 
-                    "kick_cmpl_time": " 1/11/2016 16:00:00", 
-                    "chassis_id": "NX-OSv Chassis", 
-                    "proc_board_id": "TM29D1D533B", 
-                    "memory": 4002312, 
-                    "kern_uptm_mins": 17, 
-                    "cpu_name": "Intel(R) Xeon(R) CPU @ 2.50G", 
-                    "kern_uptm_hrs": 2, 
-                    "isan_tmstmp": "02/23/2016 01:43:36", 
-                    "manufacturer": "Cisco Systems, Inc.", 
-                    "header_str": "Cisco Nexus Operating System (NX-OS) Software\nTAC support: http://www.cisco.com/tac\nDocuments: http://www.cisco.com/en/US/products/ps9372/tsd_products_support_series_home.html\nCopyright (c) 2002-2016, Cisco Systems, Inc. All rights reserved.\nThe copyrights to certain works contained herein are owned by\nother third parties and are used and distributed under license.\nSome parts of this software are covered under the GNU Public\nLicense. A copy of the license is available at\nhttp://www.gnu.org/licenses/gpl.html.\n\nNX-OSv is a demo version of the Nexus Operating System\n", 
-                    "isan_cmpl_time": " 1/11/2016 16:00:00", 
-                    "host_name": "nxos-spine1", 
-                    "mem_type": "kB", 
+                    "kern_uptm_secs": 42,
+                    "kick_file_name": "bootflash:///titanium-d1-kickstart.7.3.1.D1.0.10.bin",
+                    "loader_ver_str": "N/A",
+                    "module_id": "NX-OSv Supervisor Module",
+                    "kick_tmstmp": "02/22/2016 23:39:33",
+                    "isan_file_name": "bootflash:///titanium-d1.7.3.1.D1.0.10.bin",
+                    "sys_ver_str": "7.3(1)D1(1) [build 7.3(1)D1(0.10)]",
+                    "bootflash_size": 1582402,
+                    "kickstart_ver_str": "7.3(1)D1(1) [build 7.3(1)D1(0.10)]",
+                    "kick_cmpl_time": " 1/11/2016 16:00:00",
+                    "chassis_id": "NX-OSv Chassis",
+                    "proc_board_id": "TM29D1D533B",
+                    "memory": 4002312,
+                    "kern_uptm_mins": 17,
+                    "cpu_name": "Intel(R) Xeon(R) CPU @ 2.50G",
+                    "kern_uptm_hrs": 2,
+                    "isan_tmstmp": "02/23/2016 01:43:36",
+                    "manufacturer": "Cisco Systems, Inc.",
+                    "header_str": "Cisco Nexus Operating System (NX-OS) Software\nTAC support: http://www.cisco.com/tac\nDocuments: http://www.cisco.com/en/US/products/ps9372/tsd_products_support_series_home.html\nCopyright (c) 2002-2016, Cisco Systems, Inc. All rights reserved.\nThe copyrights to certain works contained herein are owned by\nother third parties and are used and distributed under license.\nSome parts of this software are covered under the GNU Public\nLicense. A copy of the license is available at\nhttp://www.gnu.org/licenses/gpl.html.\n\nNX-OSv is a demo version of the Nexus Operating System\n",
+                    "isan_cmpl_time": " 1/11/2016 16:00:00",
+                    "host_name": "nxos-spine1",
+                    "mem_type": "kB",
                     "kern_uptm_days": 0
                 }
             }
-        }, 
-        "version": "1.2", 
-        "type": "cli_show", 
+        },
+        "version": "1.2",
+        "type": "cli_show",
         "sid": "eoc"
     }
 }
->>> 
+>>>
 ```
 
 ##### Step 12
@@ -314,9 +314,9 @@ Print the dictionary using `json.dumps`:
 Print the name of the kickstart image.
 
 ```python
->>> print data['ins_api']['outputs']['output']['body']['kickstart_ver_str']
+>>> print(data['ins_api']['outputs']['output']['body']['kickstart_ver_str'])
 7.3(1)D1(1) [build 7.3(1)D1(0.10)]
->>> 
+>>>
 ```
 
 ##### Step 13
@@ -325,8 +325,8 @@ Extract everything from `body` in a variable first and then print the kickstart 
 
 ```python
 >>> body = data['ins_api']['outputs']['output']['body']
->>> 
->>> print body.get('kickstart_ver_str')
+>>>
+>>> print(body.get('kickstart_ver_str'))
 7.3(1)D1(1) [build 7.3(1)D1(0.10)]
 >>>
 ```
@@ -351,38 +351,38 @@ Print the JSON object using `json.dumps` out when complete.
 ...         "output_format": "json"
 ...     }
 ... }
->>> 
+>>>
 >>> response = requests.post(url, data=json.dumps(payload), headers=headers, auth=auth)
->>> 
+>>>
 >>> data = json.loads(response.text)
->>> 
->>> print json.dumps(data, indent=4)
+>>>
+>>> print(json.dumps(data, indent=4))
 {
     "ins_api": {
         "outputs": {
             "output": {
-                "msg": "Success", 
-                "input": "show vlan brief", 
-                "code": "200", 
+                "msg": "Success",
+                "input": "show vlan brief",
+                "code": "200",
                 "body": {
                     "TABLE_vlanbriefxbrief": {
                         "ROW_vlanbriefxbrief": {
-                            "vlanshowbr-vlanid": 16777216, 
-                            "vlanshowbr-vlanid-utf": 1, 
-                            "vlanshowbr-vlanname": "default", 
-                            "vlanshowbr-vlanstate": "active", 
+                            "vlanshowbr-vlanid": 16777216,
+                            "vlanshowbr-vlanid-utf": 1,
+                            "vlanshowbr-vlanname": "default",
+                            "vlanshowbr-vlanstate": "active",
                             "vlanshowbr-shutstate": "noshutdown"
                         }
                     }
                 }
             }
-        }, 
-        "version": "1.2", 
-        "type": "cli_show", 
+        },
+        "version": "1.2",
+        "type": "cli_show",
         "sid": "eoc"
     }
 }
->>> 
+>>>
 
 ```
 
@@ -392,20 +392,20 @@ Save the VLAN object (everything under body) as a new variable called `vlans`.
 
 ```python
 >>> vlans = data['ins_api']['outputs']['output']['body']
->>> 
->>> print json.dumps(vlans, indent=4)
+>>>
+>>> print(json.dumps(vlans, indent=4))
 {
     "TABLE_vlanbriefxbrief": {
         "ROW_vlanbriefxbrief": {
-            "vlanshowbr-vlanid": 16777216, 
-            "vlanshowbr-vlanid-utf": 1, 
-            "vlanshowbr-vlanname": "default", 
-            "vlanshowbr-vlanstate": "active", 
+            "vlanshowbr-vlanid": 16777216,
+            "vlanshowbr-vlanid-utf": 1,
+            "vlanshowbr-vlanname": "default",
+            "vlanshowbr-vlanstate": "active",
             "vlanshowbr-shutstate": "noshutdown"
         }
     }
 }
->>> 
+>>>
 ```
 
 ##### Step 16
@@ -415,7 +415,7 @@ Save the VLAN object (everything under body) as a new variable called `vlans`.
 Print out the vlan name for VLAN 1.
 
 ```python
->>> print vlans['TABLE_vlanbriefxbrief']['ROW_vlanbriefxbrief']['vlanshowbr-vlanname']
+>>> print(vlans['TABLE_vlanbriefxbrief']['ROW_vlanbriefxbrief']['vlanshowbr-vlanname'])
 default
 ```
 
@@ -431,11 +431,11 @@ Re-issue the same API call and re-create the `vlans` variable.
 
 ```python
 >>> response = requests.post(url, data=json.dumps(payload), headers=headers, auth=auth)
->>> 
+>>>
 >>> data = json.loads(response.text)
->>> 
+>>>
 >>> vlans = data['ins_api']['outputs']['output']['body']
->>> 
+>>>
 ```
 
 The same steps worked so far.
@@ -445,7 +445,7 @@ The same steps worked so far.
 Now print the name for VLAN 1.
 
 ```python
->>> print vlans['TABLE_vlanbriefxbrief']['ROW_vlanbriefxbrief']['vlanshowbr-vlanname']
+>>> print(vlans['TABLE_vlanbriefxbrief']['ROW_vlanbriefxbrief']['vlanshowbr-vlanname'])
 ### output omitted
 ```
 
@@ -454,22 +454,22 @@ Did it work?
 Print out `vlans` on it's own:
 
 ```python
->>> print json.dumps(vlans, indent=4)
+>>> print(json.dumps(vlans, indent=4))
 {
     "TABLE_vlanbriefxbrief": {
         "ROW_vlanbriefxbrief": [
             {
-                "vlanshowbr-vlanid": 16777216, 
-                "vlanshowbr-vlanid-utf": 1, 
-                "vlanshowbr-vlanname": "default", 
-                "vlanshowbr-vlanstate": "active", 
+                "vlanshowbr-vlanid": 16777216,
+                "vlanshowbr-vlanid-utf": 1,
+                "vlanshowbr-vlanname": "default",
+                "vlanshowbr-vlanstate": "active",
                 "vlanshowbr-shutstate": "noshutdown"
-            }, 
+            },
             {
-                "vlanshowbr-vlanid": 167772160, 
-                "vlanshowbr-vlanid-utf": 10, 
-                "vlanshowbr-vlanname": "VLAN0010", 
-                "vlanshowbr-vlanstate": "active", 
+                "vlanshowbr-vlanid": 167772160,
+                "vlanshowbr-vlanid-utf": 10,
+                "vlanshowbr-vlanname": "VLAN0010",
+                "vlanshowbr-vlanstate": "active",
                 "vlanshowbr-shutstate": "noshutdown"
             }
         ]
@@ -485,7 +485,7 @@ Notice anything different about this object compared to the previous one?  You s
 Print out the VLAN name for VLAN 1 correctly since we now it's a list.
 
 ```python
->>> print vlans['TABLE_vlanbriefxbrief']['ROW_vlanbriefxbrief'][0]['vlanshowbr-vlanname']
+>>> print(vlans['TABLE_vlanbriefxbrief']['ROW_vlanbriefxbrief'][0]['vlanshowbr-vlanname'])
 default
 ```
 
@@ -505,7 +505,7 @@ This does a type check on `your-variable` and if it's a dictionary, creates a li
 Print the name for VLAN 10:
 
 ```python
->>> print vlans['TABLE_vlanbriefxbrief']['ROW_vlanbriefxbrief'][1]['vlanshowbr-vlanname']
+>>> print(vlans['TABLE_vlanbriefxbrief']['ROW_vlanbriefxbrief'][1]['vlanshowbr-vlanname'])
 VLAN0010
 ```
 
@@ -528,7 +528,7 @@ Run the command `show cdp neighbors` for `nxos-spine1`.  Store the **"JSON"** re
 You'll notice this process becomes repetitive, so you'd want to store a few of these statements in a re-usable object like a function if you wanted to use this for production.
 
 ```python
->>> 
+>>>
 >>> payload = {
 ...     "ins_api": {
 ...         "version": "1.0",
@@ -539,12 +539,12 @@ You'll notice this process becomes repetitive, so you'd want to store a few of t
 ...         "output_format": "json"
 ...     }
 ... }
->>> 
+>>>
 >>> response = requests.post(url, data=json.dumps(payload), headers=headers, auth=auth)
->>> 
+>>>
 >>> data = json.loads(response.text)
->>> 
->>> print json.dumps(data, indent=4)
+>>>
+>>> print(json.dumps(data, indent=4))
 {
     "ins_api": {
         "outputs": {
@@ -631,7 +631,7 @@ You'll notice this process becomes repetitive, so you'd want to store a few of t
         "sid": "eoc"
     }
 }
->>> 
+>>>
 
 
 
@@ -647,7 +647,7 @@ Extract the neighbors object from `data` and save it as `cdp_neighbors`.
 
 ```python
 >>> cdp_neighbors = data['ins_api']['outputs']['output']['body']['TABLE_cdp_neighbor_brief_info']['ROW_cdp_neighbor_brief_info']
->>> 
+>>>
 ```
 
 There are two ways we can go about mapping the current dictionary keys to the desired keys.  We can use conditional if statements for each key or create a dictionary that maps them for us that provides a bit more scale.  Let's use the first option.
@@ -668,7 +668,7 @@ This list will be called `neighbors_list`.
 
 ```python
 >>> neighbors_list = []
->>> 
+>>>
 ```
 
 ##### Step 5
@@ -694,7 +694,7 @@ While building this dictionary, you will also convert keys as described above.
 Pretty print `neighbors_list`.
 
 ```python
->>> print json.dumps(neighbors_list, indent=4)
+>>> print(json.dumps(neighbors_list, indent=4))
 [
     {
         "neighbor_interface": "mgmt0",
@@ -730,7 +730,7 @@ Use the previous steps to build a script that outputs neighbors for **nxos-spine
 
 
 ```
-$ python cisco2.py 
+$ python cisco2.py
 {
     "nxos-spine1": [
         {
@@ -898,7 +898,7 @@ def main():
         response = nxapi_request(dev, command)
         neighbors[dev] = get_nxos_neighbors(response)
 
-    print json.dumps(neighbors, indent=4)
+    print(json.dumps(neighbors, indent=4))
 
 if __name__ == "__main__":
     main()
@@ -911,4 +911,3 @@ if __name__ == "__main__":
 And there you have it.  A complete script to go out and collect neighbor information from a Cisco DC network.
 
 You can even combine this with a Jinja2 template if you'd like to create a CSV report of all your neighbors!
-

@@ -30,10 +30,10 @@ When you see the `$` at the command line prompt, this should tell you that you'r
 
 ##### Step 4
 
-Once you're in the _shell_, type `print 'Hello World!'`
+Once you're in the _shell_, type `print('Hello World!')`
 
 ```python
->>> print 'Hello World!'
+>>> print('Hello World!')
 Hello World!
 
 ```

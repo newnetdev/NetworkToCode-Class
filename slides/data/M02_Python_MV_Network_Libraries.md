@@ -36,7 +36,7 @@ class: middle, segue
 
 class: ubuntu
 
-# Python Libraries 
+# Python Libraries
 
 * Python modules
   * Standalone Python file used to share code between programs
@@ -62,12 +62,12 @@ Filename: `common.py`
 #! /usr/bin/env python
 
 def show(command):
-    print "Sending 'show' command..."
-    print 'Command sent: ', command
+    print("Sending 'show' command...")
+    print('Command sent: ', command)
 
 def config(command):
-    print "Sending 'config' command..."
-    print 'Commands sent: ', command
+    print("Sending 'config' command...")
+    print('Commands sent: ', command)
 
 if __name__ == "__main__":
     command = 'show version'
@@ -85,13 +85,13 @@ Running `common.py` as a standalone program:
 
 .ubuntu[
 ```
-netdev@networktocode:~$ python common.py 
+netdev@networktocode:~$ python common.py
 
 Sending 'show' command...
 Command sent:  show version
 
 Sending 'config' command...
-Commands sent:  interface Eth1/1 ; shutdown 
+Commands sent:  interface Eth1/1 ; shutdown
 ```
 ]
 
@@ -102,7 +102,7 @@ What if you just wanted to use a function from within `common.py`?
 
 ---
 
-class: ubuntu 
+class: ubuntu
 
 # Re-Usable Python Objects
 
@@ -112,12 +112,12 @@ Remember the filename is called `common.py`
 
 ```
 def show(command):
-    print "Sending 'show' command..."
-    print 'Command sent: ', command
+    print("Sending 'show' command...")
+    print('Command sent: ', command)
 
 def config(command):
-    print "Sending 'config' command..."
-    print 'Commands sent: ', command
+    print("Sending 'config' command...")
+    print('Commands sent: ', command)
 
 if __name__ == "__main__":
     # Code only executed when ran as a a program
@@ -130,18 +130,18 @@ if __name__ == "__main__":
 .left-column[
 ```
 >>> import common
->>> 
+>>>
 >>> common.show('show version')
 Sending 'show' command...
 Command sent:  show version
->>> 
+>>>
 ```
 ]
 --
 .right-column[
 ```
 >>> import common
->>> 
+>>>
 >>> common.config('no router ospf 1')
 Sending 'config' command...
 Commands sent:  no router ospf 1
@@ -154,7 +154,7 @@ Commands sent:  no router ospf 1
 
 ---
 
-class: ubuntu 
+class: ubuntu
 
 # Using from/import and re-naming objects
 
@@ -162,7 +162,7 @@ class: ubuntu
 .left-column[
 ```
 >>> from common import show
->>> 
+>>>
 >>> show('show ip int brief')
 Sending 'show' command...
 Command sent:  show ip int brief
@@ -173,7 +173,7 @@ Command sent:  show ip int brief
 .right-column[
 ```
 >>> from common import config
->>> 
+>>>
 >>> config('interface Ethernet2/1 ; no shut')
 Sending 'config' command...
 Commands sent:  interface Ethernet2/1 ; no shut
@@ -190,7 +190,7 @@ Commands sent:  interface Ethernet2/1 ; no shut
 .left-column[
 ```
 >>> from common import show as sh
->>> 
+>>>
 >>> sh('show ip int brief')
 Sending 'show' command...
 Command sent:  show ip int brief
@@ -201,7 +201,7 @@ Command sent:  show ip int brief
 .right-column[
 ```
 >>> from common import config as cfg
->>> 
+>>>
 >>> cfg('interface Ethernet2/1 ; no shut')
 Sending 'config' command...
 Commands sent:  interface Ethernet2/1 ; no shut
@@ -275,7 +275,7 @@ class: middle, segue
 * HP Comware7
 * HP ProCurve
 * Juniper Junos
-* Linux 
+* Linux
 * Brocade VDX (limited)
 * Brocade ICX/FastIron (limited)
 * Brocade MLX/NetIron (limited)
@@ -302,7 +302,7 @@ class: middle, segue
 * Enterasys
 * Extreme
 * F5 LTM
-* Fortinet 
+* Fortinet
 ]
 
 ---
@@ -312,7 +312,7 @@ class: middle, segue
 
 ```python
 >>> from netmiko import ConnectHandler
->>> 
+>>>
 >>> device = ConnectHandler(device_type='cisco_nxos', ip='n9k1', username='cisco', password='cisco')`
 >>>
 
@@ -320,13 +320,13 @@ class: middle, segue
 
 --
 
-We could have also done: 
+We could have also done:
 
 ```python
 >>> args = dict(device_type='cisco_nxos', ip='n9k2', username='cisco', password='cisco')
->>> 
+>>>
 >>> device = ConnectHandler(**args)
->>> 
+>>>
 ```
 
 Note: `**` as in `**args` is used to treat a dictionary (single object) as multiple key-value pairs.
@@ -335,7 +335,7 @@ Note: `**` as in `**args` is used to treat a dictionary (single object) as multi
 
 # Using Netmiko
 
-Send a command to the device 
+Send a command to the device
 
 ```python
 >>> device.send_command_timing('show hostname')
@@ -371,7 +371,7 @@ Send configuration mode command (must using timing here)
 ```python
 >>> device.send_command_timing('hostname NEW_HOSTNAME')
 u'NEW_HOSTNAME(config)# '
->>> 
+>>>
 ```
 
 Same result can be achieved specifying `expect_string` within `send_command`
@@ -379,7 +379,7 @@ Same result can be achieved specifying `expect_string` within `send_command`
 ```python
 >>> device.send_command('hostname NEWER_HOSTNAME', expect_string='NEWER_HOSTNAME')
 u'NEWER_HOSTNAME(config)# '
->>> 
+>>>
 ```
 
 Exit configuration mode
@@ -396,8 +396,8 @@ Storing & Printing a command response
 
 ```python
 >>> vlans = device.send_command_expect('show vlan')
->>> 
->>> print vlans
+>>>
+>>> print(vlans)
 
 VLAN Name                             Status    Ports
 ---- -------------------------------- --------- -------------------------------
@@ -429,7 +429,7 @@ Check your current prompt
 ```python
 >>> device.find_prompt()
 u'NEW_HOSTNAME#'
->>> 
+>>>
 ```
 
 ---
@@ -468,7 +468,7 @@ u'NEW_HOSTNAME#'
     - Choose either IOS or JUNOS
 
 - Lab 13 -  Use Netmiko to interactively communicate with a network switch
- 
+
 
 ---
 
@@ -490,7 +490,7 @@ class: ubuntu
 
 ``` python
 
-number_of_routers = raw_input('Enter the number of routers in the mesh:')
+number_of_routers = input('Enter the number of routers in the mesh:')
 
 num_routers = int(number_of_routers)
 
@@ -511,7 +511,7 @@ print("For a full mesh of {} routers, you will need {} connections".format(num_r
 
 ---
 
-# sys.argv 
+# sys.argv
 
 - It's a variable that is of type `list`
 
@@ -522,7 +522,7 @@ print("For a full mesh of {} routers, you will need {} connections".format(num_r
 
   if __name__ == "__main__":
 
-      print sys.argv
+      print(sys.argv)
 
   ```
 
@@ -543,7 +543,7 @@ Objective:
 
 - Pass in the "fact" you want to see the value for and the proper key-value pair will be printed from the `facts` dictionary.
 
-Dictionary: 
+Dictionary:
 
 ```python
 facts = {'vendor': 'cisco', 'mgmt_ip': '10.1.1.1', 'model': 'nexus', 'hostname': 'NYC301', 'os': '6.1.2'}
@@ -572,9 +572,9 @@ if __name__ == "__main__":
 
     fact_to_print = args[1]      # assign the second element to my_fact
 
-    print fact_to_print + ': ' + facts[fact_to_print]
+    print(fact_to_print + ': ' + facts[fact_to_print])
 
-    print args             # added for example below
+    print(args)         # added for example below
 ```
 
 .ubuntu[
@@ -618,17 +618,17 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    print args.fact + ': ' + facts[args.fact]
+    print(args.fact + ': ' + facts[args.fact])
 
 ```
 
 ---
 
-class: ubuntu 
+class: ubuntu
 # argparse - built-in help
 
 - Leverage help menu natively built-in
-- Can be disabled if needed when parser is instantiated 
+- Can be disabled if needed when parser is instantiated
 
 ```
 ntc@ntc:~$ python get_facts.py --help
@@ -654,7 +654,7 @@ optional arguments:
 ntc@ntc:~$ python get_facts.py --f platform
 Traceback (most recent call last):
   File "get_facts.py", line 14, in <module>
-    print args.fact + ': ' + facts[args.fact]
+    print(args.fact + ': ' + facts[args.fact])
 KeyError: 'platform'
 ```
 ]
@@ -740,8 +740,8 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    print args.fact + ': ' + facts[args.fact]
-    print args.descr
+    print(args.fact + ': ' + facts[args.fact])
+    print(args.descr)
 
 ```
 
@@ -761,7 +761,7 @@ if __name__ == "__main__":
 # Lab Time
 
 - Lab 14 - Gathering User input with Command Line Arguments
-  - Prompt user input using `raw_input` and process the input
+  - Prompt user input using `input` and process the input
   - Continue to build on the neighbors script from previous labs and only print certain neighbor and device information based on the arguments being passed in
   - Write a basic script using `sys.argv` that prints arguments
 
@@ -857,7 +857,7 @@ class: middle, segue
 
 ---
 
-# Example 1: Text Input 
+# Example 1: Text Input
 
 - show vlan (Arista EOS)
 - Filename: `arista_eos_show_vlan.raw `
@@ -900,7 +900,7 @@ VLAN  Name                             Status    Ports
 
 .ubuntu[
 ```
-ntc@ntc$ python textfsm.py arista_eos_show_vlan.template arista_eos_show_vlan.raw 
+ntc@ntc$ python textfsm.py arista_eos_show_vlan.template arista_eos_show_vlan.raw
 FSM Template:
 Value VLAN_ID (\d+)
 Value NAME (\w+)
@@ -921,7 +921,7 @@ FSM Table:
 
 ---
 
-# Example 2: Text Input 
+# Example 2: Text Input
 
 - show version (Cisco IOS)
 - Filename: `cisco_ios_show_version.raw`
@@ -978,7 +978,7 @@ Start
 
 .ubuntu[
 ```
-ntc@ntc$ python textfsm.py cisco_ios_show_version.template cisco_ios_show_version.raw 
+ntc@ntc$ python textfsm.py cisco_ios_show_version.template cisco_ios_show_version.raw
 FSM Template:
 Value VERSION (.+?)
 Value HOSTNAME (\S+)
@@ -1007,13 +1007,13 @@ From Example 1:
 >>> import textfsm
 >>>
 >>> table = textfsm.TextFSM(open('arista_eos_show_vlan.template'))
->>> 
+>>>
 >>> data = table.ParseText(open('arista_eos_show_vlan.raw').read())
->>> 
->>> 
+>>>
+>>>
 >>> data
 [['1', 'default', 'active'], ['10', 'Test1', 'active'], ['20', 'Test2', 'suspended'], ['30', 'VLAN0030', 'suspended']]
->>> 
+>>>
 >>> table.header
 ['VLAN_ID', 'NAME', 'STATUS']
 >>>
@@ -1027,18 +1027,18 @@ From Example 2:
 
 ```python
 >>> import textfsm
->>> 
+>>>
 >>> table = textfsm.TextFSM(open('cisco_ios_show_version.template'))
->>> 
+>>>
 >>> data = table.ParseText(open('cisco_ios_show_version.raw').read())
 >>> # data.table.ParseText(rawtext)
->>> 
+>>>
 >>> data
 [['16.3.1', 'csr1', '2 minutes', '0x2102']]
->>> 
+>>>
 >>> table.header
 ['VERSION', 'HOSTNAME', 'UPTIME', 'CONFIG_REGISTER']
->>> 
+>>>
 ```
 
 ---
@@ -1111,11 +1111,11 @@ class: ubuntu
 
 # Index File
 
-- Maps Template to **Platform** specific **Command** 
+- Maps Template to **Platform** specific **Command**
   - Can get more granular by specifying **Hostname** too
 
 ```
-ntc@ntc:~/projects/legacy$ more ntc_templates/index 
+ntc@ntc:~/projects/legacy$ more ntc_templates/index
 
 # First line is the header fields for columns and is mandatory.
 # Regular expressions are supported in all fields except the first.
@@ -1161,13 +1161,13 @@ attrs = {'Command': command, 'Platform': platform}
 # rawtxt is the show output as a string; could be from a file or from device in real-time
 cli_table.ParseCmd(rawtxt, attrs)
 
-print cli_table 
+print(cli_table)
 ```
 
 --
 
 ```bash
->>> print cli_table
+>>> print(cli_table)
 VLAN_ID, NAME, STATUS
 1, default, active
 10, Test1, active
@@ -1192,7 +1192,7 @@ class: ubuntu
 
 ```
 >>> from ntc_course import clitable_to_dict
->>> 
+>>>
 >>> help(clitable_to_dict)
 >>>
 
@@ -1208,12 +1208,12 @@ clitable_to_dict(cli_table)
 
 ---
 
-class: ubuntu 
+class: ubuntu
 
 # Covert CliTable to List of Dictionaries
 
 ```
->>> print cli_table
+>>> print(cli_table)
 VLAN_ID, NAME, STATUS
 1, default, active
 10, Test1, active
@@ -1227,9 +1227,9 @@ VLAN_ID, NAME, STATUS
 
 ```
 >>> from ntc_course import clitable_to_dict
->>> 
+>>>
 >>> clitable_to_dict(cli_table)
-[{'vlan_id': '1', 'name': 'default', 'status': 'active'}, 
+[{'vlan_id': '1', 'name': 'default', 'status': 'active'},
 {'vlan_id': '10', 'name': 'Test1', 'status': 'active'},
 {'vlan_id': '20', 'name': 'Test2', 'status': 'suspended'},
 {'vlan_id': '30', 'name': 'VLAN0030', 'status': 'suspended'}]
@@ -1340,32 +1340,32 @@ Network Device Facts
 ```
 >>> device.get_facts()
 {'os_version': u'4.15.2F-2663444.4152F', 'uptime': 5817, 'interface_list': [u'Ethernet1', u'Ethernet2', u'Ethernet3', u'Ethernet4', u'Ethernet5', u'Ethernet6', u'Ethernet7', u'Management1'], 'vendor': u'Arista', 'serial_number': u'', 'model': u'vEOS', 'hostname': u'eos-spine1', 'fqdn': u'eos-spine1.ntc.com'}
->>> 
+>>>
 >>> facts = device.get_facts()
->>> 
+>>>
 >>> import json
->>> 
->>> print json.dumps(facts, indent=4)
+>>>
+>>> print(json.dumps(facts, indent=4))
 {
-    "os_version": "4.15.2F-2663444.4152F", 
-    "uptime": 5837, 
+    "os_version": "4.15.2F-2663444.4152F",
+    "uptime": 5837,
     "interface_list": [
-        "Ethernet1", 
-        "Ethernet2", 
-        "Ethernet3", 
-        "Ethernet4", 
-        "Ethernet5", 
-        "Ethernet6", 
-        "Ethernet7", 
+        "Ethernet1",
+        "Ethernet2",
+        "Ethernet3",
+        "Ethernet4",
+        "Ethernet5",
+        "Ethernet6",
+        "Ethernet7",
         "Management1"
-    ], 
-    "vendor": "Arista", 
-    "serial_number": "", 
-    "model": "vEOS", 
-    "hostname": "eos-spine1", 
+    ],
+    "vendor": "Arista",
+    "serial_number": "",
+    "model": "vEOS",
+    "hostname": "eos-spine1",
     "fqdn": "eos-spine1.ntc.com"
 }
->>> 
+>>>
 ```
 
 ---
@@ -1380,7 +1380,7 @@ Gathering Interfaces Info
 ```
 >>> device.get_interfaces()
 {u'Management1': {'is_enabled': True, 'description': u'', 'last_flapped': 1467419703.021217, 'is_up': True, 'mac_address': u'2c:c2:60:0d:52:90', 'speed': 1000}, u'Ethernet2': {'is_enabled': True, 'description': u'', 'last_flapped': 1467419702.781202, 'is_up': True, 'mac_address': u'2c:c2:60:12:98:52', 'speed': 1000}, u'Ethernet3': {'is_enabled': True, 'description': u'', 'last_flapped': 1467419702.781203, 'is_up': True, 'mac_address': u'2c:c2:60:60:20:9b', 'speed': 1000}, u'Ethernet1': {'is_enabled': True, 'description': u'', 'last_flapped': 1467419703.1052225, 'is_up': True, 'mac_address': u'2c:c2:60:2d:45:d5', 'speed': 1000}, u'Ethernet6': {'is_enabled': True, 'description': u'', 'last_flapped': 1467419702.781202, 'is_up': True, 'mac_address': u'2c:c2:60:48:80:70', 'speed': 1000}, u'Ethernet7': {'is_enabled': True, 'description': u'', 'last_flapped': 1467419702.8092043, 'is_up': True, 'mac_address': u'2c:c2:60:40:8d:10', 'speed': 1000}, u'Ethernet4': {'is_enabled': True, 'description': u'', 'last_flapped': 1467419702.769202, 'is_up': True, 'mac_address': u'2c:c2:60:2e:c6:f8', 'speed': 1000}, u'Ethernet5': {'is_enabled': True, 'description': u'', 'last_flapped': 1467419703.105223, 'is_up': True, 'mac_address': u'2c:c2:60:60:7d:ba', 'speed': 1000}}
->>> 
+>>>
 
 ```
 
@@ -1396,33 +1396,33 @@ class: ubuntu
 
 ```
 >>> interfaces = device.get_interfaces()
->>> 
->>> print json.dumps(interfaces, indent=4)
+>>>
+>>> print(json.dumps(interfaces, indent=4))
 {
     "Management1": {
-        "is_enabled": true, 
-        "description": "", 
-        "last_flapped": 1467419703.0212176, 
-        "is_up": true, 
-        "mac_address": "2c:c2:60:0d:52:90", 
+        "is_enabled": true,
+        "description": "",
+        "last_flapped": 1467419703.0212176,
+        "is_up": true,
+        "mac_address": "2c:c2:60:0d:52:90",
         "speed": 1000
-    }, 
+    },
     "Ethernet2": {
-        "is_enabled": true, 
-        "description": "", 
-        "last_flapped": 1467419702.7812023, 
-        "is_up": true, 
-        "mac_address": "2c:c2:60:12:98:52", 
+        "is_enabled": true,
+        "description": "",
+        "last_flapped": 1467419702.7812023,
+        "is_up": true,
+        "mac_address": "2c:c2:60:12:98:52",
         "speed": 1000
-    }, 
+    },
     "Ethernet3": {
-        "is_enabled": true, 
-        "description": "", 
-        "last_flapped": 1467419702.7812028, 
-        "is_up": true, 
-        "mac_address": "2c:c2:60:60:20:9b", 
+        "is_enabled": true,
+        "description": "",
+        "last_flapped": 1467419702.7812028,
+        "is_up": true,
+        "mac_address": "2c:c2:60:60:20:9b",
         "speed": 1000
-    }, 
+    },
 ```
 ]
 
@@ -1430,27 +1430,27 @@ class: ubuntu
 
 ```
     "Ethernet1": {
-        "is_enabled": true, 
-        "description": "", 
-        "last_flapped": 1467419702.781203, 
-        "is_up": true, 
-        "mac_address": "2c:c2:60:48:80:70", 
+        "is_enabled": true,
+        "description": "",
+        "last_flapped": 1467419702.781203,
+        "is_up": true,
+        "mac_address": "2c:c2:60:48:80:70",
         "speed": 1000
-    }, 
+    },
     "Ethernet5": {
-        "is_enabled": true, 
-        "description": "", 
-        "last_flapped": 1467419702.8092043, 
-        "is_up": true, 
-        "mac_address": "2c:c2:60:40:8d:10", 
+        "is_enabled": true,
+        "description": "",
+        "last_flapped": 1467419702.8092043,
+        "is_up": true,
+        "mac_address": "2c:c2:60:40:8d:10",
         "speed": 1000
-    }, 
+    },
     "Ethernet4": {
-        "is_enabled": true, 
-        "description": "", 
-        "last_flapped": 1467419702.7692015, 
-        "is_up": true, 
-        "mac_address": "2c:c2:60:2e:c6:f8", 
+        "is_enabled": true,
+        "description": "",
+        "last_flapped": 1467419702.7692015,
+        "is_up": true,
+        "mac_address": "2c:c2:60:2e:c6:f8",
         "speed": 1000
     }
 }
@@ -1535,16 +1535,16 @@ Focus on desired configuration commands.
 
 **Scenario:** You need to remove two loopback interfaces and change the hostname.
 
-**NAPALM Config Replace**: 
+**NAPALM Config Replace**:
   * Full configuration is sent to the device, but...
-  * Only diffs are applied. 
+  * Only diffs are applied.
   * You do not need to worry about going from A to B - you just focus on B.
 
 
 
 
 ```bash
-$ more diffs/csr1.diffs 
+$ more diffs/csr1.diffs
 +hostname csr1
 -hostname csr_old_name
 -interface Loopback100
@@ -1558,18 +1558,18 @@ $ more diffs/csr1.diffs
 
 ---
 
-# Configuration Merge 
+# Configuration Merge
 
-You can use NAPALM for declarative management for a sectional config too. 
+You can use NAPALM for declarative management for a sectional config too.
 
 .left-column[
 Current BGP Config
 ```bash
 router bgp 65512
    neighbor 10.0.0.0 remote-as 65500
-   neighbor 10.0.0.0 maximum-routes 12000 
+   neighbor 10.0.0.0 maximum-routes 12000
    neighbor 10.0.0.1 remote-as 65512
-   neighbor 10.0.0.1 maximum-routes 12000 
+   neighbor 10.0.0.1 maximum-routes 12000
    network 20.20.20.0/24
 !
 ```
@@ -1595,13 +1595,13 @@ router bgp 65512
 
 Diff Generated by NAPALM
 ```bash
-    neighbor 10.0.0.0 maximum-routes 12000 
+    neighbor 10.0.0.0 maximum-routes 12000
     neighbor 10.0.0.1 remote-as 65512
-    neighbor 10.0.0.1 maximum-routes 12000 
+    neighbor 10.0.0.1 maximum-routes 12000
 +   neighbor 10.0.0.2 remote-as 65500
-+   neighbor 10.0.0.2 maximum-routes 12000 
++   neighbor 10.0.0.2 maximum-routes 12000
 +   neighbor 10.0.0.10 remote-as 65512
-+   neighbor 10.0.0.10 maximum-routes 12000 
++   neighbor 10.0.0.10 maximum-routes 12000
     network 20.20.20.0/24
 +   network 100.0.100.0/24
  !
@@ -1617,16 +1617,16 @@ Diff Generated by NAPALM
 
 # Configuration Merge (Advanced)
 
-You can use NAPALM for declarative management for a sectional config too. 
+You can use NAPALM for declarative management for a sectional config too.
 
 .left-column[
 Current BGP Config
 ```bash
 router bgp 65512
    neighbor 10.0.0.0 remote-as 65500
-   neighbor 10.0.0.0 maximum-routes 12000 
+   neighbor 10.0.0.0 maximum-routes 12000
    neighbor 10.0.0.1 remote-as 65512
-   neighbor 10.0.0.1 maximum-routes 12000 
+   neighbor 10.0.0.1 maximum-routes 12000
    network 20.20.20.0/24
 !
 ```
@@ -1655,14 +1655,14 @@ Diff Generated by NAPALM
 ```bash
  router bgp 65512
 -   neighbor 10.0.0.0 remote-as 65500
--   neighbor 10.0.0.0 maximum-routes 12000 
+-   neighbor 10.0.0.0 maximum-routes 12000
     neighbor 10.0.0.1 remote-as 65512
-    neighbor 10.0.0.1 maximum-routes 12000 
+    neighbor 10.0.0.1 maximum-routes 12000
 -   network 20.20.20.0/24
 +   neighbor 10.0.0.2 remote-as 65500
-+   neighbor 10.0.0.2 maximum-routes 12000 
++   neighbor 10.0.0.2 maximum-routes 12000
 +   neighbor 10.0.0.10 remote-as 65512
-+   neighbor 10.0.0.10 maximum-routes 12000 
++   neighbor 10.0.0.10 maximum-routes 12000
 +   network 100.0.100.0/24
  !
 
@@ -1696,7 +1696,7 @@ Step 2. Create Device Object
 >>> hostname = 'eos-spine1'
 >>> username = 'ntc'
 >>> password = 'ntc123'
->>> 
+>>>
 >>> device = driver(hostname, username, password)
 >>>
 ```
@@ -1744,12 +1744,12 @@ class: ubuntu
 >>> device.load_merge_candidate(filename='snmp.conf')
 ```
 
-- Compare the running configuration and the new candidate configuration with `compare_config` 
+- Compare the running configuration and the new candidate configuration with `compare_config`
 
 ```
 >>> diffs = device.compare_config()
->>> 
->>> print diffs
+>>>
+>>> print(diffs)
 @@ -7,7 +7,12 @@
  hostname eos-spine1
  ip domain-name ntc.com
@@ -1773,13 +1773,13 @@ class: ubuntu
 # Perform a Configuration Replace
 
 - Declarative network configuration management  
-- Requires using a full configuration file 
+- Requires using a full configuration file
 - `load_replace_candidate` method
 - Copies new config to the device, but does not commit it
 
 ```
 >>> device.load_replace_candidate(filename='new_good.conf')
->>> 
+>>>
 ```
 
 
@@ -1804,7 +1804,7 @@ table, th, td {
   <tr>
     <th>Method</th>
     <th>Description</th>
-    <th>Example</th> 
+    <th>Example</th>
   </tr>
   <tr>
     <td>discard_config</td>
@@ -1828,19 +1828,19 @@ table, th, td {
 
 ```
 >>> device.discard_config()
->>> 
->>> print device.compare_config()
+>>>
+>>> print(device.compare_config())
 u''
 ```
 
 ```
 >>> device.commit_config()
->>> 
+>>>
 ```
 
 ```
 >>> device.rollback()
->>> 
+>>>
 ```
 ---
 
@@ -1938,7 +1938,7 @@ Step 1. Import Device Object
 
 ```
 >>> from pyntc import ntc_device as NTC
->>> 
+>>>
 ```
 
 Step 2. Create Device Object(s)
@@ -1946,16 +1946,16 @@ Step 2. Create Device Object(s)
 
 ```
 >>> # CREATE DEVICE OBJECT FOR AN IOS DEVICE
->>> 
+>>>
 >>> csr1 = NTC(host='csr1', username='ntc', password='ntc123', device_type='cisco_ios_ssh')
 >>>
 ```
 
 ```
 >>> # CREATE DEVICE OBJECT FOR A NEXUS DEVICE
->>> 
+>>>
 >>> nxs1 = NTC(host='nxos-spine1', username='ntc', password='ntc123', device_type='cisco_nxos_nxapi')
->>> 
+>>>
 ```
 
 
@@ -1970,8 +1970,8 @@ class: ubuntu
 
 ```
 >>> run = csr1.running_config
->>> 
->>> print run
+>>>
+>>> print(run)
 Building configuration...
 
 Current configuration : 2062 bytes
@@ -2003,7 +2003,7 @@ class: ubuntu
 
 ```
 >>> devices = [csr1, nxs1]
->>> 
+>>>
 >>> for device in devices:
 ...   device.file_copy('newconfig.cfg')
 ...
@@ -2017,7 +2017,7 @@ class: ubuntu
 # Save Configs
 
 - `save` method
-- Perform a save on the network device 
+- Perform a save on the network device
 
 `copy run start` for Cisco/Arista and `commit` for Juniper
 
@@ -2046,7 +2046,7 @@ class: ubuntu
 
 ```
 >>> csr1.backup_running_config('csr1.cfg')
->>> 
+>>>
 ```
 
 ---
@@ -2062,7 +2062,7 @@ Parameters:
 
 ```
 >>> csr1.reboot(confirm=True)
->>> 
+>>>
 ```
 
 ---
@@ -2079,14 +2079,14 @@ Note: not currently supported on Juniper
 
 ```
 >>> device.install_os('nxos.7.0.3.I2.1.bin')
->>> 
+>>>
 ```
 
 ---
 
 class: ubuntu
 
-# Upgrade Workflow 
+# Upgrade Workflow
 
 **Sample Workflow**
 
@@ -2096,7 +2096,7 @@ class: ubuntu
 >>> device.file_copy('nxos.7.0.3.I2.1.bin')
 >>> device.install_os('nxos.7.0.3.I2.1.bin')
 >>> device.reboot()          
->>> 
+>>>
 ```
 
 ---
@@ -2120,13 +2120,13 @@ class: ubuntu
 ```
 >>> nxs1.show('show hostname', raw_text=True)
 'nxos-spine1 \n'
->>> 
+>>>
 ```
 
 ```
 >>> cmds = ['show hostname', 'show run int Eth2/1']
 >>> data = nxs1.show_list(cmds, raw_text=True)
->>> 
+>>>
 ```
 ]
 
@@ -2134,12 +2134,12 @@ class: ubuntu
 
 ```
 >>> csr1.config('hostname testname')
->>> 
+>>>
 ```
 
 ```
 >>> csr1.config_list(['interface Gi3', 'shutdown'])
->>> 
+>>>
 ```
 
 ]
@@ -2161,5 +2161,3 @@ class: ubuntu
 - Multi-vendor library that currently supports system level tasks
   - Backing up configs, copying files, upgrading images
   - Rebooting devices, issuing commands, saving configs
-
-

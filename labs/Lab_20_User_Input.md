@@ -108,20 +108,20 @@ if __name__ == "__main__":
 Replace the hard-coded variables you just created with interactive prompts:
 
 ```python
-    device = raw_input("Please enter the hostname or IP: ")
-    username = raw_input("Please enter the username: ")
-    password = raw_input("Please enter the password: ")
-    device_type = raw_input("Please enter the device type: ")
+    device = input("Please enter the hostname or IP: ")
+    username = input("Please enter the username: ")
+    password = input("Please enter the password: ")
+    device_type = input("Please enter the device type: ")
 ```
 
 The bottom portion of the script should look like this:
 
 ```python
 if __name__ == "__main__":
-    device = raw_input("Please enter the hostname or IP: ")
-    username = raw_input("Please enter the username: ")
-    password = raw_input("Please enter the password: ")
-    device_type = raw_input("Please enter the device type: ")
+    device = input("Please enter the hostname or IP: ")
+    username = input("Please enter the username: ")
+    password = input("Please enter the password: ")
+    device_type = input("Please enter the device type: ")
 
     main(device, username, password, device_type)
 ```
@@ -138,7 +138,7 @@ Import `getpass` at the top of your script like this:
 from getpass import getpass
 ```
 
-Replace `raw_input` for `getpass` when entering the password.
+Replace `input` for `getpass` when entering the password.
 
 ```python
 password = getpass("Please enter the password: ")
@@ -174,10 +174,10 @@ import argparse
 Replace the following interactive prompts in your script:
 
 ```python
-    device = raw_input("Please enter the hostname or IP: ")
-    username = raw_input("Please enter the username: ")
-    password = raw_input("Please enter the password: ")
-    device_type = raw_input("Please enter the device type: ")
+    device = input("Please enter the hostname or IP: ")
+    username = input("Please enter the username: ")
+    password = input("Please enter the password: ")
+    device_type = input("Please enter the device type: ")
 ```
 
 You will replace them with the following:
@@ -272,7 +272,7 @@ Add a print statement that says "HERE ARE MY ARGUMENTS: "
 Right under the print statement, add the following line:
 
 ```python
-print sys.argv
+print(sys.argv)
 
 ```
 
@@ -285,8 +285,8 @@ import sys
 
 if __name__ == "__main__":
 
-    print 'HERE ARE MY ARGUMENTS: '
-    print sys.argv
+    print('HERE ARE MY ARGUMENTS: ')
+    print(sys.argv)
 
 ```
 
@@ -328,11 +328,11 @@ Additionally, save `sys.argv` as `args`.  This will simplfy working with the obj
 ```python
 if __name__ == "__main__":
 
-    print 'HERE ARE MY ARGUMENTS: '
+    print('HERE ARE MY ARGUMENTS: ')
 
     args = sys.argv
 
-    print args[1]
+    print(args[1])
 ```
 
 Run the script again.
@@ -379,5 +379,3 @@ Take a look:
 ...
 >>>
 ```
-
-

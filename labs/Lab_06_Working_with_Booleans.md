@@ -32,7 +32,7 @@ Create another variable called `needs_bgp` and assign it the value of `False`. T
 ```python
 >>> needs_bgp = False
 >>>
->>> print needs_bgp
+>>> print(needs_bgp)
 False
 >>>
 ```
@@ -247,4 +247,3 @@ False
 ```
 
 With this logic, you'll be able to know if there is some value assigned to your variable when we start using conditional logic (if statements) in Python.
-

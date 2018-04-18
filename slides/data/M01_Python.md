@@ -9,7 +9,7 @@ layout: true
 class: center, middle, title
 .footer-picture[<img src="data/media/Footer1.PNG" alt="Blue Logo" style="alight:middle;width:350px;height:60px;">]
 
-# Getting Started with Python 
+# Getting Started with Python
 # for Network Engineers
 
 
@@ -43,11 +43,11 @@ class: ubuntu
 
 ```
 ntc@ntc:~$ python
-Python 2.7.6 (default, Mar 22 2014, 22:59:56) 
+Python 2.7.6 (default, Mar 22 2014, 22:59:56)
 [GCC 4.8.2] on linux2
 Type "help", "copyright", "credits" or "license" for more information.
->>> 
->>> 
+>>>
+>>>
 >>> # ENTER PYTHON CODE / STATEMENTS HERE
 ```
 
@@ -72,13 +72,13 @@ class: ubuntu
 
 ```
 netdev@networktocode:~$ python
-Python 2.7.6 (default, Mar 22 2014, 22:59:56) 
+Python 2.7.6 (default, Mar 22 2014, 22:59:56)
 [GCC 4.8.2] on linux2
 Type "help", "copyright", "credits" or "license" for more information.
->>> 
+>>>
 >>> hostname = 'ROUTER1'
 ```
- 
+
 --
 
 - Task:
@@ -86,7 +86,7 @@ Type "help", "copyright", "credits" or "license" for more information.
 
 ```
 >>> ip_addr = "10.200.1.1/24"
->>> 
+>>>
 ```
 
 
@@ -100,15 +100,15 @@ Verify the type of object using the `type()` function.
 
 ```
 >>> ip_addr = "10.200.1.1/24"
->>> 
+>>>
 >>> type(ip_addr)
 <type 'str'>
->>> 
+>>>
 ```
 
 ```
 >>> hostname = 'r1'
->>> 
+>>>
 >>> type(hostname)
 <type 'str'>
 >>>
@@ -130,7 +130,7 @@ class: ubuntu
 
 ```
 >>> ip_addr = "10.1.100.1"
->>> print ip_addr
+>>> print(ip_addr)
 10.1.100.1
 >>>
 ```
@@ -147,13 +147,13 @@ class: ubuntu
 
 ```
 >>> ip_addr = "The IP Address is:\n\n10.1.100.1"
->>> 
+>>>
 >>> ip_addr
 'The IP Address is:\n\n10.1.100.1'
 ```
 
 ```
->>> print ip_addr
+>>> print(ip_addr)
 The IP Address is:
 
 10.1.100.1
@@ -170,8 +170,8 @@ class: ubuntu
 ```
 >>> ip_addr = '10.1.100.1'
 >>> ipmask = ip_addr + '/24'
->>> 
->>> print ipmask
+>>>
+>>> print(ipmask)
 10.1.100.1/24
 >>>
 ```
@@ -179,13 +179,13 @@ class: ubuntu
 - Without pre-built variables...
 
 ```
->>> print "The IP Address and Mask is: " + ipmask
+>>> print("The IP Address and Mask is: " + ipmask)
 The IP Address and Mask is: 10.1.100.1/24
->>> 
+>>>
 >>> statement = "The IP Address and Mask is: " + ipmask
 >>> statement
 'The IP Address and Mask is: 10.1.100.1/24'
->>> 
+>>>
 ```
 
 
@@ -200,22 +200,22 @@ class: ubuntu
 
 ```
 >>> hyphen = '-'
->>> 
->>> print hyphen * 30
+>>>
+>>> print(hyphen * 30)
 ------------------------------
 >>>
 
 ```
 
 ```
->>> print '123' * 10
+>>> print('123' * 10)
 123123123123123123123123123123
 >>>
 ```
 
 ---
 
-class: ubuntu 
+class: ubuntu
 
 # Built-in String Methods
 
@@ -224,27 +224,27 @@ class: ubuntu
 
 ```
 >>> # verify data type with type()
->>> 
+>>>
 >>> type(host1_ip)
 <type 'str'>
->>> 
+>>>
 ```
 
 ```
 >>> # verify built-in methods with dir()
->>> 
+>>>
 >>> host1_ip = '10.100.1.1'
->>> 
+>>>
 >>> dir(host1_ip)
 ['capitalize', 'center', 'count', 'decode', 'encode', 'endswith', 'expandtabs', 'find', 'format', 'index', 'isalnum', 'isalpha', 'isdigit', 'islower', 'isspace', 'istitle', 'isupper', 'join', 'ljust', 'lower', 'lstrip', 'partition', 'replace', 'rfind', 'rindex', 'rjust', 'rpartition', 'rsplit', 'rstrip', 'split', 'splitlines', 'startswith', 'strip', 'swapcase', 'title', 'translate', 'upper', 'zfill']
 >>>
->>> 
->>> # cleaned up for brevity 
+>>>
+>>> # cleaned up for brevity
 ```
 
 ---
 
-class: ubuntu 
+class: ubuntu
 
 # Built-in String Methods (cont'd)
 
@@ -260,14 +260,14 @@ Use the object (variable) or data type name with the `dir()` function.
 >>> dir(str)
 ['capitalize', 'center', 'count', 'decode', 'encode', 'endswith', 'expandtabs', 'find', 'format', 'index', 'isalnum', 'isalpha', 'isdigit', 'islower', 'isspace', 'istitle', 'isupper', 'join', 'ljust', 'lower', 'lstrip', 'partition', 'replace', 'rfind', 'rindex', 'rjust', 'rpartition', 'rsplit', 'rstrip', 'split', 'splitlines', 'startswith', 'strip', 'swapcase', 'title', 'translate', 'upper', 'zfill']
 >>>
->>> 
->>> # cleaned up for brevity 
+>>>
+>>> # cleaned up for brevity
 ```
 
 
 ---
 
-class: ubuntu 
+class: ubuntu
 
 # Built-in String Methods (cont'd)
 
@@ -294,7 +294,7 @@ class: ubuntu
 
 ```
 >>> host1_ip = '10.100.1.1'
->>> 
+>>>
 >>> host1_ip.startswith('10')
 True
 ```
@@ -303,8 +303,8 @@ True
 
 ```
 >>> ip_check = host1_ip.startswith('10')
->>> 
->>> print ip_check
+>>>
+>>> print(ip_check)
 True
 ```
 
@@ -319,7 +319,7 @@ Get built-in help statements on how to use a given method.
 
 ```
 >>> help(host1_ip.startswith)
->>> 
+>>>
 ```
 
 ```
@@ -327,7 +327,7 @@ Help on built-in function startswith:
 
 startswith(...)
     S.startswith(prefix[, start[, end]]) -> bool
-    
+
     Return True if S starts with the specified prefix, False otherwise.
     With optional start, test S beginning at that position.
     With optional end, stop comparing S at that position.
@@ -373,10 +373,10 @@ class: ubuntu
 
 ```
 >>> hostname = 'NYCWAN1'
->>> 
+>>>
 >>> hostname.lower()
 'nycwan1'
->>> 
+>>>
 >>> hostname
 'NYCWAN1'
 ```
@@ -399,7 +399,7 @@ Help on method_descriptor:
 
 upper(...)
     S.upper() -> string
-    
+
     Return a copy of the string S converted to uppercase.
 (END)
 
@@ -428,10 +428,10 @@ class: ubuntu
 - Replace all `.`'s with `:`'s
 ```
 >>> mac_addr = 'aa.bb.cc.dd.ee.ff'
->>> 
+>>>
 >>> new_mac = mac_addr.replace('.',':')
->>> 
->>> print new_mac
+>>>
+>>> print(new_mac)
 aa:bb:cc:dd:ee:ff
 >>>
 ```
@@ -450,20 +450,20 @@ class: ubuntu
 
 ```
 >>> ipaddr = '192.168.100.50'
->>> 
+>>>
 >>> ipaddr.split('.')
 ['192', '168', '100', '50']
->>> 
+>>>
 ```
 
 --
 
 ```
 >>> ipaddr_list = ipaddr.split('.')
->>> 
->>> first_octet = ipaddr_list[0] 
->>> 
->>> print first_octet
+>>>
+>>> first_octet = ipaddr_list[0]
+>>>
+>>> print(first_octet)
 192
 ```
 
@@ -479,8 +479,8 @@ class: ubuntu
 
 ```
 >>> show_run_interface = 'interface Ethernet1/1\n  no switchport\n  description Python Testing\n  ip address 10.1.1.1/24'
->>> 
->>> print show_run_interface
+>>>
+>>> print(show_run_interface)
 interface Ethernet1/1
   no switchport
   description Python Testing
@@ -492,7 +492,7 @@ interface Ethernet1/1
 >>> lines = show_run_interface.splitlines()
 >>> lines
 ['interface Ethernet1/1', '  no switchport', '  description Python Testing', '  ip address 10.1.1.1/24']
->>> 
+>>>
 ```
 
 
@@ -504,12 +504,12 @@ class: ubuntu
 
 Remove leading and trailing white space
 
-``` 
+```
 >>> command = "    show run "
->>> 
+>>>
 >>> command.strip()
 'show run'
->>> 
+>>>
 ```
 
 Remove leading white space
@@ -522,10 +522,10 @@ Remove leading white space
 
 Remove trailing white space
 
-``` 
+```
 >>> command.rstrip()
 '    show run'
->>> 
+>>>
 
 ```
 
@@ -542,7 +542,7 @@ class: ubuntu
 
 ```
 >>> commands = ['interface Ethernet1/1', 'switchport access vlan 10', 'no shut']
->>> 
+>>>
 >>> type(commands)
 <type 'list'>
 >>>
@@ -552,16 +552,16 @@ class: ubuntu
 ```
 >>> ' ; '.join(commands)
 'interface Ethernet1/1 ; switchport access vlan 10 ; no shut'
->>> 
+>>>
 ```
 
 ```
 >>> command_string = ' ; '.join(commands)
->>> print command_string
+>>> print(command_string)
 interface Ethernet1/1 ; switchport access vlan 10 ; no shut
 >>> type(command_string)
 <type 'str'>
->>> 
+>>>
 ```
 
 
@@ -576,7 +576,7 @@ class: ubuntu
 
 ```
 >>> command = 'switchport mode access'
->>> 
+>>>
 >>> ' ; '.join(command)
 's ; w ; i ; t ; c ; h ; p ; o ; r ; t ;   ; m ; o ; d ; e ;   ; a ; c ; c ; e ; s ; s'   
 >>>
@@ -596,17 +596,17 @@ class: ubuntu
 
 ```
 >>> hostname = 'DCNJSWITCH1'
->>> 
+>>>
 >>> len(hostname)
 11
 ```
 
 ```
 >>> commands = ['interface Ethernet1/1', 'switchport access vlan 10']
->>> 
+>>>
 >>> len(commands)
 2
->>> 
+>>>
 ```
 
 ---
@@ -618,10 +618,10 @@ class: ubuntu
 - Returns: `string`
 
 ```
->>> hostname = 'nxos-spine1' 
+>>> hostname = 'nxos-spine1'
 >>> vendor = 'cisco'
 >>>
->>> print 'Device hostname is {0}, shipped from {1}'.format(hostname, vendor)
+>>> print('Device hostname is {0}, shipped from {1}'.format(hostname, vendor))
 Device hostname is nxos-spine1
 ```
 
@@ -631,19 +631,19 @@ Later versions of Python do not require the numbers in curly braces:
 ```
 >>> ip = '10.1.1.1'
 >>> mask = '24'
->>> 
+>>>
 >>> ip_addr_command = 'ip address {}/{}'.format(ip, mask)
->>> 
->>> print ip_addr_command
+>>>
+>>> print(ip_addr_command)
 ip address 10.1.1.1/24
->>> 
+>>>
 ```
 
 ---
 
 class: center, middle, segue
 
-# Before the First Lab - Things to Know 
+# Before the First Lab - Things to Know
 
 ---
 
@@ -660,9 +660,9 @@ class: ubuntu
 
 ```
 >>> hostname='router1'
->>> 
+>>>
 >>> hostname       =            'router1'
->>> 
+>>>
 ```
 
 ---
@@ -712,7 +712,7 @@ Some significant differences for the beginner:
  - `raw_input` in Python2 is `input` in Python3
  - `3/4 = 0` in Python 2 vs `3/4 = 0.75` in Python 3
  - Improvements with error messages while calling functions with incorrect arguments
- 
+
 The main driver for Python3 was to correctly handle unicode. In Python2 the default is byte encoding for strings (using ASCII encoding); in Python3 the default is unicode. This lead to a lot of bugs while handling non-english characters and symbols.
 
 ---
@@ -772,13 +772,13 @@ Example:
 ```
 >>> commands[0]
 'interface Ethernet1/1'
->>> 
+>>>
 ```
 
 ```
 >>> commands[1]
 'switchport access vlan 10'
->>> 
+>>>
 ```
 
 ---
@@ -791,21 +791,21 @@ class: ubuntu
 
 ```
 >>> device1 = ['switch1', '10.1.100.1/24', '00:00:00:00:00:01', 'cisco']
->>> 
+>>>
 >>> device2 = ['switch2', '10.1.100.2/24', '00:00:00:00:00:02', 'arista']
->>> 
+>>>
 >>> mac_1 = device1[2]
 >>> mac_2 = device2[2]
->>> 
+>>>
 >>> vendor_1 = device1[3]
 >>> vendor_2 = device2[3]
->>> 
->>> print mac_1, mac_2                    # print multiple vars on same line
+>>>
+>>> print(mac_1, mac_2)                    # print multiple vars on same line
 00:00:00:00:00:01 00:00:00:00:00:02
->>> 
->>> print vendor_1, vendor_2
+>>>
+>>> print(vendor_1, vendor_2)
 cisco arista
->>> 
+>>>
 ```
 
 >Note: you should not store contextual data like this in lists.  We will cover why later.
@@ -813,7 +813,7 @@ cisco arista
 
 ---
 
-class: ubuntu 
+class: ubuntu
 
 # Built-in List Methods
 
@@ -821,11 +821,11 @@ class: ubuntu
 
 ```
 >>> device1 = ['switch1', '10.1.100.1/24', '00:00:00:00:00:01', 'cisco']
->>> 
+>>>
 >>> dir(device1)
 ['append', 'count', 'extend', 'index', 'insert', 'pop', 'remove', 'reverse', 'sort']
->>> 
->>> 
+>>>
+>>>
 >>> # cleaned up for brevity
 ```
 
@@ -835,8 +835,8 @@ class: ubuntu
 ```
 >>> dir(list)
 ['append', 'count', 'extend', 'index', 'insert', 'pop', 'remove', 'reverse', 'sort']
->>> 
->>> 
+>>>
+>>>
 >>> # cleaned up for brevity
 ```
 
@@ -853,10 +853,10 @@ class: ubuntu
 
 ```
 >>> device1.append('nexus_9396')
->>> 
+>>>
 >>> device1
 ['switch1', '10.1.100.1/24', '00:00:00:00:00:01', 'cisco', 'nexus_9396']
->>> 
+>>>
 ```
 
 ---
@@ -879,7 +879,7 @@ class: ubuntu
 
 ```
 >>> commands.insert(0, 'config t')
->>> 
+>>>
 >>> commands
 ['config t', 'interface Ethernet1/1', 'switchport access vlan 10']
 ```
@@ -888,7 +888,7 @@ class: ubuntu
 
 ```
 >>> commands.insert(2, 'switchport mode access')
->>> 
+>>>
 >>> commands
 ['config t', 'interface Ethernet1/1', 'switchport mode access', 'switchport access vlan 10']
 
@@ -908,13 +908,13 @@ class: ubuntu
 ```
 >>> device1
 ['switch1', '10.1.100.1/24', '00:00:00:00:00:01', 'cisco', 'nexus_9396']
->>> 
+>>>
 >>> device1.pop()
 'nexus_9396'
 ```
 --
 ```
->>> 
+>>>
 >>> device1
 ['switch1', '10.1.100.1/24', '00:00:00:00:00:01', 'cisco']
 >>>
@@ -979,7 +979,7 @@ class: ubuntu
 
 ```
 >>> switches = ['cisco', 'cisco', 'arista', 'cumulus', 'cumulus', 'cisco']
->>> 
+>>>
 >>> switches.count('cisco')
 3
 >>>
@@ -998,29 +998,29 @@ class: ubuntu
 
 ```
 >>> prod = ['10.1.1.1', '10.1.1.5', '10.1.1.9']
->>> 
+>>>
 >>> qatest_ip = ['10.1.1.8', '192.168.1.5', '192.168.1.8']
->>> 
+>>>
 >>> prod.extend(qatest_ip)
->>> 
+>>>
 >>> prod
 ['10.1.1.1', '10.1.1.5', '10.1.1.9', '10.1.1.8', '192.168.1.5', '192.168.1.8']
 ```
 --
 ```
 >>> prod = ['10.1.1.1', '10.1.1.5', '10.1.1.9']
->>> 
+>>>
 >>> qatest_ip = ['10.1.1.8', '192.168.1.5', '192.168.1.8']
->>> 
+>>>
 >>> prod + qatest_ip
 ['10.1.1.1', '10.1.1.5', '10.1.1.9', '10.1.1.8', '192.168.1.5', '192.168.1.8']
->>> 
+>>>
 ```
 
 
 ---
 
-class: ubuntu 
+class: ubuntu
 
 # sort()
 
@@ -1031,9 +1031,9 @@ class: ubuntu
 
 ```
 >>> hq = ['10.1.1.1', '10.1.1.9', '10.1.1.6', '10.1.1.2', '192.168.1.5', '192.168.1.8']
->>> 
+>>>
 >>> hq.sort()
->>> 
+>>>
 >>> hq
 ['10.1.1.1', '10.1.1.2', '10.1.1.6', '10.1.1.9', '192.168.1.5', '192.168.1.8']
 >>>
@@ -1064,17 +1064,17 @@ class: ubuntu
 20
 >>> x = 5
 >>> y = 10
->>> 
+>>>
 >>> x * y
 50
->>> 
+>>>
 ```
 
 ```
 >>> z = 3
 >>> y / z
 3
->>> 
+>>>
 ```
 
 ---
@@ -1083,21 +1083,21 @@ class: ubuntu
 
 # Numbers - floats
 
-- More precise than integers 
+- More precise than integers
 - Decimal points are used
 - At least one number must be a float
 
 ```
 >>> z = 3.0
 >>> y = 10
->>> 
+>>>
 >>> result = y / z
 >>> result
 3.3333333333333335
->>> 
+>>>
 >>> round(result, 2)
 3.33
->>> 
+>>>
 ```
 
 ---
@@ -1151,22 +1151,22 @@ Always evaluated to `True` or `False`
 >>> hostname = 'r1'
 >>> qty_cisco = 4
 >>> interface_type = 'Ethernet'
->>> 
+>>>
 >>> hostname == 'R1'
 False
->>> 
+>>>
 >>> hostname != 'R1'
 True
->>> 
+>>>
 >>> qty_cisco > 2
 True
->>> 
+>>>
 >>> 5 < qty_cisco
 False
->>> 
+>>>
 >>> 'Eth' in interface_type
 True
->>> 
+>>>
 ```
 ]
 
@@ -1183,22 +1183,22 @@ Using `and` and/or `or`
 >>> hostname = 'r1'
 >>> qty_cisco = 4
 >>> interface_type = 'Ethernet'
->>> 
+>>>
 >>> hostname == 'R1'
 False
->>> 
+>>>
 >>> hostname != 'R1'
 True
->>> 
+>>>
 >>> qty_cisco > 2
 True
->>> 
+>>>
 >>> 5 < qty_cisco
 False
->>> 
+>>>
 >>> 'Eth' in interface_type
 True
->>> 
+>>>
 ```
 ]
 
@@ -1206,16 +1206,16 @@ True
 ```
 >>> 'Eth' in interface_type and hostname != 'R1'
 True
->>> 
+>>>
 >>> hostname == 'R1' or hostname != 'R1'
 True
->>> 
+>>>
 >>> hostname == ('R1' or hostname) != 'R1'
 False
->>> 
+>>>
 >>> True and True and True or False
 True
->>> 
+>>>
 ```
 ]
 
@@ -1264,7 +1264,7 @@ class: ubuntu
 - Instead of being indexed by a number, they are indexed by a name, more commonly known as a key
 - Also known as hashes and associative arrays
 - Dicts vs. Lists
-  - Key Values vs. Indexed Elements 
+  - Key Values vs. Indexed Elements
 
 
 **Instead of accessing an element by an index, you can use a word/string you define, i.e. a _key_**
@@ -1279,14 +1279,14 @@ class: ubuntu
 
 ```
 >>> dev = ['sw1', '10.1.100.1/24', '00:00:01']
->>> # print hostname
->>> print dev[0]
+>>> # print(hostname)
+>>> print(dev[0])
 sw1
 ```
 
 ```
->>> # print mac address
->>> print dev[2]
+>>> # print(mac address)
+>>> print(dev[2])
 00:00:01
 ```
 
@@ -1307,16 +1307,16 @@ class: ubuntu
 - Creating a Dictionary
 ```
 >>> dev = {'hostname':'sw1', 'mgmt_ip':'10.1.100.1/24', 'mac':'00:00:01'}
->>> 
+>>>
 ```
 --
 
 - Accessing Values
 ```
->>> print dev['hostname']
+>>> print(dev['hostname'])
 sw1
->>> 
->>> print dev['mac']
+>>>
+>>> print(dev['mac'])
 00:00:01
 >>>
 ```
@@ -1343,7 +1343,7 @@ class: ubuntu
 --
 ```
 >>> dev3 = dict(hostname='SWITCH2', model='arista_veos')
->>> 
+>>>
 ```
 --
 
@@ -1355,7 +1355,7 @@ No matter how they are created, if you need to add individual items:
 
 ---
 
-class: ubuntu 
+class: ubuntu
 # Updating a Dictionary
 
 ```
@@ -1365,39 +1365,39 @@ class: ubuntu
 Overwrites existing value
 ```
 >>> location['city'] = 'new york'
->>> 
+>>>
 ```
 
 Add new item (key/value pair)
 ```
 >>> location['country'] = 'usa'
->>> 
+>>>
 ```
 
 ```
->>> print location
+>>> print(location)
 {'city': 'new york', 'state': 'ny', 'contact': 'jack', 'country': 'usa'}
->>> 
+>>>
 
 ```
 
 ---
 
-class: ubuntu 
+class: ubuntu
 
 # Dictionary Built-in Methods
 
 ```
 >>> dir(dev)
 ['clear', 'copy', 'fromkeys', 'get', 'has_key', 'items', 'iteritems', 'iterkeys', 'itervalues', 'keys', 'pop', 'popitem', 'setdefault', 'update', 'values', 'viewitems', 'viewkeys', 'viewvalues']
->>> 
->>> 
+>>>
+>>>
 >>> # cleaned up for brevity
 ```
 
 ---
 
-class: ubuntu 
+class: ubuntu
 # keys()
 
 - Use `keys()` to see all keys in a dictionary
@@ -1405,10 +1405,10 @@ class: ubuntu
 
 ```
 >>> facts = {'vendor': 'cisco', 'hostname': 'NYC301', 'os': '6.1.2', 'mgmt_ip': '10.1.1.1'}
->>> 
+>>>
 >>> facts         # notice how it is unordered and changed from above
 {'os': '6.1.2', 'hostname': 'NYC301', 'vendor': 'cisco', 'mgmt_ip': '10.1.1.1'}
->>> 
+>>>
 >>> facts.keys()            
 ['os', 'hostname', 'vendor', 'mgmt_ip']   
 
@@ -1426,7 +1426,7 @@ class: ubuntu
 ```
 >>> facts         
 {'os': '6.1.2', 'hostname': 'NYC301', 'vendor': 'cisco', 'mgmt_ip': '10.1.1.1'}
->>> 
+>>>
 >>> facts.values()
 ['6.1.2', 'NYC301', 'cisco', '10.1.1.1']
 
@@ -1488,7 +1488,7 @@ class: ubuntu
 class: ubuntu
 # get()
 
-- Access particular value given the key 
+- Access particular value given the key
 - Ability to return user-specified value if key does not exist
 
 ```
@@ -1500,13 +1500,13 @@ When the key exists, both of these options are the same:
 ```
 >>> facts['vendor']
 'arista'
->>> 
+>>>
 ```
 
 ```
 >>> facts.get('vendor')
 'arista'
->>> 
+>>>
 ```
 
 
@@ -1527,12 +1527,12 @@ KeyError: 'hw_ver'
 
 ```
 >>> facts.get('hw_ver')
->>> 
+>>>
 ```
 
 ```
 >>> hw = facts.get('hw_ver')
->>> print hw
+>>> print(hw)
 None
 >>>
 ```
@@ -1555,10 +1555,10 @@ You can optionally return a given object (string, list, dict, etc.) if the key d
 
 ```
 >>> devices = {'dc-a':['rtr-a', 'rtr-b']}
->>> 
+>>>
 >>> devices['dc-a']
 ['rtr-a', 'rtr-b']
->>> 
+>>>
 >>> devices.get('dc-b', [])
 []
 >>>  
@@ -1582,18 +1582,18 @@ class: ubuntu
 
 ```
 >>> f_list = facts.items()
->>> 
+>>>
 >>> f_list
 [('chipset', 't2'), ('hostname', 'NYC301'), ('vendor', 'arista'), ('os', '6.1.2'), ('mgmt_ip', '10.1.1.1')]
 >>>
 >>> len(f_list)
 5
->>> 
+>>>
 >>> f_list[0][0]
 'chipset'
 >>> f_list[0][1]
 't2'
->>> 
+>>>
 ```
 
 ---
@@ -1607,20 +1607,20 @@ class: ubuntu
 * It's serializing it as a string
 
 ```
->>> print facts
+>>> print(facts)
 {'chipset': 't2', 'hostname': 'NYC301', 'vendor': 'arista', 'os': '6.1.2', 'mgmt_ip': '10.1.1.1'}
->>> 
+>>>
 >>> import json
->>> 
->>> print json.dumps(facts, indent=4)
+>>>
+>>> print(json.dumps(facts, indent=4))
 {
-    "chipset": "t2", 
-    "hostname": "NYC301", 
-    "vendor": "arista", 
-    "os": "6.1.2", 
+    "chipset": "t2",
+    "hostname": "NYC301",
+    "vendor": "arista",
+    "os": "6.1.2",
     "mgmt_ip": "10.1.1.1"
 }
->>> 
+>>>
 ```
 
 
@@ -1635,7 +1635,7 @@ class: middle, segue
 
 ---
 
-class: ubuntu 
+class: ubuntu
 
 # Tuples
 
@@ -1647,10 +1647,10 @@ class: ubuntu
 
 ```
 >>> intf = ('192.168.1.1','24')
->>> 
+>>>
 >>> intf
 ('192.168.1.1', '24')
->>> 
+>>>
 >>> intf[0]
 '192.168.1.1'
 >>> intf[1]
@@ -1686,7 +1686,7 @@ class: middle, segue
 ### Introduction to Python for Network Engineers
 
 ---
-class: ubuntu 
+class: ubuntu
 # Sets
 
 - Unordered list of **unique** objects
@@ -1699,18 +1699,18 @@ class: ubuntu
 ['r1', 'r2', 'r5', 'r1', 'r2', 'r6', 'r8']
 >>>
 >>> devices_set = set(device_list)
->>> 
->>> print devices_set
+>>>
+>>> print(devices_set)
 set(['r5', 'r6', 'r8', 'r1', 'r2'])
->>> 
+>>>
 ```
 
 ```
 >>> device_list_updated = list(devices_set)
->>> 
+>>>
 >>> device_list_updated
 ['r5', 'r6', 'r8', 'r1', 'r2']
->>> 
+>>>
 ```
 
 ---
@@ -1722,7 +1722,7 @@ class: ubuntu
 ```
 >>> set('arista')
 set(['a', 'i', 's', 'r', 't'])
->>> 
+>>>
 ```
 
 ```
@@ -1759,9 +1759,9 @@ class: ubuntu
 
 ```
 >>> switch_a = set(['2', '3', '10', '15', '20'])
->>> 
+>>>
 >>> switch_b = set(['10', '15', '20', '21', '22'])
->>> 
+>>>
 >>> switch_a.intersection(switch_b)
 set(['10', '15', '20'])
 
@@ -1780,12 +1780,12 @@ class: ubuntu
 
 ```
 >>> switch_a = set(['2', '3', '10', '15', '20'])
->>> 
+>>>
 >>> switch_b = set(['10', '15', '20', '21', '22'])
->>> 
+>>>
 >>> switch_a.union(switch_b)
 set(['10', '15', '21', '22', '3', '2', '20'])
->>> 
+>>>
 ```
 
 
@@ -1801,20 +1801,20 @@ class: ubuntu
 
 ```
 >>> switch_a = set(['2', '3', '10', '15', '20'])
->>> 
+>>>
 >>> switch_b = set(['10', '15', '20', '21', '22'])
->>> 
+>>>
 >>> switch_a.difference(switch_b)
 set(['3', '2'])
->>> 
+>>>
 ```
 
 ```
 >>> vlans = list(switch_a.difference(switch_b))
->>> 
+>>>
 >>> vlans
 ['3', '2']
->>> 
+>>>
 ```
 
 ---
@@ -1852,7 +1852,7 @@ class: ubuntu
 **When you're just starting it much more important to be able to extract data from a complex object.  Common for working with device APIs.**
 
 .left-column[
-* Basic objects include: 
+* Basic objects include:
   * Lists of strings
   * Dictionaries with strings as values
 * Need to understand more complex objects
@@ -1864,10 +1864,10 @@ class: ubuntu
 {
     "Eth1": {
         "errors": {
-            "jumbo": 10, 
-            "crc": 5, 
+            "jumbo": 10,
+            "crc": 5,
             "unknown": {
-                "cisco": "1", 
+                "cisco": "1",
                 "arista": "2"
             }
         }
@@ -1877,9 +1877,9 @@ class: ubuntu
 
 
 ```
->>> print SOME_VARIABLE['Eth1']['errors']['unknown']['cisco']
+>>> print(SOME_VARIABLE['Eth1']['errors']['unknown']['cisco'])
 1
->>> 
+>>>
 
 ```
 
@@ -1935,11 +1935,11 @@ class: ubuntu
 >>> devices = []
 >>> if facts['os'] == '6.1.2':
 ...     devices.append(facts['hostname'])
-... 
+...
 ```
 
 ```
->>> print devices
+>>> print(devices)
 ['NYC301']
 ```
 
@@ -1953,29 +1953,29 @@ Use operators such as `==`, `!=`, `>`, `<`
 
 ```
 >>> hostname = 'R1'
->>> 
+>>>
 >>> if hostname.lower() == 'r1':
-...     print "Hostname Correct"
-... 
+...     print("Hostname Correct")
+...
 Hostname Correct
->>> 
+>>>
 ```
 
 ```
 >>> if hostname.lower() != 'r1':
-...     print "Hostname NOT Correct"
-... 
->>> 
+...     print("Hostname NOT Correct")
+...
+>>>
 ```
 
 **NOTE SPACING** - any amount of spacing, but most important is consistency.  Good practice is 4 spaces.
 
 ```
 >>> if 5 > 3:
-...  print "Yes, 5 is greater than 3"
-... 
+...  print("Yes, 5 is greater than 3")
+...
 Yes, 5 is greater than 3
->>> 
+>>>
 ```
 
 
@@ -1988,17 +1988,17 @@ class: ubuntu
 - Colon at the end of each conditional
 - 4 spaces for each conditional block
 - Indentation levels must match
-- **Note:** 
+- **Note:**
   - `if $VAR` is `true` if the variable is not null (none/empty string), else it is `false`
 
 ```
 >>> commands = ''
->>> 
+>>>
 >>> if commands:
-...     print 'Commands to send: ' + commands
+...     print('Commands to send: ' + commands)
 ... else:
-...     print 'No commands to send.'
-... 
+...     print('No commands to send.')
+...
 No commands to send.
 
 ```
@@ -2007,7 +2007,7 @@ No commands to send.
 
 class: ubuntu
 
-# if-else 
+# if-else
 
 - Change `commands` and re-execute
 - Example:
@@ -2015,12 +2015,12 @@ class: ubuntu
 
 ```
 >>> commands = 'config t ; interface Ethernet1/1 ; shutdown'
->>> 
+>>>
 >>> if commands:
-...     print 'Commands to send: ' + commands
+...     print('Commands to send: ' + commands)
 ... else:
-...     print 'No commands to send.'
-... 
+...     print('No commands to send.')
+...
 Commands to send: config t ; interface Ethernet1/1 ; shutdown
 >>>
 ```
@@ -2031,13 +2031,13 @@ class: ubuntu
 # if-elif-else
 
 - Once a condition is met (true/false), the conditional block is exited
-- If none are met, the else statement is executed 
+- If none are met, the else statement is executed
 - Example:
   - Check to find type of a specified interface
 
 ```
 >>> interface = 'Ethernet1/1'
->>> 
+>>>
 >>> if interface.lower().startswith('et'):
 ...     itype = 'ethernet'
 ... elif interface.lower().startswith('vl'):
@@ -2051,7 +2051,7 @@ class: ubuntu
 ... else:
 ...     itype = 'unknown'
 >>>
->>> print itype
+>>> print(itype)
 ethernet
 ```
 
@@ -2062,7 +2062,7 @@ class: ubuntu
 
 ```
 >>> interface = 'port-channel20'
->>> 
+>>>
 >>> if interface.lower().startswith('et'):
 ...     itype = 'ethernet'
 ... elif interface.lower().startswith('vl'):
@@ -2076,7 +2076,7 @@ class: ubuntu
 ... else:
 ...     itype = 'unknown'
 >>>
->>> print itype
+>>> print(itype)
 portchannel
 ```
 
@@ -2094,25 +2094,25 @@ Be very careful with indentation.
 >>> vendor = 'cisco'
 >>> platform = 'nexus'
 >>> model = '9000'
->>> 
->>> 
+>>>
+>>>
 >>> if vendor == "cisco":
 ...     if platform == "nexus":
 ...         if model == "9000":
-...             print "Vendor:", vendor
-...             print "Platform:", platform
-...             print "Model:", model
+...             print("Vendor:", vendor)
+...             print("Platform:", platform)
+...             print("Model:", model)
 ...         else:
-...             print "unknown model"
+...             print("unknown model")
 ...     else:
-...         print "unknown platform"
+...         print("unknown platform")
 ... else:
-...     print "unknown vendor"
-... 
+...     print("unknown vendor")
+...
 Vendor: cisco
 Platform: nexus
 Model: 9000
->>> 
+>>>
 ```
 
 
@@ -2150,14 +2150,14 @@ class: ubuntu
 
 ```
 >>> routers = ['r1', 'r2', 'r3']
->>> 
+>>>
 >>> for rtr in routers:
-...   print rtr
-... 
+...   print(rtr)
+...
 r1
 r2
 r3
->>> 
+>>>
 
 ```
 
@@ -2165,12 +2165,12 @@ Common to use `item`
 
 ```
 >>> for item in routers:
-...   print item
-... 
+...   print(item)
+...
 r1
 r2
 r3
->>> 
+>>>
 ```
 
 ---
@@ -2183,8 +2183,8 @@ Looping through a list and performing a given operation for each element in the 
 
 ```
 >>> interfaces = ['Eth1/1', 'vlan20', 'Eth4/4', 'loop10']
->>> 
->>> for interface in interfaces: 
+>>>
+>>> for interface in interfaces:
 ...     if interface.lower().startswith('et'):
 ...         itype = 'ethernet'
 ...     elif interface.lower().startswith('vl'):
@@ -2195,8 +2195,8 @@ Looping through a list and performing a given operation for each element in the 
 ...         itype = 'portchannel'
 ...     elif interface.lower().startswith('mgmt'):
 ...         itype = 'management'
-...     print itype
-... 
+...     print(itype)
+...
 ethernet
 svi
 ethernet
@@ -2215,19 +2215,19 @@ Determine if IPs are rogue within a network when you're tracking all IP addresse
 ```
 >>> ips = ['1.1.1.1', '10.1.1.1', '192.168.1.1', '5.5.5.5', '10.1.2.1']
 >>> rogue_ips = ['9.9.9.9', '1.1.1.1', '5.5.5.5']
->>> 
+>>>
 >>> for ip in ips:
 ...     if ip in rogue_ips:
-...         print 'Found ROGUE IP: {}'.format(ip)
+...         print('Found ROGUE IP: {}'.format(ip))
 ...     else:
-...         print 'Valid IP:', ip
-... 
+...         print('Valid IP:', ip)
+...
 Found ROGUE IP: 1.1.1.1
 Valid IP: 10.1.1.1
 Valid IP: 192.168.1.1
 Found ROGUE IP: 5.5.5.5
 Valid IP: 10.1.2.1
->>> 
+>>>
 
 ```
 
@@ -2243,16 +2243,16 @@ class: ubuntu
 
 ```
 >>> facts = {'chipset': 't2', 'hostname': 'NYC301', 'vendor': 'arista', 'os': '6.1.2', 'mgmt_ip': '10.1.1.1'}
->>> 
+>>>
 >>> for key, value in facts.items():
-...     print key, value
-... 
+...     print(key, value)
+...
 chipset t2
 hostname NYC301
 vendor arista
 os 6.1.2
 mgmt_ip 10.1.1.1
->>> 
+>>>
 ```
 
 
@@ -2269,16 +2269,16 @@ class: ubuntu
 
 ```
 >>> facts = {'chipset': 't2', 'hostname': 'NYC301', 'vendor': 'arista', 'os': '6.1.2', 'mgmt_ip': '10.1.1.1'}
->>> 
+>>>
 >>> for device_fact, device_value in facts.items():
-...     print device_fact, device_value
-... 
+...     print(device_fact, device_value)
+...
 chipset t2
 hostname NYC301
 vendor arista
 os 6.1.2
 mgmt_ip 10.1.1.1
->>> 
+>>>
 ```
 
 ---
@@ -2292,37 +2292,37 @@ Looping over a list of dictionaries
 .left-column[
 ```
 >>> vlans = [{'id': '10', 'name': 'web'}, {'id': '20', 'name': 'app'}, {'id': '30', 'name': 'db'}]
->>> 
->>> 
+>>>
+>>>
 >>> for vlan in vlans:
-...     print 'ID:', vlan['id']
-...     print 'NAME:', vlan['name']
-... 
+...     print('ID:', vlan['id'])
+...     print('NAME:', vlan['name'])
+...
 ID: 10
 NAME: web
 ID: 20
 NAME: app
 ID: 30
 NAME: db
->>> 
+>>>
 ```
 ]
 
 .right-column[
 ```
 >>> import json
->>> print json.dumps(vlans, indent=4)
+>>> print(json.dumps(vlans, indent=4))
 [
     {
-        "id": "10", 
+        "id": "10",
         "name": "web"
-    }, 
+    },
     {
-        "id": "20", 
+        "id": "20",
         "name": "app"
-    }, 
+    },
     {
-        "id": "30", 
+        "id": "30",
         "name": "db"
     }
 ]
@@ -2350,7 +2350,7 @@ NAME: db
   - You will use conditionals to build a (simulated) list of commands that will get sent to a network device.
 - Lab 7 - Loops
   - You will access and print elements as you loop through lists and dictionaries
-  - You will iterate through key-value pairs that are commands in the form of feature/command, and using the feature name (command key), you will access their configuration values values from another dictionary, to build a list of commands to send to a network device. 
+  - You will iterate through key-value pairs that are commands in the form of feature/command, and using the feature name (command key), you will access their configuration values values from another dictionary, to build a list of commands to send to a network device.
 
 ---
 
@@ -2371,17 +2371,17 @@ class: ubuntu
 
 ```
 >>> hostname = 'DCNJSWITCH1'
->>> 
+>>>
 >>> len(hostname)
 11
 ```
 
 ```
 >>> commands = ['interface Ethernet1/1', 'switchport access vlan 10']
->>> 
+>>>
 >>> len(commands)
 2
->>> 
+>>>
 ```
 
 ---
@@ -2398,15 +2398,15 @@ class: ubuntu
 ```
 >>> def print_vlans():
 ...     vlans = [1, 5, 10, 11, 14, 15]
-...     print vlans
-... 
->>> 
+...     print(vlans)
+...
+>>>
 ```
 --
 ```
 >>> print_vlans()
 [1, 5, 10, 11, 14, 15]
->>> 
+>>>
 ```
 
 ---
@@ -2423,16 +2423,16 @@ class: ubuntu
 ...     vlans = [1, 5, 10, 11, 14, 15]
 ...     
 ...     return vlans
-... 
->>> 
+...
+>>>
 ```
 --
 ```
 >>> vlans_list = get_vlans()
->>> 
->>> print vlans_list
+>>>
+>>> print(vlans_list)
 [1, 5, 10, 11, 14, 15]
->>> 
+>>>
 ```
 
 ---
@@ -2451,7 +2451,7 @@ class: ubuntu
 ...         vlans = [5, 10, 14, 15]
 ...  
 ...     return vlans
-... 
+...
 >>>
 ```
 
@@ -2459,7 +2459,7 @@ class: ubuntu
 ```
 >>> vlans = get_vlans('R1')
 >>>
->>> print vlans
+>>> print(vlans)
 [1, 5, 10, 11, 14, 15]
 >>>
 ```
@@ -2480,19 +2480,19 @@ class: ubuntu
 ...     if vlan_id in vlans:
 ...         return True
 ...     return False
-... 
+...
 >>>
 ```
 --
 ```
 >>> vlan_exists(10)
 True
->>> 
+>>>
 >>> if vlan_exists(25):    # you don't have to save the returned data into a var
-...     print "Vlan exists"
+...     print("Vlan exists")
 ... else:
-...     print "Vlan doesn't exist"
-... 
+...     print("Vlan doesn't exist")
+...
 Vlan doesn't exist
 >>>
 ```
@@ -2520,8 +2520,8 @@ class: ubuntu
 ...         itype = 'unknown'
 ...  
 ...     return itype
-... 
->>> 
+...
+>>>
 ```
 --
 ```
@@ -2547,12 +2547,12 @@ class: ubuntu
 ```
 
 >>> interfaces = ['Ethernet1/1', 'loopback20', 'mgmt0']
->>> 
+>>>
 >>> for interface in interfaces:
-...     print interface
-...     print get_interface_type(interface)
-...     print '--------'
-... 
+...     print(interface)
+...     print(get_interface_type(interface))
+...     print('--------')
+...
 Ethernet1/1
 ethernet
 --------
@@ -2574,12 +2574,12 @@ These are positional and required arguments.
 
 ```
 >>> def verify_vlan(vlan_id, vlan_name):
-...     print 'The VLAN ID is {} while the VLAN Name is {}.'.format(vlan_id, vlan_name)
-... 
->>> 
+...     print('The VLAN ID is {} while the VLAN Name is {}.'.format(vlan_id, vlan_name))
+...
+>>>
 >>> verify_vlan(5, 'web_vlan')
 The VLAN ID is 5 while the VLAN Name is web_vlan.
->>> 
+>>>
 ```
 
 ---
@@ -2592,11 +2592,11 @@ Using positional (required) arguments and optional arguments with default values
 
 ```
 >>> def interface_settings(interface, speed='auto', duplex='auto'):
-...     print "Interface: ", interface
-...     print "Speed:", speed
-...     print "Duplex:", duplex
-... 
->>> 
+...     print("Interface: ", interface)
+...     print("Speed:", speed)
+...     print("Duplex:", duplex)
+...
+>>>
 ```
 --
 ```
@@ -2612,7 +2612,7 @@ Duplex: auto
 Interface:  Eth2
 Speed: 1000
 Duplex: auto
->>> 
+>>>
 
 ```
 
@@ -2620,7 +2620,7 @@ Duplex: auto
 
 # Summary
 
-- Functions provide for a means to re-use code 
+- Functions provide for a means to re-use code
 - From repeatedly entering the same CLI commands to writing re-usable functions
 - Write a piece of code once, maybe twice, but never more!
   - Opposite of what network engineers do today
@@ -2643,7 +2643,7 @@ class: middle, segue
 
 .ubuntu[
 ```
-ntc@ntc:~$ python intro.py 
+ntc@ntc:~$ python intro.py
 Welcome to Python for Network Engineers!
 This is your first script.
 ```
@@ -2655,8 +2655,8 @@ This is your first script.
 
 if __name__ == "__main__":
 
-    print 'Welcome to Python for Network Engineers!'
-    print 'This is your first script.'
+    print('Welcome to Python for Network Engineers!')
+    print('This is your first script.')
 ```
 
 ---
@@ -2680,7 +2680,7 @@ if __name__ == "__main__":
     facts = {'vendor': 'cisco', 'mgmt_ip': '10.1.1.1', 'os': '6.1.2', 'model': 'nexus', 'hostname': 'NYC301'}
 
     for key, value in facts.items():
-        print key + '-----' + value
+        print(key + '-----' + value)
 ```
 
 
@@ -2697,7 +2697,7 @@ if __name__ == "__main__":
     facts = {'vendor': 'cisco', 'mgmt_ip': '10.1.1.1', 'os': '6.1.2', 'model': 'nexus', 'hostname': 'NYC301'}
 
     for key, value in facts.items():
-        print key + '-----' + value
+        print(key + '-----' + value)
 ```
 
 .ubuntu[
@@ -2716,7 +2716,7 @@ mgmt_ip-----10.1.1.1
 
 # Scripts with Functions
 
-- Keep the function aligned with the `if __name__ == "__main__":` 
+- Keep the function aligned with the `if __name__ == "__main__":`
 
 ```python
 #! /usr/bin/env python
@@ -2739,14 +2739,14 @@ if __name__ == "__main__":
 
     intf = 'Ethernet2/1'
     intf_type = get_interface_type(intf)
-    print intf_type
+    print(intf_type)
 
 ```
 --
 
 .ubuntu[
 ```
-ntc@ntc:~$ python verify_interface_type.py 
+ntc@ntc:~$ python verify_interface_type.py
 ethernet
 ```
 ]
@@ -2761,21 +2761,21 @@ class: ubuntu
 - Great for testing
 
 ```
-$ python -i verify_interface_type.py 
+$ python -i verify_interface_type.py
 ethernet
->>> 
+>>>
 >>> dir()
 ['__builtins__', '__doc__', '__name__', '__package__', 'get_interface_type', 'intf']
->>> 
+>>>
 >>> get_interface_type('loopback99')
 'loopback'
->>> 
+>>>
 >>> get_interface_type('portchannel5')
 'portchannel'
->>> 
+>>>
 >>> intf
 'Ethernet2/1'
->>> 
+>>>
 ```
 
 
@@ -2800,7 +2800,7 @@ ethernet
 
 - Lab 9 - Writing a Script to generate configurations
   - Write a script to generate interface configuration commands
-  
+
 - Lab 10 - Write a modular script that breaks down thescript into distinct, logical, functions, from the previous lab.
 
 ---
@@ -2814,7 +2814,7 @@ class: middle, segue
 
 # Sample Switch Config File
 
-Filename: `switch.cfg` 
+Filename: `switch.cfg`
 
 ```bash
 hostname NYCSWITCH1
@@ -2847,19 +2847,19 @@ class: ubuntu
 .left-column[
 ```
 >>> config = open('switch.cfg', 'r')         # open file
->>> 
+>>>
 >>> config.read()                            # read file
 'hostname NYCSWITCH1\n\nvlan 100\n name web\n!\ninterface Ethernet 1/1\n  description connecting to US101\n  switchport trunk encapsulation dot1q\n  switchport mode trunk\n\ninterface Ethernet 1/2\n  description connecting to US102\n  switchport trunk encapsulation dot1q\n  switchport mode trunk\n\ninterface vlan 100\n  ip address 10.100.15.100/24\n\nip route 0.0.0.0/0 10.100.15.1'
 >>>
 >>> config_str = config.read()
->>> 
+>>>
 ```
 ]
 --
 
 .right-column[
 ```
->>> print config_str
+>>> print(config_str)
 hostname NYCSWITCH1
 
 vlan 100
@@ -2896,7 +2896,7 @@ class: ubuntu
 ```
 ---
 
-class: ubuntu 
+class: ubuntu
 
 # Writing Data to a File
 
@@ -2904,30 +2904,30 @@ class: ubuntu
 ```
 >>> vlans = [{'id': '10', 'name': 'USERS'}, {'id': '20', 'name': 'VOICE'}, {'id': '30', 'name': 'WLAN'}, {'id': '40', 'name': 'APP'}, {'id': '50', 'name': 'WEB'}]
 >>>
->>> print json.dumps(vlans, indent=4)
+>>> print(json.dumps(vlans, indent=4))
 [
     {
-        "id": "10", 
+        "id": "10",
         "name": "USERS"
-    }, 
+    },
     {
-        "id": "20", 
+        "id": "20",
         "name": "VOICE"
-    }, 
+    },
     {
-        "id": "30", 
+        "id": "30",
         "name": "WLAN"
-    }, 
+    },
     {
-        "id": "40", 
+        "id": "40",
         "name": "APP"
-    }, 
+    },
     {
-        "id": "50", 
+        "id": "50",
         "name": "WEB"
     }
 ]
->>> 
+>>>
 ```
 ]
 
@@ -2970,7 +2970,7 @@ vlan 50
 Note: always remember to close files. By default, data isn't written to the file until it's closed.
 
 ---
-class: ubuntu 
+class: ubuntu
 
 # with Statement
 
@@ -2986,9 +2986,9 @@ class: ubuntu
 
 ```
 >>> config = open('switch.cfg', 'r')         # open file
->>> 
+>>>
 >>> netcfg = config.read()
->>> 
+>>>
 >>> config.close()
 ```
 
@@ -3055,5 +3055,3 @@ vlans:
   - Understand the basics of working with files.  You open a file, read data, and normalize input to usable data.
   - Update modular script from previous lab to generate a configuration file
    - Read a YAML data file and use it to generate device configuration; writing this to file
-
-
