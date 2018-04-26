@@ -283,7 +283,7 @@ Add one more play to this playbook to also build the JUNOS specific configuratio
 Execute the playbook:
 
 ```
-ntc@ntc:ansible$ ansible-playbook -i inventory deploy-snmp.yaml 
+ntc@ntc:ansible$ ansible-playbook -i inventory deploy-snmp.yml 
 
 PLAY [GENERATE SNMP CONFIGS USING JINJA2 - AMERICAS] **********************************************************************
 
