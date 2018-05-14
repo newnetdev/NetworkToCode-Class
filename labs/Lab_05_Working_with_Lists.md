@@ -26,7 +26,7 @@ Print the value of `mac_list`:
 
 ##### Step 3
 
-Using the `replace` method, update the fourth element in the list so that it uses periods instead of colons.
+Using the `replace` method, update the fourth element in the list so that it uses periods instead of colons:
 
 ```python
 >>> mac_list[3] = mac_list[3].replace(':', '.')
@@ -212,7 +212,7 @@ Continue to try the other built-in methods for lists.
 Remember, you can use:
 
 * `type()` - check the data type of a variable
-* `dir()` - view built-in methods, e.g. `dir(list)` or `dir(commands`
+* `dir()` - view built-in methods, e.g. `dir(list)` or `dir(commands)`
 * `help()` - view the help on how to use a given method, e.g. `help(list.append)` or `help(commands.append)`
 
 
