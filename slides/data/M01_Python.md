@@ -737,10 +737,11 @@ The main driver for Python3 was to correctly handle unicode. In Python2 the defa
 ---
 
 # Lab Time
-
-- Lab 1 - Hello World
+- Lab 1 - Accessing the Lab Environment
+  - Learn how to access the lab environment
+- Lab 2 - Using the Python Interpreter
   -  Getting Started with the Python Interactive Interpreter
-- Lab 2 - Working with Strings
+- Lab 3 - Working with Strings
   - Learn how to work with strings and their built-in methods while working in the Python Interactive Interpreter
 
 **Accessing Lab Guide**
