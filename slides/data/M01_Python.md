@@ -254,7 +254,7 @@ Use the object (variable) or data type name with the `dir()` function.
 - Lists - list
 - Dictionaries - dict
 - Sets - set
-- Tuple - tuple
+- Tuples - tuple
 
 ```
 >>> dir(str)
