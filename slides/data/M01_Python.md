@@ -1239,8 +1239,11 @@ Lowest precedence
 
 # Lab Time
 
-- Lab 3 - Working with Lists and Booleans
+Lab 4 - Working with Integers
+  - Explore working with Integers
+Lab 5 - Working with Lists
   - Learn how to work with lists and their built-in methods while working in the Python Interactive Interpreter
+Lab 6 - Working with Booleans
   - Explore working with Booleans
 
 
