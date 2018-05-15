@@ -1,4 +1,4 @@
-## Lab 7 - Dictionaries
+## Lab 7 - Working with Dictionaries
 
 ### Task 1 - Working with Dictionaries Part 1
 

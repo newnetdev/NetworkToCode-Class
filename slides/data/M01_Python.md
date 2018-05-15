@@ -1282,7 +1282,7 @@ class: ubuntu
 - First...look at lists again...
 
 ```
->>> dev = ['sw1', '10.1.100.1/24', '00:00:01']
+>>> dev = ['sw1', '10.1.100.1/24', '00:00:00:00:00:01']
 >>> # print(hostname)
 >>> print(dev[0])
 sw1
@@ -1291,7 +1291,7 @@ sw1
 ```
 >>> # print(mac address)
 >>> print(dev[2])
-00:00:01
+00:00:00:00:00:01
 ```
 
 
@@ -1304,13 +1304,13 @@ class: ubuntu
 
 - As a list
 ```
->>> dev = ['sw1', '10.1.100.1/24', '00:00:01']
+>>> dev = ['sw1', '10.1.100.1/24', '00:00:00:00:00:01']
 >>>
 ```
 
 - Creating a Dictionary
 ```
->>> dev = {'hostname':'sw1', 'mgmt_ip':'10.1.100.1/24', 'mac':'00:00:01'}
+>>> dev = {'hostname':'sw1', 'mgmt_ip':'10.1.100.1/24', 'mac':'00:00:00:00:00:01'}
 >>>
 ```
 --
@@ -1321,7 +1321,7 @@ class: ubuntu
 sw1
 >>>
 >>> print(dev['mac'])
-00:00:01
+00:00:00:00:00:01
 >>>
 ```
 
@@ -1574,7 +1574,7 @@ class: ubuntu
 
 # items()
 
-- `items()` simplifies accessing kv pairs
+- `items()` simplifies accessing key/value pairs
 - Returns a list of tuples and each tuple is two elements
   - Element 1 is the key and Element 2 is value
   - For now, think of tuples as a list, thus the returned object would be a list of lists
@@ -1836,7 +1836,7 @@ set(['3', '2'])
 
 # Lab Time
 
-- Lab 4 - Working with Dictionaries
+- Lab 7 - Working with Dictionaries
   - Learn how to work with dictionaries and their built-in methods while working in the Python Interactive Interpreter
 
 ---
