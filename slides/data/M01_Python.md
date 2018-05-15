@@ -2350,9 +2350,9 @@ NAME: db
 
 # Lab Time
 
-- Lab 6 - Conditionals
+- Lab 15 - Getting Started with Conditionals
   - You will use conditionals to build a (simulated) list of commands that will get sent to a network device.
-- Lab 7 - Loops
+- Lab 16 - Getting Started with For Loops
   - You will access and print elements as you loop through lists and dictionaries
   - You will iterate through key-value pairs that are commands in the form of feature/command, and using the feature name (command key), you will access their configuration values values from another dictionary, to build a list of commands to send to a network device.
 
