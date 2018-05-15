@@ -17,7 +17,7 @@ Create the following list of commands:
 
 ##### Step 2
 
-Loop through `commands` and simply print each element out.
+Loop through `commands` and simply print each element out:
 
 ```python
 >>> for command in commands:
@@ -142,9 +142,9 @@ Print the Keys & Values:
 >>> for key, value in interface.items():
 ...     print(key, value)
 ...
-duplex full
-speed 100
-description Configured by Python
+('duplex', 'full')
+('speed', '100')
+('description', 'Configured by Python')
 >>>
 ```
 
@@ -158,9 +158,9 @@ This also works just fine:
 >>> for feature, configured_value in interface.items():
 ...     print(feature, configured_value)
 ...
-duplex full
-speed 100)
-description Configured by Python)
+('duplex', 'full')
+('speed', '100')
+('description', 'Configured by Python')
 >>>
 ```
 
@@ -230,7 +230,7 @@ csr2
 >>>
 ```
 
-You can see that `hostname` is printing "csr1" and "csr2", e.g. they are they keys and then you can see that `config` is printing the whole value, which happens to be a dictionary itself.
+You can see that `hostname` is printing "csr1" and "csr2", e.g. they are keys and then you can see that `config` is printing the whole value, which happens to be a dictionary itself.
 
 ##### Step 7
 
