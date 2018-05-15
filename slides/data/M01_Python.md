@@ -2797,7 +2797,9 @@ ethernet
 
 # Lab Time
 
-- Lab 8 - Writing Python Scripts
+- Lab 18 - Getting Started with Functions
+
+- Lab 11 - Writing Scripts
   - Hello Network Automation
   - Generating Interface Commands using a Key Map
 
@@ -3054,7 +3056,7 @@ vlans:
 
 # Lab Time
 
-- Lab 11 - Working with Files
+- Lab 10 - Performing Basic File Operations
   - Understand the basics of working with files.  You open a file, read data, and normalize input to usable data.
   - Update modular script from previous lab to generate a configuration file
    - Read a YAML data file and use it to generate device configuration; writing this to file
