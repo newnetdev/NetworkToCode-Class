@@ -1853,7 +1853,7 @@ class: ubuntu
 
 # Nested Objects
 
-**When you're just starting it much more important to be able to extract data from a complex object.  Common for working with device APIs.**
+**When you're just starting, it is much more important to be able to extract data from a complex object.  Common for working with device APIs.**
 
 .left-column[
 * Basic objects include:
@@ -1907,7 +1907,7 @@ class: ubuntu
 # Lab Time
 
 
-- Lab 5 - Working with nested objects
+- Lab 9 - Exploring Nested Objects
   - List of dictionaries
   - Nested dictionaries
 

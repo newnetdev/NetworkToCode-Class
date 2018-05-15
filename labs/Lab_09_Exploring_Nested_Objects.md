@@ -12,7 +12,7 @@ facts_list = [{'customer': 'acme', 'vendor': 'arista', 'hostname': 'APAC1', 'loc
 
 ##### Step 2
 
-Pretty print `facts_list` by using `json.dumps`
+Pretty print `facts_list` by using `json.dumps`:
 
 ```python
 >>> import json
@@ -202,7 +202,7 @@ Think about this:
   * `facts_list` is a list of dictionaries
   * `facts_list[0]` is a dictionary
   * We know to add key-value pairs to a dictionary, we use:
-    *  `dict[key] = "value"`
+    *  `dict["key"] = "value"`
   *  Knowing this, we can add the new key called `neighbors` and assign it the value of the variable that just happen to also be called `neighbors`
 
 
@@ -285,9 +285,9 @@ In the next Task, we'll walk through a more gradual process helpful with parsing
 Enter the Python shell and import the `json` module.
 
 ```python
-$ python
-Python 2.7.6 (default, Jun 22 2015, 17:58:13)
-[GCC 4.8.2] on linux2
+ntc@ntc:~$ python
+Python 2.7.12 (default, Nov 19 2016, 06:48:10)
+[GCC 5.4.0 20160609] on linux2
 Type "help", "copyright", "credits" or "license" for more information.
 >>>
 >>> import json
@@ -518,7 +518,7 @@ This confirms that the outer dictionary is composed of only one "root" key.  In 
 
 ##### Step 6
 
-Verify the single key of the dictionary by using the `values` method.
+Verify the single key of the dictionary by using the `keys` method.
 
 ```python
 >>> print(content.keys())
@@ -755,7 +755,7 @@ Pretty print the new variable called `output`.
 
 ##### Step 9
 
-This is again a dictionary of one _root_ key, `ansible_facts`, whose value is still a dictionary, which you saw in Step 10 by printing all keys of `output`.  You could verify it with `len()` too.
+This is again a dictionary of one _root_ key, `ansible_facts`, whose value is still a dictionary, which you saw in Step 8 by printing all keys of `output`.  You could verify it with `len()` too.
 
 Repeat the step by step process as necessary in order to print just the value of the `fan_info` key.  
 
@@ -892,7 +892,7 @@ Store the "Ethernet2/11" MAC address value in a variable called `mac` and print 
 **Continue scrolling for the solution**
 
 ```python
-..
+.
 
 
 
@@ -928,7 +928,6 @@ Store the "Ethernet2/11" MAC address value in a variable called `mac` and print 
 
 
 
-```python
 >>> mac = output['ansible_facts']['ansible_net_interfaces']['Ethernet2/11']['macaddress']
 >>> print(mac)
 2cc2.604f.feb2
@@ -976,7 +975,7 @@ vlans = {
 
 This is a nested dictionary with just one outer key, `output`.
 
-##### Step 3
+##### Step 2
 
 Search for `existing_vlans_list` and `proposed_vlans_list` keys and store their values into `existing_vlans` and `proposed_vlans`.
 
@@ -986,7 +985,7 @@ Search for `existing_vlans_list` and `proposed_vlans_list` keys and store their 
 >>>
 ```
 
-##### Step 4
+##### Step 3
 
 Print both `existing_vlans` and `proposed_vlans`.
 
@@ -1000,7 +999,7 @@ Print both `existing_vlans` and `proposed_vlans`.
 
 These are two lists of one element each.
 
-##### Step 5
+##### Step 4
 
 Create a new variable called `end_state_vlans` and assign it the sum of `existing_vlans` and `proposed_vlans` and print the result.
 
@@ -1012,7 +1011,7 @@ Create a new variable called `end_state_vlans` and assign it the sum of `existin
 >>>
 ```
 
-##### Step 6
+##### Step 5
 
 Verify that `end_state_vlans` is equal to the `end_state_vlans_list` inner key from `vlans` dictionary.
 
@@ -1023,7 +1022,7 @@ True
 ```
 
 
-##### Step 7
+##### Step 6
 
 You'll also find a key called `updates` in this VLAN object.
 
