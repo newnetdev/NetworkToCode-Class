@@ -627,7 +627,7 @@ if __name__ == "__main__":
 ---
 
 class: ubuntu
-# argparse - built-in help
+# argparse - Built-in help
 
 - Leverage help menu natively built-in
 - Can be disabled if needed when parser is instantiated
@@ -646,7 +646,7 @@ optional arguments:
 ---
 
 
-# argparse - choices
+# argparse - Choices
 
 - Built-in error validation
 - What if the user enters an invalid value for argument?
@@ -762,7 +762,7 @@ if __name__ == "__main__":
 
 # Lab Time
 
-- Lab 14 - Gathering User input with Command Line Arguments
+- Lab 20 - Passing in User Input
   - Prompt user input using `input` and process the input
   - Continue to build on the neighbors script from previous labs and only print certain neighbor and device information based on the arguments being passed in
   - Write a basic script using `sys.argv` that prints arguments
@@ -1248,7 +1248,7 @@ VLAN_ID, NAME, STATUS
 ---
 # Lab Time
 
-- Lab 15 - TextFSM
+- Lab 21 - Parsing Show Commands with TextFSM
   - Use TextFSM to parse `show ip interface brief` from a Cisco Nexus switch
   - Use `clitable` along with `netmiko` to generate structured data from unstructured device output
 
