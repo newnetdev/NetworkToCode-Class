@@ -646,7 +646,7 @@ optional arguments:
 ---
 
 
-# arparse - choices
+# argparse - choices
 
 - Built-in error validation
 - What if the user enters an invalid value for argument?
