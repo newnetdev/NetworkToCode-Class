@@ -464,7 +464,9 @@ u'NEW_HOSTNAME#'
 
 # Lab Time
 
-- Lab 12 - Introduction to Netmiko
+- Lab 8 - Using Python Modules
+
+- Lab 12 - Exploring Netmiko
     - Choose either IOS or JUNOS
 
 - Lab 13 -  Use Netmiko to interactively communicate with a network switch
