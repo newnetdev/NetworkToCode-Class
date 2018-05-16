@@ -21,7 +21,7 @@ Create a dictionary called `facts`:
 
 ##### Step 2
 
-Print the dictionary.
+Print the dictionary:
 
 ```python
 >>> print(facts)
@@ -35,7 +35,7 @@ Let's introduce a Python module that helps in pretty printing Python objects lik
 
 ##### Step 3
 
-First, import the `json` module using the `import` keyword.
+First, import the `json` module using the `import` keyword:
 
 ```python
 >>> import json
@@ -93,7 +93,7 @@ You can do this with the `time` module.  Specifically the `sleep` function.  Let
 
 ##### Step 1
 
-Import the `time` module.
+Import the `time` module:
 
 ```python
 >>> import time
@@ -103,7 +103,7 @@ Import the `time` module.
 
 ##### Step 2
 
-Insert a pause for 5 seconds using the `sleep` function.
+Insert a pause for 5 seconds using the `sleep` function:
 
 ```python
 >>> time.sleep(5)
@@ -157,7 +157,7 @@ You can check to see your current working directory with the `getcwd()` function
 
 ##### Step 3
 
-You can also change your working directory with `chdir()`
+You can also change your working directory with `chdir()`:
 
 ```python
 >>> os.chdir('/home/ntc/files')
@@ -169,7 +169,7 @@ You can also change your working directory with `chdir()`
 
 ##### Step 4
 
-You can also access your OS ENVIRONMENT variables. Here we're accessing an environment variable called `HOME`.  
+You can also access your OS ENVIRONMENT variables. Here we're accessing an environment variable called `HOME`:
 
 ```python
 >>> os.getenv('HOME')
