@@ -241,12 +241,12 @@ Import `get_network_driver` from `napalm` and load the drivers for IOS, NXOS, Ju
 
 ##### Step 3
 
-Create 4 devices, one for each NAPALM driver you have loaded.
+Create 3 devices, one for each NAPALM driver you have loaded.
 
 ```python
->>> ios_device = ios_driver ('csr1', 'ntc', 'ntc123')
->>> nxos_device = nxos_driver ('nxos-spine1', 'ntc', 'ntc123')
->>> eos_device = eos_driver ('eos-spine1', 'ntc', 'ntc123')
+>>> ios_device = ios_driver('csr1', 'ntc', 'ntc123')
+>>> nxos_device = nxos_driver('nxos-spine1', 'ntc', 'ntc123')
+>>> eos_device = eos_driver('eos-spine1', 'ntc', 'ntc123')
 >>>
 ```
 
