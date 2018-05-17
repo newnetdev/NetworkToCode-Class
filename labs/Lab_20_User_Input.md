@@ -6,8 +6,6 @@ In this lab, you will still deploy the generated configuration for SNMP to an en
 
 ##### Step 1
 
-Use the following code and save it into a new script called `interactive.py` in your `scripts` directory:
-
 > Ensure you have `/home/ntc/scripts/configs/snmp.cfg` as that will be deployed again in this lab.
 > If this file does not exist, create this file and add the following lines to it:
 
@@ -20,6 +18,8 @@ snmp-server location new_york
 snmp-server contact jane_smith
 
 ```
+
+Use the following code and save it into a new script called `interactive.py` in your `scripts` directory:
 
 ```python
 from netmiko import ConnectHandler
@@ -242,7 +242,7 @@ optional arguments:
 
 ##### Step 6
 
-Finally, execute the script with all required inputs.
+Finally, execute the script with all required inputs:
 
 ```
 ntc@ntc:scripts$ python user-flags.py -i csr1 -d cisco_ios -u ntc -p ntc123
