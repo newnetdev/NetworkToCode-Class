@@ -1675,9 +1675,6 @@ Be cautious of device support.  This is based on NAPALM driver implementation wh
 
 ---
 
-
----
-
 class: ubuntu
 
 # Getting Started with NAPALM
