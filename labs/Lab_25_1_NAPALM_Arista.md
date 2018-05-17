@@ -19,7 +19,6 @@ snmp-server community private rw
 snmp-server community supersecret rw
 snmp-server location SYDNEY
 snmp-server contact JOHN_SMITH
-
 ```
 
 
@@ -29,11 +28,9 @@ Enter the Python shell **from your home directory**.
 
 ```python
 ntc@ntc:~$ python
-
-Python 2.7.6 (default, Jun 22 2015, 17:58:13)
-[GCC 4.8.2] on linux2
+Python 2.7.12 (default, Nov 19 2016, 06:48:10)
+[GCC 5.4.0 20160609] on linux2
 Type "help", "copyright", "credits" or "license" for more information.
-
 >>>
 >>>
 ```
@@ -100,7 +97,7 @@ Just like you've seen with built-in data types, you can use `help()` and `dir()`
 
 There are two primary methods of the device class you'd work with to apply configurations.  They are `load_merge_candidate` and `load_replace_candidate`.
 
-These are used to load a partial configuration (and merge with the device) and load a *full* configuration that will replace the full running configuration, respectively.  You'll see these if you look at the full help documentation (the above is just a snippet from the help output).
+These are used to load a *partial* configuration (and merge with the existing configuration) and load a *full* configuration that will replace the full running configuration, respectively.  You'll see these if you look at the full help documentation (the above is just a snippet from the help output).
 
 
 For this lab, we are  using `load_merge_candidate`.
@@ -261,7 +258,6 @@ Use SSH to manully log to eos-spine1 switch.
 Load the following BGP configuration onto the device:
 
 ```bash
-eos-spine1#show run section bgp
 router bgp 65512
    neighbor 10.0.0.0 remote-as 65500
    neighbor 10.0.0.0 maximum-routes 12000
@@ -401,12 +397,12 @@ Import `get_network_driver` from `napalm` and load the drivers for IOS, NXOS, Ju
 
 ##### Step 3
 
-Create 4 devices, one for each NAPALM driver you have loaded.
+Create 3 devices, one for each NAPALM driver you have loaded.
 
 ```python
->>> ios_device = ios_driver ('csr1', 'ntc', 'ntc123')
->>> nxos_device = nxos_driver ('nxos-spine1', 'ntc', 'ntc123')
->>> eos_device = eos_driver ('eos-spine1', 'ntc', 'ntc123')
+>>> ios_device = ios_driver('csr1', 'ntc', 'ntc123')
+>>> nxos_device = nxos_driver('nxos-spine1', 'ntc', 'ntc123')
+>>> eos_device = eos_driver('eos-spine1', 'ntc', 'ntc123')
 >>>
 ```
 
