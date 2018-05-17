@@ -29,7 +29,7 @@ Eth2/3               10.20.101.2     protocol-up/link-up/admin-up
 Eth2/4               10.20.102.2     protocol-up/link-up/admin-up
 ```
 
-Note: This file already exists as cisco_nxos_show_ip_interface_brief.raw in the following directory: `/home/ntc/textfsm/`on your jump host.
+Note: This file already exists as `cisco_nxos_show_ip_interface_brief.raw` in the following directory: `/home/ntc/textfsm/`on your jump host.
 
 
 ##### Step 2
@@ -115,7 +115,7 @@ The RegEx created in Step 3 gets enclosed in parentheses right next to what will
 
 Right below Start are rules, the full line(s) of text with the *Values* that we want to extract with the RegEx(es) inserted at its appropriate location.  The parsing happens one line at a time, so the rule must be able to identify the value you want to extract distinctly.
 
-Once their is a match on the specific line/rule in the state machine, you *Record* the value, so we include `-> Record` to perform this operation.  You can also perform no operation (do nothing on match), or transition to another state.
+Once there is a match on the specific line/rule in the state machine, you *Record* the value, so we include `-> Record` to perform this operation.  You can also perform no operation (do nothing on match), or transition to another state.
 
 In this one example, the full line was:
 
