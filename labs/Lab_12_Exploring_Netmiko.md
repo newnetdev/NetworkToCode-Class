@@ -40,7 +40,7 @@ Type "help", "copyright", "credits" or "license" for more information.
 
 ##### Step 3
 
-Import the netmiko `ConnectHandler` object and establish an SSH session to the Cloud Services Router device switch with the following details:
+Import the netmiko `ConnectHandler` function and establish an SSH session to the Cloud Services Router device switch with the following details:
 
 * hostname: csr1
 * Username: ntc
@@ -197,7 +197,7 @@ Configuration register is 0x2102
 >>>
 ```
 
-If you were doing a check to ensure all config registers were correct, you can this use the `in` containment keyword we covered in the booleans lab like so:
+If you were doing a check to ensure all config registers were correct, you can use the `in` containment keyword we covered in the booleans lab like so:
 
 ```python
 >>> '0x2102' in output
@@ -218,7 +218,7 @@ True
 Save the configuration using the `wr mem` command.
 
 ```python
->>> output = device.send_command('wr mem')  
+>>> output = device.send_command('wr mem')
 >>>
 >>> print(output)
 Building configuration...
@@ -248,8 +248,10 @@ Success rate is 100 percent (5/5), round-trip min/avg/max = 2/2/2 ms
 
 In this task, we'll explore two methods to send configuration commands to the device.
 
-**Option 1:** - send a list of commands to the device.
-**Option 2:** - send commands from a file.
+**Option 1:**
+ - send a list of commands to the device.
+**Option 2:**
+ - send commands from a file.
 
 While you can use the `send_command` method, it's much cleaner to use the methods shown in this task, e.g. `send_config_set` and `send_config_from_file`.
 
@@ -323,8 +325,6 @@ Add two community strings and verify they're configured.
 >>> verify = device.send_command('show run | inc snmp-server community')
 >>>
 >>> print(verify)
-snmp-server community networktocode RO
-snmp-server community public RO
 snmp-server community ntclab RO
 snmp-server community ntcrw RW
 >>>
@@ -385,7 +385,6 @@ csr1(config)#!
 csr1(config)#interface Loopback101
 csr1(config-if)# ip address 10.9.88.1 255.255.255.0
 csr1(config-if)#!
-csr1(config-if)#
 csr1(config-if)#end
 csr1#
 >>>
