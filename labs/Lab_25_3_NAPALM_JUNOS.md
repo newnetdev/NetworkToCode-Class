@@ -28,19 +28,16 @@ set snmp contact JOHN_SMITH
 Enter the Python shell **from your home directory**.
 
 ```python
-ntc@ntc:~$ python
-
-Python 2.7.6 (default, Jun 22 2015, 17:58:13)
-[GCC 4.8.2] on linux2
+Python 2.7.12 (default, Nov 19 2016, 06:48:10)
+[GCC 5.4.0 20160609] on linux2
 Type "help", "copyright", "credits" or "license" for more information.
-
 >>>
 >>>
 ```
 
 ##### Step 4
 
-Load the correct NAPALM driver.  Since we're using the Arista switch in this lab, load the **eos** driver.
+Load the correct NAPALM driver.  Since we're using the Juniper route in this lab, load the **JUNOS** driver.
 
 ```python
 >>> from napalm import get_network_driver
@@ -144,7 +141,7 @@ The configuration has been changed but not committed
 
 ```
 
-You can then generate a diff on the EOS CLI, if desired, using the command:
+You can then generate a diff on the JUNOS CLI, if desired, using the command:
 
 
 ```
@@ -319,11 +316,10 @@ Enter the Python shell from your home directory, import the *junos* napalm drive
 
 ```python
 ntc@ntc:~$ python
-
-Python 2.7.6 (default, Jun 22 2015, 17:58:13)
-[GCC 4.8.2] on linux2
+Python 2.7.12 (default, Nov 19 2016, 06:48:10)
+[GCC 5.4.0 20160609] on linux2
 Type "help", "copyright", "credits" or "license" for more information.
-
+>>>
 >>> from napalm import get_network_driver
 >>> driver = get_network_driver('junos')
 >>> device = driver('vmx8', 'ntc', 'ntc123')
@@ -354,7 +350,7 @@ All of these steps are no different than Task 1.
 
 Use the `compare_config` method to show the configuration diffs.
 
-This is where you get to see the real power of EOS and NAPALM working together.
+This is where you get to see the real power of JUNOS and NAPALM working together.
 
 ```python
 >>> print(device.compare_config())
@@ -370,8 +366,6 @@ This is where you get to see the real power of EOS and NAPALM working together.
 -     neighbor 10.0.0.12;
 >>>
 ```
-
-Notice how the commands aren't just getting pushed.  BGP is NOT getting un-configured and re-configured.  Simply, the commands required to get BGP into its final are the only commands actually being used EOS.
 
 ##### Step 8
 
