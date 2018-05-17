@@ -1524,7 +1524,7 @@ Works slightly different than based on individual drivers and operating systems.
 1. Connect to Device
 2. Copy desired configuration to device (checkpoint file, candidate configuration, config session, bootflash as candidate_config.txt)
 3. Use a vendor command to view diffs
-4. Use a vendor command apply configuration changes
+4. Use a vendor command to apply configuration changes
 5. Optionally, rollback to a config that exists in the file system.
 
 Note: you dictate if the supplised configuration is a full config file or partial configuration
