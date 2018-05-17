@@ -1884,7 +1884,7 @@ class: ubuntu
 
 # Lab Time - BONUS
 
-- Lab 19 - NAPALM
+- Lab 25 - NAPALM
  -   Using the NAPALM Python Library to do declarative config merge, full config merge and getters for Arista EOS
  -   Using the NAPALM Python Library to do basic config merge and getters for Cisco IOS
  -   Using the NAPALM Python Library to do declarative config merge, full config merge and getters for Juniper JUNOS
