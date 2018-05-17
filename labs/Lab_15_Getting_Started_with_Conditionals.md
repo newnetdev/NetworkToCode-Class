@@ -9,6 +9,11 @@ We've already reviewed boolean expressions, so you already know how to build if 
 Examples:
 
 ```python
+>>> hostname = "nxos-spine10"
+>>>
+```
+
+```python
 >>> hostname != 'nxos-spine2'
 True
 >>>
@@ -162,7 +167,7 @@ vlan 30
 >>>
 ```
 
-##### Step 7
+##### Step 8
 
 Remove the VLAN name for VLAN 20.
 
@@ -172,7 +177,7 @@ Remove the VLAN name for VLAN 20.
 >>>
 ```
 
-##### Step 8
+##### Step 9
 
 Repeat Step 6.
 
@@ -211,7 +216,7 @@ Does it work?
 ```
 
 
-##### Step 9
+##### Step 10
 
 When you use the `[]` notation it assumes the key is going to be there and if it's not (like for VLAN 20), a `KeyError` is raised.
 
@@ -239,7 +244,7 @@ vlan 30
 
 See what happened here?  Since `get` returns `None` if the key doesn't exist, it's easy to use in an `if` statement to see if a value was in fact returned.
 
-##### Step 10
+##### Step 11
 
 Create the variable called `devices` as such:
 
@@ -251,7 +256,7 @@ Create the variable called `devices` as such:
 
 Pretty print to better see the full object, but it's a list of dictionaries.  Each dictionary has two key-value pairs, e.g. a `platform` key and a `hostname` key.
 
-##### Step 11
+##### Step 12
 
 Loop through `devices` and print the vendor of each device.  Make sure the code also prints out "Unknown Vendor" if it is an unknown vendor--for this example, treat the ASA as "unknown".
 
@@ -281,7 +286,7 @@ Unknown Vendor
 
 There are a few ways to handle this and we're showing two in this example.  You can check each platform separately as shown with Cisco or check them on the same line as shown with Juniper using an _or_ statement.
 
-##### Step 12
+##### Step 13
 
 There is another way too if we pre-build a known platforms list per vendor.
 

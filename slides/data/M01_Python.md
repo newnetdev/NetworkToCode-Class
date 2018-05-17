@@ -254,7 +254,7 @@ Use the object (variable) or data type name with the `dir()` function.
 - Lists - list
 - Dictionaries - dict
 - Sets - set
-- Tuple - tuple
+- Tuples - tuple
 
 ```
 >>> dir(str)
@@ -737,10 +737,11 @@ The main driver for Python3 was to correctly handle unicode. In Python2 the defa
 ---
 
 # Lab Time
-
-- Lab 1 - Hello World
+- Lab 1 - Accessing the Lab Environment
+  - Learn how to access the lab environment
+- Lab 2 - Using the Python Interpreter
   -  Getting Started with the Python Interactive Interpreter
-- Lab 2 - Working with Strings
+- Lab 3 - Working with Strings
   - Learn how to work with strings and their built-in methods while working in the Python Interactive Interpreter
 
 **Accessing Lab Guide**
@@ -1237,9 +1238,11 @@ Lowest precedence
 ---
 
 # Lab Time
-
-- Lab 3 - Working with Lists and Booleans
+- Lab 4 - Working with Integers
+  - Explore working with Integers
+- Lab 5 - Working with Lists
   - Learn how to work with lists and their built-in methods while working in the Python Interactive Interpreter
+- Lab 6 - Working with Booleans
   - Explore working with Booleans
 
 
@@ -1278,7 +1281,7 @@ class: ubuntu
 - First...look at lists again...
 
 ```
->>> dev = ['sw1', '10.1.100.1/24', '00:00:01']
+>>> dev = ['sw1', '10.1.100.1/24', '00:00:00:00:00:01']
 >>> # print(hostname)
 >>> print(dev[0])
 sw1
@@ -1287,7 +1290,7 @@ sw1
 ```
 >>> # print(mac address)
 >>> print(dev[2])
-00:00:01
+00:00:00:00:00:01
 ```
 
 
@@ -1300,13 +1303,13 @@ class: ubuntu
 
 - As a list
 ```
->>> dev = ['sw1', '10.1.100.1/24', '00:00:01']
+>>> dev = ['sw1', '10.1.100.1/24', '00:00:00:00:00:01']
 >>>
 ```
 
 - Creating a Dictionary
 ```
->>> dev = {'hostname':'sw1', 'mgmt_ip':'10.1.100.1/24', 'mac':'00:00:01'}
+>>> dev = {'hostname':'sw1', 'mgmt_ip':'10.1.100.1/24', 'mac':'00:00:00:00:00:01'}
 >>>
 ```
 --
@@ -1317,7 +1320,7 @@ class: ubuntu
 sw1
 >>>
 >>> print(dev['mac'])
-00:00:01
+00:00:00:00:00:01
 >>>
 ```
 
@@ -1570,7 +1573,7 @@ class: ubuntu
 
 # items()
 
-- `items()` simplifies accessing kv pairs
+- `items()` simplifies accessing key/value pairs
 - Returns a list of tuples and each tuple is two elements
   - Element 1 is the key and Element 2 is value
   - For now, think of tuples as a list, thus the returned object would be a list of lists
@@ -1832,7 +1835,7 @@ set(['3', '2'])
 
 # Lab Time
 
-- Lab 4 - Working with Dictionaries
+- Lab 7 - Working with Dictionaries
   - Learn how to work with dictionaries and their built-in methods while working in the Python Interactive Interpreter
 
 ---
@@ -1849,7 +1852,7 @@ class: ubuntu
 
 # Nested Objects
 
-**When you're just starting it much more important to be able to extract data from a complex object.  Common for working with device APIs.**
+**When you're just starting, it is much more important to be able to extract data from a complex object.  Common for working with device APIs.**
 
 .left-column[
 * Basic objects include:
@@ -1903,7 +1906,7 @@ class: ubuntu
 # Lab Time
 
 
-- Lab 5 - Working with nested objects
+- Lab 9 - Exploring Nested Objects
   - List of dictionaries
   - Nested dictionaries
 
@@ -2346,9 +2349,9 @@ NAME: db
 
 # Lab Time
 
-- Lab 6 - Conditionals
+- Lab 15 - Getting Started with Conditionals
   - You will use conditionals to build a (simulated) list of commands that will get sent to a network device.
-- Lab 7 - Loops
+- Lab 16 - Getting Started with For Loops
   - You will access and print elements as you loop through lists and dictionaries
   - You will iterate through key-value pairs that are commands in the form of feature/command, and using the feature name (command key), you will access their configuration values values from another dictionary, to build a list of commands to send to a network device.
 
@@ -2794,7 +2797,9 @@ ethernet
 
 # Lab Time
 
-- Lab 8 - Writing Python Scripts
+- Lab 18 - Getting Started with Functions
+
+- Lab 11 - Writing Scripts
   - Hello Network Automation
   - Generating Interface Commands using a Key Map
 
@@ -3051,7 +3056,7 @@ vlans:
 
 # Lab Time
 
-- Lab 11 - Working with Files
+- Lab 10 - Performing Basic File Operations
   - Understand the basics of working with files.  You open a file, read data, and normalize input to usable data.
   - Update modular script from previous lab to generate a configuration file
    - Read a YAML data file and use it to generate device configuration; writing this to file

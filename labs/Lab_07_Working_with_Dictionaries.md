@@ -1,10 +1,10 @@
-## Lab 7 - Dictionaries
+## Lab 7 - Working with Dictionaries
 
 ### Task 1 - Working with Dictionaries Part 1
 
 ##### Step 1
 
-Create a variable called `facts` and assign the it value of "{}" that will make it an empty dictionary.
+Create a variable called `facts` and assign the it value of "{}" that will make it an empty dictionary:
 
 ```python
 >>> facts = {}
@@ -80,7 +80,7 @@ Update the version from "7.1" to "7.3" and print the dictionary to verify it:
 
 ##### Step 8
 
-You can also create a dictionary using the same notation you see when you print it.  In the first few steps, you gradually added key-value pairs.  However, you could just assign a new dictionary a value when it's created too.
+You can also create a dictionary using the same notation you see when you print it.  In the first few steps, you gradually added key-value pairs.  However, you could just assign a new dictionary a value when it's created too:
 
 ```python
 >>> facts_2 = {'os': 'ios', 'version': '16.6', 'vendor': 'cisco', 'platform': 'catalyst'}
@@ -112,7 +112,7 @@ In this syntax, you can also create an empty dictionary like this too:
 
 ##### Step 1
 
-Review the built-in methods for dictionaries using the `dir()` function on `facts`
+Review the built-in methods for dictionaries using the `dir()` function on `facts`:
 
 ```python
 >>> dir(facts)
@@ -145,7 +145,7 @@ Print the values for `facts`:
 
 ##### Step 4
 
-Now print the keys and the values for `facts_2`.
+Now print the keys and the values for `facts_2`:
 
 ```python
 >>> print(facts_2.keys())
@@ -169,7 +169,7 @@ Print the value for `hostname` in `facts_3`:
 
 ##### Step 6
 
-Print the value for the key called `os` in `facts`.
+Print the value for the key called `os` in `facts`:
 
 ```python
 >>> print(facts['os'])

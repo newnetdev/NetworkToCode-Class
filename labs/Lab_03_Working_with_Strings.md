@@ -464,7 +464,7 @@ If you use the syntax `:<integer>` in between the curly brackets, it'll ensure y
 Standard printing with the `format` method:
 
 ```python
->>> "{} {} {}".format("Hostname", "Location", "Vendor")                
+>>> "{} {} {}".format("Hostname", "Location", "Vendor")
 'Hostname Location Vendor'
 
 >>> 
@@ -481,7 +481,7 @@ Allocating 12 spaces for each element:
 If you're printing "rows" in each table, you may have devices as such:
 
 ```python
->>> "{:12} {:12} {:12}".format("nyc-rt01", "New York", "Cisco")                      
+>>> "{:12} {:12} {:12}".format("nyc-rt01", "New York", "Cisco")
 'nyc-rt01     New York     Cisco       '
 >>>
 ```
@@ -489,7 +489,7 @@ If you're printing "rows" in each table, you may have devices as such:
 And another:
 
 ```python
->>> "{:12} {:12} {:12}".format("nyc-rt02", "New York", "Juniper") 
+>>> "{:12} {:12} {:12}".format("nyc-rt02", "New York", "Juniper")
 'nyc-rt02     New York     Juniper     '
 >>> 
 ```

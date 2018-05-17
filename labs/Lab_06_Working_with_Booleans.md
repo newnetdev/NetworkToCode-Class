@@ -56,7 +56,7 @@ Create 3 variables called `hostname`, `vendor` and `interfaces`.
 
 We will use these to practice using boolean operators.
 
-##### Step 3
+##### Step 5
 
 Use the `==` operator to evaluate `hostname` with the `nxos-spine2` string and `vendor` with the `cisco` string.
 
@@ -71,7 +71,7 @@ True
 >>>
 ```
 
-##### Step 4
+##### Step 6
 
 Use the `>` and `!=` operators to evaluate `interfaces`'s length with the `3` number.
 
@@ -83,7 +83,7 @@ False
 False
 ```
 
-##### Step 5
+##### Step 7
 
 Note that `!=` says "does not equal", so you can also use this for the hostname check too:
 
@@ -93,9 +93,9 @@ True
 >>>
 ```
 
-##### Step 6
+##### Step 8
 
-Now use the `in` "containment" keyword to evaluate if "Ethernet2/4" is a valid interface.  You're checking to see if "Ethernet2/4" is in the `interfaces` list:
+Now use the `in` "containment" keyword to evaluate if "Ethernet2/4" is a defined interface.  You're checking to see if "Ethernet2/4" is in the `interfaces` list:
 
 ```python
 >>> 'Ethernet2/4' in interfaces
@@ -105,7 +105,7 @@ False
 
 In short, this is checking to see if an element exists in a list.
 
-##### Step 7
+##### Step 9
 
 You can also see if a sub-string exists in a string:
 
@@ -125,7 +125,7 @@ False
 >>>
 ```
 
-##### Step 8
+##### Step 10
 
 It's often good practice to normalize (if possible) before doing the comparison or logic check.
 
@@ -135,9 +135,9 @@ True
 >>>
 ```
 
-##### Step 9
+##### Step 11
 
-Use the `and` operator to evaluate if `Ethernet2/2` is a valid interface and `vendor` is equals to `cisco`.
+Use the `and` operator to evaluate if `Ethernet2/2` is a defined interface and `vendor` equals to `cisco`.
 
 ```python
 >>> 'Ethernet2/2' in interfaces and vendor == 'cisco'
@@ -145,7 +145,7 @@ True
 >>>
 ```
 
-When using `and`, everything must be True for the expression to evalue to True.
+When using `and`, everything must be True for the expression to evaluate to True.
 
 You can do a quick test to prove this:
 
@@ -158,7 +158,7 @@ True
 >>>
 ```
 
-##### Step 10
+##### Step 12
 
 When you use "or" only ONE element has to be True for the expression to be True:
 
