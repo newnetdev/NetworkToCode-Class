@@ -21,12 +21,11 @@ class: center, middle, title
 - Data Types
 - Conditionals
 - Loops
-- Functions
-- Writing Python Scripts
-- Using Command Line Arguments
 - Working with Files
+- Writing Python Scripts
+- Functions
 - Using and Creating Python Libraries
-
+- Using Command Line Arguments
 
 ---
 
@@ -2124,171 +2123,6 @@ class: ubuntu
 
 class: middle, segue
 
-# Python Scripts
-### Introduction to Python for Network Engineers
-
----
-
-# Executing Scripts
-
-- Important to see how they are executed
-  - Understand the user experience (always)
-- `.py` file extension
-- Execute with format `python scriptname.py`
-
-.ubuntu[
-```
-ntc@ntc:~$ python intro.py
-Welcome to Python for Network Engineers!
-This is your first script.
-```
-]
---
-
-```python
-#! /usr/bin/env python
-
-if __name__ == "__main__":
-
-    print('Welcome to Python for Network Engineers!')
-    print('This is your first script.')
-```
-
----
-
-# Writing Scripts
-
-**Everything under `if __name__ == "__main__":` is the same as it would be on the Python interpreter**
-
-* `if __name__ == "__main__":` is an optional, but recommended
-  * Entry point for a Python program
-  * `__name__` is an internal variable set to "__main__" when the file is run as a script
-* `#! /usr/bin/env python` is the shebang, optional, but recommended.
-  * Tells the system which version of Python to use when running the program.
-
-```python
-#! /usr/bin/env python
-
-# filename: print_facts.py
-if __name__ == "__main__":
-
-    facts = {'vendor': 'cisco', 'mgmt_ip': '10.1.1.1', 'os': '6.1.2', 'model': 'nexus', 'hostname': 'NYC301'}
-
-    for key, value in facts.items():
-        print(key + '-----' + value)
-```
-
-
----
-
-# Writing Scripts (cont'd)
-
-```python
-#! /usr/bin/env python
-
-# filename: print_facts.py
-if __name__ == "__main__":
-
-    facts = {'vendor': 'cisco', 'mgmt_ip': '10.1.1.1', 'os': '6.1.2', 'model': 'nexus', 'hostname': 'NYC301'}
-
-    for key, value in facts.items():
-        print(key + '-----' + value)
-```
-
-.ubuntu[
-```
-ntc@ntc:~$ python print_facts.py
-os-----6.1.2
-model-----nexus
-hostname-----NYC301
-vendor-----cisco
-mgmt_ip-----10.1.1.1
-```
-]
-
-
----
-
-# Scripts with Functions
-
-- Keep the function aligned with the `if __name__ == "__main__":`
-
-```python
-#! /usr/bin/env python
-
-def get_interface_type(interface):
-    if interface.lower().startswith('et'):
-        itype = 'ethernet'
-    elif interface.lower().startswith('vl'):
-        itype = 'svi'
-    elif interface.lower().startswith('po'):
-        itype = 'portchannel'
-    elif interface.lower().startswith('lo'):
-        itype = 'loopback'
-    else:
-        itype = 'unknown'
-
-    return itype
-
-if __name__ == "__main__":
-
-    intf = 'Ethernet2/1'
-    intf_type = get_interface_type(intf)
-    print(intf_type)
-
-```
---
-
-.ubuntu[
-```
-ntc@ntc:~$ python verify_interface_type.py
-ethernet
-```
-]
-
----
-
-class: ubuntu
-
-# From Program to Shell (`-i`)
-
-- Execute a script and get dropped into the shell when complete and you still have access to the objects within the main part of the program
-- Great for testing
-
-```
-$ python -i verify_interface_type.py
-ethernet
->>>
->>> dir()
-['__builtins__', '__doc__', '__name__', '__package__', 'get_interface_type', 'intf']
->>>
->>> get_interface_type('loopback99')
-'loopback'
->>>
->>> get_interface_type('portchannel5')
-'portchannel'
->>>
->>> intf
-'Ethernet2/1'
->>>
-```
-
-
----
-
-
-# Summary
-
-- Writing a script is no different than writing code in the Python shell
-- Think about the user experience
-- Continue to re-factor
-  - From if/elif to loops
-  - From seeing the same code a few different places to functions
-
----
-
-class: middle, segue
-
 # Working with Files
 ### Introduction to Python for Network Engineers
 
@@ -2529,6 +2363,171 @@ vlans:
 ```
 ]
 
+
+---
+
+class: middle, segue
+
+# Python Scripts
+### Introduction to Python for Network Engineers
+
+---
+
+# Executing Scripts
+
+- Important to see how they are executed
+  - Understand the user experience (always)
+- `.py` file extension
+- Execute with format `python scriptname.py`
+
+.ubuntu[
+```
+ntc@ntc:~$ python intro.py
+Welcome to Python for Network Engineers!
+This is your first script.
+```
+]
+--
+
+```python
+#! /usr/bin/env python
+
+if __name__ == "__main__":
+
+    print('Welcome to Python for Network Engineers!')
+    print('This is your first script.')
+```
+
+---
+
+# Writing Scripts
+
+**Everything under `if __name__ == "__main__":` is the same as it would be on the Python interpreter**
+
+* `if __name__ == "__main__":` is an optional, but recommended
+  * Entry point for a Python program
+  * `__name__` is an internal variable set to "__main__" when the file is run as a script
+* `#! /usr/bin/env python` is the shebang, optional, but recommended.
+  * Tells the system which version of Python to use when running the program.
+
+```python
+#! /usr/bin/env python
+
+# filename: print_facts.py
+if __name__ == "__main__":
+
+    facts = {'vendor': 'cisco', 'mgmt_ip': '10.1.1.1', 'os': '6.1.2', 'model': 'nexus', 'hostname': 'NYC301'}
+
+    for key, value in facts.items():
+        print(key + '-----' + value)
+```
+
+
+---
+
+# Writing Scripts (cont'd)
+
+```python
+#! /usr/bin/env python
+
+# filename: print_facts.py
+if __name__ == "__main__":
+
+    facts = {'vendor': 'cisco', 'mgmt_ip': '10.1.1.1', 'os': '6.1.2', 'model': 'nexus', 'hostname': 'NYC301'}
+
+    for key, value in facts.items():
+        print(key + '-----' + value)
+```
+
+.ubuntu[
+```
+ntc@ntc:~$ python print_facts.py
+os-----6.1.2
+model-----nexus
+hostname-----NYC301
+vendor-----cisco
+mgmt_ip-----10.1.1.1
+```
+]
+
+
+---
+
+# Scripts with Functions
+
+- Keep the function aligned with the `if __name__ == "__main__":`
+
+```python
+#! /usr/bin/env python
+
+def get_interface_type(interface):
+    if interface.lower().startswith('et'):
+        itype = 'ethernet'
+    elif interface.lower().startswith('vl'):
+        itype = 'svi'
+    elif interface.lower().startswith('po'):
+        itype = 'portchannel'
+    elif interface.lower().startswith('lo'):
+        itype = 'loopback'
+    else:
+        itype = 'unknown'
+
+    return itype
+
+if __name__ == "__main__":
+
+    intf = 'Ethernet2/1'
+    intf_type = get_interface_type(intf)
+    print(intf_type)
+
+```
+--
+
+.ubuntu[
+```
+ntc@ntc:~$ python verify_interface_type.py
+ethernet
+```
+]
+
+---
+
+class: ubuntu
+
+# From Program to Shell (`-i`)
+
+- Execute a script and get dropped into the shell when complete and you still have access to the objects within the main part of the program
+- Great for testing
+
+```
+$ python -i verify_interface_type.py
+ethernet
+>>>
+>>> dir()
+['__builtins__', '__doc__', '__name__', '__package__', 'get_interface_type', 'intf']
+>>>
+>>> get_interface_type('loopback99')
+'loopback'
+>>>
+>>> get_interface_type('portchannel5')
+'portchannel'
+>>>
+>>> intf
+'Ethernet2/1'
+>>>
+```
+
+
+---
+
+
+# Summary
+
+- Writing a script is no different than writing code in the Python shell
+- Think about the user experience
+- Continue to re-factor
+  - From if/elif to loops
+  - From seeing the same code a few different places to functions
 
 ---
 

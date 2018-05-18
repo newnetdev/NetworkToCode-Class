@@ -16,21 +16,10 @@ class: center, middle, title
 # Module Overview
 
 - Python Libraries
-- netmiko
 - argparse
 - Regular Expressions 101
 - TextFSM
 - NAPALM
-
----
-
-
-
-
-class: middle, segue
-
-# Python Libraries
-### Introduction to Python for Network Engineers
 
 ---
 
