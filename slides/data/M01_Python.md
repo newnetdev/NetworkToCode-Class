@@ -751,6 +751,64 @@ Use the `LAB_GUIDE.md` file in the root of the GitHub repository.
 
 class: middle, segue
 
+# Data Types - Numbers
+### Introduction to Python for Network Engineers
+
+---
+class: ubuntu
+
+# Numbers - integers
+
+- Integers
+  - Whole numbers such as 1, 2, 3, 4, 100.  
+  - Those that do not have a decimal point
+- You can use mathematical operators directly within the Python shell
+
+```
+>>> 5 * 4
+20
+>>> x = 5
+>>> y = 10
+>>>
+>>> x * y
+50
+>>>
+```
+
+```
+>>> z = 3
+>>> y / z
+3
+>>>
+```
+
+---
+
+class: ubuntu
+
+# Numbers - floats
+
+- More precise than integers
+- Decimal points are used
+- At least one number must be a float
+
+```
+>>> z = 3.0
+>>> y = 10
+>>>
+>>> result = y / z
+>>> result
+3.3333333333333335
+>>>
+>>> round(result, 2)
+3.33
+>>>
+```
+
+---
+
+class: middle, segue
+
 # Data Types - Lists
 ### Introduction to Python for Network Engineers
 
@@ -1042,64 +1100,6 @@ class: ubuntu
 
 > Note: sort doesn't typically work on IP addresses.  We created an example that would.
 
-
----
-
-class: middle, segue
-
-# Data Types - Numbers
-### Introduction to Python for Network Engineers
-
----
-class: ubuntu
-
-# Numbers - integers
-
-- Integers
-  - Whole numbers such as 1, 2, 3, 4, 100.  
-  - Those that do not have a decimal point
-- You can use mathematical operators directly within the Python shell
-
-```
->>> 5 * 4
-20
->>> x = 5
->>> y = 10
->>>
->>> x * y
-50
->>>
-```
-
-```
->>> z = 3
->>> y / z
-3
->>>
-```
-
----
-
-class: ubuntu
-
-# Numbers - floats
-
-- More precise than integers
-- Decimal points are used
-- At least one number must be a float
-
-```
->>> z = 3.0
->>> y = 10
->>>
->>> result = y / z
->>> result
-3.3333333333333335
->>>
->>> round(result, 2)
-3.33
->>>
-```
 
 ---
 
@@ -1833,10 +1833,221 @@ set(['3', '2'])
 
 ---
 
+class: ubuntu
+
+# Python Libraries
+
+* Python modules
+  * Standalone Python file used to share code between programs
+* Python packages
+  * Collection of Python modules
+
+Examples:
+
+```
+import json
+import sys
+
+```
+
+---
+
+
+# Example Script
+
+Filename: `common.py`
+
+```python
+#! /usr/bin/env python
+
+def show(command):
+    print("Sending 'show' command...")
+    print('Command sent: ', command)
+
+def config(command):
+    print("Sending 'config' command...")
+    print('Commands sent: ', command)
+
+if __name__ == "__main__":
+    command = 'show version'
+    show(command)
+    command = 'interface Eth1/1 ; shutdown'
+    config(command)
+
+```
+
+---
+
+# Example Script Output
+
+Running `common.py` as a standalone program:
+
+.ubuntu[
+```
+netdev@networktocode:~$ python common.py
+
+Sending 'show' command...
+Command sent:  show version
+
+Sending 'config' command...
+Commands sent:  interface Eth1/1 ; shutdown
+```
+]
+
+Remember, the code under the entry point conditional is only executed when the file is run as a standalone program
+
+What if you just wanted to use a function from within `common.py`?
+
+
+---
+
+class: ubuntu
+
+# Re-Usable Python Objects
+
+What if we wanted to re-use objects (function, variables) from this file in another program?
+
+Remember the filename is called `common.py`
+
+```
+def show(command):
+    print("Sending 'show' command...")
+    print('Command sent: ', command)
+
+def config(command):
+    print("Sending 'config' command...")
+    print('Commands sent: ', command)
+
+if __name__ == "__main__":
+    # Code only executed when ran as a a program
+    # More flexibility than not using the entry point when
+    # you're re-suing objects in other programs
+```
+
+--
+
+.left-column[
+```
+>>> import common
+>>>
+>>> common.show('show version')
+Sending 'show' command...
+Command sent:  show version
+>>>
+```
+]
+--
+.right-column[
+```
+>>> import common
+>>>
+>>> common.config('no router ospf 1')
+Sending 'config' command...
+Commands sent:  no router ospf 1
+>>>  
+```
+]
+
+
+
+
+---
+
+class: ubuntu
+
+# Using from/import and re-naming objects
+
+
+.left-column[
+```
+>>> from common import show
+>>>
+>>> show('show ip int brief')
+Sending 'show' command...
+Command sent:  show ip int brief
+>>>
+```
+]
+--
+.right-column[
+```
+>>> from common import config
+>>>
+>>> config('interface Ethernet2/1 ; no shut')
+Sending 'config' command...
+Commands sent:  interface Ethernet2/1 ; no shut
+>>>  
+```
+]
+
+--
+
+- Use `as` to rename objects as you import them
+- Helpful to reduce length of long object names and eliminate naming conflicts
+
+
+.left-column[
+```
+>>> from common import show as sh
+>>>
+>>> sh('show ip int brief')
+Sending 'show' command...
+Command sent:  show ip int brief
+>>>
+```
+]
+
+.right-column[
+```
+>>> from common import config as cfg
+>>>
+>>> cfg('interface Ethernet2/1 ; no shut')
+Sending 'config' command...
+Commands sent:  interface Ethernet2/1 ; no shut
+>>>  
+```
+]
+
+---
+
+class: ubuntu
+
+# The PYTHONPATH
+
+* For testing, as we are doing in the course, you need to use your Python module from within the same directory where it exists
+  * Enter the Python shell where the module exists
+  * Write a new program and place in same directory where the module exists
+
+OR...update your PYTHONPATH
+
+```
+ntc@ntc:~$ env | grep "PYTHON"
+PYTHONPATH=/home/ntc/python/libraries/
+```
+
+One option is to update the PYTHONPATH in `.bashrc` so changes are persistent :
+
+```
+export PYTHONPATH=$PYTHONPATH:/home/ntc/new/path
+```
+
+
+---
+
+# Summary
+
+- Functions are a great way to re-use code within a program
+- Modules are a great way to re-used between programs
+- Packages are a collection of modules
+
+---
+
 # Lab Time
 
 - Lab 7 - Working with Dictionaries
   - Learn how to work with dictionaries and their built-in methods while working in the Python Interactive Interpreter
+
+- Lab 8 - Using Python Modules
 
 ---
 
