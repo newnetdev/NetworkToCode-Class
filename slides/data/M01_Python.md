@@ -2124,6 +2124,429 @@ class: ubuntu
 
 class: middle, segue
 
+# Python Scripts
+### Introduction to Python for Network Engineers
+
+---
+
+# Executing Scripts
+
+- Important to see how they are executed
+  - Understand the user experience (always)
+- `.py` file extension
+- Execute with format `python scriptname.py`
+
+.ubuntu[
+```
+ntc@ntc:~$ python intro.py
+Welcome to Python for Network Engineers!
+This is your first script.
+```
+]
+--
+
+```python
+#! /usr/bin/env python
+
+if __name__ == "__main__":
+
+    print('Welcome to Python for Network Engineers!')
+    print('This is your first script.')
+```
+
+---
+
+# Writing Scripts
+
+**Everything under `if __name__ == "__main__":` is the same as it would be on the Python interpreter**
+
+* `if __name__ == "__main__":` is an optional, but recommended
+  * Entry point for a Python program
+  * `__name__` is an internal variable set to "__main__" when the file is run as a script
+* `#! /usr/bin/env python` is the shebang, optional, but recommended.
+  * Tells the system which version of Python to use when running the program.
+
+```python
+#! /usr/bin/env python
+
+# filename: print_facts.py
+if __name__ == "__main__":
+
+    facts = {'vendor': 'cisco', 'mgmt_ip': '10.1.1.1', 'os': '6.1.2', 'model': 'nexus', 'hostname': 'NYC301'}
+
+    for key, value in facts.items():
+        print(key + '-----' + value)
+```
+
+
+---
+
+# Writing Scripts (cont'd)
+
+```python
+#! /usr/bin/env python
+
+# filename: print_facts.py
+if __name__ == "__main__":
+
+    facts = {'vendor': 'cisco', 'mgmt_ip': '10.1.1.1', 'os': '6.1.2', 'model': 'nexus', 'hostname': 'NYC301'}
+
+    for key, value in facts.items():
+        print(key + '-----' + value)
+```
+
+.ubuntu[
+```
+ntc@ntc:~$ python print_facts.py
+os-----6.1.2
+model-----nexus
+hostname-----NYC301
+vendor-----cisco
+mgmt_ip-----10.1.1.1
+```
+]
+
+
+---
+
+# Scripts with Functions
+
+- Keep the function aligned with the `if __name__ == "__main__":`
+
+```python
+#! /usr/bin/env python
+
+def get_interface_type(interface):
+    if interface.lower().startswith('et'):
+        itype = 'ethernet'
+    elif interface.lower().startswith('vl'):
+        itype = 'svi'
+    elif interface.lower().startswith('po'):
+        itype = 'portchannel'
+    elif interface.lower().startswith('lo'):
+        itype = 'loopback'
+    else:
+        itype = 'unknown'
+
+    return itype
+
+if __name__ == "__main__":
+
+    intf = 'Ethernet2/1'
+    intf_type = get_interface_type(intf)
+    print(intf_type)
+
+```
+--
+
+.ubuntu[
+```
+ntc@ntc:~$ python verify_interface_type.py
+ethernet
+```
+]
+
+---
+
+class: ubuntu
+
+# From Program to Shell (`-i`)
+
+- Execute a script and get dropped into the shell when complete and you still have access to the objects within the main part of the program
+- Great for testing
+
+```
+$ python -i verify_interface_type.py
+ethernet
+>>>
+>>> dir()
+['__builtins__', '__doc__', '__name__', '__package__', 'get_interface_type', 'intf']
+>>>
+>>> get_interface_type('loopback99')
+'loopback'
+>>>
+>>> get_interface_type('portchannel5')
+'portchannel'
+>>>
+>>> intf
+'Ethernet2/1'
+>>>
+```
+
+
+---
+
+
+# Summary
+
+- Writing a script is no different than writing code in the Python shell
+- Think about the user experience
+- Continue to re-factor
+  - From if/elif to loops
+  - From seeing the same code a few different places to functions
+
+---
+
+class: middle, segue
+
+# Working with Files
+### Introduction to Python for Network Engineers
+
+---
+
+# Sample Switch Config File
+
+Filename: `switch.cfg`
+
+```bash
+hostname NYCSWITCH1
+
+vlan 100
+ name web
+!
+interface Ethernet 1/1
+  description connecting to US101
+  switchport trunk encapsulation dot1q
+  switchport mode trunk
+
+interface Ethernet 1/2
+  description connecting to US102
+  switchport trunk encapsulation dot1q
+  switchport mode trunk
+
+interface vlan 100
+  ip address 10.100.15.100/24
+
+ip route 0.0.0.0/0 10.100.15.1
+```
+
+---
+
+class: ubuntu
+
+# Reading Data from a File
+
+.left-column[
+```
+>>> config = open('switch.cfg', 'r')         # open file
+>>>
+>>> config.read()                            # read file
+'hostname NYCSWITCH1\n\nvlan 100\n name web\n!\ninterface Ethernet 1/1\n  description connecting to US101\n  switchport trunk encapsulation dot1q\n  switchport mode trunk\n\ninterface Ethernet 1/2\n  description connecting to US102\n  switchport trunk encapsulation dot1q\n  switchport mode trunk\n\ninterface vlan 100\n  ip address 10.100.15.100/24\n\nip route 0.0.0.0/0 10.100.15.1'
+>>>
+>>> config_str = config.read()
+>>>
+```
+]
+--
+
+.right-column[
+```
+>>> print(config_str)
+hostname NYCSWITCH1
+
+vlan 100
+ name web
+!
+interface Ethernet 1/1
+  description connecting to US101
+  switchport trunk encapsulation dot1q
+  switchport mode trunk
+
+interface Ethernet 1/2
+  description connecting to US102
+  switchport trunk encapsulation dot1q
+  switchport mode trunk
+
+interface vlan 100
+  ip address 10.100.15.100/24
+
+ip route 0.0.0.0/0 10.100.15.1
+>>>
+>>> config.close()                           # close file
+```
+]
+
+---
+
+class: ubuntu
+
+# File Object & its Methods
+
+```
+>>> dir(config)
+['close', 'closed', 'encoding', 'errors', 'fileno', 'flush', 'isatty', 'mode', 'name', 'newlines', 'next', 'read', 'readinto', 'readline', 'readlines', 'seek', 'softspace', 'tell', 'truncate', 'write', 'writelines', 'xreadlines']
+```
+---
+
+class: ubuntu
+
+# Writing Data to a File
+
+.left-column[
+```
+>>> vlans = [{'id': '10', 'name': 'USERS'}, {'id': '20', 'name': 'VOICE'}, {'id': '30', 'name': 'WLAN'}, {'id': '40', 'name': 'APP'}, {'id': '50', 'name': 'WEB'}]
+>>>
+>>> print(json.dumps(vlans, indent=4))
+[
+    {
+        "id": "10",
+        "name": "USERS"
+    },
+    {
+        "id": "20",
+        "name": "VOICE"
+    },
+    {
+        "id": "30",
+        "name": "WLAN"
+    },
+    {
+        "id": "40",
+        "name": "APP"
+    },
+    {
+        "id": "50",
+        "name": "WEB"
+    }
+]
+>>>
+```
+]
+
+.right-column[
+```
+>>> write_file = open('vlans_new.cfg', 'w')
+>>>
+>>> for vlan in vlans:
+...     vlan_id = vlan['id']
+...     vlan_name = vlan['name']
+...     write_file.write('vlan ' + vlan_id + '\n')
+...     write_file.write('  name ' + vlan_name + '\n')
+...
+>>>
+>>> write_file.close()
+>>>
+```
+
+]
+
+---
+
+class: ubuntu
+# Writing Data to a File
+```
+ntc@ntc:~$ cat vlans.cfg
+vlan 10
+  name USERS
+vlan 20
+  name VOICE
+vlan 30
+  name WLAN
+vlan 40
+  name APP
+vlan 50
+  name WEB
+
+```
+
+Note: always remember to close files. By default, data isn't written to the file until it's closed.
+
+---
+class: ubuntu
+
+# with Statement
+
+- `with` guarantees file will be closed (context  manager)
+
+```
+>>> with open('switch.cfg', 'r') as config:
+...     netcfg = config.read()     # readlines() could also be used
+>>> netcfg
+'hostname NYCSWITCH1\n\nvlan 100\n name web\n!\ninterface Ethernet 1/1\n  description connecting to US101\n  switchport trunk encapsulation dot1q\n  switchport mode trunk\n\ninterface Ethernet 1/2\n  description connecting to US102\n  switchport trunk encapsulation dot1q\n  switchport mode trunk\n\ninterface vlan 100\n  ip address 10.100.15.100/24\n\nip route 0.0.0.0/0 10.100.15.1'
+>>>
+```
+
+```
+>>> config = open('switch.cfg', 'r')         # open file
+>>>
+>>> netcfg = config.read()
+>>>
+>>> config.close()
+```
+
+---
+class: ubuntu
+
+# A quick intro to YAML
+
+- Human readable data serialization language
+- Heavily used for configuration files
+- Relies heavily on indentation
+- 2 space indent is common
+- Superset of JSON
+
+---
+
+class: ubuntu
+
+# YAML Demo
+
+
+.left-column[
+A list of dictionaries
+
+``` yaml
+---
+  - vlan_name: web
+    vlan_id: '10'
+    vlan_state: active
+  - vlan_name: app
+    vlan_id: '20'
+    vlan_state: active
+  - vlan_name: DB
+    vlan_id: '30'
+    vlan_state: active
+```
+]
+
+.right-column[
+
+A nested dictionary
+
+``` yaml
+---
+snmp:
+  ro: public
+  rw: private
+  info:
+    location: nyc
+    contact: bob
+vlans:
+  10:
+    name: web
+  20:
+    name: app
+```
+]
+
+
+---
+
+# Lab Time
+
+- Lab 10 - Performing Basic File Operations
+  - Understand the basics of working with files.  You open a file, read data, and normalize input to usable data.
+  - Update modular script from previous lab to generate a configuration file
+   - Read a YAML data file and use it to generate device configuration; writing this to file
+
+- Lab 11 - Writing Scripts
+  - Hello Network Automation
+  - Generating Interface Commands using a Key Map
+
+---
+
+class: middle, segue
+
 # netmiko
 ### Python Network Libraries
 
@@ -3067,433 +3490,8 @@ Duplex: auto
 
 ---
 
-class: middle, segue
-
-# Python Scripts
-### Introduction to Python for Network Engineers
-
----
-
-# Executing Scripts
-
-- Important to see how they are executed
-  - Understand the user experience (always)
-- `.py` file extension
-- Execute with format `python scriptname.py`
-
-.ubuntu[
-```
-ntc@ntc:~$ python intro.py
-Welcome to Python for Network Engineers!
-This is your first script.
-```
-]
---
-
-```python
-#! /usr/bin/env python
-
-if __name__ == "__main__":
-
-    print('Welcome to Python for Network Engineers!')
-    print('This is your first script.')
-```
-
----
-
-# Writing Scripts
-
-**Everything under `if __name__ == "__main__":` is the same as it would be on the Python interpreter**
-
-* `if __name__ == "__main__":` is an optional, but recommended
-  * Entry point for a Python program
-  * `__name__` is an internal variable set to "__main__" when the file is run as a script
-* `#! /usr/bin/env python` is the shebang, optional, but recommended.
-  * Tells the system which version of Python to use when running the program.
-
-```python
-#! /usr/bin/env python
-
-# filename: print_facts.py
-if __name__ == "__main__":
-
-    facts = {'vendor': 'cisco', 'mgmt_ip': '10.1.1.1', 'os': '6.1.2', 'model': 'nexus', 'hostname': 'NYC301'}
-
-    for key, value in facts.items():
-        print(key + '-----' + value)
-```
-
-
----
-
-# Writing Scripts (cont'd)
-
-```python
-#! /usr/bin/env python
-
-# filename: print_facts.py
-if __name__ == "__main__":
-
-    facts = {'vendor': 'cisco', 'mgmt_ip': '10.1.1.1', 'os': '6.1.2', 'model': 'nexus', 'hostname': 'NYC301'}
-
-    for key, value in facts.items():
-        print(key + '-----' + value)
-```
-
-.ubuntu[
-```
-ntc@ntc:~$ python print_facts.py
-os-----6.1.2
-model-----nexus
-hostname-----NYC301
-vendor-----cisco
-mgmt_ip-----10.1.1.1
-```
-]
-
-
----
-
-# Scripts with Functions
-
-- Keep the function aligned with the `if __name__ == "__main__":`
-
-```python
-#! /usr/bin/env python
-
-def get_interface_type(interface):
-    if interface.lower().startswith('et'):
-        itype = 'ethernet'
-    elif interface.lower().startswith('vl'):
-        itype = 'svi'
-    elif interface.lower().startswith('po'):
-        itype = 'portchannel'
-    elif interface.lower().startswith('lo'):
-        itype = 'loopback'
-    else:
-        itype = 'unknown'
-
-    return itype
-
-if __name__ == "__main__":
-
-    intf = 'Ethernet2/1'
-    intf_type = get_interface_type(intf)
-    print(intf_type)
-
-```
---
-
-.ubuntu[
-```
-ntc@ntc:~$ python verify_interface_type.py
-ethernet
-```
-]
-
----
-
-class: ubuntu
-
-# From Program to Shell (`-i`)
-
-- Execute a script and get dropped into the shell when complete and you still have access to the objects within the main part of the program
-- Great for testing
-
-```
-$ python -i verify_interface_type.py
-ethernet
->>>
->>> dir()
-['__builtins__', '__doc__', '__name__', '__package__', 'get_interface_type', 'intf']
->>>
->>> get_interface_type('loopback99')
-'loopback'
->>>
->>> get_interface_type('portchannel5')
-'portchannel'
->>>
->>> intf
-'Ethernet2/1'
->>>
-```
-
-
----
-
-
-# Summary
-
-- Writing a script is no different than writing code in the Python shell
-- Think about the user experience
-- Continue to re-factor
-  - From if/elif to loops
-  - From seeing the same code a few different places to functions
-
----
-
 # Lab Time
 
 - Lab 18 - Getting Started with Functions
 
-- Lab 11 - Writing Scripts
-  - Hello Network Automation
-  - Generating Interface Commands using a Key Map
 
-- Lab 9 - Writing a Script to generate configurations
-  - Write a script to generate interface configuration commands
-
-- Lab 10 - Write a modular script that breaks down thescript into distinct, logical, functions, from the previous lab.
-
----
-
-class: middle, segue
-
-# Working with Files
-### Introduction to Python for Network Engineers
-
----
-
-# Sample Switch Config File
-
-Filename: `switch.cfg`
-
-```bash
-hostname NYCSWITCH1
-
-vlan 100
- name web
-!
-interface Ethernet 1/1
-  description connecting to US101
-  switchport trunk encapsulation dot1q
-  switchport mode trunk
-
-interface Ethernet 1/2
-  description connecting to US102
-  switchport trunk encapsulation dot1q
-  switchport mode trunk
-
-interface vlan 100
-  ip address 10.100.15.100/24
-
-ip route 0.0.0.0/0 10.100.15.1
-```
-
----
-
-class: ubuntu
-
-# Reading Data from a File
-
-.left-column[
-```
->>> config = open('switch.cfg', 'r')         # open file
->>>
->>> config.read()                            # read file
-'hostname NYCSWITCH1\n\nvlan 100\n name web\n!\ninterface Ethernet 1/1\n  description connecting to US101\n  switchport trunk encapsulation dot1q\n  switchport mode trunk\n\ninterface Ethernet 1/2\n  description connecting to US102\n  switchport trunk encapsulation dot1q\n  switchport mode trunk\n\ninterface vlan 100\n  ip address 10.100.15.100/24\n\nip route 0.0.0.0/0 10.100.15.1'
->>>
->>> config_str = config.read()
->>>
-```
-]
---
-
-.right-column[
-```
->>> print(config_str)
-hostname NYCSWITCH1
-
-vlan 100
- name web
-!
-interface Ethernet 1/1
-  description connecting to US101
-  switchport trunk encapsulation dot1q
-  switchport mode trunk
-
-interface Ethernet 1/2
-  description connecting to US102
-  switchport trunk encapsulation dot1q
-  switchport mode trunk
-
-interface vlan 100
-  ip address 10.100.15.100/24
-
-ip route 0.0.0.0/0 10.100.15.1
->>>
->>> config.close()                           # close file
-```
-]
-
----
-
-class: ubuntu
-
-# File Object & its Methods
-
-```
->>> dir(config)
-['close', 'closed', 'encoding', 'errors', 'fileno', 'flush', 'isatty', 'mode', 'name', 'newlines', 'next', 'read', 'readinto', 'readline', 'readlines', 'seek', 'softspace', 'tell', 'truncate', 'write', 'writelines', 'xreadlines']
-```
----
-
-class: ubuntu
-
-# Writing Data to a File
-
-.left-column[
-```
->>> vlans = [{'id': '10', 'name': 'USERS'}, {'id': '20', 'name': 'VOICE'}, {'id': '30', 'name': 'WLAN'}, {'id': '40', 'name': 'APP'}, {'id': '50', 'name': 'WEB'}]
->>>
->>> print(json.dumps(vlans, indent=4))
-[
-    {
-        "id": "10",
-        "name": "USERS"
-    },
-    {
-        "id": "20",
-        "name": "VOICE"
-    },
-    {
-        "id": "30",
-        "name": "WLAN"
-    },
-    {
-        "id": "40",
-        "name": "APP"
-    },
-    {
-        "id": "50",
-        "name": "WEB"
-    }
-]
->>>
-```
-]
-
-.right-column[
-```
->>> write_file = open('vlans_new.cfg', 'w')
->>>
->>> for vlan in vlans:
-...     vlan_id = vlan['id']
-...     vlan_name = vlan['name']
-...     write_file.write('vlan ' + vlan_id + '\n')
-...     write_file.write('  name ' + vlan_name + '\n')
-...
->>>
->>> write_file.close()
->>>
-```
-
-]
-
----
-
-class: ubuntu
-# Writing Data to a File
-```
-ntc@ntc:~$ cat vlans.cfg
-vlan 10
-  name USERS
-vlan 20
-  name VOICE
-vlan 30
-  name WLAN
-vlan 40
-  name APP
-vlan 50
-  name WEB
-
-```
-
-Note: always remember to close files. By default, data isn't written to the file until it's closed.
-
----
-class: ubuntu
-
-# with Statement
-
-- `with` guarantees file will be closed (context  manager)
-
-```
->>> with open('switch.cfg', 'r') as config:
-...     netcfg = config.read()     # readlines() could also be used
->>> netcfg
-'hostname NYCSWITCH1\n\nvlan 100\n name web\n!\ninterface Ethernet 1/1\n  description connecting to US101\n  switchport trunk encapsulation dot1q\n  switchport mode trunk\n\ninterface Ethernet 1/2\n  description connecting to US102\n  switchport trunk encapsulation dot1q\n  switchport mode trunk\n\ninterface vlan 100\n  ip address 10.100.15.100/24\n\nip route 0.0.0.0/0 10.100.15.1'
->>>
-```
-
-```
->>> config = open('switch.cfg', 'r')         # open file
->>>
->>> netcfg = config.read()
->>>
->>> config.close()
-```
-
----
-class: ubuntu
-
-# A quick intro to YAML
-
-- Human readable data serialization language
-- Heavily used for configuration files
-- Relies heavily on indentation
-- 2 space indent is common
-- Superset of JSON
-
----
-
-class: ubuntu
-
-# YAML Demo
-
-
-.left-column[
-A list of dictionaries
-
-``` yaml
----
-  - vlan_name: web
-    vlan_id: '10'
-    vlan_state: active
-  - vlan_name: app
-    vlan_id: '20'
-    vlan_state: active
-  - vlan_name: DB
-    vlan_id: '30'
-    vlan_state: active
-```
-]
-
-.right-column[
-
-A nested dictionary
-
-``` yaml
----
-snmp:
-  ro: public
-  rw: private
-  info:
-    location: nyc
-    contact: bob
-vlans:
-  10:
-    name: web
-  20:
-    name: app
-```
-]
-
----
-
-# Lab Time
-
-- Lab 10 - Performing Basic File Operations
-  - Understand the basics of working with files.  You open a file, read data, and normalize input to usable data.
-  - Update modular script from previous lab to generate a configuration file
-   - Read a YAML data file and use it to generate device configuration; writing this to file
