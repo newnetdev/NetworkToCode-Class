@@ -19,13 +19,12 @@ class: center, middle, title
 
 - Python Interpreter
 - Data Types
-- Conditionals
-- Loops
+- Using and Creating Python Libraries
 - Working with Files
 - Writing Python Scripts
+- Conditionals
+- Loops
 - Functions
-- Using and Creating Python Libraries
-- Using Command Line Arguments
 
 ---
 
