@@ -19,14 +19,12 @@ class: center, middle, title
 
 - Python Interpreter
 - Data Types
+- Using and Creating Python Libraries
+- Working with Files
+- Writing Python Scripts
 - Conditionals
 - Loops
 - Functions
-- Writing Python Scripts
-- Using Command Line Arguments
-- Working with Files
-- Using and Creating Python Libraries
-
 
 ---
 
@@ -751,6 +749,64 @@ Use the `LAB_GUIDE.md` file in the root of the GitHub repository.
 
 class: middle, segue
 
+# Data Types - Numbers
+### Introduction to Python for Network Engineers
+
+---
+class: ubuntu
+
+# Numbers - integers
+
+- Integers
+  - Whole numbers such as 1, 2, 3, 4, 100.  
+  - Those that do not have a decimal point
+- You can use mathematical operators directly within the Python shell
+
+```
+>>> 5 * 4
+20
+>>> x = 5
+>>> y = 10
+>>>
+>>> x * y
+50
+>>>
+```
+
+```
+>>> z = 3
+>>> y / z
+3
+>>>
+```
+
+---
+
+class: ubuntu
+
+# Numbers - floats
+
+- More precise than integers
+- Decimal points are used
+- At least one number must be a float
+
+```
+>>> z = 3.0
+>>> y = 10
+>>>
+>>> result = y / z
+>>> result
+3.3333333333333335
+>>>
+>>> round(result, 2)
+3.33
+>>>
+```
+
+---
+
+class: middle, segue
+
 # Data Types - Lists
 ### Introduction to Python for Network Engineers
 
@@ -1042,64 +1098,6 @@ class: ubuntu
 
 > Note: sort doesn't typically work on IP addresses.  We created an example that would.
 
-
----
-
-class: middle, segue
-
-# Data Types - Numbers
-### Introduction to Python for Network Engineers
-
----
-class: ubuntu
-
-# Numbers - integers
-
-- Integers
-  - Whole numbers such as 1, 2, 3, 4, 100.  
-  - Those that do not have a decimal point
-- You can use mathematical operators directly within the Python shell
-
-```
->>> 5 * 4
-20
->>> x = 5
->>> y = 10
->>>
->>> x * y
-50
->>>
-```
-
-```
->>> z = 3
->>> y / z
-3
->>>
-```
-
----
-
-class: ubuntu
-
-# Numbers - floats
-
-- More precise than integers
-- Decimal points are used
-- At least one number must be a float
-
-```
->>> z = 3.0
->>> y = 10
->>>
->>> result = y / z
->>> result
-3.3333333333333335
->>>
->>> round(result, 2)
-3.33
->>>
-```
 
 ---
 
@@ -1833,10 +1831,221 @@ set(['3', '2'])
 
 ---
 
+class: ubuntu
+
+# Python Libraries
+
+* Python modules
+  * Standalone Python file used to share code between programs
+* Python packages
+  * Collection of Python modules
+
+Examples:
+
+```
+import json
+import sys
+
+```
+
+---
+
+
+# Example Script
+
+Filename: `common.py`
+
+```python
+#! /usr/bin/env python
+
+def show(command):
+    print("Sending 'show' command...")
+    print('Command sent: ', command)
+
+def config(command):
+    print("Sending 'config' command...")
+    print('Commands sent: ', command)
+
+if __name__ == "__main__":
+    command = 'show version'
+    show(command)
+    command = 'interface Eth1/1 ; shutdown'
+    config(command)
+
+```
+
+---
+
+# Example Script Output
+
+Running `common.py` as a standalone program:
+
+.ubuntu[
+```
+netdev@networktocode:~$ python common.py
+
+Sending 'show' command...
+Command sent:  show version
+
+Sending 'config' command...
+Commands sent:  interface Eth1/1 ; shutdown
+```
+]
+
+Remember, the code under the entry point conditional is only executed when the file is run as a standalone program
+
+What if you just wanted to use a function from within `common.py`?
+
+
+---
+
+class: ubuntu
+
+# Re-Usable Python Objects
+
+What if we wanted to re-use objects (function, variables) from this file in another program?
+
+Remember the filename is called `common.py`
+
+```
+def show(command):
+    print("Sending 'show' command...")
+    print('Command sent: ', command)
+
+def config(command):
+    print("Sending 'config' command...")
+    print('Commands sent: ', command)
+
+if __name__ == "__main__":
+    # Code only executed when ran as a a program
+    # More flexibility than not using the entry point when
+    # you're re-suing objects in other programs
+```
+
+--
+
+.left-column[
+```
+>>> import common
+>>>
+>>> common.show('show version')
+Sending 'show' command...
+Command sent:  show version
+>>>
+```
+]
+--
+.right-column[
+```
+>>> import common
+>>>
+>>> common.config('no router ospf 1')
+Sending 'config' command...
+Commands sent:  no router ospf 1
+>>>  
+```
+]
+
+
+
+
+---
+
+class: ubuntu
+
+# Using from/import and re-naming objects
+
+
+.left-column[
+```
+>>> from common import show
+>>>
+>>> show('show ip int brief')
+Sending 'show' command...
+Command sent:  show ip int brief
+>>>
+```
+]
+--
+.right-column[
+```
+>>> from common import config
+>>>
+>>> config('interface Ethernet2/1 ; no shut')
+Sending 'config' command...
+Commands sent:  interface Ethernet2/1 ; no shut
+>>>  
+```
+]
+
+--
+
+- Use `as` to rename objects as you import them
+- Helpful to reduce length of long object names and eliminate naming conflicts
+
+
+.left-column[
+```
+>>> from common import show as sh
+>>>
+>>> sh('show ip int brief')
+Sending 'show' command...
+Command sent:  show ip int brief
+>>>
+```
+]
+
+.right-column[
+```
+>>> from common import config as cfg
+>>>
+>>> cfg('interface Ethernet2/1 ; no shut')
+Sending 'config' command...
+Commands sent:  interface Ethernet2/1 ; no shut
+>>>  
+```
+]
+
+---
+
+class: ubuntu
+
+# The PYTHONPATH
+
+* For testing, as we are doing in the course, you need to use your Python module from within the same directory where it exists
+  * Enter the Python shell where the module exists
+  * Write a new program and place in same directory where the module exists
+
+OR...update your PYTHONPATH
+
+```
+ntc@ntc:~$ env | grep "PYTHON"
+PYTHONPATH=/home/ntc/python/libraries/
+```
+
+One option is to update the PYTHONPATH in `.bashrc` so changes are persistent :
+
+```
+export PYTHONPATH=$PYTHONPATH:/home/ntc/new/path
+```
+
+
+---
+
+# Summary
+
+- Functions are a great way to re-use code within a program
+- Modules are a great way to re-used between programs
+- Packages are a collection of modules
+
+---
+
 # Lab Time
 
 - Lab 7 - Working with Dictionaries
   - Learn how to work with dictionaries and their built-in methods while working in the Python Interactive Interpreter
+
+- Lab 8 - Using Python Modules
 
 ---
 
@@ -1905,11 +2114,660 @@ class: ubuntu
 
 # Lab Time
 
-
 - Lab 9 - Exploring Nested Objects
   - List of dictionaries
   - Nested dictionaries
 
+---
+
+class: middle, segue
+
+# Working with Files
+### Introduction to Python for Network Engineers
+
+---
+
+# Sample Switch Config File
+
+Filename: `switch.cfg`
+
+```bash
+hostname NYCSWITCH1
+
+vlan 100
+ name web
+!
+interface Ethernet 1/1
+  description connecting to US101
+  switchport trunk encapsulation dot1q
+  switchport mode trunk
+
+interface Ethernet 1/2
+  description connecting to US102
+  switchport trunk encapsulation dot1q
+  switchport mode trunk
+
+interface vlan 100
+  ip address 10.100.15.100/24
+
+ip route 0.0.0.0/0 10.100.15.1
+```
+
+---
+
+class: ubuntu
+
+# Reading Data from a File
+
+.left-column[
+```
+>>> config = open('switch.cfg', 'r')         # open file
+>>>
+>>> config.read()                            # read file
+'hostname NYCSWITCH1\n\nvlan 100\n name web\n!\ninterface Ethernet 1/1\n  description connecting to US101\n  switchport trunk encapsulation dot1q\n  switchport mode trunk\n\ninterface Ethernet 1/2\n  description connecting to US102\n  switchport trunk encapsulation dot1q\n  switchport mode trunk\n\ninterface vlan 100\n  ip address 10.100.15.100/24\n\nip route 0.0.0.0/0 10.100.15.1'
+>>>
+>>> config_str = config.read()
+>>>
+```
+]
+--
+
+.right-column[
+```
+>>> print(config_str)
+hostname NYCSWITCH1
+
+vlan 100
+ name web
+!
+interface Ethernet 1/1
+  description connecting to US101
+  switchport trunk encapsulation dot1q
+  switchport mode trunk
+
+interface Ethernet 1/2
+  description connecting to US102
+  switchport trunk encapsulation dot1q
+  switchport mode trunk
+
+interface vlan 100
+  ip address 10.100.15.100/24
+
+ip route 0.0.0.0/0 10.100.15.1
+>>>
+>>> config.close()                           # close file
+```
+]
+
+---
+
+class: ubuntu
+
+# File Object & its Methods
+
+```
+>>> dir(config)
+['close', 'closed', 'encoding', 'errors', 'fileno', 'flush', 'isatty', 'mode', 'name', 'newlines', 'next', 'read', 'readinto', 'readline', 'readlines', 'seek', 'softspace', 'tell', 'truncate', 'write', 'writelines', 'xreadlines']
+```
+---
+
+class: ubuntu
+
+# Writing Data to a File
+
+.left-column[
+```
+>>> vlans = [{'id': '10', 'name': 'USERS'}, {'id': '20', 'name': 'VOICE'}, {'id': '30', 'name': 'WLAN'}, {'id': '40', 'name': 'APP'}, {'id': '50', 'name': 'WEB'}]
+>>>
+>>> print(json.dumps(vlans, indent=4))
+[
+    {
+        "id": "10",
+        "name": "USERS"
+    },
+    {
+        "id": "20",
+        "name": "VOICE"
+    },
+    {
+        "id": "30",
+        "name": "WLAN"
+    },
+    {
+        "id": "40",
+        "name": "APP"
+    },
+    {
+        "id": "50",
+        "name": "WEB"
+    }
+]
+>>>
+```
+]
+
+.right-column[
+```
+>>> write_file = open('vlans_new.cfg', 'w')
+>>>
+>>> for vlan in vlans:
+...     vlan_id = vlan['id']
+...     vlan_name = vlan['name']
+...     write_file.write('vlan ' + vlan_id + '\n')
+...     write_file.write('  name ' + vlan_name + '\n')
+...
+>>>
+>>> write_file.close()
+>>>
+```
+
+]
+
+---
+
+class: ubuntu
+# Writing Data to a File
+```
+ntc@ntc:~$ cat vlans.cfg
+vlan 10
+  name USERS
+vlan 20
+  name VOICE
+vlan 30
+  name WLAN
+vlan 40
+  name APP
+vlan 50
+  name WEB
+
+```
+
+Note: always remember to close files. By default, data isn't written to the file until it's closed.
+
+---
+class: ubuntu
+
+# with Statement
+
+- `with` guarantees file will be closed (context  manager)
+
+```
+>>> with open('switch.cfg', 'r') as config:
+...     netcfg = config.read()     # readlines() could also be used
+>>> netcfg
+'hostname NYCSWITCH1\n\nvlan 100\n name web\n!\ninterface Ethernet 1/1\n  description connecting to US101\n  switchport trunk encapsulation dot1q\n  switchport mode trunk\n\ninterface Ethernet 1/2\n  description connecting to US102\n  switchport trunk encapsulation dot1q\n  switchport mode trunk\n\ninterface vlan 100\n  ip address 10.100.15.100/24\n\nip route 0.0.0.0/0 10.100.15.1'
+>>>
+```
+
+```
+>>> config = open('switch.cfg', 'r')         # open file
+>>>
+>>> netcfg = config.read()
+>>>
+>>> config.close()
+```
+
+---
+class: ubuntu
+
+# A quick intro to YAML
+
+- Human readable data serialization language
+- Heavily used for configuration files
+- Relies heavily on indentation
+- 2 space indent is common
+- Superset of JSON
+
+---
+
+class: ubuntu
+
+# YAML Demo
+
+
+.left-column[
+A list of dictionaries
+
+``` yaml
+---
+  - vlan_name: web
+    vlan_id: '10'
+    vlan_state: active
+  - vlan_name: app
+    vlan_id: '20'
+    vlan_state: active
+  - vlan_name: DB
+    vlan_id: '30'
+    vlan_state: active
+```
+]
+
+.right-column[
+
+A nested dictionary
+
+``` yaml
+---
+snmp:
+  ro: public
+  rw: private
+  info:
+    location: nyc
+    contact: bob
+vlans:
+  10:
+    name: web
+  20:
+    name: app
+```
+]
+
+
+---
+
+class: middle, segue
+
+# Python Scripts
+### Introduction to Python for Network Engineers
+
+---
+
+# Executing Scripts
+
+- Important to see how they are executed
+  - Understand the user experience (always)
+- `.py` file extension
+- Execute with format `python scriptname.py`
+
+.ubuntu[
+```
+ntc@ntc:~$ python intro.py
+Welcome to Python for Network Engineers!
+This is your first script.
+```
+]
+--
+
+```python
+#! /usr/bin/env python
+
+if __name__ == "__main__":
+
+    print('Welcome to Python for Network Engineers!')
+    print('This is your first script.')
+```
+
+---
+
+# Writing Scripts
+
+**Everything under `if __name__ == "__main__":` is the same as it would be on the Python interpreter**
+
+* `if __name__ == "__main__":` is an optional, but recommended
+  * Entry point for a Python program
+  * `__name__` is an internal variable set to "__main__" when the file is run as a script
+* `#! /usr/bin/env python` is the shebang, optional, but recommended.
+  * Tells the system which version of Python to use when running the program.
+
+```python
+#! /usr/bin/env python
+
+# filename: print_facts.py
+if __name__ == "__main__":
+
+    facts = {'vendor': 'cisco', 'mgmt_ip': '10.1.1.1', 'os': '6.1.2', 'model': 'nexus', 'hostname': 'NYC301'}
+
+    for key, value in facts.items():
+        print(key + '-----' + value)
+```
+
+
+---
+
+# Writing Scripts (cont'd)
+
+```python
+#! /usr/bin/env python
+
+# filename: print_facts.py
+if __name__ == "__main__":
+
+    facts = {'vendor': 'cisco', 'mgmt_ip': '10.1.1.1', 'os': '6.1.2', 'model': 'nexus', 'hostname': 'NYC301'}
+
+    for key, value in facts.items():
+        print(key + '-----' + value)
+```
+
+.ubuntu[
+```
+ntc@ntc:~$ python print_facts.py
+os-----6.1.2
+model-----nexus
+hostname-----NYC301
+vendor-----cisco
+mgmt_ip-----10.1.1.1
+```
+]
+
+
+---
+
+# Scripts with Functions
+
+- Keep the function aligned with the `if __name__ == "__main__":`
+
+```python
+#! /usr/bin/env python
+
+def get_interface_type(interface):
+    if interface.lower().startswith('et'):
+        itype = 'ethernet'
+    elif interface.lower().startswith('vl'):
+        itype = 'svi'
+    elif interface.lower().startswith('po'):
+        itype = 'portchannel'
+    elif interface.lower().startswith('lo'):
+        itype = 'loopback'
+    else:
+        itype = 'unknown'
+
+    return itype
+
+if __name__ == "__main__":
+
+    intf = 'Ethernet2/1'
+    intf_type = get_interface_type(intf)
+    print(intf_type)
+
+```
+--
+
+.ubuntu[
+```
+ntc@ntc:~$ python verify_interface_type.py
+ethernet
+```
+]
+
+---
+
+class: ubuntu
+
+# From Program to Shell (`-i`)
+
+- Execute a script and get dropped into the shell when complete and you still have access to the objects within the main part of the program
+- Great for testing
+
+```
+$ python -i verify_interface_type.py
+ethernet
+>>>
+>>> dir()
+['__builtins__', '__doc__', '__name__', '__package__', 'get_interface_type', 'intf']
+>>>
+>>> get_interface_type('loopback99')
+'loopback'
+>>>
+>>> get_interface_type('portchannel5')
+'portchannel'
+>>>
+>>> intf
+'Ethernet2/1'
+>>>
+```
+
+
+---
+
+
+# Summary
+
+- Writing a script is no different than writing code in the Python shell
+- Think about the user experience
+- Continue to re-factor
+  - From if/elif to loops
+  - From seeing the same code a few different places to functions
+
+---
+
+# Lab Time
+
+- Lab 10 - Performing Basic File Operations
+  - Understand the basics of working with files.  You open a file, read data, and normalize input to usable data.
+  - Update modular script from previous lab to generate a configuration file
+   - Read a YAML data file and use it to generate device configuration; writing this to file
+
+- Lab 11 - Writing Scripts
+  - Hello Network Automation
+  - Generating Interface Commands using a Key Map
+
+---
+
+class: middle, segue
+
+# netmiko
+### Python Network Libraries
+
+---
+
+# Netmiko Overview
+
+- Python library that simplifies SSH management to network devices
+- Based on the Paramiko SSH library
+
+**The purposes of the library are the following:**
+
+- Successfully establish an SSH connection to the device
+- Simplify the execution of show commands and the retrieval of output data
+- Simplify execution of configuration commands including possibly commit actions
+- Do the above across a broad set of networking vendors and platforms
+
+---
+
+# Supported Platforms
+
+.left-column[
+* Arista vEOS
+* Cisco ASA
+* Cisco IOS
+* Cisco IOS-XR
+* Cisco SG300
+* HP Comware7
+* HP ProCurve
+* Juniper Junos
+* Linux
+* Brocade VDX (limited)
+* Brocade ICX/FastIron (limited)
+* Brocade MLX/NetIron (limited)
+]
+.right-column[
+* Avaya ERS (limited)
+* Avaya VSP (limited)
+* Cisco IOS-XE (limited)
+* Cisco NX-OS (limited)
+* Cisco WLC (limited)
+* Dell-Force10 DNOS9 (limited)
+* Huawei (limited)
+* Palo Alto PAN-OS (limited)
+* Vyatta VyOS  (limited)
+]
+
+---
+
+# Supported Platforms (experimental)
+
+.left-column[
+* A10
+* Alcatel-Lucent SR-OS
+* Enterasys
+* Extreme
+* F5 LTM
+* Fortinet
+]
+
+---
+
+# Getting Started with Netmiko
+
+
+```python
+>>> from netmiko import ConnectHandler
+>>>
+>>> device = ConnectHandler(device_type='cisco_nxos', ip='n9k1', username='cisco', password='cisco')`
+>>>
+
+```
+
+--
+
+We could have also done:
+
+```python
+>>> args = dict(device_type='cisco_nxos', ip='n9k2', username='cisco', password='cisco')
+>>>
+>>> device = ConnectHandler(**args)
+>>>
+```
+
+Note: `**` as in `**args` is used to treat a dictionary (single object) as multiple key-value pairs.
+
+---
+
+# Using Netmiko
+
+Send a command to the device
+
+```python
+>>> device.send_command_timing('show hostname')
+u'N9K1.cisconxapi.com '
+>>>
+```
+
+Send a command to the device and wait for a string (prompt).
+
+Default waits for the previous prompt string to return.
+
+```python
+>>> device.send_command('copy run start')
+# output omitted
+>>>
+```
+
+
+---
+
+# Using netmiko (cont'd)
+
+Enter config mode
+
+```python
+>>> device.config_mode()
+u'config term\nEnter configuration commands, one per line. End with CNTL/Z.\nN9K1(config)# '
+```
+
+
+Send configuration mode command (must using timing here)
+
+```python
+>>> device.send_command_timing('hostname NEW_HOSTNAME')
+u'NEW_HOSTNAME(config)# '
+>>>
+```
+
+Same result can be achieved specifying `expect_string` within `send_command`
+
+```python
+>>> device.send_command('hostname NEWER_HOSTNAME', expect_string='NEWER_HOSTNAME')
+u'NEWER_HOSTNAME(config)# '
+>>>
+```
+
+Exit configuration mode
+
+```python
+device.exit_config_mode()
+```
+
+---
+
+# Using netmiko (cont'd)
+
+Storing & Printing a command response
+
+```python
+>>> vlans = device.send_command_expect('show vlan')
+>>>
+>>> print(vlans)
+
+VLAN Name                             Status    Ports
+---- -------------------------------- --------- -------------------------------
+1    default                          active    Eth1/2, Eth1/3, Eth1/8, Eth1/9
+                                                Eth1/11, Eth1/12, Eth1/13, Eth2/9
+                                                Eth2/10, Eth2/11, Eth2/12
+2    VLAN0002                         active    Po10, Po11, Po12, Eth1/4
+                                                Eth1/5, Eth1/6, Eth1/7, Eth2/5
+                                                Eth2/6
+3    VLAN0003                         active    Po10, Po11, Po12, Eth1/4
+                                                Eth1/5, Eth1/6, Eth1/7, Eth2/5
+                                                Eth2/6
+4    VLAN0004                         active    Po10, Po11, Po12, Eth1/4
+                                                Eth1/5, Eth1/6, Eth1/7, Eth2/5
+                                                Eth2/6
+5    VLAN0005                         active    Po10, Po11, Po12, Eth1/4
+                                                Eth1/5, Eth1/6, Eth1/7, Eth2/5
+                                                Eth2/6
+
+# shortened for brevity
+```
+
+---
+
+# Using netmiko (cont'd)
+
+Check your current prompt
+
+```python
+>>> device.find_prompt()
+u'NEW_HOSTNAME#'
+>>>
+```
+
+---
+
+### Primary List of Methods
+
+* config_mode() -- Enter into config mode
+* enable() -- Enter enable mode
+* establish_connection() -- Establish SSH connection to device
+* exit_enable_mode() -- Exit enable mode
+* find_prompt() -- Return the current router prompt
+* commit() -- Execute a commit action on Juniper and IOS-XR
+* disconnect() -- Close the SSH connection
+* send_command_timing() - Send command down the SSH channel, return output back (uses timer to wait for device)
+* send_command_expect() -- Send command to device; retrieve output until router_prompt or expect_string
+* send_config_set() -- Send a set of configuration commands to remote device
+* send_config_from_file() -- Send a set of configuration commands loaded from a file
+
+
+---
+
+# Summary
+
+- Legacy devices are here to stay (for awhile)
+- Great way to bridge the gap between legacy and modern devices that return structured data
+
+- Netmiko is a great library to integrate with TextFSM to create a psuedo-API
+    -  CLI commands gets sent to the device and you get returned structured data
+    -  We cover how to do this with Ansible
+
+---
+
+# Lab Time
+
+- Lab 12 - Exploring Netmiko
+    - Choose either IOS or JUNOS
+
+- Lab 13 -  Use Netmiko to interactively communicate with a network switch
 
 ---
 
@@ -2630,433 +3488,8 @@ Duplex: auto
 
 ---
 
-class: middle, segue
-
-# Python Scripts
-### Introduction to Python for Network Engineers
-
----
-
-# Executing Scripts
-
-- Important to see how they are executed
-  - Understand the user experience (always)
-- `.py` file extension
-- Execute with format `python scriptname.py`
-
-.ubuntu[
-```
-ntc@ntc:~$ python intro.py
-Welcome to Python for Network Engineers!
-This is your first script.
-```
-]
---
-
-```python
-#! /usr/bin/env python
-
-if __name__ == "__main__":
-
-    print('Welcome to Python for Network Engineers!')
-    print('This is your first script.')
-```
-
----
-
-# Writing Scripts
-
-**Everything under `if __name__ == "__main__":` is the same as it would be on the Python interpreter**
-
-* `if __name__ == "__main__":` is an optional, but recommended
-  * Entry point for a Python program
-  * `__name__` is an internal variable set to "__main__" when the file is run as a script
-* `#! /usr/bin/env python` is the shebang, optional, but recommended.
-  * Tells the system which version of Python to use when running the program.
-
-```python
-#! /usr/bin/env python
-
-# filename: print_facts.py
-if __name__ == "__main__":
-
-    facts = {'vendor': 'cisco', 'mgmt_ip': '10.1.1.1', 'os': '6.1.2', 'model': 'nexus', 'hostname': 'NYC301'}
-
-    for key, value in facts.items():
-        print(key + '-----' + value)
-```
-
-
----
-
-# Writing Scripts (cont'd)
-
-```python
-#! /usr/bin/env python
-
-# filename: print_facts.py
-if __name__ == "__main__":
-
-    facts = {'vendor': 'cisco', 'mgmt_ip': '10.1.1.1', 'os': '6.1.2', 'model': 'nexus', 'hostname': 'NYC301'}
-
-    for key, value in facts.items():
-        print(key + '-----' + value)
-```
-
-.ubuntu[
-```
-ntc@ntc:~$ python print_facts.py
-os-----6.1.2
-model-----nexus
-hostname-----NYC301
-vendor-----cisco
-mgmt_ip-----10.1.1.1
-```
-]
-
-
----
-
-# Scripts with Functions
-
-- Keep the function aligned with the `if __name__ == "__main__":`
-
-```python
-#! /usr/bin/env python
-
-def get_interface_type(interface):
-    if interface.lower().startswith('et'):
-        itype = 'ethernet'
-    elif interface.lower().startswith('vl'):
-        itype = 'svi'
-    elif interface.lower().startswith('po'):
-        itype = 'portchannel'
-    elif interface.lower().startswith('lo'):
-        itype = 'loopback'
-    else:
-        itype = 'unknown'
-
-    return itype
-
-if __name__ == "__main__":
-
-    intf = 'Ethernet2/1'
-    intf_type = get_interface_type(intf)
-    print(intf_type)
-
-```
---
-
-.ubuntu[
-```
-ntc@ntc:~$ python verify_interface_type.py
-ethernet
-```
-]
-
----
-
-class: ubuntu
-
-# From Program to Shell (`-i`)
-
-- Execute a script and get dropped into the shell when complete and you still have access to the objects within the main part of the program
-- Great for testing
-
-```
-$ python -i verify_interface_type.py
-ethernet
->>>
->>> dir()
-['__builtins__', '__doc__', '__name__', '__package__', 'get_interface_type', 'intf']
->>>
->>> get_interface_type('loopback99')
-'loopback'
->>>
->>> get_interface_type('portchannel5')
-'portchannel'
->>>
->>> intf
-'Ethernet2/1'
->>>
-```
-
-
----
-
-
-# Summary
-
-- Writing a script is no different than writing code in the Python shell
-- Think about the user experience
-- Continue to re-factor
-  - From if/elif to loops
-  - From seeing the same code a few different places to functions
-
----
-
 # Lab Time
 
 - Lab 18 - Getting Started with Functions
 
-- Lab 11 - Writing Scripts
-  - Hello Network Automation
-  - Generating Interface Commands using a Key Map
 
-- Lab 9 - Writing a Script to generate configurations
-  - Write a script to generate interface configuration commands
-
-- Lab 10 - Write a modular script that breaks down thescript into distinct, logical, functions, from the previous lab.
-
----
-
-class: middle, segue
-
-# Working with Files
-### Introduction to Python for Network Engineers
-
----
-
-# Sample Switch Config File
-
-Filename: `switch.cfg`
-
-```bash
-hostname NYCSWITCH1
-
-vlan 100
- name web
-!
-interface Ethernet 1/1
-  description connecting to US101
-  switchport trunk encapsulation dot1q
-  switchport mode trunk
-
-interface Ethernet 1/2
-  description connecting to US102
-  switchport trunk encapsulation dot1q
-  switchport mode trunk
-
-interface vlan 100
-  ip address 10.100.15.100/24
-
-ip route 0.0.0.0/0 10.100.15.1
-```
-
----
-
-class: ubuntu
-
-# Reading Data from a File
-
-.left-column[
-```
->>> config = open('switch.cfg', 'r')         # open file
->>>
->>> config.read()                            # read file
-'hostname NYCSWITCH1\n\nvlan 100\n name web\n!\ninterface Ethernet 1/1\n  description connecting to US101\n  switchport trunk encapsulation dot1q\n  switchport mode trunk\n\ninterface Ethernet 1/2\n  description connecting to US102\n  switchport trunk encapsulation dot1q\n  switchport mode trunk\n\ninterface vlan 100\n  ip address 10.100.15.100/24\n\nip route 0.0.0.0/0 10.100.15.1'
->>>
->>> config_str = config.read()
->>>
-```
-]
---
-
-.right-column[
-```
->>> print(config_str)
-hostname NYCSWITCH1
-
-vlan 100
- name web
-!
-interface Ethernet 1/1
-  description connecting to US101
-  switchport trunk encapsulation dot1q
-  switchport mode trunk
-
-interface Ethernet 1/2
-  description connecting to US102
-  switchport trunk encapsulation dot1q
-  switchport mode trunk
-
-interface vlan 100
-  ip address 10.100.15.100/24
-
-ip route 0.0.0.0/0 10.100.15.1
->>>
->>> config.close()                           # close file
-```
-]
-
----
-
-class: ubuntu
-
-# File Object & its Methods
-
-```
->>> dir(config)
-['close', 'closed', 'encoding', 'errors', 'fileno', 'flush', 'isatty', 'mode', 'name', 'newlines', 'next', 'read', 'readinto', 'readline', 'readlines', 'seek', 'softspace', 'tell', 'truncate', 'write', 'writelines', 'xreadlines']
-```
----
-
-class: ubuntu
-
-# Writing Data to a File
-
-.left-column[
-```
->>> vlans = [{'id': '10', 'name': 'USERS'}, {'id': '20', 'name': 'VOICE'}, {'id': '30', 'name': 'WLAN'}, {'id': '40', 'name': 'APP'}, {'id': '50', 'name': 'WEB'}]
->>>
->>> print(json.dumps(vlans, indent=4))
-[
-    {
-        "id": "10",
-        "name": "USERS"
-    },
-    {
-        "id": "20",
-        "name": "VOICE"
-    },
-    {
-        "id": "30",
-        "name": "WLAN"
-    },
-    {
-        "id": "40",
-        "name": "APP"
-    },
-    {
-        "id": "50",
-        "name": "WEB"
-    }
-]
->>>
-```
-]
-
-.right-column[
-```
->>> write_file = open('vlans_new.cfg', 'w')
->>>
->>> for vlan in vlans:
-...     vlan_id = vlan['id']
-...     vlan_name = vlan['name']
-...     write_file.write('vlan ' + vlan_id + '\n')
-...     write_file.write('  name ' + vlan_name + '\n')
-...
->>>
->>> write_file.close()
->>>
-```
-
-]
-
----
-
-class: ubuntu
-# Writing Data to a File
-```
-ntc@ntc:~$ cat vlans.cfg
-vlan 10
-  name USERS
-vlan 20
-  name VOICE
-vlan 30
-  name WLAN
-vlan 40
-  name APP
-vlan 50
-  name WEB
-
-```
-
-Note: always remember to close files. By default, data isn't written to the file until it's closed.
-
----
-class: ubuntu
-
-# with Statement
-
-- `with` guarantees file will be closed (context  manager)
-
-```
->>> with open('switch.cfg', 'r') as config:
-...     netcfg = config.read()     # readlines() could also be used
->>> netcfg
-'hostname NYCSWITCH1\n\nvlan 100\n name web\n!\ninterface Ethernet 1/1\n  description connecting to US101\n  switchport trunk encapsulation dot1q\n  switchport mode trunk\n\ninterface Ethernet 1/2\n  description connecting to US102\n  switchport trunk encapsulation dot1q\n  switchport mode trunk\n\ninterface vlan 100\n  ip address 10.100.15.100/24\n\nip route 0.0.0.0/0 10.100.15.1'
->>>
-```
-
-```
->>> config = open('switch.cfg', 'r')         # open file
->>>
->>> netcfg = config.read()
->>>
->>> config.close()
-```
-
----
-class: ubuntu
-
-# A quick intro to YAML
-
-- Human readable data serialization language
-- Heavily used for configuration files
-- Relies heavily on indentation
-- 2 space indent is common
-- Superset of JSON
-
----
-
-class: ubuntu
-
-# YAML Demo
-
-
-.left-column[
-A list of dictionaries
-
-``` yaml
----
-  - vlan_name: web
-    vlan_id: '10'
-    vlan_state: active
-  - vlan_name: app
-    vlan_id: '20'
-    vlan_state: active
-  - vlan_name: DB
-    vlan_id: '30'
-    vlan_state: active
-```
-]
-
-.right-column[
-
-A nested dictionary
-
-``` yaml
----
-snmp:
-  ro: public
-  rw: private
-  info:
-    location: nyc
-    contact: bob
-vlans:
-  10:
-    name: web
-  20:
-    name: app
-```
-]
-
----
-
-# Lab Time
-
-- Lab 10 - Performing Basic File Operations
-  - Understand the basics of working with files.  You open a file, read data, and normalize input to usable data.
-  - Update modular script from previous lab to generate a configuration file
-   - Read a YAML data file and use it to generate device configuration; writing this to file
