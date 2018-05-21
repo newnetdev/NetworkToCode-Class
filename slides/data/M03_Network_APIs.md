@@ -26,6 +26,9 @@ class: center, middle, title
 * Vendor Libraries
   * Juniper XML API (NETCONF) & PyEZ
   * Arista pyeapi
+* Open Multi-Vendor Libraries
+  * NAPALM
+  * pyntc
 
 ---
 
@@ -433,7 +436,7 @@ We are going to look at two non-RESTful APIs:  **Cisco Nexus NX-API (CLI)** and 
 
 # Cisco Nexus NX-API
 
-**Enable NX-API**
+**Enable NX-API**:
 
 ```bash
 feature nxapi
@@ -446,7 +449,7 @@ nxapi https port 8443
 nxapi http port 8080
 ```
 
-Certain platforms require a command to enable the **sandbox**
+Certain platforms require a command to enable the **sandbox**:
 
 ```bash
 nxapi sandbox
