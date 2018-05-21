@@ -1316,7 +1316,7 @@ Status Code: 200
 
 # Lab Time
 
-* Lab 18 - Using Python requests
+* Lab 24 - Using Python requests
 * Pick one of the following labs:
   * 24.1 - requests using eAPI
   * 24.2 - requests using NX-API
