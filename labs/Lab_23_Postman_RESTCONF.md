@@ -2,7 +2,7 @@
 
 ### Task 1 - Browsing the IOS-XE Native Model with Postman
 
-Cisco IOS-XE supports different YANG models and each these use a different data structure.  This means you can "get" or "configure" particular features on XE with different JSON or XML objects.  
+Cisco IOS-XE supports different YANG models and each these models use a different data structure.  This means you can "get" or "configure" particular features on XE with different JSON or XML objects.  
 
 This task will focus on issuing GET requests with Postman.
 
@@ -24,7 +24,7 @@ First, set the HTTP request type to `GET`.
 
 ##### Step 3
 
-In the Authorization tab, select `Basic Auth` for the **Type** and use "ntc" and "ntc123" as the username and password, respectively.
+In the Authorization tab, select `Basic Auth` for the **Type**, `ntc` for **Username** and `ntc123` for the **Password** respectively.
 
 ![Authentication](images/postman/authentication.png)
 
