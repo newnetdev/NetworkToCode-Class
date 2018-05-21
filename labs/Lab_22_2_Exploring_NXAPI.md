@@ -2,25 +2,25 @@
 
 ### Task 1 - NX-API Developer Sandbox
 
-This tasks introduces you to the Developer Sandbox environment that exists on each Nexus switch (assuming it supports NX-API).  The NX-API is a great tool for beginners and experts alike, as it gives you direct insight with how the switch will respond to API calls.  This allows you to verify what key-value pairs and response you should be getting back as you are writing and testing your code.
+This task introduces you to the Developer Sandbox environment that exists on each Nexus switch (assuming it supports NX-API).  The NX-API is a great tool for beginners and experts alike, as it gives you direct insight with how the switch will respond to API calls.  This allows you to verify what key-value pairs and response you should be getting back as you are writing and testing your code.
 
 ##### Step 1
 
-Open a Web Browser and connect to the switch using _http://nxos-spine1_. 
+Open a Web Browser and connect to the switch using `http://nxos-spine1` 
 
 Ensure you are using **http**.
 
-Login with the credentials ntc/ntc123.
+Login with the credentials `username: ntc, password: ntc123`
 
 ![NX-API Sandbox Logon](images/cisco_sandbox_logon.png)
 
-You will then see the NX-API Developer Sandbox.
+You will then see the NX-API Developer Sandbox:
 
 ![NX-API Sandbox 4](images/cisco_04.png)
 
 ##### Step 2
 
-Enter the command "show version" in the large text box on the left hand side. Keep all other settings as default for now.
+Enter the command `show version` in the large text box on the left hand side. Keep all other settings as default for now.
 
 ##### Step 3
 
@@ -36,7 +36,7 @@ Notice the JSON data that came back. It has several key-value pairs including `j
 
 In the command text box, now enter the following command:
 
-"show interface Eth2/1"
+`show interface Eth2/1`
 
 ![NX-API Sandbox 6](images/cisco-show-int.png)
 
@@ -58,7 +58,7 @@ You will see the raw text response just like you'd see if you were on the switch
 
 ##### Step 7
 
-Now keep the same command "show interface Eth2/1", but change the command type back to **cli_show**.
+Now keep the same command `show interface Eth2/1`, but change the command type back to **cli_show**.
 
 ![NX-API Sandbox 12](images/cisco_12.png)
 
