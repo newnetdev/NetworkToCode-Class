@@ -115,19 +115,19 @@ Both use HTTP(s) as transport.
 Example 1:
 
 ```bash
-Basic Auth:  ntc/ntc123
+Basic Auth: ntc/ntc123
 Request: GET
 Accept-Type: application/json
-URL:  http://device/path/to/resource
+URL: http://device/path/to/resource
 ```
 
 Example 2:
 
 ```bash
-Basic Auth:  ntc/ntc123
+Basic Auth: ntc/ntc123
 Request: POST
 Content-Type: application/json
-URL:  http://device/path/to/resource
+URL: http://device/path/to/resource
 Body: {'interface': "Eth1", "admin_state": "down"}
 ```
 
@@ -574,14 +574,6 @@ management api http-commands
 
 ---
 
-# Sending Multiple Config Commands
-
-.center[
-<img src="data/media/apis/arista/06_multi_config.png" alt="Sending Multiple Config commands" style="alight:middle;width:1025px;height:500px;">
-]
-
----
-
 # Command Documentation
 
 .center[
@@ -675,7 +667,7 @@ PATCH - Applies partial modifications to the specified object
 
 ---
 
-# RESTCONF EXAMPLE 1
+# RESTCONF Example 1
 
 Retrieve a full running configuration modeled as JSON.
 
@@ -904,7 +896,7 @@ csr1kv# show run | inc route
 
 ---
 
-# RC Example 5 - PATCHing Routes
+# RESTCONF Example 5 - PATCHing Routes
 
 PATCH  http://csr1/restconf/api/config/native/ip/route
 
@@ -938,7 +930,7 @@ Body:
 
 ---
 
-# RC Example 5 - PATCHing Routes (cont'd)
+# RESTCONF Example 5 - PATCHing Routes (cont'd)
 
 
 Resulting New Configuration:
@@ -952,7 +944,7 @@ ip route 172.16.0.0 255.255.0.0 192.168.1.1
 
 ---
 
-# RC Example 6 - PUTing Routes
+# RESTCONF Example 6 - PUTing Routes
 
 Starting Configuration:
 
@@ -966,7 +958,7 @@ ip route 172.16.0.0 255.255.0.0 192.168.1.1
 
 ---
 
-# RC Example 6 - PUTing Routes (cont'd)
+# RESTCONF Example 6 - PUTing Routes (cont'd)
 
 
 PUT http://csr1/restconf/api/config/native/ip/route
@@ -993,7 +985,7 @@ Body:
 
 ---
 
-# RC Example 6 - PUTing Routes (cont'd)
+# RESTCONF Example 6 - PUTing Routes (cont'd)
 
 
 Resulting New Configuration:
@@ -1032,7 +1024,6 @@ class: middle, segue
 * You can create a job collection
 
 
----
 ---
 
 # Postman (cont'd)
