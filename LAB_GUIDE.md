@@ -24,7 +24,7 @@
 - [Lab 20 - Passing in User Input](labs/Lab_20_User_Input.md)
 - [Lab 21 - Parsing show commands with TextFSM](labs/Lab_21_Show_Parsing_TextFSM.md)
 - [Lab 22 - Exploring NX-API & eAPI ](labs/Lab_22_Exploring_eAPI_NXAPI.md)
-- [Lab 23 - Using Postman with IOS-XE RESTful API](labs/Lab_23_Postman_RESTCONF.md)
+- [Lab 23 - Using Postman with IOS-XE RESTful API & Arista eAPI](labs/Lab_23_Postman.md)
 - [Lab 24 - Using Python requests for HTTP APIs ](labs/Lab_24_Python_requests.md)
 - [Lab 25 - BONUS: Getting Started with NAPALM](labs/Lab_25_NAPALM.md)
 
