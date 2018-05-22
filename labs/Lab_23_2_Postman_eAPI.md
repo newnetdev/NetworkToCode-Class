@@ -1,4 +1,4 @@
-## Lab 23 - Exploring Arista eAPI with Postman
+## Lab 23.2 - Exploring Arista eAPI with Postman
 
 ### Task 1 - Exploring Arista eAPI with Postman
 
