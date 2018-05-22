@@ -1051,7 +1051,7 @@ class: middle, segue
   * Lab 23.2 Exploring Arista eAPI
  
 
-Note: Feel free to test it with NX-API or eAPI.
+Note: Feel free to test it with IOS-XE RESTCONF or eAPI.
 
 ---
 
