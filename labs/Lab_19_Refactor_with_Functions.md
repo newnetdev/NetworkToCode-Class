@@ -43,7 +43,7 @@ Open this script and save it as `backupv3.py`
 
 ##### Step 2
 
-As you can see, there are logical distinctions to the actions actually being performed here.  They are Connecting to the device, Saving the configuration, Backing up the configuration, and writing the config to a file.  This is a good way to start to thinking about functions.  We'll also create a function called `main()` that'll act as the "beginning" of the program.
+As you can see, there are logical distinctions to the actions actually being performed here.  They are: Connecting to the device, Saving the configuration, Backing up the configuration, and writing the config to a file.  This is a good way to start to thinking about functions.  We'll also create a function called `main()` that'll act as the "beginning" of the program.
 
 First let's start by creating `main()`.  Simply put everything into `main()` and then call the function at the bottom of the script.
 
@@ -93,7 +93,7 @@ def connect_to_device(hostname):
     return device
 ```
 
-Notice that we'll receive the hostname of the device, use that to connect witih netmiko, and return the actual "device object".
+Notice that we'll receive the hostname of the device, use that to connect with netmiko, and return the actual "device object".
 
 > Note: a few variable names changed to ensure you understand which variables can be accessed inside and outside of the functions.
 
