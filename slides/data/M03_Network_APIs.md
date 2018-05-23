@@ -26,6 +26,9 @@ class: center, middle, title
 * Vendor Libraries
   * Juniper XML API (NETCONF) & PyEZ
   * Arista pyeapi
+* Open Multi-Vendor Libraries
+  * NAPALM
+  * pyntc
 
 ---
 
@@ -112,19 +115,19 @@ Both use HTTP(s) as transport.
 Example 1:
 
 ```bash
-Basic Auth:  ntc/ntc123
+Basic Auth: ntc/ntc123
 Request: GET
 Accept-Type: application/json
-URL:  http://device/path/to/resource
+URL: http://device/path/to/resource
 ```
 
 Example 2:
 
 ```bash
-Basic Auth:  ntc/ntc123
+Basic Auth: ntc/ntc123
 Request: POST
 Content-Type: application/json
-URL:  http://device/path/to/resource
+URL: http://device/path/to/resource
 Body: {'interface': "Eth1", "admin_state": "down"}
 ```
 
@@ -433,7 +436,7 @@ We are going to look at two non-RESTful APIs:  **Cisco Nexus NX-API (CLI)** and 
 
 # Cisco Nexus NX-API
 
-**Enable NX-API**
+**Enable NX-API**:
 
 ```bash
 feature nxapi
@@ -446,7 +449,7 @@ nxapi https port 8443
 nxapi http port 8080
 ```
 
-Certain platforms require a command to enable the **sandbox**
+Certain platforms require a command to enable the **sandbox**:
 
 ```bash
 nxapi sandbox
@@ -571,14 +574,6 @@ management api http-commands
 
 ---
 
-# Sending Multiple Config Commands
-
-.center[
-<img src="data/media/apis/arista/06_multi_config.png" alt="Sending Multiple Config commands" style="alight:middle;width:1025px;height:500px;">
-]
-
----
-
 # Command Documentation
 
 .center[
@@ -600,8 +595,11 @@ Note: these are learning and testing tools.
 
 # Lab Time
 
-* Lab 16 - Exploring Cisco Nexus and Arista APIs
-  * Choose either the eAPI Command Explorer or NX-API Developer Sandbox Lab
+* Lab 22 - Exploring eAPI and NXAPI
+ * Lab 22.1 - Exploring Arista eAPI
+ * Lab 22.2 - Exploring Cisco NXAPI
+
+Choose either the eAPI Command Explorer or NX-API Developer Sandbox Lab
 
 
 ---
@@ -672,7 +670,7 @@ PATCH - Applies partial modifications to the specified object
 
 ---
 
-# RESTCONF EXAMPLE 1
+# RESTCONF Example 1
 
 Retrieve a full running configuration modeled as JSON.
 
@@ -901,7 +899,7 @@ csr1kv# show run | inc route
 
 ---
 
-# RC Example 5 - PATCHing Routes
+# RESTCONF Example 5 - PATCHing Routes
 
 PATCH  http://csr1/restconf/api/config/native/ip/route
 
@@ -935,7 +933,7 @@ Body:
 
 ---
 
-# RC Example 5 - PATCHing Routes (cont'd)
+# RESTCONF Example 5 - PATCHing Routes (cont'd)
 
 
 Resulting New Configuration:
@@ -949,7 +947,7 @@ ip route 172.16.0.0 255.255.0.0 192.168.1.1
 
 ---
 
-# RC Example 6 - PUTing Routes
+# RESTCONF Example 6 - PUTing Routes
 
 Starting Configuration:
 
@@ -963,7 +961,7 @@ ip route 172.16.0.0 255.255.0.0 192.168.1.1
 
 ---
 
-# RC Example 6 - PUTing Routes (cont'd)
+# RESTCONF Example 6 - PUTing Routes (cont'd)
 
 
 PUT http://csr1/restconf/api/config/native/ip/route
@@ -990,7 +988,7 @@ Body:
 
 ---
 
-# RC Example 6 - PUTing Routes (cont'd)
+# RESTCONF Example 6 - PUTing Routes (cont'd)
 
 
 Resulting New Configuration:
@@ -1030,7 +1028,6 @@ class: middle, segue
 
 
 ---
----
 
 # Postman (cont'd)
 
@@ -1049,11 +1046,12 @@ class: middle, segue
 
 # Lab Time
 
-* Lab 17 - Using Postman
-  * Exploring the IOS-XE RESTCONF API
+* Lab 23 - Exploring Postman
+  * Lab 23.1 Exploring IOS-XE RESTCONF API
+  * Lab 23.2 Exploring Arista eAPI
+ 
 
-
-Note: Feel free to test it with NX-API or eAPI.
+Note: Feel free to test it with IOS-XE RESTCONF or eAPI.
 
 ---
 
@@ -1315,8 +1313,915 @@ Status Code: 200
 
 # Lab Time
 
-* Lab 18 - Consuming HTTP APIs with requests
-* Pick one of the following labs:
-  * 18.1 - requests using eAPI
-  * 18.2 - requests using NX-API
-* Lab 18.3 - requests using RESTCONF on XE
+* Lab 24 - Using Python requests:
+  * 24.1 - requests using eAPI
+  * 24.2 - requests using NX-API
+
+Pick one of the labs.
+
+---
+
+class: middle, segue
+
+# NAPALM
+### Network APIs
+
+---
+
+
+# NAPALM
+
+_NAPALM (Network Automation and Programmability Abstraction Layer with Multivendor support) is a Python library that implements a set of functions to interact with different network device Operating Systems using a unified API._
+
+_NAPALM supports several methods to connect to the devices, to manipulate configurations or to retrieve data._
+
+https://napalm.readthedocs.io/en/latest/
+
+
+
+---
+
+# NAPALM Support Matrix
+
+* Palo Alto PANOS
+* Cisco IOS
+* Cisco NX-OS
+* Cisco IOS-XR
+* Arista EOS
+* Juniper Junos
+* IBM
+* Pluribus
+* FortiOS
+* Cumulus Linux
+* Actively growing
+
+---
+
+# NAPALM
+
+Three core functions:
+
+* Retrieving Data
+* Declarative Configuration Management
+* Deployment Validation
+
+All three are done in a uniform and vendor-neutral fashion
+
+---
+
+class: ubuntu
+
+# Retrieving Data
+
+**Uses a uniform and consistent data model across all device types supported by NAPALM**
+
+.left-column[
+
+- get_facts()
+- get_arp_table()
+- get_bgp_config()
+- get_bgp_neighbors()
+- get_bgp_neighbors_detail()
+- get_interfaces()
+- get_interfaces_counters()
+- get_lldp_neighbors()
+- get_lldp_neighbors_detail()
+]
+
+.right-column[
+- get_ntp_peers()
+- get_ntp_stats()
+- get_ntp_servers()
+- ... plus another dozen and growing...
+]
+
+
+---
+
+class: ubuntu
+
+# get_facts()
+
+Network Device Facts
+
+```
+>>> device.get_facts()
+{'os_version': u'4.15.2F-2663444.4152F', 'uptime': 5817, 'interface_list': [u'Ethernet1', u'Ethernet2', u'Ethernet3', u'Ethernet4', u'Ethernet5', u'Ethernet6', u'Ethernet7', u'Management1'], 'vendor': u'Arista', 'serial_number': u'', 'model': u'vEOS', 'hostname': u'eos-spine1', 'fqdn': u'eos-spine1.ntc.com'}
+>>>
+>>> facts = device.get_facts()
+>>>
+>>> import json
+>>>
+>>> print(json.dumps(facts, indent=4))
+{
+    "os_version": "4.15.2F-2663444.4152F",
+    "uptime": 5837,
+    "interface_list": [
+        "Ethernet1",
+        "Ethernet2",
+        "Ethernet3",
+        "Ethernet4",
+        "Ethernet5",
+        "Ethernet6",
+        "Ethernet7",
+        "Management1"
+    ],
+    "vendor": "Arista",
+    "serial_number": "",
+    "model": "vEOS",
+    "hostname": "eos-spine1",
+    "fqdn": "eos-spine1.ntc.com"
+}
+>>>
+```
+
+---
+
+class: ubuntu
+
+# get_interfaces()
+
+Gathering Interfaces Info
+
+
+```
+>>> device.get_interfaces()
+{u'Management1': {'is_enabled': True, 'description': u'', 'last_flapped': 1467419703.021217, 'is_up': True, 'mac_address': u'2c:c2:60:0d:52:90', 'speed': 1000}, u'Ethernet2': {'is_enabled': True, 'description': u'', 'last_flapped': 1467419702.781202, 'is_up': True, 'mac_address': u'2c:c2:60:12:98:52', 'speed': 1000}, u'Ethernet3': {'is_enabled': True, 'description': u'', 'last_flapped': 1467419702.781203, 'is_up': True, 'mac_address': u'2c:c2:60:60:20:9b', 'speed': 1000}, u'Ethernet1': {'is_enabled': True, 'description': u'', 'last_flapped': 1467419703.1052225, 'is_up': True, 'mac_address': u'2c:c2:60:2d:45:d5', 'speed': 1000}, u'Ethernet6': {'is_enabled': True, 'description': u'', 'last_flapped': 1467419702.781202, 'is_up': True, 'mac_address': u'2c:c2:60:48:80:70', 'speed': 1000}, u'Ethernet7': {'is_enabled': True, 'description': u'', 'last_flapped': 1467419702.8092043, 'is_up': True, 'mac_address': u'2c:c2:60:40:8d:10', 'speed': 1000}, u'Ethernet4': {'is_enabled': True, 'description': u'', 'last_flapped': 1467419702.769202, 'is_up': True, 'mac_address': u'2c:c2:60:2e:c6:f8', 'speed': 1000}, u'Ethernet5': {'is_enabled': True, 'description': u'', 'last_flapped': 1467419703.105223, 'is_up': True, 'mac_address': u'2c:c2:60:60:7d:ba', 'speed': 1000}}
+>>>
+
+```
+
+
+---
+
+class: ubuntu
+
+# get_interfaces() (cont'd)
+
+
+.left-column[
+
+```
+>>> interfaces = device.get_interfaces()
+>>>
+>>> print(json.dumps(interfaces, indent=4))
+{
+    "Management1": {
+        "is_enabled": true,
+        "description": "",
+        "last_flapped": 1467419703.0212176,
+        "is_up": true,
+        "mac_address": "2c:c2:60:0d:52:90",
+        "speed": 1000
+    },
+    "Ethernet2": {
+        "is_enabled": true,
+        "description": "",
+        "last_flapped": 1467419702.7812023,
+        "is_up": true,
+        "mac_address": "2c:c2:60:12:98:52",
+        "speed": 1000
+    },
+    "Ethernet3": {
+        "is_enabled": true,
+        "description": "",
+        "last_flapped": 1467419702.7812028,
+        "is_up": true,
+        "mac_address": "2c:c2:60:60:20:9b",
+        "speed": 1000
+    },
+```
+]
+
+.right-column[
+
+```
+    "Ethernet1": {
+        "is_enabled": true,
+        "description": "",
+        "last_flapped": 1467419702.781203,
+        "is_up": true,
+        "mac_address": "2c:c2:60:48:80:70",
+        "speed": 1000
+    },
+    "Ethernet5": {
+        "is_enabled": true,
+        "description": "",
+        "last_flapped": 1467419702.8092043,
+        "is_up": true,
+        "mac_address": "2c:c2:60:40:8d:10",
+        "speed": 1000
+    },
+    "Ethernet4": {
+        "is_enabled": true,
+        "description": "",
+        "last_flapped": 1467419702.7692015,
+        "is_up": true,
+        "mac_address": "2c:c2:60:2e:c6:f8",
+        "speed": 1000
+    }
+}
+
+
+```
+]
+
+---
+
+class: ubuntu
+
+# get_interfaces_ip()
+
+Get Interfaces IP Addresses
+
+```
+>>> {u'Management1': {u'ipv4': {u'10.0.0.11': {u'prefix_length': 24}}, u'ipv6': {}}}
+{u'Management1': {u'ipv4': {u'10.0.0.11': {u'prefix_length': 24}}, u'ipv6': {}}}
+>>>
+```
+
+---
+
+class: ubuntu
+
+# get_environment()
+
+Device Environment Status
+
+```
+>>> device.get_environment()
+{u'fans': {}, u'memory': {u'available_ram': 99060, u'used_ram': 1798476}, u'temperature': {}, u'power': {}, u'cpu': {0: {u'%usage': 5.4}}}
+>>>
+```
+
+---
+
+# NAPALM Configuration Management
+
+Two main ways to manage device configurations with NAPALM
+
+**Configuration Replace**
+
+* Declarative configuration always pushing the full configuration
+* Only commands required to get the device into its intended state are applied
+* No "negation (no)" commands are sent to the device
+
+
+**Configuration Merge**
+
+* Send a set of commands or configuration stanza
+* Only commands required to get the device into its intended state are applied
+* You can use the merge for declarative management on a stanza based on OS
+
+It does vary based on operating system.
+
+
+---
+
+
+
+# NAPALM Configuration Management
+
+**Example Workflow**
+
+Works slightly different than based on individual drivers and operating systems.
+
+1. Connect to Device
+2. Copy desired configuration to device (checkpoint file, candidate configuration, config session, bootflash as candidate_config.txt)
+3. Use a vendor command to view diffs
+4. Use a vendor command to apply configuration changes
+5. Optionally, rollback to a config that exists in the file system.
+
+Note: you dictate if the supplied configuration is a full config file or partial configuration
+
+---
+
+# Configuration Replace
+
+Focus on desired configuration commands.
+
+**Scenario:** You need to remove two loopback interfaces and change the hostname.
+
+**NAPALM Config Replace**:
+  * Full configuration is sent to the device, but...
+  * Only diffs are applied.
+  * You do not need to worry about going from A to B - you just focus on B.
+
+
+
+
+```bash
+$ more diffs/csr1.diffs
++hostname csr1
+-hostname csr_old_name
+-interface Loopback100
+ -ip address 1.1.1.1 255.255.255.255
+-interface Loopback200
+ -ip address 22.2.1.1 255.255.255.255
+-ip route 10.1.1.0 255.255.255.0 192.0.1.1
+```
+
+**IMPORTANT**: There are no `no` commands used.  The underlying OS generates the diffs (for most NAPALM drivers).
+
+---
+
+# Configuration Merge
+
+You can use NAPALM for declarative management for a sectional config too.
+
+.left-column[
+Current BGP Config
+```bash
+router bgp 65512
+   neighbor 10.0.0.0 remote-as 65500
+   neighbor 10.0.0.0 maximum-routes 12000
+   neighbor 10.0.0.1 remote-as 65512
+   neighbor 10.0.0.1 maximum-routes 12000
+   network 20.20.20.0/24
+!
+```
+
+Desired BGP Config (file sent to device)
+```bash
+router bgp 65512
+   neighbor 10.0.0.2 remote-as 65500
+   neighbor 10.0.0.2 maximum-routes 12000
+   neighbor 10.0.0.1 remote-as 65512
+   neighbor 10.0.0.1 maximum-routes 12000
+   neighbor 10.0.0.10 remote-as 65512
+   network 100.0.100.0/24
+!
+
+```
+
+]
+
+--
+
+.right-column[
+
+Diff Generated by NAPALM
+```bash
+    neighbor 10.0.0.0 maximum-routes 12000
+    neighbor 10.0.0.1 remote-as 65512
+    neighbor 10.0.0.1 maximum-routes 12000
++   neighbor 10.0.0.2 remote-as 65500
++   neighbor 10.0.0.2 maximum-routes 12000
++   neighbor 10.0.0.10 remote-as 65512
++   neighbor 10.0.0.10 maximum-routes 12000
+    network 20.20.20.0/24
++   network 100.0.100.0/24
+ !
+ management api http-commands
+    protocol http
+
+```
+
+
+]
+
+---
+
+# Configuration Merge (Advanced)
+
+You can use NAPALM for declarative management for a sectional config too.
+
+.left-column[
+Current BGP Config
+```bash
+router bgp 65512
+   neighbor 10.0.0.0 remote-as 65500
+   neighbor 10.0.0.0 maximum-routes 12000
+   neighbor 10.0.0.1 remote-as 65512
+   neighbor 10.0.0.1 maximum-routes 12000
+   network 20.20.20.0/24
+!
+```
+
+Desired BGP Config (file sent to device)
+```bash
+no router bgp 65512
+router bgp 65512
+   neighbor 10.0.0.2 remote-as 65500
+   neighbor 10.0.0.2 maximum-routes 12000
+   neighbor 10.0.0.1 remote-as 65512
+   neighbor 10.0.0.1 maximum-routes 12000
+   neighbor 10.0.0.10 remote-as 65512
+   network 100.0.100.0/24
+!
+
+```
+
+]
+
+--
+
+.right-column[
+
+Diff Generated by NAPALM
+```bash
+ router bgp 65512
+-   neighbor 10.0.0.0 remote-as 65500
+-   neighbor 10.0.0.0 maximum-routes 12000
+    neighbor 10.0.0.1 remote-as 65512
+    neighbor 10.0.0.1 maximum-routes 12000
+-   network 20.20.20.0/24
++   neighbor 10.0.0.2 remote-as 65500
++   neighbor 10.0.0.2 maximum-routes 12000
++   neighbor 10.0.0.10 remote-as 65512
++   neighbor 10.0.0.10 maximum-routes 12000
++   network 100.0.100.0/24
+ !
+
+
+```
+Be cautious of device support.  This is based on NAPALM driver implementation which is dictated by vendor OS support.  This example is EOS.
+]
+
+---
+
+class: ubuntu
+
+# Getting Started with NAPALM
+
+Step 1. Import Network Driver
+
+```
+>>> from napalm import get_network_driver
+>>>
+>>> driver = get_network_driver('eos')
+>>>
+
+```
+
+Step 2. Create Device Object
+
+```
+>>> hostname = 'eos-spine1'
+>>> username = 'ntc'
+>>> password = 'ntc123'
+>>>
+>>> device = driver(hostname, username, password)
+>>>
+```
+
+Step 3. Open connection
+
+```
+>>> device.open()
+>>>
+```
+
+---
+
+# Perform a Configuration Merge
+
+Sample new config we want to send/merge with current configuration:
+
+`snmp.conf`
+
+
+```bash
+snmp-server community networktocode ro
+snmp-server community public ro
+snmp-server community private rw
+snmp-server community supersecret rw
+snmp-server location SYDNEY
+snmp-server contact JOHN_SMITH
+
+
+```
+
+
+
+---
+
+class: ubuntu
+
+# Perform a Configuration Merge
+
+
+- `load_merge_candidate` method
+- Support configuration files (`filename` parameter) and strings (`config` parameter)
+
+```
+>>> device.load_merge_candidate(filename='snmp.conf')
+```
+
+- Compare the running configuration and the new candidate configuration with `compare_config`
+
+```
+>>> diffs = device.compare_config()
+>>>
+>>> print(diffs)
+@@ -7,7 +7,12 @@
+ hostname eos-spine1
+ ip domain-name ntc.com
+ !
++snmp-server contact JOHN_SMITH
++snmp-server location SYDNEY
+ snmp-server community networktocode ro
++snmp-server community private rw
++snmp-server community public ro
++snmp-server community supersecret rw
+ !
+ spanning-tree mode mstp
+ !
+```
+
+---
+
+
+class: ubuntu
+
+# Perform a Configuration Replace
+
+- Declarative network configuration management  
+- Requires using a full configuration file
+- `load_replace_candidate` method
+- Copies new config to the device, but does not commit it
+
+```
+>>> device.load_replace_candidate(filename='new_good.conf')
+>>>
+```
+
+
+
+---
+
+class: ubuntu
+
+# Other Methods
+
+<html>
+<head>
+<style>
+table, th, td {
+    border: 1px solid black;
+}
+</style>
+</head>
+<body>
+
+<table style="width:100%">
+  <tr>
+    <th>Method</th>
+    <th>Description</th>
+    <th>Example</th>
+  </tr>
+  <tr>
+    <td>discard_config</td>
+    <td>Removes the loaded candidate configuration</td>
+    <td>device.discard_config()</td>
+  </tr>
+  <tr>
+    <td>commit_config</td>
+    <td>Commit the loaded candidate configuration</td>
+    <td>device.commit_config()</td>
+  </tr>
+  <tr>
+    <td>rollback</td>
+    <td>Restores a backup configuration saved before the last changes and commit</td>
+    <td>device.rollback()</td>
+  </tr>
+</table>
+
+</body>
+</html>
+
+```
+>>> device.discard_config()
+>>>
+>>> print(device.compare_config())
+u''
+```
+
+```
+>>> device.commit_config()
+>>>
+```
+
+```
+>>> device.rollback()
+>>>
+```
+---
+
+class: ubuntu
+
+# How NAPALM Works
+
+* EOS
+  - Creates and locks config sessions
+  - Uses `rollback clean-config` to prepare for a config replace
+  - Commit is performed issuing `copy startup-config flash:rollback-0`, `configure session #` and `commit`
+  - Rollback is performed issuing `configure replace flash:rollback-0`
+  - Diffs are generated on the device using the `show session-config named <file> diffs`
+
+* IOS
+  - Uses SCP or Netmiko (TCL) to transfer config files for config replace/merge
+  - Uses `show archive config differences <base_file> <new_file>` to show diffs for config replace
+  - Uses `show archive config incremental-diffs <file> ignorecase` to show incremental diffs
+  - Replaces with `configure replace <file> force`. Merges with `copy <file> running-config`
+
+
+---
+
+class: ubuntu
+
+# How NAPALM Works
+
+* Junos
+  - Uses junos-pyez API with NETCONF Junos candidate configurations
+  - Locks configurations while performing operations till first commit/rollback
+  - Uses `rollback 0` to rollback configuration
+
+* NXOS
+  - Uses checkpoint files for config replacement. A checkpoint file can be obtained with `device._get_checkpoint_file()` which issues `checkpoint file temp_cp_file_from_napalm` on the device and then prints it
+  - Diffs for config replacement are a list of commands that would be needed to take the device from its current state to the desired config state using `show diff rollback-patch file <source_of_truth_file> file <config_file>` command
+  - Merges send config line by line. This doesn’t use the checkpoint/rollback functionality. As a result, merges are not atomic
+  - Replaces uses `rollback running file <config_file>` command
+
+
+
+---
+
+# Lab Time - BONUS
+
+- Lab 25 - NAPALM
+ -   Using the NAPALM Python Library to do declarative config merge, full config merge and getters for Arista EOS
+ -   Using the NAPALM Python Library to do basic config merge and getters for Cisco IOS
+ -   Using the NAPALM Python Library to do declarative config merge, full config merge and getters for Juniper JUNOS
+
+
+---
+
+
+class: middle, segue
+
+# pyntc
+### Network APIs
+
+---
+
+
+# pyntc
+
+
+- Open source multi-vendor Python library
+- Freely provided to the open source community
+
+**The purposes of the library are the following:**
+
+- Simplify the execution of operational common tasks including
+  - Copying files
+  - Upgrading devices
+  - Rebooting devices
+  - Saving / Backing Up Configs
+  - Executing arbitrary commands
+
+---
+
+# Supported Platforms
+
+* Cisco IOS platforms
+* Cisco NX-OS
+* Arista EOS
+* Juniper Junos
+
+---
+
+class: ubuntu
+
+# Getting Started with pyntc
+
+**Using the `ntc_device` object** and supplying all parameters within your code
+
+Step 1. Import Device Object
+
+```
+>>> from pyntc import ntc_device as NTC
+>>>
+```
+
+Step 2. Create Device Object(s)
+  * Key parameter is `device_type`
+
+```
+>>> # CREATE DEVICE OBJECT FOR AN IOS DEVICE
+>>>
+>>> csr1 = NTC(host='csr1', username='ntc', password='ntc123', device_type='cisco_ios_ssh')
+>>>
+```
+
+```
+>>> # CREATE DEVICE OBJECT FOR A NEXUS DEVICE
+>>>
+>>> nxs1 = NTC(host='nxos-spine1', username='ntc', password='ntc123', device_type='cisco_nxos_nxapi')
+>>>
+```
+
+
+---
+
+class: ubuntu
+
+# Viewing Running/Startup Configs
+
+- Use `running_config` and `start_up` device properties
+  - Only showing partial config (shortened for clarity)
+
+```
+>>> run = csr1.running_config
+>>>
+>>> print(run)
+Building configuration...
+
+Current configuration : 2062 bytes
+!
+! Last configuration change at 18:26:59 UTC Wed Jan 6 2016 by ntc
+!
+version 15.5
+service timestamps debug datetime msec
+
+lldp run
+cdp run
+!
+ip scp server enable
+!
+interface GigabitEthernet1
+ ip address 10.0.0.50 255.255.255.0
+ cdp enable
+```
+
+
+---
+
+class: ubuntu
+
+# Copying files
+
+- `file_copy` method
+- Copies file(s) from Python machine to target network devices
+
+```
+>>> devices = [csr1, nxs1]
+>>>
+>>> for device in devices:
+...   device.file_copy('newconfig.cfg')
+...
+>>>
+```
+
+---
+
+class: ubuntu
+
+# Save Configs
+
+- `save` method
+- Perform a save on the network device
+
+`copy run start` for Cisco/Arista and `commit` for Juniper
+
+```
+>>> csr1.save()
+True
+>>>
+```
+
+`copy running-config <filename>`
+
+```
+>>> csr1.save('mynewconfig.cfg')
+True
+>>>
+```
+
+---
+
+class: ubuntu
+
+# Backup Configs
+
+- `backup_running_config` method
+- Backup current running configuration and store it locally on Python machine
+
+```
+>>> csr1.backup_running_config('csr1.cfg')
+>>>
+```
+
+---
+
+class: ubuntu
+# Reboot
+
+Reboot target device
+
+Parameters:
+  - `timer=0` by default
+  - `confirm=False` by default
+
+```
+>>> csr1.reboot(confirm=True)
+>>>
+```
+
+---
+
+class: ubuntu
+
+# Installing Operating Systems
+
+* Sets boot loader accordingly
+* IOS still needs a reboot
+* NXOS - reboot happens automatically
+
+Note: not currently supported on Juniper
+
+```
+>>> device.install_os('nxos.7.0.3.I2.1.bin')
+>>>
+```
+
+---
+
+class: ubuntu
+
+# Upgrade Workflow
+
+**Sample Workflow**
+
+```
+>>> device.save('backup.cfg')
+>>> device.backup_running_config('spine1.cfg')
+>>> device.file_copy('nxos.7.0.3.I2.1.bin')
+>>> device.install_os('nxos.7.0.3.I2.1.bin')
+>>> device.reboot()          
+>>>
+```
+
+---
+
+class: ubuntu
+
+# Sending Show & Config Commands
+
+- `show` and `show_list` methods
+  - API enabled devices return JSON by default
+- `config` and `config_list methods`
+
+.left-column[
+
+```
+>>> nxs1.show('show hostname')
+{'hostname': 'nxos-spine1'}
+>>>
+```
+
+```
+>>> nxs1.show('show hostname', raw_text=True)
+'nxos-spine1 \n'
+>>>
+```
+
+```
+>>> cmds = ['show hostname', 'show run int Eth2/1']
+>>> data = nxs1.show_list(cmds, raw_text=True)
+>>>
+```
+]
+
+.right-column[
+
+```
+>>> csr1.config('hostname testname')
+>>>
+```
+
+```
+>>> csr1.config_list(['interface Gi3', 'shutdown'])
+>>>
+```
+
+]
+
+
+---
+
+# Summary
+
+**NAPALM**
+- Multi-vendor library that supports system level tasks
+- Simplifies configuration management across a wide number of network and security devices.
+  - Focus on desired state
+- There are other getters that are part of NAPALM too
+  + facts, interfaces, BGP neighbors, LLDP, NTP, etc.
+
+**pyntc**
+
+- Multi-vendor library that currently supports system level tasks
+  - Backing up configs, copying files, upgrading images
+  - Rebooting devices, issuing commands, saving configs
