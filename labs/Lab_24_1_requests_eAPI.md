@@ -25,8 +25,8 @@ Enter the Python shell.
 ```python
 $ python
 
-Python 2.7.6 (default, Jun 22 2015, 17:58:13)
-[GCC 4.8.2] on linux2
+Python 2.7.12 (default, Nov 19 2016, 06:48:10) 
+[GCC 5.4.0 20160609] on linux2
 Type "help", "copyright", "credits" or "license" for more information.
 
 >>>
@@ -356,7 +356,7 @@ Save the VLAN object as a new variable called `vlans`.
 ```python
 >>> vlans = data['result'][0]
 >>>
->>>  print(json.dumps(vlans, indent=4))
+>>> print(json.dumps(vlans, indent=4))
 {
     "sourceDetail": "",
     "vlans": {
@@ -521,7 +521,7 @@ You'll notice this process becomes repetitive, so you'd want to store a few of t
 >>>
 ```
 
-We can see that eos-spine1 has 4+ neighbor entries pointing to the same device, **eos-spine2**. That's because eos-spine1 and eos-spine2 are connected with 4 links.
+We can see that **eos-spine1** has 4+ neighbor entries pointing to the same device, **eos-spine2**. That's because **eos-spine1** and **eos-spine2** are connected with 4 links.
 
 We can also see the keys returned from the device do not match the keys we want for this lab.  We need to map `neighborDevice` to `neighbor`, `neighborPort` to `neighbor_interface`, and `port` to `local_interface`.
 
