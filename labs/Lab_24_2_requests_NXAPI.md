@@ -22,8 +22,8 @@ Enter the Python shell.
 ```python
 $ python
 
-Python 2.7.6 (default, Jun 22 2015, 17:58:13)
-[GCC 4.8.2] on linux2
+Python 2.7.12 (default, Nov 19 2016, 06:48:10) 
+[GCC 5.4.0 20160609] on linux2
 Type "help", "copyright", "credits" or "license" for more information.
 
 >>>
@@ -95,7 +95,7 @@ You can also do a `dir(requests)` to see available attributes and built-in metho
 
 Navigate to the NX-API Sandbox.  
 
-Set the message format to `json` and command type is `cli_show`.  Enter the command "show version" into the text box.
+Set the message format to `json` and command type is `cli_show`.  Enter the command `show version` into the text box.
 
 You should see the following Request object in the bottom left:
 
@@ -127,7 +127,7 @@ Create four new variables while on the Python shell: `auth`, `headers`, `payload
 
 `payload` should be equal to the Request object you copied above as a dictionary.
 
-`url` should be url = `url = 'http://nxos-spine1/ins'`  - this needs the `ins` appended to the switch name or IP to work.  
+`url` should be equal to `url = 'http://nxos-spine1/ins'` - this needs the `ins` appended to the switch name or IP to work.  
 
 The summary up until this point is the following:
 
@@ -637,7 +637,7 @@ You'll notice this process becomes repetitive, so you'd want to store a few of t
 
 ```
 
-We can see that nxos-spine1 has 4+ neighbor entries pointing to the same device, **nxos-spine2**. That's because nxos-spine1 and nxos-spine2 are connected with 4 links.
+We can see that **nxos-spine1** has 4+ neighbor entries pointing to the same device, **nxos-spine2**. That's because **nxos-spine1** and **nxos-spine2** are connected with 4 links.
 
 We can also see the keys returned from the device do not match the keys we want for this lab.  We need to map `device_id` to `neighbor`, `port_id` to `neighbor_interface`, and `intf_id` to `local_interface`.
 
