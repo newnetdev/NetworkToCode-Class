@@ -166,7 +166,7 @@ Ensure you have two group variables in the **all** group that are used for authe
 ```
 [all:vars]
 ansible_user=ntc
-ansible_pass=ntc123
+ansible_ssh_pass=ntc123
 
 ```
 
