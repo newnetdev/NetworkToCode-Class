@@ -27,8 +27,6 @@ class: center, middle, title
   * Juniper XML API (NETCONF) & PyEZ
   * Arista pyeapi
 * Open Multi-Vendor Libraries
-  * NAPALM
-  * pyntc
 
 ---
 
