@@ -121,7 +121,7 @@ First, do a `dir(time)`.  You'll see there are many objects within the `time` mo
 Here is one example of how to print the local time:
 
 ```python
->>> local_time = time.asctime(time.localtime(time.time()))
+>>> local_time = time.asctime()
 >>>
 >>> print(local_time)
 Sat January 27 19:21:47 2018
