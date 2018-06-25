@@ -175,7 +175,7 @@ csr2_commands = [csr2_interface_command, csr2_ipaddr_command, csr2_descr_command
 
 ##### Step 13
 
-Add necessary print statements to your script. You may want to print each command or the final commands list for eachd evice.
+Add necessary print statements to your script. You may want to print each command or the final commands list for each evice.
 
 ##### Step 14
 
