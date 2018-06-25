@@ -3354,7 +3354,7 @@ Using `regex_findall` is another way to parse the `stdout` from the `output` var
         ping_pct: "{{ output.stdout.0 | regex_findall('Success rate is (\\d+)\\s+percent') | first }}"
 ```
 
-The filter has captures the success line and registers the percentage (\\d+) capture group.  The `first` filter returns the first caputre group as the result.  This result is assigned to the variable `ping_pct`.
+The filter has captures the success line and registers the percentage (\\d+) capture group.  The `first` filter returns the first capture group as the result.  This result is assigned to the variable `ping_pct`.
 
 
 ---
