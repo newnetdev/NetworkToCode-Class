@@ -42,7 +42,7 @@ csr2_config = csr1.send_command("show run")
 
 print("Writing config to file | CSR2\n")
 
-with open("/home/ntc/scripts/configs/csr1.cfg", "w") as config_file:
+with open("/home/ntc/scripts/configs/csr2.cfg", "w") as config_file:
     config_file.write(csr2_config)
 
 ```
@@ -59,7 +59,7 @@ Perform a save-as on this file and save it as `backupv2.py`.
 
 ##### Step 2
 
-Without changing anything for CSR2, create a list of one device (for testing) just after importing `ConnectHandler`:
+Without changing anything for **csr2**, create a list of one device (for testing) just after importing `ConnectHandler`:
 
 ```python
 #! /usr/bin/env python
@@ -117,7 +117,7 @@ csr2_config = csr1.send_command("show run")
 
 print("Writing config to file | CSR2\n")
 
-with open("/home/ntc/scripts/configs/csr1.cfg", "w") as config_file:
+with open("/home/ntc/scripts/configs/csr2.cfg", "w") as config_file:
     config_file.write(csr2_config)
 
 
@@ -144,7 +144,7 @@ Writing config to file | CSR2
 
 Add "csr2" to the `devices` list created in Step 2 and repeat Steps 3 and 4 for "csr2".
 
-Hopepfully you realize, you can delete all of the code for CSR2!
+Hopepfully you realize, you can delete all of the code for `csr2`!
 
 This is what what updated script should look like:
 
@@ -177,7 +177,7 @@ for device in devices:
 
 ##### Step 6
 
-Since you're using a for loop now, you should clean up variable names so they don't refernce a particular device.  Change `csr1` to `net_device` and change `csr1_config` to `config`.
+Since you're using a for loop now, you should clean up variable names so they don't reference to a particular device.  Change `csr1` to `net_device` and change `csr1_config` to `config`.
 
 The updated script should look like this:
 
@@ -210,7 +210,7 @@ for device in devices:
 
 ##### Step 7
 
-Save and backup the config for CSR3.
+Save and backup the config for `csr3`.
 
 The only change you have to make is update the `devices` list to:
 
