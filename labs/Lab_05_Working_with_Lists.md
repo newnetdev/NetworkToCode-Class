@@ -32,7 +32,7 @@ Using the `replace` method, update the fourth element in the list so that it use
 >>> mac_list[3] = mac_list[3].replace(':', '.')
 ```
 
-This is show you that you can update (over-write) a single element in a list while combining it with a concept you learned when working with strings.
+This is to show you that you can update (over-write) a single element in a list while combining it with a concept you learned when working with strings.
 
 ##### Step 4
 
