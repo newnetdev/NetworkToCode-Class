@@ -304,7 +304,7 @@ if __name__ == "__main__":
 # Summary
 
 - For quick testing `sys.argv` is a great option
-- For a more robut script, you want others to use and to have a more defined help menu, `argparse` is the way to go
+- For a more robust script, you want others to use and to have a more defined help menu, `argparse` is the way to go
   - Supports more features, feel free to continue to digging!
 
 ---
