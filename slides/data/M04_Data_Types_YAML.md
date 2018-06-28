@@ -172,13 +172,10 @@ sw2['vendor'] will yield 'arista'
 # Nested Objects
 
 
-**When you're just starting it much more important to be able to extract data from a complex object.  Common for working with device APIs.**
-
+**Accessing nested objects is a very important skill to master quickly. It is commonly used especially in retrieving data out of a device API.**
 Basic objects include:
 * Lists of strings
 * Dictionaries with strings as values
-* Need to understand more complex objects
-* One of the most important topics regardless of programming language or tool used
 
 A list of lists
 
