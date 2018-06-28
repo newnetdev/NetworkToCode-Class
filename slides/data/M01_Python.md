@@ -649,12 +649,13 @@ class: ubuntu
 
 # White Space
 
-- Generally, not that important
-- Be consistent
-- The examples work, but not *good quality*
-  - `hostname = router1`
+- Generally the amount of space is not that important
+- Just be consistent
 - Tabs vs. Spaces
 - PEP8
+- The examples below work, but are not good habits to form
+  - `hostname = router1` is a good quality example
+
 
 ```
 >>> hostname='router1'
