@@ -5507,7 +5507,7 @@ Confirm New Vault password:
 
 # Ansible Vault
 
-The unecrypted file itself, is standard `yaml` that contains structured YAML variables
+The unencrypted file itself, is standard `yaml` that contains structured YAML variables
 
 ``` yaml
 ---
