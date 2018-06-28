@@ -243,7 +243,7 @@ var[1]['mac'] = '00:00:00:00:00:02'
     'vlan_state': 'active'
     }
 
-]w
+]
 ...........
 
 var[-1]['vlan_name'] = 'DB'
