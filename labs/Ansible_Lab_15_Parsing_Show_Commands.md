@@ -107,7 +107,7 @@ Add "assert" statements to validate the OS version and configuration register.
 Save and execute the playbook.
 
 
-### Task 2
+### Task 2 - DO NOT DO THIS TASK
 
 In this task, we'll use another Jinja2 filter for parsing.  This one is called `parse_cli` that uses Ansible specific RegEx "spec" files that have the regular expression definitions defined.
 
@@ -222,7 +222,7 @@ ok: [csr1] => {
 ```
 
 
-##### Step 6 (Optional)
+##### Step 6 (DO NOT DO THIS STEP)
 
 Save the following into a new spec parser file called `show_ip_interface_brief-list.yml` in the `parsers` directory.
 
