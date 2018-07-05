@@ -65,7 +65,7 @@ Create a new variable called `interface_config` and assign it the value of "inte
 
 ##### Step 6
 
-Print `interface_config` with and without using hte `print` statement:
+Print `interface_config` with and without using the `print` statement:
 
 Without the `print` statement:
 
