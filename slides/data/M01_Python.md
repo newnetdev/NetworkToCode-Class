@@ -2088,61 +2088,6 @@ class: ubuntu
 >>> config.close()
 ```
 
----
-class: ubuntu
-
-# A quick intro to YAML
-
-- Human readable data serialization language
-- Heavily used for configuration files
-- Relies heavily on indentation
-- 2 space indent is common
-- Superset of JSON
-
----
-
-class: ubuntu
-
-# YAML Demo
-
-
-.left-column[
-A list of dictionaries
-
-``` yaml
----
-  - vlan_name: web
-    vlan_id: '10'
-    vlan_state: active
-  - vlan_name: app
-    vlan_id: '20'
-    vlan_state: active
-  - vlan_name: DB
-    vlan_id: '30'
-    vlan_state: active
-```
-]
-
-.right-column[
-
-A nested dictionary
-
-``` yaml
----
-snmp:
-  ro: public
-  rw: private
-  info:
-    location: nyc
-    contact: bob
-vlans:
-  10:
-    name: web
-  20:
-    name: app
-```
-]
-
 
 ---
 
@@ -2194,12 +2139,16 @@ if __name__ == "__main__":
 #! /usr/bin/env python
 
 # filename: print_facts.py
-if __name__ == "__main__":
 
-    facts = {'vendor': 'cisco', 'mgmt_ip': '10.1.1.1', 'os': '6.1.2', 'model': 'nexus', 'hostname': 'NYC301'}
+import json 
 
-    for key, value in facts.items():
-        print(key + '-----' + value)
+facts1 = {'vendor': 'cisco', 'os': 'nxos', 'ipaddr': '10.1.1.1'}
+facts2 = {'vendor': 'cisco', 'os': 'ios', 'ipaddr': '10.2.1.1'}
+facts3 = {'vendor': 'arista', 'os': 'eos', 'ipaddr': '10.1.1.2'}
+
+devices = [facts1, facts2, facts3]
+
+print(json.dumps(devices, indent=4))
 ```
 
 
@@ -2211,22 +2160,38 @@ if __name__ == "__main__":
 #! /usr/bin/env python
 
 # filename: print_facts.py
-if __name__ == "__main__":
 
-    facts = {'vendor': 'cisco', 'mgmt_ip': '10.1.1.1', 'os': '6.1.2', 'model': 'nexus', 'hostname': 'NYC301'}
+import json 
 
-    for key, value in facts.items():
-        print(key + '-----' + value)
+facts1 = {'vendor': 'cisco', 'os': 'nxos', 'ipaddr': '10.1.1.1'}
+facts2 = {'vendor': 'cisco', 'os': 'ios', 'ipaddr': '10.2.1.1'}
+facts3 = {'vendor': 'arista', 'os': 'eos', 'ipaddr': '10.1.1.2'}
+
+devices = [facts1, facts2, facts3]
+
+print(json.dumps(devices, indent=4))
 ```
 
 .ubuntu[
 ```
 ntc@ntc:~$ python print_facts.py
-os-----6.1.2
-model-----nexus
-hostname-----NYC301
-vendor-----cisco
-mgmt_ip-----10.1.1.1
+[
+    {
+        "os": "nxos",
+        "ipaddr": "10.1.1.1",
+        "vendor": "cisco"
+    },
+    {
+        "os": "ios",
+        "ipaddr": "10.2.1.1",
+        "vendor": "cisco"
+    },
+    {
+        "os": "eos",
+        "ipaddr": "10.1.1.2",
+        "vendor": "arista"
+    }
+]
 ```
 ]
 
@@ -2314,13 +2279,13 @@ ethernet
 # Lab Time
 
 - Lab 10 - Performing Basic File Operations
-  - Understand the basics of working with files.  You open a file, read data, and normalize input to usable data.
-  - Update modular script from previous lab to generate a configuration file
-   - Read a YAML data file and use it to generate device configuration; writing this to file
+  - Read a Network Configuration File
+  - Write to a Configuration File
+  - Use a Context Manager
 
 - Lab 11 - Writing Scripts
   - Hello Network Automation
-  - Generating Interface Commands using a Key Map
+  - Print Facts for Three Devices
 
 ---
 
@@ -3499,4 +3464,59 @@ set(['3', '2'])
 ['3', '2']
 >>>
 ```
+
+---
+class: ubuntu
+
+# A quick intro to YAML
+
+- Human readable data serialization language
+- Heavily used for configuration files
+- Relies heavily on indentation
+- 2 space indent is common
+- Superset of JSON
+
+---
+
+class: ubuntu
+
+# YAML Demo
+
+
+.left-column[
+A list of dictionaries
+
+``` yaml
+---
+  - vlan_name: web
+    vlan_id: '10'
+    vlan_state: active
+  - vlan_name: app
+    vlan_id: '20'
+    vlan_state: active
+  - vlan_name: DB
+    vlan_id: '30'
+    vlan_state: active
+```
+]
+
+.right-column[
+
+A nested dictionary
+
+``` yaml
+---
+snmp:
+  ro: public
+  rw: private
+  info:
+    location: nyc
+    contact: bob
+vlans:
+  10:
+    name: web
+  20:
+    name: app
+```
+]
 
