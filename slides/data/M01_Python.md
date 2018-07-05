@@ -1598,34 +1598,6 @@ class: ubuntu
 >>>
 ```
 
----
-
-class: ubuntu
-
-# Pretty Printing Dictionaries
-
-* The `json` module can be used to pretty print a dictionary
-  * We cover modules later this section
-* It's serializing it as a string
-
-```
->>> print(facts)
-{'chipset': 't2', 'hostname': 'NYC301', 'vendor': 'arista', 'os': '6.1.2', 'mgmt_ip': '10.1.1.1'}
->>>
->>> import json
->>>
->>> print(json.dumps(facts, indent=4))
-{
-    "chipset": "t2",
-    "hostname": "NYC301",
-    "vendor": "arista",
-    "os": "6.1.2",
-    "mgmt_ip": "10.1.1.1"
-}
->>>
-```
-
-
 
 
 ---
@@ -1848,6 +1820,35 @@ import json
 import sys
 
 ```
+
+---
+
+class: ubuntu
+
+# Pretty Printing Dictionaries
+
+* The `json` module can be used to pretty print a dictionary
+  * We cover modules later this section
+* It's serializing it as a string
+
+```
+>>> print(facts)
+{'chipset': 't2', 'hostname': 'NYC301', 'vendor': 'arista', 'os': '6.1.2', 'mgmt_ip': '10.1.1.1'}
+>>>
+>>> import json
+>>>
+>>> print(json.dumps(facts, indent=4))
+{
+    "chipset": "t2",
+    "hostname": "NYC301",
+    "vendor": "arista",
+    "os": "6.1.2",
+    "mgmt_ip": "10.1.1.1"
+}
+>>>
+```
+
+
 
 ---
 
