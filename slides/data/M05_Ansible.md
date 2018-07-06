@@ -883,7 +883,8 @@ class: center, middle
 # Lab Time
 
 - Lab 1 - Deploying "Basic" Configurations with Ansible
-  - Write Your First Ansible Playbook that will configure SNMP setting on 6 devices! 3 IOS and 3 JUNOS devices
+  - Write Your First Ansible Playbook that will configure SNMP setting on 6 devices! 
+        - 3 IOS and 3 JUNOS devices
 - Lab 2 - Deploying Configs From a File
   - Shows how to push configuration using files.
 
@@ -1028,11 +1029,11 @@ csr2
 # Variable Priority
 
 - You can define host and group variables in the inventory file and respective host vars and group vars files
-- The file take priority
+- The host variable file takes priority over the group variable file
 
 <br>
 
-**Proving** variable priority: use the **debug** module
+You can **Prove** variable priority: using the **debug** module
 
 
 ---
