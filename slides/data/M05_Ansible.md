@@ -107,7 +107,7 @@ class: center, middle, title
 ---
 
   - name: DEPLOY SNMP COMMUNITY STRINGS ON IOS DEVICES
-    hosts: ios
+    hosts: iosxe
 
     tasks:
 
@@ -115,23 +115,19 @@ class: center, middle, title
       ios_config:
         lines:
           - "snmp-server community ntc123 ro"
-        provider: "{{ ios_provider }}"
 
     - name: DEPLOY FROM CONFIG FILE
       ios_config:
         src: "configs/snmp.cfg"
-        provider: "{{ ios_provider }}"
 
     - name: DEPLOY USING JINJA2 TEMPLATE
       ios_config:
         src: "snmp.j2"
-        provider: "{{ ios_provider }}"
 
 
 ```
 
 
-Note: The `provider` is covered soon.
 
 
 ---
@@ -151,17 +147,14 @@ Note: The `provider` is covered soon.
         nxos_feature:
           feature: scp-server
           state: enabled
-          provider: "{{ nxos_provider }}"
 
       - name: ENSURE FILE EXISTS ON DEVICE
         nxos_file_copy:
           local_file: "../os-images/cisco/nxos/nxos.7.0.3.I2.2d.bin"
-          provider: "{{ nxos_provider }}"
 
       - name: PERFORM THE UPGRADE
         nxos_install_os:
           system_image_file: nxos.7.0.3.I2.2d.bin
-          provider: "{{ nxos_provider }}"
 
 ```
 
@@ -222,14 +215,12 @@ Configure interface descriptions based on active neighbors
           connection=ssh
           platform={{ vendor }}_{{ os }}
           command='show lldp neighbors'
-          provider: "{{ provider }}"
         register: neighbors
 
       - name: AUTO-CONFIGURE PORT DESCRIPTIONS BASED ON LLDP DATA
         nxos_interface:
           interface: "{{ item.local_interface  }}"
           description: "Connects to {{ item.neighbor_interface }} on {{ item.neighbor }}"
-          provider: "{{ nxos_provider }}"
         with_items: neighbors.response
         when: item.local_interface != 'mgmt0'
 ```
@@ -784,27 +775,29 @@ Two files are required to get started:
 
 # Executing a Playbook
 
-Explicitly state which inventory file is used.
+
+To execute the Playbook, Explicitly state which inventory file is used, and then the Playbook.
 
 ```bash
 $ ansible-playbook -i <inventory-file> <playbook.yml>
 ```
 ```bash
-$ ansible-playbook -i test-inventory deploy-vlans.yml
+$ ansible-playbook -i inventory deploy-vlans.yml
 ```
 
 
 <br>
 
-Set the `ANSIBLE_INVENTORY` environment variable
+To prompt the user for a login username, use the `-u` or `--user=` flag, to prompt the user for a login password 
+use the  `-k` or `--ask-pass` flag. 
 
 ```bash
-$ export ANSIBLE_INVENTORY=test-inventory
+$ ansible-playbook -i inventory snmp-config.yml -u ntc -k
+SSH password: 
+
 ```
 
-```bash
-$ ansible-playbook deploy-vlans.yml
-```
+
 
 ---
 

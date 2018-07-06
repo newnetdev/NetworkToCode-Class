@@ -37,7 +37,6 @@ Remove the second play (Junos), so you're left with the following in your playbo
 
       - name: TASK 1 in PLAY 1 - ENSURE SNMP COMMANDS EXIST ON IOS DEVICES
         ios_config:
-          provider:
           commands:
             - snmp-server community ntc-course RO
             - snmp-server location NYC_HQ
