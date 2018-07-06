@@ -1568,15 +1568,36 @@ You can optionally return a given object (string, list, dict, etc.) if the key d
 
 
 
+
+
 ---
 
 class: ubuntu
 
-# Pretty Printing Dictionaries
+# Python Libraries
+
+* Python modules
+  * Standalone Python file used to share code between programs
+* Python packages
+  * Collection of Python modules
+
+Examples:
+
+```
+import json
+import os
+
+```
+
+---
+
+class: ubuntu
+
+# json package: Pretty Printing Dictionaries
 
 * The `json` module can be used to pretty print a dictionary
-  * We cover modules later this section
 * It's serializing it as a string
+* Example: Print some device facts in a much more readable indented format
 
 ```
 >>> print(facts)
@@ -1596,25 +1617,29 @@ class: ubuntu
 ```
 
 
-
-
 ---
 
 class: ubuntu
 
-# Python Libraries
+# os package: Pretty Printing Dictionaries
 
-* Python modules
-  * Standalone Python file used to share code between programs
-* Python packages
-  * Collection of Python modules
+* The `os` module can be used to execute operating system related tasks
+* Often used to change working directory or issue linux commands locally 
+* Example: Verify Google DNS is pingable from the system where the python is executed
 
-Examples:
+``` python
+>>> import os
+>>>
+>>> google_dns = "8.8.8.8"
+>>>
+>>> response = os.system("ping -c 1 " + google_dns)
+PING 8.8.8.8 (8.8.8.8): 56 data bytes
+64 bytes from 8.8.8.8: icmp_seq=0 ttl=59 time=11.431 ms
 
-```
-import json
-import sys
-
+--- 8.8.8.8 ping statistics ---
+1 packets transmitted, 1 p>>> import os
+>>>
+>>>
 ```
 
 ---
@@ -1627,19 +1652,17 @@ Filename: `common.py`
 ```python
 #! /usr/bin/env python
 
-def show(command):
-    print("Sending 'show' command...")
-    print('Command sent: ', command)
-
-def config(command):
-    print("Sending 'config' command...")
-    print('Commands sent: ', command)
+command = "show run"
+conf_command = "conf t ; int Gig 1 ; shutdown ;"
 
 if __name__ == "__main__":
-    command = 'show version'
-    show(command)
-    command = 'interface Eth1/1 ; shutdown'
-    config(command)
+    
+    print("Sending 'show' command...")
+    print('Command sent: \n {}'.format(command))
+    
+    
+    print("Sending 'config' command...")
+    print('Commands sent: \n {}'.format(conf_command))
 
 ```
 
@@ -1651,19 +1674,19 @@ Running `common.py` as a standalone program:
 
 .ubuntu[
 ```
-netdev@networktocode:~$ python common.py
-
+ntc@ntc:~$ python common.py
 Sending 'show' command...
-Command sent:  show version
-
+Command sent:
+ show run
 Sending 'config' command...
-Commands sent:  interface Eth1/1 ; shutdown
+Commands sent:
+ conf t ; int Gig 1 ; shutdown ;
 ```
 ]
 
 Remember, the code under the entry point conditional is only executed when the file is run as a standalone program
 
-What if you just wanted to use a function from within `common.py`?
+What if you just wanted to use variables from within `common.py`?
 
 
 ---
@@ -1672,23 +1695,26 @@ class: ubuntu
 
 # Re-Usable Python Objects
 
-What if we wanted to re-use objects (function, variables) from this file in another program?
+What if we wanted to re-use variables from this file in another program?
 
 Remember the filename is called `common.py`
 
 ```
-def show(command):
-    print("Sending 'show' command...")
-    print('Command sent: ', command)
+#! /usr/bin/env python
 
-def config(command):
-    print("Sending 'config' command...")
-    print('Commands sent: ', command)
+command = "show run"
+conf_command = "conf t ; int Gig 1 ; shutdown ;"
 
 if __name__ == "__main__":
     # Code only executed when ran as a a program
     # More flexibility than not using the entry point when
     # you're re-suing objects in other programs
+    print("Sending 'show' command...")
+    print('Command sent: \n {}'.format(command))
+    
+    
+    print("Sending 'config' command...")
+    print('Commands sent: \n {}'.format(conf_command))
 ```
 
 --
@@ -1697,9 +1723,8 @@ if __name__ == "__main__":
 ```
 >>> import common
 >>>
->>> common.show('show version')
-Sending 'show' command...
-Command sent:  show version
+>>> print(common.command)
+show run
 >>>
 ```
 ]
@@ -1708,10 +1733,9 @@ Command sent:  show version
 ```
 >>> import common
 >>>
->>> common.config('no router ospf 1')
-Sending 'config' command...
-Commands sent:  no router ospf 1
->>>  
+>>> print(common.conf_command)
+conf t ; int Gig 1 ; shutdown ;
+>>>
 ```
 ]
 
@@ -1727,23 +1751,23 @@ class: ubuntu
 
 .left-column[
 ```
->>> from common import show
+>>> from common import conf_command
 >>>
->>> show('show ip int brief')
-Sending 'show' command...
-Command sent:  show ip int brief
+>>> print(conf_command)
+conf t ; int Gig 1 ; shutdown ;
 >>>
 ```
 ]
 --
 .right-column[
 ```
->>> from common import config
+>>> import common
 >>>
->>> config('interface Ethernet2/1 ; no shut')
-Sending 'config' command...
-Commands sent:  interface Ethernet2/1 ; no shut
->>>  
+>>> print(command)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+NameError: name 'command' is not defined
+>>>
 ```
 ]
 
@@ -1755,23 +1779,21 @@ Commands sent:  interface Ethernet2/1 ; no shut
 
 .left-column[
 ```
->>> from common import show as sh
+>>> from common import command as cmd
 >>>
->>> sh('show ip int brief')
-Sending 'show' command...
-Command sent:  show ip int brief
+>>> print cmd
+show run
 >>>
 ```
 ]
 
 .right-column[
 ```
->>> from common import config as cfg
+>>> from common import conf_command as cfg
 >>>
->>> cfg('interface Ethernet2/1 ; no shut')
-Sending 'config' command...
-Commands sent:  interface Ethernet2/1 ; no shut
->>>  
+>>> print cfg
+conf t ; int Gig 1 ; shutdown ;
+>>>
 ```
 ]
 
@@ -1802,9 +1824,8 @@ export PYTHONPATH=$PYTHONPATH:/home/ntc/new/path
 ---
 
 # Summary
-
-- Functions are a great way to re-use code within a program
-- Modules are a great way to re-used between programs
+- JSON and OS are built-in packages which are useful
+- Modules are Standalone Python files used to share code between programs
 - Packages are a collection of modules
 
 ---
