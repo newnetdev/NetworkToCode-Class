@@ -334,12 +334,6 @@ startswith(...)
 
 ```
 
-Just like with `dir()`, you can use the object or data type name
-
-```
->>> help(str.startswith)
->>>
-```
 
 ---
 
@@ -619,7 +613,7 @@ class: ubuntu
 >>> hostname = 'nxos-spine1'
 >>> vendor = 'cisco'
 >>>
->>> print('Device hostname is {0}, shipped from {1}'.format(hostname, vendor))
+>>> print('Device hostname is {}, shipped from {}'.format(hostname, vendor))
 Device hostname is nxos-spine1
 ```
 
@@ -1085,19 +1079,24 @@ class: ubuntu
 - Default sort is in ascending order
 - Returns: nothing; updates original list
 - Task:
-  - Sort IPs to see which IPs are available
+  - Sort Vlans to see which are available
 
 ```
->>> hq = ['10.1.1.1', '10.1.1.9', '10.1.1.6', '10.1.1.2', '192.168.1.5', '192.168.1.8']
+>>> vlans = [ 300, 200, 440, 150, 450 ]
 >>>
->>> hq.sort()
+>>> vlans.sort()
 >>>
->>> hq
-['10.1.1.1', '10.1.1.2', '10.1.1.6', '10.1.1.9', '192.168.1.5', '192.168.1.8']
+>>> vlans
+[150, 200, 300, 440, 450]
 >>>
 ```
 
-> Note: sort doesn't typically work on IP addresses.  We created an example that would.
+---
+
+# Summary
+
+- Lists can be manipulated and values are accessed by index value
+- Dictionary values are accessed by name and can be manipulated.  Key-Value pairs are unordered
 
 
 ---
@@ -1567,36 +1566,7 @@ You can optionally return a given object (string, list, dict, etc.) if the key d
 ```
 
 
----
-class: ubuntu
 
-# items()
-
-- `items()` simplifies accessing key/value pairs
-- Returns a list of tuples and each tuple is two elements
-  - Element 1 is the key and Element 2 is value
-  - For now, think of tuples as a list, thus the returned object would be a list of lists
-
-```
->>> facts
-{'vendor': 'arista', 'mgmt_ip': '10.1.1.1', 'chipset': 't2', 'hostname': 'NYC301', 'os': '6.1.2'}
-```
-
-```
->>> f_list = facts.items()
->>>
->>> f_list
-[('chipset', 't2'), ('hostname', 'NYC301'), ('vendor', 'arista'), ('os', '6.1.2'), ('mgmt_ip', '10.1.1.1')]
->>>
->>> len(f_list)
-5
->>>
->>> f_list[0][0]
-'chipset'
->>> f_list[0][1]
-'t2'
->>>
-```
 
 ---
 
@@ -1626,208 +1596,6 @@ class: ubuntu
 ```
 
 
-
-
----
-
-class: middle, segue
-
-# Data Types - Tuples
-### Introduction to Python for Network Engineers
-
----
-
-class: ubuntu
-
-# Tuples
-
-- Similar to lists, but elements **cannot** be added or removed
-- Uses parentheses instead of brackets
-- Task:
-  - Create a variable that stores IP and mask as separate elements and does not permit the user to modify it.
-  - System generated key-value pairs, i.e. `dict.items()`
-
-```
->>> intf = ('192.168.1.1','24')
->>>
->>> intf
-('192.168.1.1', '24')
->>>
->>> intf[0]
-'192.168.1.1'
->>> intf[1]
-'24'
-```
-
---
-
-.left-column[
-```
->>> intf[1] = '32'
-Traceback (most recent call last):
-  File "<stdin>", line 1, in <module>
-TypeError: 'tuple' object does not support item assignment
->>>
-```
-]
-
-.right-column[
-```
->>> dir(tuple)
-['__add__', '__class__', '__contains__', '__delattr__', '__doc__', '__eq__', '__reduce_ex__', '__repr__', '__rmul__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', 'count', 'index']
->>>
->>> # cleaned up for brevity
-```
-]
-
----
-
-class: middle, segue
-
-# Data Types - Sets
-### Introduction to Python for Network Engineers
-
----
-class: ubuntu
-# Sets
-
-- Unordered list of **unique** objects
-- Task:
-  - Provide a list of devices that exist in the network (data comes from overlapping sources)
-- Uses `set()` syntax
-
-```
->>> device_list
-['r1', 'r2', 'r5', 'r1', 'r2', 'r6', 'r8']
->>>
->>> devices_set = set(device_list)
->>>
->>> print(devices_set)
-set(['r5', 'r6', 'r8', 'r1', 'r2'])
->>>
-```
-
-```
->>> device_list_updated = list(devices_set)
->>>
->>> device_list_updated
-['r5', 'r6', 'r8', 'r1', 'r2']
->>>
-```
-
----
-
-class: ubuntu
-
-# Examples
-
-```
->>> set('arista')
-set(['a', 'i', 's', 'r', 't'])
->>>
-```
-
-```
->>> set(['cisco', 'cisco', 'arista', 'arista'])
-set(['cisco', 'arista'])
-
-```
-
-
----
-
-class: ubuntu
-
-# Built-in Set Methods
-
-- Display the built-in methods for a set
-
-```
->>> dir(set)
-['add', 'clear', 'copy', 'difference', 'difference_update', 'discard', 'intersection', 'intersection_update', 'isdisjoint', 'issubset', 'issuperset', 'pop', 'remove', 'symmetric_difference', 'symmetric_difference_update', 'union', 'update']
-```
-
-
----
-
-class: ubuntu
-
-# intersection()
-
-- Elements that exist in two different sets
-- Returns: `set`
-- Task:
-  - Determine which VLANs exist on two different switches
-
-```
->>> switch_a = set(['2', '3', '10', '15', '20'])
->>>
->>> switch_b = set(['10', '15', '20', '21', '22'])
->>>
->>> switch_a.intersection(switch_b)
-set(['10', '15', '20'])
-
-```
-
----
-
-class: ubuntu
-
-# union()
-
-- Elements that exist in either set
-- Returns: `set`
-- Task:
-  - Determine which VLANs that exist on either switch
-
-```
->>> switch_a = set(['2', '3', '10', '15', '20'])
->>>
->>> switch_b = set(['10', '15', '20', '21', '22'])
->>>
->>> switch_a.union(switch_b)
-set(['10', '15', '21', '22', '3', '2', '20'])
->>>
-```
-
-
----
-class: ubuntu
-
-# difference()
-
-- See what elements one set has that another does not
-- Returns: `set`
-- Task:
-  - View VLANs on switch A, but not on switch B
-
-```
->>> switch_a = set(['2', '3', '10', '15', '20'])
->>>
->>> switch_b = set(['10', '15', '20', '21', '22'])
->>>
->>> switch_a.difference(switch_b)
-set(['3', '2'])
->>>
-```
-
-```
->>> vlans = list(switch_a.difference(switch_b))
->>>
->>> vlans
-['3', '2']
->>>
-```
-
----
-
-# Summary
-
-- Lists can be manipulated and values are accessed by index value
-- Dictionary values are accessed by name and can be manipulated.  Key-Value pairs are unordered
-- Be aware of:
-  - Tuples are static such that they cannot be manipulated and values are accessed by an index value
-  - Sets can be manipulated, but individual elements cannot be accessed / indexed.  Unique elements only.
 
 
 ---
@@ -2218,8 +1986,14 @@ class: ubuntu
 
 .left-column[
 ```
+>>> import json
+>>>
+>>>
+>>>
+>>>
 >>> vlans = [{'id': '10', 'name': 'USERS'}, {'id': '20', 'name': 'VOICE'}, {'id': '30', 'name': 'WLAN'}, {'id': '40', 'name': 'APP'}, {'id': '50', 'name': 'WEB'}]
 >>>
+>>> import json
 >>> print(json.dumps(vlans, indent=4))
 [
     {
@@ -2249,14 +2023,20 @@ class: ubuntu
 
 .right-column[
 ```
->>> write_file = open('vlans_new.cfg', 'w')
+>>> write_file.write("vlan " + vlans[0]["id"] + "\n")
+>>> write_file.write("  name  " + vlans[0]["name"] + "\n")
 >>>
->>> for vlan in vlans:
-...     vlan_id = vlan['id']
-...     vlan_name = vlan['name']
-...     write_file.write('vlan ' + vlan_id + '\n')
-...     write_file.write('  name ' + vlan_name + '\n')
-...
+>>> write_file.write("vlan " + vlans[1]["id"] + "\n")
+>>> write_file.write("  name  " + vlans[1]["name"] + "\n")
+>>>
+>>> write_file.write("vlan " + vlans[2]["id"] + "\n")
+>>> write_file.write("  name  " + vlans[2]["name"] + "\n")
+>>>
+>>> write_file.write("vlan " + vlans[3]["id"] + "\n")
+>>> write_file.write("  name  " + vlans[3]["name"] + "\n")
+>>>
+>>> write_file.write("vlan " + vlans[4]["id"] + "\n")
+>>> write_file.write("  name  " + vlans[4]["name"] + "\n")
 >>>
 >>> write_file.close()
 >>>
@@ -2269,17 +2049,17 @@ class: ubuntu
 class: ubuntu
 # Writing Data to a File
 ```
-ntc@ntc:~$ cat vlans.cfg
+ntc@ntc:~$ cat vlans_new.cfg
 vlan 10
-  name USERS
+  name  USERS
 vlan 20
-  name VOICE
+  name  VOICE
 vlan 30
-  name WLAN
+  name  WLAN
 vlan 40
-  name APP
+  name  APP
 vlan 50
-  name WEB
+  name  WEB
 
 ```
 
@@ -2307,61 +2087,6 @@ class: ubuntu
 >>>
 >>> config.close()
 ```
-
----
-class: ubuntu
-
-# A quick intro to YAML
-
-- Human readable data serialization language
-- Heavily used for configuration files
-- Relies heavily on indentation
-- 2 space indent is common
-- Superset of JSON
-
----
-
-class: ubuntu
-
-# YAML Demo
-
-
-.left-column[
-A list of dictionaries
-
-``` yaml
----
-  - vlan_name: web
-    vlan_id: '10'
-    vlan_state: active
-  - vlan_name: app
-    vlan_id: '20'
-    vlan_state: active
-  - vlan_name: DB
-    vlan_id: '30'
-    vlan_state: active
-```
-]
-
-.right-column[
-
-A nested dictionary
-
-``` yaml
----
-snmp:
-  ro: public
-  rw: private
-  info:
-    location: nyc
-    contact: bob
-vlans:
-  10:
-    name: web
-  20:
-    name: app
-```
-]
 
 
 ---
@@ -2414,12 +2139,16 @@ if __name__ == "__main__":
 #! /usr/bin/env python
 
 # filename: print_facts.py
-if __name__ == "__main__":
 
-    facts = {'vendor': 'cisco', 'mgmt_ip': '10.1.1.1', 'os': '6.1.2', 'model': 'nexus', 'hostname': 'NYC301'}
+import json 
 
-    for key, value in facts.items():
-        print(key + '-----' + value)
+facts1 = {'vendor': 'cisco', 'os': 'nxos', 'ipaddr': '10.1.1.1'}
+facts2 = {'vendor': 'cisco', 'os': 'ios', 'ipaddr': '10.2.1.1'}
+facts3 = {'vendor': 'arista', 'os': 'eos', 'ipaddr': '10.1.1.2'}
+
+devices = [facts1, facts2, facts3]
+
+print(json.dumps(devices, indent=4))
 ```
 
 
@@ -2431,22 +2160,38 @@ if __name__ == "__main__":
 #! /usr/bin/env python
 
 # filename: print_facts.py
-if __name__ == "__main__":
 
-    facts = {'vendor': 'cisco', 'mgmt_ip': '10.1.1.1', 'os': '6.1.2', 'model': 'nexus', 'hostname': 'NYC301'}
+import json 
 
-    for key, value in facts.items():
-        print(key + '-----' + value)
+facts1 = {'vendor': 'cisco', 'os': 'nxos', 'ipaddr': '10.1.1.1'}
+facts2 = {'vendor': 'cisco', 'os': 'ios', 'ipaddr': '10.2.1.1'}
+facts3 = {'vendor': 'arista', 'os': 'eos', 'ipaddr': '10.1.1.2'}
+
+devices = [facts1, facts2, facts3]
+
+print(json.dumps(devices, indent=4))
 ```
 
 .ubuntu[
 ```
 ntc@ntc:~$ python print_facts.py
-os-----6.1.2
-model-----nexus
-hostname-----NYC301
-vendor-----cisco
-mgmt_ip-----10.1.1.1
+[
+    {
+        "os": "nxos",
+        "ipaddr": "10.1.1.1",
+        "vendor": "cisco"
+    },
+    {
+        "os": "ios",
+        "ipaddr": "10.2.1.1",
+        "vendor": "cisco"
+    },
+    {
+        "os": "eos",
+        "ipaddr": "10.1.1.2",
+        "vendor": "arista"
+    }
+]
 ```
 ]
 
@@ -2534,13 +2279,13 @@ ethernet
 # Lab Time
 
 - Lab 10 - Performing Basic File Operations
-  - Understand the basics of working with files.  You open a file, read data, and normalize input to usable data.
-  - Update modular script from previous lab to generate a configuration file
-   - Read a YAML data file and use it to generate device configuration; writing this to file
+  - Read a Network Configuration File
+  - Write to a Configuration File
+  - Use a Context Manager
 
 - Lab 11 - Writing Scripts
   - Hello Network Automation
-  - Generating Interface Commands using a Key Map
+  - Print Facts for Three Devices
 
 ---
 
@@ -3092,6 +2837,40 @@ Valid IP: 10.1.2.1
 >>>
 
 ```
+---
+class: ubuntu
+
+# Aside: Dictonary items() Method
+
+- Commonly used with for loops to iterate over keys and values together
+- `items()` simplifies accessing key/value pairs
+- Returns a list of tuples and each tuple is two elements
+  - Element 1 is the key and Element 2 is value
+  - For now, think of tuples as a list, thus the returned object would be a list of lists
+
+```
+>>> facts
+{'vendor': 'arista', 'mgmt_ip': '10.1.1.1', 'chipset': 't2', 'hostname': 'NYC301', 'os': '6.1.2'}
+```
+
+```
+>>> f_list = facts.items()
+>>>
+>>> f_list
+[('chipset', 't2'), ('hostname', 'NYC301'), ('vendor', 'arista'), ('os', '6.1.2'), ('mgmt_ip', '10.1.1.1')]
+>>>
+>>> len(f_list)
+5
+>>>
+>>> f_list[0][0]
+'chipset'
+>>> f_list[0][1]
+'t2'
+>>>
+```
+
+
+
 
 ---
 
@@ -3493,4 +3272,251 @@ Duplex: auto
 
 - Lab 18 - Getting Started with Functions
 
+
+
+---
+
+class: middle, segue
+# EXTRA - BONUS
+# Data Types - Tuples and Sets
+### Introduction to Python for Network Engineers
+
+---
+
+class: ubuntu
+
+# Tuples
+
+- Similar to lists, but elements **cannot** be added or removed
+- Uses parentheses instead of brackets
+- Task:
+  - Create a variable that stores IP and mask as separate elements and does not permit the user to modify it.
+  - System generated key-value pairs, i.e. `dict.items()`
+
+```
+>>> intf = ('192.168.1.1','24')
+>>>
+>>> intf
+('192.168.1.1', '24')
+>>>
+>>> intf[0]
+'192.168.1.1'
+>>> intf[1]
+'24'
+```
+
+--
+
+.left-column[
+```
+>>> intf[1] = '32'
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: 'tuple' object does not support item assignment
+>>>
+```
+]
+
+.right-column[
+```
+>>> dir(tuple)
+['__add__', '__class__', '__contains__', '__delattr__', '__doc__', '__eq__', '__reduce_ex__', '__repr__', '__rmul__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', 'count', 'index']
+>>>
+>>> # cleaned up for brevity
+```
+]
+
+---
+
+class: middle, segue
+
+# Data Types - Sets
+### Introduction to Python for Network Engineers
+
+---
+class: ubuntu
+# Sets
+
+- Unordered list of **unique** objects
+- Task:
+  - Provide a list of devices that exist in the network (data comes from overlapping sources)
+- Uses `set()` syntax
+
+```
+>>> device_list
+['r1', 'r2', 'r5', 'r1', 'r2', 'r6', 'r8']
+>>>
+>>> devices_set = set(device_list)
+>>>
+>>> print(devices_set)
+set(['r5', 'r6', 'r8', 'r1', 'r2'])
+>>>
+```
+
+```
+>>> device_list_updated = list(devices_set)
+>>>
+>>> device_list_updated
+['r5', 'r6', 'r8', 'r1', 'r2']
+>>>
+```
+
+---
+
+class: ubuntu
+
+# Examples
+
+```
+>>> set('arista')
+set(['a', 'i', 's', 'r', 't'])
+>>>
+```
+
+```
+>>> set(['cisco', 'cisco', 'arista', 'arista'])
+set(['cisco', 'arista'])
+
+```
+
+
+---
+
+class: ubuntu
+
+# Built-in Set Methods
+
+- Display the built-in methods for a set
+
+```
+>>> dir(set)
+['add', 'clear', 'copy', 'difference', 'difference_update', 'discard', 'intersection', 'intersection_update', 'isdisjoint', 'issubset', 'issuperset', 'pop', 'remove', 'symmetric_difference', 'symmetric_difference_update', 'union', 'update']
+```
+
+
+---
+
+class: ubuntu
+
+# intersection()
+
+- Elements that exist in two different sets
+- Returns: `set`
+- Task:
+  - Determine which VLANs exist on two different switches
+
+```
+>>> switch_a = set(['2', '3', '10', '15', '20'])
+>>>
+>>> switch_b = set(['10', '15', '20', '21', '22'])
+>>>
+>>> switch_a.intersection(switch_b)
+set(['10', '15', '20'])
+
+```
+
+---
+
+class: ubuntu
+
+# union()
+
+- Elements that exist in either set
+- Returns: `set`
+- Task:
+  - Determine which VLANs that exist on either switch
+
+```
+>>> switch_a = set(['2', '3', '10', '15', '20'])
+>>>
+>>> switch_b = set(['10', '15', '20', '21', '22'])
+>>>
+>>> switch_a.union(switch_b)
+set(['10', '15', '21', '22', '3', '2', '20'])
+>>>
+```
+
+
+---
+class: ubuntu
+
+# difference()
+
+- See what elements one set has that another does not
+- Returns: `set`
+- Task:
+  - View VLANs on switch A, but not on switch B
+
+```
+>>> switch_a = set(['2', '3', '10', '15', '20'])
+>>>
+>>> switch_b = set(['10', '15', '20', '21', '22'])
+>>>
+>>> switch_a.difference(switch_b)
+set(['3', '2'])
+>>>
+```
+
+```
+>>> vlans = list(switch_a.difference(switch_b))
+>>>
+>>> vlans
+['3', '2']
+>>>
+```
+
+---
+class: ubuntu
+
+# A quick intro to YAML
+
+- Human readable data serialization language
+- Heavily used for configuration files
+- Relies heavily on indentation
+- 2 space indent is common
+- Superset of JSON
+
+---
+
+class: ubuntu
+
+# YAML Demo
+
+
+.left-column[
+A list of dictionaries
+
+``` yaml
+---
+  - vlan_name: web
+    vlan_id: '10'
+    vlan_state: active
+  - vlan_name: app
+    vlan_id: '20'
+    vlan_state: active
+  - vlan_name: DB
+    vlan_id: '30'
+    vlan_state: active
+```
+]
+
+.right-column[
+
+A nested dictionary
+
+``` yaml
+---
+snmp:
+  ro: public
+  rw: private
+  info:
+    location: nyc
+    contact: bob
+vlans:
+  10:
+    name: web
+  20:
+    name: app
+```
+]
 
