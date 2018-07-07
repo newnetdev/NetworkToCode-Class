@@ -1160,8 +1160,100 @@ By default Ansible does not echo user input back to the terminal.  To allow user
 
 class: middle
 
-# debug module
+# debug module and Playbook Variables
 ### Print and Verify Variable Assignment
+
+---
+
+# Playbook Variables
+
+Ansible uses Jinja2 syntax for variables within a playbook,
+and uses curly brackets to indicate a variable, like `{{ variable }}`
+
+
+Variables within a playbook can be defined under the optional `vars` paramater
+```yaml
+---
+ -  name: SOME PLAY
+    hosts: iosxe
+    vars:
+      variablename: variable_value
+      othervariable=other_value
+    tasks:
+     - name: SOME TASK
+```
+
+Any variable defined in the inventory, host_vars, group_vars, extra_vars
+or a default built-in variable is available to be used in the Playbook
+
+
+Since Ansible uses “{{ var }}” for variables,
+If a value after a colon starts with a “{”, YAML will think it is a Python dictionary,
+ so you must quote it, like so:
+
+```yaml
+- name: "{{ task_variable_name }}"
+```
+
+
+
+---
+
+# Playbook Variable Results
+
+
+.left-column[
+As an example, the playbook below uses both a custom Playbook variable, `priority`, 
+and the Ansible built-in `inventory_hostname` variable
+
+```yaml
+---
+- name: PRINT HOSTS
+  hosts: all
+  gather_facts: no
+  connection: local
+  
+  vars:
+    priority: "P1" 
+  
+  tasks:
+    - name: PRINT HOSTNAME
+      debug: msg="{{ inventory_hostname }} has a priority of {{ priority }}"
+```
+
+
+]
+
+.right-column[
+Note the inventory_hostname iterates through all the hosts, yet the `priority` variable stays the same
+
+```bash
+$ ansible-playbook -i inventory var_test.yml
+
+PLAY [PRINT HOSTS] ******************************
+
+TASK [PRINT HOSTNAME] ***************************
+
+ok: [csr2] => {
+    "msg": "csr2 has a priority of P1"
+}
+ok: [csr1] => {
+    "msg": "csr1 has a priority of P1"
+}
+ok: [csr3] => {
+    "msg": "csr3 has a priority of P1"
+}
+ok: [nxos-spine1] => {
+    "msg": "nxos-spine1 has a priority of P1"
+}
+ok: [nxos-spine2] => {
+    "msg": "nxos-spine2 has a priority of P1"
+}
+# other hosts truncated for brevity
+```
+
+
+]
 
 ---
 
