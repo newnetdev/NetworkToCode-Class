@@ -1590,6 +1590,66 @@ class: middle, segue
 
 ---
 
+# Jinja2 Basics
+
+A Jinja2 file is a text file with the `j2` file extension (optionally),
+and indicates variables with double curly brackets `{{ variable }}`
+
+Here is an example of a jinja file for an interface config. 
+
+```
+interface {{ int_type }} 1/1
+  no shut
+```
+
+Jinja will render the template with the input of whatever the value of the variable 
+`int_type` is set to be, such as "GigabitEthernet"
+
+```
+interface GigabitEthernet 1/1
+  no shut
+```
+
+---
+
+# Jinja2 Syntax
+.left-column[
+Jinja2 is a Python based template rendering language. The syntax for loops, conditionals and
+dictionary look ups are similar to Python.
+
+Sample input:
+```yaml
+snmp_config:
+  ro:
+    - public
+    - ntc-course
+  rw:
+    - private
+    - ntc-private
+  contact: netops_team
+  location: MILAN
+
+
+```
+]
+
+.right-column[
+Iterating over a List (nested within the dictionary of snmp_config)
+ input will print the config line with each item in the list
+```
+{% for ro_comm in snmp_config.ro %}
+snmp-server community {{ ro_comm }} RO
+{% endfor %}
+```
+
+Accessing a dictionary value using the `.` operator like Python:
+```
+snmp-server location {{ snmp_config.location }}
+```
+]
+
+---
+
 
 # The Ansible template module
 The basic usage of the template module in Ansible:
