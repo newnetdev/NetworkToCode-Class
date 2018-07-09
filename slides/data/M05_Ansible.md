@@ -1168,32 +1168,31 @@ class: middle
 # Playbook Variables
 
 Ansible uses Jinja2 syntax for variables within a playbook,
-and uses curly brackets to indicate a variable, like `{{ variable }}`
+and uses curly brackets to indicate a variable, like `{{ vlan }}`
 
 
 Variables within a playbook can be defined under the optional `vars` paramater
+
 ```yaml
 ---
- -  name: SOME PLAY
-    hosts: iosxe
-    vars:
-      variablename: variable_value
-      othervariable=other_value
-    tasks:
-     - name: SOME TASK
+- name: PRINT VLANS
+  hosts: all
+  gather_facts: no
+  connection: local
+  
+  vars:
+    vlan: 300
+  
+  tasks:
+    - name: PRINT HOSTNAME
+      debug: 
+        msg: "The VLAN is {{ vlan }}"
 ```
 
-Any variable defined in the inventory, host_vars, group_vars, extra_vars
-or a default built-in variable is available to be used in the Playbook
 
-
-Since Ansible uses “{{ var }}” for variables,
-If a value after a colon starts with a “{”, YAML will think it is a Python dictionary,
- so you must quote it, like so:
-
-```yaml
-- name: "{{ task_variable_name }}"
-```
+Since Ansible uses `“{{ var }}”` for variables, 
+if a value after a colon starts with a “{”, YAML will think it is a Python dictionary,
+ so you must put quotation marks around it, if it is not already enclosed in quotes
 
 
 
@@ -1218,7 +1217,8 @@ and the Ansible built-in `inventory_hostname` variable
   
   tasks:
     - name: PRINT HOSTNAME
-      debug: msg="{{ inventory_hostname }} has a priority of {{ priority }}"
+      debug: 
+        msg: "{{ inventory_hostname }} has a priority of {{ priority }}"
 ```
 
 
