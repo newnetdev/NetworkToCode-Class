@@ -312,7 +312,6 @@ changed: [csr1]
 Add a new task to the playbook.  This task will compare the FULL config of one previously backed up to one that is on the device.
 
 ```yaml
-```yaml
   - name: USING DIFF AGAINST WITH CONFIG
     hosts: csr1
     connection: local
