@@ -107,7 +107,7 @@ class: center, middle, title
 ---
 
   - name: DEPLOY SNMP COMMUNITY STRINGS ON IOS DEVICES
-    hosts: ios
+    hosts: iosxe
 
     tasks:
 
@@ -115,23 +115,19 @@ class: center, middle, title
       ios_config:
         lines:
           - "snmp-server community ntc123 ro"
-        provider: "{{ ios_provider }}"
 
     - name: DEPLOY FROM CONFIG FILE
       ios_config:
         src: "configs/snmp.cfg"
-        provider: "{{ ios_provider }}"
 
     - name: DEPLOY USING JINJA2 TEMPLATE
       ios_config:
         src: "snmp.j2"
-        provider: "{{ ios_provider }}"
 
 
 ```
 
 
-Note: The `provider` is covered soon.
 
 
 ---
@@ -151,17 +147,14 @@ Note: The `provider` is covered soon.
         nxos_feature:
           feature: scp-server
           state: enabled
-          provider: "{{ nxos_provider }}"
 
       - name: ENSURE FILE EXISTS ON DEVICE
         nxos_file_copy:
           local_file: "../os-images/cisco/nxos/nxos.7.0.3.I2.2d.bin"
-          provider: "{{ nxos_provider }}"
 
       - name: PERFORM THE UPGRADE
         nxos_install_os:
           system_image_file: nxos.7.0.3.I2.2d.bin
-          provider: "{{ nxos_provider }}"
 
 ```
 
@@ -222,14 +215,12 @@ Configure interface descriptions based on active neighbors
           connection=ssh
           platform={{ vendor }}_{{ os }}
           command='show lldp neighbors'
-          provider: "{{ provider }}"
         register: neighbors
 
       - name: AUTO-CONFIGURE PORT DESCRIPTIONS BASED ON LLDP DATA
         nxos_interface:
           interface: "{{ item.local_interface  }}"
           description: "Connects to {{ item.neighbor_interface }} on {{ item.neighbor }}"
-          provider: "{{ nxos_provider }}"
         with_items: neighbors.response
         when: item.local_interface != 'mgmt0'
 ```
@@ -784,27 +775,29 @@ Two files are required to get started:
 
 # Executing a Playbook
 
-Explicitly state which inventory file is used.
+
+To execute the Playbook, Explicitly state which inventory file is used, and then the Playbook.
 
 ```bash
 $ ansible-playbook -i <inventory-file> <playbook.yml>
 ```
 ```bash
-$ ansible-playbook -i test-inventory deploy-vlans.yml
+$ ansible-playbook -i inventory deploy-vlans.yml
 ```
 
 
 <br>
 
-Set the `ANSIBLE_INVENTORY` environment variable
+To prompt the user for a login username, use the `-u` or `--user=` flag, to prompt the user for a login password 
+use the  `-k` or `--ask-pass` flag. 
 
 ```bash
-$ export ANSIBLE_INVENTORY=test-inventory
+$ ansible-playbook -i inventory snmp-config.yml -u ntc -k
+SSH password: 
+
 ```
 
-```bash
-$ ansible-playbook deploy-vlans.yml
-```
+
 
 ---
 
@@ -890,7 +883,8 @@ class: center, middle
 # Lab Time
 
 - Lab 1 - Deploying "Basic" Configurations with Ansible
-  - Write Your First Ansible Playbook that will configure SNMP setting on 6 devices! 3 IOS and 3 JUNOS devices
+  - Write Your First Ansible Playbook that will configure SNMP setting on 6 devices! 
+        - 3 IOS and 3 JUNOS devices
 - Lab 2 - Deploying Configs From a File
   - Shows how to push configuration using files.
 
@@ -1035,11 +1029,11 @@ csr2
 # Variable Priority
 
 - You can define host and group variables in the inventory file and respective host vars and group vars files
-- The file take priority
+- The host variable file takes priority over the group variable file
 
 <br>
 
-**Proving** variable priority: use the **debug** module
+You can **Prove** variable priority: using the **debug** module
 
 
 ---
@@ -1166,8 +1160,100 @@ By default Ansible does not echo user input back to the terminal.  To allow user
 
 class: middle
 
-# debug module
+# debug module and Playbook Variables
 ### Print and Verify Variable Assignment
+
+---
+
+# Playbook Variables
+
+Ansible uses Jinja2 syntax for variables within a playbook,
+and uses curly brackets to indicate a variable, like `{{ variable }}`
+
+
+Variables within a playbook can be defined under the optional `vars` paramater
+```yaml
+---
+ -  name: SOME PLAY
+    hosts: iosxe
+    vars:
+      variablename: variable_value
+      othervariable=other_value
+    tasks:
+     - name: SOME TASK
+```
+
+Any variable defined in the inventory, host_vars, group_vars, extra_vars
+or a default built-in variable is available to be used in the Playbook
+
+
+Since Ansible uses “{{ var }}” for variables,
+If a value after a colon starts with a “{”, YAML will think it is a Python dictionary,
+ so you must quote it, like so:
+
+```yaml
+- name: "{{ task_variable_name }}"
+```
+
+
+
+---
+
+# Playbook Variable Results
+
+
+.left-column[
+As an example, the playbook below uses both a custom Playbook variable, `priority`, 
+and the Ansible built-in `inventory_hostname` variable
+
+```yaml
+---
+- name: PRINT HOSTS
+  hosts: all
+  gather_facts: no
+  connection: local
+  
+  vars:
+    priority: "P1" 
+  
+  tasks:
+    - name: PRINT HOSTNAME
+      debug: msg="{{ inventory_hostname }} has a priority of {{ priority }}"
+```
+
+
+]
+
+.right-column[
+Note the inventory_hostname iterates through all the hosts, yet the `priority` variable stays the same
+
+```bash
+$ ansible-playbook -i inventory var_test.yml
+
+PLAY [PRINT HOSTS] ******************************
+
+TASK [PRINT HOSTNAME] ***************************
+
+ok: [csr2] => {
+    "msg": "csr2 has a priority of P1"
+}
+ok: [csr1] => {
+    "msg": "csr1 has a priority of P1"
+}
+ok: [csr3] => {
+    "msg": "csr3 has a priority of P1"
+}
+ok: [nxos-spine1] => {
+    "msg": "nxos-spine1 has a priority of P1"
+}
+ok: [nxos-spine2] => {
+    "msg": "nxos-spine2 has a priority of P1"
+}
+# other hosts truncated for brevity
+```
+
+
+]
 
 ---
 
@@ -1501,6 +1587,66 @@ class: middle, segue
   - Ansible provides the variables to the template and renders configuration using the `template` module.
 
 
+
+---
+
+# Jinja2 Basics
+
+A Jinja2 file is a text file with the `j2` file extension (optionally),
+and indicates variables with double curly brackets `{{ variable }}`
+
+Here is an example of a jinja file for an interface config. 
+
+```
+interface {{ int_type }} 1/1
+  no shut
+```
+
+Jinja will render the template with the input of whatever the value of the variable 
+`int_type` is set to be, such as "GigabitEthernet"
+
+```
+interface GigabitEthernet 1/1
+  no shut
+```
+
+---
+
+# Jinja2 Syntax
+.left-column[
+Jinja2 is a Python based template rendering language. The syntax for loops, conditionals and
+dictionary look ups are similar to Python.
+
+Sample input:
+```yaml
+snmp_config:
+  ro:
+    - public
+    - ntc-course
+  rw:
+    - private
+    - ntc-private
+  contact: netops_team
+  location: MILAN
+
+
+```
+]
+
+.right-column[
+Iterating over a List (nested within the dictionary of snmp_config)
+ input will print the config line with each item in the list
+```
+{% for ro_comm in snmp_config.ro %}
+snmp-server community {{ ro_comm }} RO
+{% endfor %}
+```
+
+Accessing a dictionary value using the `.` operator like Python:
+```
+snmp-server location {{ snmp_config.location }}
+```
+]
 
 ---
 
