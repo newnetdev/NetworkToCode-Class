@@ -20,7 +20,7 @@ Create a playbook called `config-interfaces.yml` and insert the following into i
 
     tasks:
 
-    - name: IOS show version
+    - name: CONFIGURING LOOPBACK
       ios_config:
         parents:
           - interface Loopback200
