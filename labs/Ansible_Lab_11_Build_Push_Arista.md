@@ -705,7 +705,7 @@ Then add the following task to the `build-push.yml` playbook:
           hostname={{ inventory_hostname }}
           username={{ ansible_user }}
           password={{ ansible_ssh_pass }}
-          dev_os={{ os }}
+          dev_os={{ ntc_os }}
           config_file=configs/{{ inventory_hostname }}.conf
           diff_file=diffs/{{ inventory_hostname }}.diffs
           commit_changes=true

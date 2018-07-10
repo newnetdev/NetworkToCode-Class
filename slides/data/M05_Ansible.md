@@ -179,7 +179,7 @@ Note: a more seamless upgrade requires a few more tasks.
           username={{ ansible_user }}
           password={{ ansible_ssh_pass }}
           local_file=backups/{{ inventory_hostname }}.cfg
-          platform={{ vendor }}_{{ os }}_{{ api }}
+          platform={{ ntc_vendor }}_{{ ntc_os }}_{{ ntc_api }}
         tags: backup
 
       - name: DEPLOY CONFIGS
@@ -191,7 +191,7 @@ Note: a more seamless upgrade requires a few more tasks.
           diff_file=diffs/{{ inventory_hostname }}.diffs
           replace_config=true
           commit_changes=true
-          dev_os={{ os }}
+          dev_os={{ ntc_os }}
         tags: restore
 
 ```
@@ -213,7 +213,7 @@ Configure interface descriptions based on active neighbors
       - name: GET NEIGHBOR INFORMATION
         ntc_show_command:
           connection=ssh
-          platform={{ vendor }}_{{ os }}
+          platform={{ ntc_vendor }}_{{ ntc_os }}
           command='show lldp neighbors'
         register: neighbors
 
@@ -2178,7 +2178,7 @@ Be cautious of device support.  This is based on NAPALM driver implementation wh
 
   - name: DEPLOY CONFIGURATION
     napalm_install_config:
-      dev_os={{ os }}
+      dev_os={{ ntc_os }}
       config_file=./backups/{{ inventory_hostname }}.cfg   # file with commands to apply
       commit_changes=true                                  # apply changes (or only generate diffs)
       replace_config=true                                  # full config replace or merge (just a few commands)
@@ -4358,7 +4358,7 @@ Sample playbook gathering IOS facts:
 ```yaml
 - ntc_get_facts:
     provider: "{{ ntc_provider }}"
-    platform: "{{ vendor }}"_{{ os }}_{{ api }}"
+    platform: "{{ ntc_vendor }}"_{{ ntc_os }}_{{ ntc_api }}"
 ```
 
 
@@ -4592,9 +4592,9 @@ Then:
 
 Device: {{ inventory_hostname }}
 
-Vendor:           {{ vendor }}
+Vendor:           {{ ntc_vendor }}
 Platform:         {{ platform }}
-Operating System: {{ os }}
+Operating System: {{ ntc_os }}
 Image:            {{ kickstart_image }}
 
 ```
@@ -4835,7 +4835,7 @@ class: middle, segue
 
     tasks:
 
-      - include: get-facts.yml vendor={{ vendor }}
+      - include: get-facts.yml vendor={{ ntc_vendor }}
 ```
 
 ```yaml
@@ -5012,7 +5012,7 @@ vlans:
 ```yaml
 # roles/vlans/tasks/main.yml
 ---
-- include: "{{ vendor }}.yml"
+- include: "{{ ntc_vendor }}.yml"
 ```
 
 ```yaml
@@ -6097,7 +6097,7 @@ IMPORTANT:
 .left-column[
 
 * `platform` values for **ntc_show_command** and **ntc_config_command**:
- * `{{ vendor }}_{{ os }}`
+ * `{{ ntc_vendor }}_{{ ntc_os }}`
  * matches what Netmiko supports: **cisco_ios**, **cisco_nxos**, **arista_eos** (optionally _ssh can be added too, e.g. **cisco_ios_ssh**)
  * Anything Netmiko supports for `device_type` is supported here (all SSH)
 ]
@@ -6284,7 +6284,7 @@ Reboot a network device, optionally on a timer.
 ```yaml
 - ntc_file_copy:
     platform: cisco_nxos_nxapi
-    local_file: ./images/{{ os }}/{{ os_version }}
+    local_file: ./images/{{ ntc_os }}/{{ os_version }}
     provider: "{{ ntc_provider }}"
     transport: http
 
@@ -6407,7 +6407,7 @@ Reboot a network device, optionally on a timer.
           - name: CREATE LAST KNOWN GOOD (CHECKPOINT)
             ntc_rollback:
               checkpoint_file=last_known_good.conf
-              platform: "{{ vendor }}_{{ os }}_{{ api }}"
+              platform: "{{ ntc_vendor }}_{{ ntc_os }}_{{ ntc_api }}"
               provider: "{{ ntc_provider }}"
           - nxos_vlan:
               vlan_id: 500
@@ -6419,7 +6419,7 @@ Reboot a network device, optionally on a timer.
           - name: ROLLBACK TO CHECKPOINT FILE UPON ERROR
             ntc_rollback:
               rollback_to: last_known_good.conf
-              platform: "{{ vendor }}_{{ os }}_{{ api }}"
+              platform: "{{ ntc_vendor }}_{{ ntc_os }}_{{ ntc_api }}"
               provider: "{{ ntc_provider }}"
 
 

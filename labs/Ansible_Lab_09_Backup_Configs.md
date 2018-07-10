@@ -77,7 +77,7 @@ Add a variable to handle the login to the devices. Often referred to as a provid
   
   - name: BACKUP CONFIGURATIONS
     hosts: all
-    connection: local
+    connection: network_cli
     gather_facts: no
 
     vars:
@@ -108,7 +108,7 @@ All backup files should be saved locally inside the `backups` directory.
   
   - name: BACKUP CONFIGURATIONS
     hosts: all
-    connection: local
+    connection: network_cli
     gather_facts: no
 
     vars:
@@ -127,9 +127,9 @@ All backup files should be saved locally inside the `backups` directory.
       - name: BACKUP CONFIGS FOR ALL DEVICES
         ntc_show_command:
           provider: "{{ connection_details }}"
-          command: "{{ backup_command[os] }}"
+          command: "{{ backup_command[ntc_os] }}"
           local_file: "./backups/{{ inventory_hostname }}.cfg"
-          platform: "{{ vendor }}_{{ os }}"
+          platform: "{{ ntc_vendor }}_{{ ntc_os }}"
 
 ```
 
@@ -280,7 +280,7 @@ The final updated playbook should look like this:
   
   - name: BACKUP CONFIGURATIONS
     hosts: all
-    connection: local
+    connection: network_cli
     gather_facts: no
 
     tasks:
@@ -288,9 +288,9 @@ The final updated playbook should look like this:
       - name: BACKUP CONFIGS FOR ALL DEVICES
         ntc_show_command:
           provider: "{{ connection_details }}"
-          command: "{{ backup_command[os] }}"
+          command: "{{ backup_command[ntc_os] }}"
           local_file: "./backups/{{ inventory_hostname }}.cfg"
-          platform: "{{ vendor }}_{{ os }}"
+          platform: "{{ ntc_vendor }}_{{ ntc_os }}"
 
       - name: CLEAN UP IOS CONFIGS - LINE 1
         lineinfile:

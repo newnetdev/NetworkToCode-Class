@@ -482,7 +482,7 @@ Create two new templates and save them in the `templates` directory: `facts-text
 
 ```
 Hostname:      {{ ansible_net_hostname }}
-Vendor:        {{ vendor }}
+Vendor:        {{ ntc_vendor }}
 Model:         {{ ansible_net_model or "UNKNOWN" }}
 OS Version:    {{ ansible_net_version }}
 Serial Number:  {{ ansible_net_serialnum or "UNKNOWN" }}
@@ -492,7 +492,7 @@ Serial Number:  {{ ansible_net_serialnum or "UNKNOWN" }}
 `facts-csv.j2`:
 
 ```
-{{ ansible_net_hostname }},{{ vendor }},{{ ansible_net_model or "UNKNOWN" }},{{ ansible_net_version }},{{ ansible_net_serialnum or "UNKNOWN" }}
+{{ ansible_net_hostname }},{{ ntc_vendor }},{{ ansible_net_model or "UNKNOWN" }},{{ ansible_net_version }},{{ ansible_net_serialnum or "UNKNOWN" }}
 ```
 
 ##### Step 3

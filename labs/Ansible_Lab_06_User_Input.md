@@ -24,7 +24,7 @@ Open this file with a text editor and input the play definition as follows:
 - name: COLLECT USERNAME AND PASSWORD
   hosts: csr1
   gather_facts: no
-  connection: local
+  connection: network_cli
   
 ```
 
@@ -38,7 +38,7 @@ Add a `vars_prompt` directive that allows you to collect user input data.
 - name: COLLECT USERNAME AND PASSWORD
   hosts: csr1
   gather_facts: no
-  connection: local
+  connection: network_cli
 
   vars_prompt:
     - name: un
@@ -93,7 +93,7 @@ Update the playbook as follows:
 - name: COLLECT USERNAME AND PASSWORD
   hosts: csr1
   gather_facts: no
-  connection: local
+  connection: network_cli
 
   vars_prompt:
     - name: un
@@ -148,7 +148,7 @@ Finally, the `var_prompt` directive can also be set up to take a default value t
 - name: COLLECT USERNAME AND PASSWORD
   hosts: csr1
   gather_facts: no
-  connection: local
+  connection: network_cli
 
   vars_prompt:
     - name: un

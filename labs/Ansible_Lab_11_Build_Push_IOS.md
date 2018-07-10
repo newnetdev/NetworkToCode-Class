@@ -883,7 +883,7 @@ Add the following task to the `build-push.yml` playbook:
           diff_file: ./diffs/{{ inventory_hostname }}.diffs
           replace_config: false
           commit_changes: true
-          dev_os: "{{ os }}"
+          dev_os: "{{ ntc_os }}"
         tags: push
 
 

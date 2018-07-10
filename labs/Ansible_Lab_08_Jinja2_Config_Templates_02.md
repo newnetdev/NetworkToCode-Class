@@ -97,7 +97,7 @@ At this point, the playbook should look as follows:
 - name: GENERATE SNMP CONFIGS USING JINJA2 - AMERICAS
   hosts: AMER
   gather_facts: no
-  connection: local
+  connection: network_cli
 
   tasks:
     - name: GENERATE IOS SNMP CONFIGURATIONS
@@ -108,7 +108,7 @@ At this point, the playbook should look as follows:
 - name: GENERATE SNMP CONFIGS USING JINJA2 - EMEA
   hosts: EMEA
   gather_facts: no
-  connection: local
+  connection: network_cli
 
   tasks:
     - name: GENERATE JUNOS SNMP CONFIGURATIONS
