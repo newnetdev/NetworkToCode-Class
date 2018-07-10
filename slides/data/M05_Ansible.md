@@ -1515,10 +1515,6 @@ nxos-spine1                : ok=3    changed=0    unreachable=0    failed=0
 
       - name: TASK 1 in PLAY 1 - ENSURE SNMP COMMANDS EXIST ON IOS DEVICES
         ios_config:
-          provider:
-            host: "{{ inventory_hostname }}"
-            username: "{{ ansible_user }}"
-            password: "{{ ansible_ssh_pass }}"
           commands:
             - snmp-server community ntc-course RO
             - snmp-server community supersecret RW
@@ -1675,7 +1671,6 @@ Within the network core config modules (like ios_config, junos_config etc). You 
     - name: ENSURE THAT SNMP IS CONFIGURED ON IOS DEVICES
       ios_config:
         src: 02-ios-snmp.j2
-        provider: "{{ provider }}"
 
 ```
 
@@ -1683,7 +1678,6 @@ Within the network core config modules (like ios_config, junos_config etc). You 
     - name: ENSURE THAT SNMP IS CONFIGURED ON JUNOS DEVICES
       junos_config:
         src: 02-junos-snmp.j2
-        provider: "{{ provider }}"
 
 ```
 
@@ -2952,8 +2946,7 @@ While the _config modules are used to make configuration changes and execute con
 The _command modules are often used to execute show commands and gather data from devices.
 
 - `commands` parameter can accept a single command or a list of commands
-- The `provider` parameter is a convenience parameter that is a dictionary and uses keys equal to parameters the module supports
-
+- Refer to `ansible-docs` for full list of parameters
 ]
 
 .right-column[
@@ -2978,7 +2971,6 @@ The _command modules are often used to execute show commands and gather data fro
         commands:
           - "show version"
           - "show ip int brief"
-        provider: "{{ ios_provider }}"
 
 
 
@@ -2986,32 +2978,7 @@ The _command modules are often used to execute show commands and gather data fro
 ]
 ]
 
----
 
-# The provider parameter
-
-Convenience parameter that allows all nxos arguments to be passed as a dict object. All constraints (required, choices, etc) must be met either by individual arguments or values in this dict.
-
-.med-code[
-```yaml
-  - name: SAMPLE PLAYBOOK
-    hosts: nxos
-
-    vars:
-      nxos_provider:
-        username: "{{ ansible_user }}"
-        password: "{{ ansible_ssh_pass }}"
-        host: "{{ inventory_hostname }}"
-        transport: "{{ transport }}"
-
-    tasks:
-
-      - nxos_command:
-          commands:
-            - 'show version'
-          provider: "{{ nxos_provider }}"
-```
-]
 
 ---
 
@@ -3023,14 +2990,12 @@ Convenience parameter that allows all nxos arguments to be passed as a dict obje
     - name: SINGLE COMMAND
       nxos_command:
         commands: show version
-        provider: "{{ nxos_provider }}"
 
     - name: LIST OF COMMAND STRINGS
       nxos_command:
         commands:
           - show version
           - show hostname
-        provider: "{{ nxos_provider }}"
 
     - name: LIST OF DICTIONARIES
       nxos_command:
@@ -3040,7 +3005,6 @@ Convenience parameter that allows all nxos arguments to be passed as a dict obje
           - command: show version
             output: text
         transport: cli
-        provider: "{{ nxos_provider }}"
 
 ```
 ]
@@ -3060,7 +3024,6 @@ Convenience parameter that allows all nxos arguments to be passed as a dict obje
           commands:
             - show version
             - show interfaces
-          provider: "{{ junos_provider }}"
 
       - name: EXECUTE JUNOS COMMANDS - TEXT
         junos_command:
@@ -3068,7 +3031,6 @@ Convenience parameter that allows all nxos arguments to be passed as a dict obje
           commands:
             - show version
             - show interfaces
-          provider: "{{ junos_provider }}"
 ```
 ]
 ]
@@ -3132,7 +3094,6 @@ There are two ways to see it:
       nxos_command:
         commands:
           - show version
-        provider: "{{ ios_provider }}"
       register: output
 
     - debug: var=output
@@ -3155,7 +3116,6 @@ There are two ways to see it:
     nxos_command:
       commands:
         - 'show version'
-      provider: "{{ ios_provider }}"
     register: output
 
   - debug: var=output
@@ -3204,7 +3164,6 @@ ok: [nxos-spine1] => {
     ios_command:
       commands:
         - show version
-      provider: "{{ provider }}"
     register: output
 
   - name: Ensure OS version is correct
@@ -3533,12 +3492,6 @@ You can pass commands into the module a few different ways:
   - name: DEPLOY SNMP COMMUNITY STRINGS ON IOS DEVICES
     hosts: ios
 
-    vars:
-      ios_provider:
-        username: ntc
-        password: ntc123
-        host: "{{ inventory_hostname }}"
-
     tasks:
 
     - name: USE COMMANDS IN THE PLAYBOOK
@@ -3552,7 +3505,6 @@ You can pass commands into the module a few different ways:
     - name: DEPLOY FROM CONFIG FILE
       ios_config:
         src: "configs/snmp.cfg"
-        provider: "{{ ios_provider }}"
 
 
 
@@ -3569,7 +3521,6 @@ You can pass commands into the module a few different ways:
     commands:
       - snmp-server community public group network-operator
       - snmp-server community networktocode group network-operator
-    provider: "{{ provider }}"
 
 ```
 
@@ -3577,7 +3528,6 @@ You can pass commands into the module a few different ways:
 # Ensure these lines are present in the configuration
 - junos_config:
     src: snmp.conf
-    provider: "{{ provider }}"
 
 ```
 
@@ -3602,7 +3552,6 @@ You can pass commands into the module a few different ways:
     lines:
       - description Configured by Ansible
       - ip address 10.100.100.1 255.255.255.0
-    provider: "{{ ios_provider }}"
 
 ```
 ]
@@ -3641,7 +3590,6 @@ You can pass commands into the module a few different ways:
           - neighbor 10.10.10.2 send-community
           - neighbor 10.10.10.2 soft-reconfiguration inbound
         after: ['copy run start']
-        provider: "{{ ios_provider }}"
 ```
 ]
 
@@ -3663,7 +3611,6 @@ Available options for the  save_when parameter:
 
     - name: ENSURE THAT LOOPBACK 222 IS CONFIGURED
       ios_config:
-        provider: "{{ provider }}"
         commands:
           - ip address 10.222.222.222 255.255.255.255
         parents:
@@ -3696,7 +3643,6 @@ Introduced in Ansible 2.4. Test running configuration against:
 ``` yaml
     - name: COMPARE RUNNING CONFIG WITH STARTUP
       ios_config:
-        provider: "{{ provider }}"
         diff_against: startup
 ```
 
@@ -3780,7 +3726,6 @@ csr1                       : ok=1    changed=0    unreachable=0    failed=0
       ios_config:
         diff_against: intended
         intended_config: "{{ lookup('file', './backups/{{ inventory_hostname }}.cfg') }}"
-        provider: "{{ provider }}"
 
 ```
 
@@ -3810,7 +3755,6 @@ TASK [VALIDATE CONFIGURATION INTENT] **************************************
 ``` yaml
     - name: ENSURE THAT LOOPBACK222 IS CONFIGURED
       ios_config:
-        provider: "{{ provider }}"
         commands:
           - ip address 10.222.222.222 255.255.255.255
         parents:
@@ -3876,13 +3820,6 @@ snmp-server community {{ snmp.community }} group {{ snmp.group }}
   connection: local
   gather_facts: False
 
-  vars:
-    nxos_provider:
-      host: "{{ inventory_hostname }}"
-      username: "{{ ansible_user }}"
-      password: "{{ ansible_ssh_pass }}"
-      transport: "{{ transport }}"
-
   tasks:
     - name: GENERATE CONFIGURATION
       template:
@@ -3907,7 +3844,6 @@ snmp-server community ntc-private group network-admin
 ```yaml
     - name: PUSH SNMP COMMUNITIES
       nxos_config:
-        provider: "{{ nxos_provider }}"
         src: "./snmp-config.cfg"
 ```
 ]
@@ -3922,7 +3858,6 @@ snmp-server community ntc-private group network-admin
 ```yaml
     - name: GET CONFIG FOR SNMP PARSING
       nxos_command:
-        provider: "{{ nxos_provider }}"
         commands:
           - show run section snmp
       register: output
@@ -4003,7 +3938,6 @@ ok: [nxos] => {
       nxos_config:
         commands:
           - "no snmp-server community {{ item }}"
-        provider: "{{ nxos_provider }}"
       with_items: "{{ snmp_communities_to_remove }}"
 ```
 
@@ -4066,7 +4000,6 @@ changed: [nxos] => (item=networktocode)
         ios_config:
           commands:
             -  "snmp-server community {{ item }} RO"
-          provider: "{{ ios_provider }}"
         with_items: "{{ snmp_ro_comm_strings }}"
 ```
 
@@ -4108,7 +4041,6 @@ changed: [nxos] => (item=networktocode)
         ios_config:
           commands:
             -  "snmp-server community {{ item.community }} {{ item.type }}"
-          provider: "{{ ios_provider }}"
         with_items: "{{ snmp_comm_strings }}"
 
 ```
@@ -4142,7 +4074,6 @@ changed: [nxos] => (item=networktocode)
         ios_config:
           commands:
             -  "snmp-server community {{ item.key }} {{ item.value.type }}"
-          provider: "{{ ios_provider }}"
         with_dict: "{{ snmp_comm_strings_dict }}"
 ```
 
@@ -4204,7 +4135,6 @@ Sample playbook gathering IOS facts:
     tasks:
       - name: GET FACTS
         ios_facts:
-          provider: "{{ ios_provider }}"
 ```
 ]
 --
@@ -4217,19 +4147,16 @@ Sample playbook gathering IOS facts:
   - name: GATHER ALL FACTS
     ios_facts:
       gather_subset: all
-      provider: "{{ ios_provider }}"
 
   - name: GATHER A SHOW RUN AND DEFAULT SYSTEM FACTS
     ios_facts:
       gather_subset:
         - config
-      provider: "{{ ios_provider }}"
 
   - name: GATHER ALL FACTS EXCEPT HARDWARE FACTS
    ios_facts:
     gather_subset:
       - "!hardware"
-    provider: "{{ ios_provider }}"
 ```
 
 ]
@@ -4248,7 +4175,6 @@ Sample playbook gathering IOS facts:
     tasks:
       - name: GET FACTS
         ios_facts:
-          provider: "{{ ios_provider }}"
         register: ntc_ios_facts
 
       - debug: var=ntc_ios_facts
@@ -4329,7 +4255,6 @@ Sample playbook gathering IOS facts:
 
 - name: GET FACTS
   ios_facts:
-    provider: "{{ ios_provider }}"
   register: ntc_ios_facts
 
 - debug: var=ntc_ios_facts
@@ -4342,7 +4267,7 @@ Sample playbook gathering IOS facts:
 
 - name: GET FACTS
   ios_facts:
-    provider: "{{ ios_provider }}"
+
 - name: Display variables/facts known for a given host
   debug: var=hostvars[inventory_hostname]
 
@@ -4584,7 +4509,7 @@ Image:            {{ kickstart_image }}
 
     tasks:
       - nxos_facts:
-          provider: "{{ nxos_provider }}"
+
       - template: src=general.j2 dest=files/general.md
 
 ```
@@ -5763,16 +5688,9 @@ nxos_overlay_global.py          nxos_switchport.py      nxos_gir.py             
 
 .right-column[
 ```yaml
-  vars:
-    nxos_provider:
-      host: "{{ inventory_hostname }}"
-      username: "{{ ansible_user }}"
-      password: "{{ ansible_ssh_pass }}"
-      transport: nxapi
 
   tasks:
     - nxos_facts:
-        provider: "{{ nxos_provider }}"
 ```
 ]
 
@@ -5793,7 +5711,6 @@ nxos_overlay_global.py          nxos_switchport.py      nxos_gir.py             
 - nxos_vlan:
     vlan_id: 110
     name: DB_VLAN
-    provider: "{{ nxos_provider }}"
 ```
 
 ---
@@ -5809,7 +5726,6 @@ nxos_overlay_global.py          nxos_switchport.py      nxos_gir.py             
 - nxos_feature:
     feature: eigrp
     state: disabled
-    provider: "{{ nxos_provider }}"
 ```
 
 ```yaml
@@ -5817,7 +5733,6 @@ nxos_overlay_global.py          nxos_switchport.py      nxos_gir.py             
 - nxos_feature:
     feature: lacp
     state: enabled
-    provider: "{{ nxos_provider }}"
 ```
 
 ---
@@ -5834,7 +5749,6 @@ nxos_overlay_global.py          nxos_switchport.py      nxos_gir.py             
 # copy latest NX-OS to NXOS switch
 - nxos_file_copy:
     source_file: /home/cisco/Downloads/nxos.7.0.3.I2.1.bin
-    provider: "{{ nxos_provider }}"
 ```
 
 ---
@@ -5857,7 +5771,6 @@ nxos_overlay_global.py          nxos_switchport.py      nxos_gir.py             
     members:
       - Ethernet1/28
       - Ethernet1/29
-    provider: "{{ nxos_provider }}"
 ```
 ---
 
@@ -5887,7 +5800,6 @@ nxos_overlay_global.py          nxos_switchport.py      nxos_gir.py             
     pkl_src: 10.1.100.20
     peer_gw: true
     auto_recovery: true
-    provider: "{{ nxos_provider }}"
 ```
 ]
 
@@ -5907,7 +5819,6 @@ nxos_overlay_global.py          nxos_switchport.py      nxos_gir.py             
 - nxos_vpc_interface:
     portchannel: 10
     vpc: 100
-    provider: "{{ nxos_provider }}"
 ```
 
 
