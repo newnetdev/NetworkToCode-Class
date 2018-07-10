@@ -115,7 +115,7 @@ In this directory there is also a sample playbook called `site.yml`
 ---
 
   - name: test playbook for dynamic inventory
-    connection: local
+    connection: network_cli
     gather_facts: no
     hosts: all
 

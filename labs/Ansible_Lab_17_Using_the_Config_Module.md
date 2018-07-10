@@ -15,7 +15,7 @@ Create a playbook called `config-interfaces.yml` and insert the following into i
 
   - name: CONFIGURING INTERFACES
     hosts: iosxe
-    connection: local
+    connection: network_cli
     gather_facts: no
 
     tasks:
@@ -63,7 +63,7 @@ Use the following playbook as the getting started point to manage a AAA server g
 ```yaml
   - name: CONFIGURING AAA SERVER GROUPS
     hosts: csr1
-    connection: local
+    connection: network_cli
     gather_facts: no
 
     tasks:
@@ -104,7 +104,7 @@ Take note of the new task using the tag of "append_server".
 ```yaml
   - name: CONFIGURING AAA SERVER GROUPS
     hosts: csr1
-    connection: local
+    connection: network_cli
     gather_facts: no
 
     tasks:
@@ -172,7 +172,7 @@ Add one new task as shown below.
 ```yaml
   - name: CONFIGURING AAA SERVER GROUPS
     hosts: csr1
-    connection: local
+    connection: network_cli
     gather_facts: no
 
     tasks:
@@ -262,7 +262,7 @@ Save the following in the new playbook.
 ```yaml
   - name: USING DIFF AGAINST WITH CONFIG
     hosts: csr1
-    connection: local
+    connection: network_cli
     gather_facts: no
 
     tasks:
@@ -314,7 +314,7 @@ Add a new task to the playbook.  This task will compare the FULL config of one p
 ```yaml
   - name: USING DIFF AGAINST WITH CONFIG
     hosts: csr1
-    connection: local
+    connection: network_cli
     gather_facts: no
 
     tasks:

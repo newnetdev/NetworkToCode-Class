@@ -781,7 +781,7 @@ This play should be limited to the `iosxe` group in the inventory file, so use t
 
   - name: Build & Deploy IOS Configurations
     hosts: iosxe
-    connection: local
+    connection: network_cli
     gather_facts: no
 
     tasks:
@@ -866,7 +866,7 @@ Add the following task to the `build-push.yml` playbook:
 
   - name: Build & Deploy IOS Configurations
     hosts: iosxe
-    connection: local
+    connection: network_cli
     gather_facts: no
 
     tasks:

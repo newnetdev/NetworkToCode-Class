@@ -35,7 +35,7 @@ Create a play that'll be executed against **all** hosts defined in the inventory
   
   - name: BACKUP CONFIGURATIONS
     hosts: all
-    connection: local
+    connection: network_cli
     gather_facts: no
 
 
@@ -50,7 +50,7 @@ Add a variable in your playbook called `backup_command`.  It should be a diction
   
   - name: BACKUP CONFIGURATIONS
     hosts: all
-    connection: local
+    connection: network_cli
     gather_facts: no
 
     vars:

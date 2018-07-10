@@ -68,7 +68,7 @@ Open this file with a text editor and create two plays similar to **Lab 1** to d
 
   - name: PLAY 1 - DEPLOYING SNMP CONFIGURATIONS ON IOS
     hosts: iosxe
-    connection: local
+    connection: network_cli
     gather_facts: no
 
     tasks:

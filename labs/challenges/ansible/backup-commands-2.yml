@@ -1,6 +1,6 @@
   - name: DUMP COMMAND OUTPUTS TO FILE
     hosts: iosxe
-    connection: local
+    connection: network_cli
     gather_facts: no
     tags: ios
 

@@ -16,7 +16,7 @@ Create a new playbook called `ping.yml` in the `ansible` directory.
 
   - name: TEST REACHABILITY
     hosts: iosxe
-    connection: local
+    connection: network_cli
     gather_facts: no
 
     vars:
@@ -151,7 +151,7 @@ The updated playbook will look like this:
 
   - name: TEST REACHABILITY
     hosts: iosxe
-    connection: local
+    connection: network_cli
     gather_facts: no
 
     vars:
@@ -355,7 +355,7 @@ Full and final playbook will look like this:
 
   - name: TEST REACHABILITY
     hosts: iosxe
-    connection: local
+    connection: network_cli
     gather_facts: no
 
     vars:

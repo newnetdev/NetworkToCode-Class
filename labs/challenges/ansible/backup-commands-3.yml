@@ -1,6 +1,6 @@
   - name: SAVE OUTPUTS TO INDIVIDUAL FILES
     hosts: iosxe
-    connection: local
+    connection: network_cli
     gather_facts: no
 
     vars:

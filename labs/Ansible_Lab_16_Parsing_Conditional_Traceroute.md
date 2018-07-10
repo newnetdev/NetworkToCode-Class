@@ -17,7 +17,7 @@ Create a new playbook called `test-reachability.yml`.  Use the following to get 
 
   - name: PING TEST AND TRACEROUTE
     hosts: csr1
-    connection: local
+    connection: network_cli
     gather_facts: no
 
     vars:
@@ -45,7 +45,7 @@ Add two new tasks:
 
   - name: PING TEST AND TRACEROUTE
     hosts: csr1
-    connection: local
+    connection: network_cli
     gather_facts: no
 
     vars:
@@ -157,7 +157,7 @@ Feel free to change `hosts: csr1` to all devices or also make that a variable an
 ```yaml
   - name: PING TEST AND TRACEROUTE
     hosts: csr1
-    connection: local
+    connection: network_cli
     gather_facts: no
 
     vars:

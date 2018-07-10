@@ -30,7 +30,7 @@ Remove the second play (Junos), so you're left with the following in your playbo
 
   - name: PLAY 1 - DEPLOYING SNMP CONFIGURATIONS ON IOS
     hosts: iosxe
-    connection: local
+    connection: network_cli
     gather_facts: no
 
     tasks:
@@ -143,7 +143,7 @@ So that the complete playbook looks like this:
 
   - name: PLAY 1 - DEPLOYING SNMP CONFIGURATIONS ON IOS
     hosts: iosxe
-    connection: local
+    connection: network_cli
     gather_facts: no
 
     tasks:

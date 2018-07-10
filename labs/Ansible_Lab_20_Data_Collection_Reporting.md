@@ -29,7 +29,7 @@ In this task in the play, use the `ios_facts` module to gather the device facts.
 
   - name: GATHER IOS FACTS
     hosts: iosxe
-    connection: local
+    connection: network_cli
     gather_facts: no
 
     tasks:
@@ -101,7 +101,7 @@ The updated playbook should look like this:
 
   - name: GATHER IOS FACTS
     hosts: iosxe
-    connection: local
+    connection: network_cli
     gather_facts: no
 
     tasks:
@@ -334,7 +334,7 @@ This is a sample playbook for running against all 4 device types (IOS, NXOS, JUN
 
   - name: GATHER IOS FACTS
     hosts: iosxe
-    connection: local
+    connection: network_cli
     gather_facts: no
     tags: ios
 
@@ -357,7 +357,7 @@ This is a sample playbook for running against all 4 device types (IOS, NXOS, JUN
 
   - name: GATHER NXOS FACTS
     hosts: nxos
-    connection: local
+    connection: network_cli
     gather_facts: no
     tags: nxos
 
@@ -380,7 +380,7 @@ This is a sample playbook for running against all 4 device types (IOS, NXOS, JUN
 
   - name: GATHER EOS FACTS
     hosts: eos
-    connection: local
+    connection: network_cli
     gather_facts: no
     tags: eos
 
@@ -441,7 +441,7 @@ Create a new playbook called `reports.yml`.  Create a play that requires the dir
 
   - name: GATHER IOS FACTS
     hosts: iosxe
-    connection: local
+    connection: network_cli
     gather_facts: no
     tags: ios
 
@@ -502,7 +502,7 @@ Add a new play to create reports for each IOS device (for both report types).
 ```yaml
   - name: GATHER IOS FACTS
     hosts: iosxe
-    connection: local
+    connection: network_cli
     gather_facts: no
     tags: ios
 
@@ -598,7 +598,7 @@ The final playbook should look like this:
 
   - name: GATHER IOS FACTS
     hosts: iosxe
-    connection: local
+    connection: network_cli
     gather_facts: no
     tags: ios
 
@@ -614,7 +614,7 @@ The final playbook should look like this:
 
   - name: GATHER IOS FACTS
     hosts: iosxe
-    connection: local
+    connection: network_cli
     gather_facts: no
     tags: ios
 
@@ -635,7 +635,7 @@ The final playbook should look like this:
 
   - name: GATHER NXOS FACTS
     hosts: nxos
-    connection: local
+    connection: network_cli
     gather_facts: no
     tags: nxos
 
@@ -656,7 +656,7 @@ The final playbook should look like this:
 
   - name: GATHER EOS FACTS
     hosts: eos
-    connection: local
+    connection: network_cli
     gather_facts: no
     tags: eos
 

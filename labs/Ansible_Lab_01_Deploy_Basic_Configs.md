@@ -77,7 +77,7 @@ Add the following to your playbook.
 
   - name: PLAY 1 - DEPLOYING SNMP CONFIGURATIONS ON IOS
     hosts: iosxe
-    connection: local
+    connection: network_cli
     gather_facts: no
 
     tasks:
@@ -215,7 +215,7 @@ After adding this new play, the full playbook will look like this:
 
   - name: PLAY 1 - DEPLOYING SNMP CONFIGURATIONS ON IOS
     hosts: iosxe
-    connection: local
+    connection: network_cli
     gather_facts: no
 
     tasks:
@@ -384,7 +384,7 @@ The updated playbook should look like this:
 
   - name: PLAY 1 - DEPLOYING SNMP CONFIGURATIONS ON IOS
     hosts: iosxe
-    connection: local
+    connection: network_cli
     gather_facts: no
 
     tasks:
