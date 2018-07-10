@@ -3298,8 +3298,53 @@ class: center, middle, title
 - Lab 13 - Validating Reachability with the Command Module
 - Lab 14 - Continuous Compliance with Ansible
 
+---
 
 
+class: center, middle, title
+.footer-picture[<img src="data/media/Footer1.PNG" alt="Blue Logo" style="alight:middle;width:350px;height:60px;">]
+
+# Jinja Filters
+
+---
+
+# Jinja Filters
+.left-column[
+- Filters transform data within a parameter or Jinja Expression
+- Are used with the operator `|` like `hostname | upper` will transform 
+the hostname variable using the upper built-in filter to be uppercase
+- Custom filters are possible, and Ansible has built-in filters in addition to
+Jinja2 built-in filters
+]
+.right-column[
+```yaml
+    vars:
+      hostname: nycr1
+      device_ip: 10.1.1.1
+      bad_ip: X.10.Y.2
+
+    tasks:
+      - name: COVNERT HOSTNAME TO UPPERCASE
+        debug:
+          var: hostname | upper
+
+      - name: CHECK TO SEE IF A IP ADDR IS VALID
+        debug:
+          var: device_ip | ipaddr
+
+      - name: CHECK TO SEE IF A IP ADDR IS VALID
+        debug:
+          var: bad_ip | ipaddr
+``` 
+
+Sample Output:
+
+```
+"hostname | upper": "NYCR1"
+"device_ip | ipaddr": "10.1.1.1"
+"bad_ip | ipaddr": false
+```
+]
 ---
 
 # Parsing Response Data
@@ -4450,6 +4495,63 @@ This example shows how to make an API call against an IOSXE device to pull the I
 
 You can test all of these settings using Postman before building your Ansible tasks.
 
+
+---
+
+# Tips: Using set_facts
+
+.left-column[
+- In contrast to using `register` to store the output of a task into a variable,
+the `set_fact` module allows a task to define a variable
+- Sometimes used to simplify the naming of a variable 
+]
+
+.right-column[
+```yaml
+vars:
+  locations:
+    amer:
+      nyc:
+        - nyc-dc
+        - nyc-campus
+      sjc:
+        - sjc-branch
+    apac:
+      hk:
+        - hk-dc
+        - hk-campus
+
+tasks:
+  - name: PRINT ALL LOCATIONS
+    debug:
+      var: locations
+
+  - name: SJC LOCATIONS
+    set_fact:
+      sjc_locations: "{{ locations['amer']['sjc'] }}"
+
+  - name: PRINT ALL LOCATIONS
+    debug:
+      var: sjc_locations
+```
+]
+
+---
+
+# Tips: Using from_json Filter
+
+- In a recent example, an API call to the IOSXE device received a JSON response
+in python, `json.loads()` would be used to convert the JSON object to a dictionary
+- In Ansible, instead use the `from_json` filter
+- For example, assuming the `response` API variable is earlier in the play:
+
+```yaml
+      - set_fact:
+          ip_info: "{{ response['content'] | from_json }}"
+
+      - debug:
+          var: ip_info['Cisco-IOS-XE-native:address']['primary']['address']
+```
 
 ---
 
