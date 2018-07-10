@@ -261,7 +261,7 @@ class: middle, segue
 
 - name: vlan testing
   hosts: dc1
-  connection: local
+  connection: network_cli
   gather_facts: no
 
   tasks:
@@ -653,7 +653,7 @@ Two files are required to get started:
   - arbitrary description of the play and is displayed to terminal when executed (optional)
 - `hosts`
   - one or more hosts or groups as defined in inventory file or _expression_
-- `connection: local`
+- `connection: network_cli`
   - does not use default SSH connection mechanism / use method as defined *inside* modules
 - Play contains one or more tasks
 ]
@@ -664,7 +664,7 @@ Two files are required to get started:
 
 - name: Play 1 - Deploy router configs
   hosts: routers
-  connection: local
+  connection: network_cli
   gather_facts: no
 
   tasks:
@@ -679,7 +679,7 @@ Two files are required to get started:
 ```yaml
 - name: Play 2 - Deploy vlans on switches
   hosts: switches
-  connection: local
+  connection: network_cli
   gather_facts: no
 
   tasks:
@@ -707,7 +707,7 @@ Two files are required to get started:
 
 - name: PLAY 1 - Deploy vlans on switches
   hosts: switches
-  connection: local
+  connection: network_cli
   gather_facts: no
 
   tasks:
@@ -754,7 +754,7 @@ Two files are required to get started:
 
 - name: MANAGE VLANS
   hosts: switches
-  connection: local
+  connection: network_cli
   gather_facts: no
 
   tasks:
@@ -818,7 +818,7 @@ class: center, middle
 
 - name: MANAGE VLANS
   hosts: switches
-  connection: local
+  connection: network_cli
   gather_facts: no
 
   tasks:
@@ -846,7 +846,7 @@ class: center, middle
 
 - name: MANAGE VLANS
   hosts: switches
-  connection: local
+  connection: network_cli
   gather_facts: no
 
   tasks:
@@ -1145,7 +1145,7 @@ You can request user input and capture the user response as a variable using the
 - name: COLLECT USERNAME AND PASSWORD
   hosts: csr1
   gather_facts: no
-  connection: local
+  connection: network_cli
 
   vars_prompt:
     - name: un
@@ -1178,7 +1178,7 @@ Variables within a playbook can be defined under the optional `vars` paramater
 - name: PRINT VLANS
   hosts: all
   gather_facts: no
-  connection: local
+  connection: network_cli
   
   vars:
     vlan: 300
@@ -1210,7 +1210,7 @@ and the Ansible built-in `inventory_hostname` variable
 - name: PRINT HOSTS
   hosts: all
   gather_facts: no
-  connection: local
+  connection: network_cli
   
   vars:
     priority: "P1" 
@@ -1280,7 +1280,7 @@ leaf2 mgmt_ip=10.1.1.2
 
   - name: DEBUGGING VARIABLES
     hosts: all
-    connection: local
+    connection: network_cli
     gather_facts: no
 
     tasks:
@@ -1348,7 +1348,7 @@ leaf2 mgmt_ip=10.1.1.2
 
   - name: DEBUGGING VARIABLES
     hosts: all
-    connection: local
+    connection: network_cli
     gather_facts: no
 
     tasks:
@@ -1416,7 +1416,7 @@ leaf2 mgmt_ip=10.1.1.2
 
   - name: DEBUGGING VARIABLES
     hosts: all
-    connection: local
+    connection: network_cli
     gather_facts: no
 
     tasks:
@@ -1508,7 +1508,7 @@ nxos-spine1                : ok=3    changed=0    unreachable=0    failed=0
 
   - name: PLAY 1 - DEPLOYING SNMP CONFIGURATIONS ON IOS
     hosts: ios-xe
-    connection: local
+    connection: network_cli
     gather_facts: no
 
     tasks:
@@ -1707,7 +1707,7 @@ class: middle, segue
 ```yaml
   - name: BACKUP ALL CONFIGURATIONS
     hosts: all
-    connection: local
+    connection: network_cli
     gather_facts: no
 
     tasks:
@@ -2235,7 +2235,7 @@ ansible-playbook -i inventory playbook.yml --tags=vlan
   - name: DATA CENTER AUTOMATION
     hosts: all
     gather_facts: no
-    connection: local
+    connection: network_cli
     tags: datacenter
 ```
 
@@ -2517,7 +2517,7 @@ vlans:
 
   - name: BUILD CONFIGS
     hosts: all
-    connection: local
+    connection: network_cli
 
     tasks:
 
@@ -2646,7 +2646,7 @@ interface {{ interface.name }}
 
   - name: BUILD PROCESS
     hosts: all
-    connection: local
+    connection: network_cli
     gather_facts: no
 
     tasks:
@@ -2672,7 +2672,7 @@ interface {{ interface.name }}
 
   - name: DEPLOY CONFIGURATIONS USING NAPALM
     hosts: all
-    connection: local
+    connection: network_cli
 
     tasks:
 
@@ -2710,7 +2710,7 @@ leaf6
 
   - name: BUILD PROCESS
     hosts: all
-    connection: local
+    connection: network_cli
     gather_facts: no
     tags: build
 
@@ -2729,7 +2729,7 @@ leaf6
 
   - name: DEPLOY CONFIGURATIONS USING NAPALM
     hosts: all
-    connection: local
+    connection: network_cli
     gather_facts: no
     tags: deploy
 
@@ -3014,7 +3014,7 @@ The _command modules are often used to execute show commands and gather data fro
 .med-code[
 ```yaml
   - hosts: junos
-    connection: local
+    connection: network_cli
     gather_facts: no
 
     tasks:
@@ -3203,7 +3203,7 @@ class: center, middle, title
 ```yaml
   - name: ITERATE OVER LIST OF STRINGS
     hosts: iosxe
-    connection: local
+    connection: network_cli
     gather_facts: no
 
     vars:
@@ -3234,7 +3234,7 @@ class: center, middle, title
 
   - name: ITERATE OVER LIST OF STRINGS
     hosts: iosxe
-    connection: local
+    connection: network_cli
     gather_facts: no
 
     vars:
@@ -3269,7 +3269,7 @@ class: center, middle, title
 
   - name: ITERATE OVER DICT
     hosts: iosxe
-    connection: local
+    connection: network_cli
     gather_facts: no
     vars:
       locations:
@@ -3372,7 +3372,7 @@ The `parse_cli_textfsm` Jinja2 filter can use the same `textfsm` templates that 
 
   - name: TEST PARSE USING PARSE_CLI_TEXTFSM
     hosts: csr1
-    connection: local
+    connection: network_cli
     gather_facts: no
 
     vars:
@@ -3460,7 +3460,7 @@ Now you can reference the new parser using `parse_cli`:
 
   - name: TEST PARSE USING PARSE_CLI
     hosts: csr1
-    connection: local
+    connection: network_cli
     gather_facts: no
 
     tasks:
@@ -3577,7 +3577,7 @@ In this example we issued the ping command from an IOS device and want to parse 
 
  - name: PING TEST AND TRACEROUTE
     hosts: csr1
-    connection: local
+    connection: network_cli
     gather_facts: no
 
     vars:
@@ -3978,7 +3978,7 @@ snmp-server community {{ snmp.community }} group {{ snmp.group }}
 ---
 - name: Declarative Configuration
   hosts: nxos
-  connection: local
+  connection: network_cli
   gather_facts: False
 
   tasks:
@@ -4174,7 +4174,7 @@ Sample playbook gathering IOS facts:
 ```yaml
   - name: GATHER IOS FACTS
     hosts: iosxe
-    connection: local
+    connection: network_cli
     gather_facts: no
 
     tasks:
@@ -4214,7 +4214,7 @@ Sample playbook gathering IOS facts:
 ```yaml
   - name: GATHER IOS FACTS
     hosts: iosxe
-    connection: local
+    connection: network_cli
     gather_facts: no
 
     tasks:
@@ -4453,7 +4453,7 @@ In this example we are grouping the devices by vendor.  This will create a group
 
   - name: DISCOVER VENDOR
     hosts: iosxe,nxos,vmx
-    connection: local
+    connection: network_cli
     gather_facts: no
 
     tasks:
@@ -4606,7 +4606,7 @@ Image:            {{ kickstart_image }}
 
   - name: DC P1
     hosts: n9k1
-    connection: local
+    connection: network_cli
     gather_facts: no
 
     tasks:
@@ -4663,7 +4663,7 @@ LOCAL INTERFACE:    {{ neighbor.local_interace }}
 
   - name: DC P1
     hosts: eos-spine1
-    connection: local
+    connection: network_cli
     gather_facts: no
 
     tasks:
@@ -4733,7 +4733,7 @@ LOCAL INTERFACE:    Ethernet7
 
   - name: DC P1
     hosts: eos-spine1
-    connection: local
+    connection: network_cli
     gather_facts: no
 
     tasks:
@@ -4799,7 +4799,7 @@ class: middle, segue
 ---
 
   - name: PB
-    connection: local
+    connection: network_cli
     hosts: all
 
     tasks:
@@ -4831,7 +4831,7 @@ class: middle, segue
 ---
   - name: CONFIGURE DEVICES
     hosts: all
-    connection: local
+    connection: network_cli
 
     tasks:
 
@@ -4894,7 +4894,7 @@ roles/
 
 - name: SAMPLE PLAYBOOK USING ROLES
   hosts: leaves
-  connection: local
+  connection: network_cli
 
   roles:
      - common
@@ -4915,7 +4915,7 @@ roles/
 ---
 
 - hosts: spine
-  connection: local
+  connection: network_cli
   roles:
     - common
     - spine
@@ -4937,7 +4937,7 @@ roles/
 
   - name: DC P1
     hosts: datacenter
-    connection: local
+    connection: network_cli
     gather_facts: no
 
     roles:
@@ -5001,7 +5001,7 @@ vlans:
 .---
   - name: DC P1
     hosts: datacenter
-    connection: local
+    connection: network_cli
     gather_facts: no
     roles:
       - vlans
@@ -5191,7 +5191,7 @@ if __name__ == "__main__":
 ---
 
   - name: test playbook for dynamic inventory
-    connection: local
+    connection: network_cli
     gather_facts: no
     hosts: all
 
