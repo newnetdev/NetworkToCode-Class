@@ -345,3 +345,50 @@ ping-responses/
 3 directories, 9 files
 ntc@ntc:ansible$ 
 ```
+
+##### Check
+
+Full and final playbook will look like this:
+
+```yaml
+---
+
+  - name: TEST REACHABILITY
+    hosts: iosxe
+    connection: local
+    gather_facts: no
+
+    vars:
+      target_ips:
+        - "8.8.8.8"
+        - "4.4.4.4"
+        - "198.6.1.4"
+
+    tasks:
+
+      - name: ENSURE DIRECTORY FOR EACH DEVICE EXISTS
+        file:
+          path: ./ping-responses/{{ inventory_hostname }}/
+          state: directory
+
+      - name: SEND PING COMMANDS TO DEVICES
+        ios_command:
+          commands: "ping vrf MANAGEMENT {{ item }} repeat 2"
+        register: ping_responses
+        with_items: "{{ target_ips }}"
+
+      - name: VERIFY REGISTERED VARIABLE
+        debug:
+          var: ping_responses
+
+      - name: TEST LOOPING OVER REGISTERED VARIABLE
+        debug:
+          var: "{{ item }}"
+        with_items: "{{ ping_responses.results }}"
+
+      - name: SAVE OUTPUTS TO INDIVIDUAL FILES
+        template:
+          src: basic-copy-2.j2
+          dest: ./ping-responses/{{ inventory_hostname }}/to_{{ item.item }}.txt
+        with_items: "{{ ping_responses.results }}"
+```

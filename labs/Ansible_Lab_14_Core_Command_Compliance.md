@@ -85,5 +85,32 @@ csr3                       : ok=2    changed=0    unreachable=0    failed=0
 ntc@ntc:ansible$ 
 ```
 
+##### Check
 
+Full and final playbook will look like this:
+
+```yaml
+---
+
+  - name: IOS COMPLIANCE
+    hosts: iosxe
+    connection: local
+    gather_facts: no
+
+
+    tasks:
+
+      - name: IOS show version
+        ios_command:
+          commands:
+            - show version
+        register: output
+
+      - name: CHECK OS AND CONFIG REGISTER
+        assert:
+          that:
+           - "'16.6.2' in output['stdout'][0]"
+           - "'0x2102' in output['stdout'][0]"
+
+```
 

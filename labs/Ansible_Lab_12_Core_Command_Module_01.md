@@ -149,3 +149,29 @@ Make the required changes to save command output for all 3 CSR devices.
 dest: ./command-outputs/{{ inventory_hostname}}-show_version.txt
 ```
 
+##### Check
+
+Full and final playbook will look like this:
+
+```yaml
+---
+
+  - name: BACKUP SHOW VERSION
+    hosts: iosxe
+    connection: local
+    gather_facts: no
+
+    tasks:
+      - name: GET SHOW COMMANDS
+        ios_command:
+          commands: show version
+        register: config_data
+
+      - debug:
+          var: config_data
+
+      - name: SAVE SH VERSION TO FILE
+        template:
+          src: basic-copy.j2
+          dest: ./command-outputs/{{ inventory_hostname}}-show_version.txt
+```
