@@ -1515,10 +1515,6 @@ nxos-spine1                : ok=3    changed=0    unreachable=0    failed=0
 
       - name: TASK 1 in PLAY 1 - ENSURE SNMP COMMANDS EXIST ON IOS DEVICES
         ios_config:
-          provider:
-            host: "{{ inventory_hostname }}"
-            username: "{{ ansible_user }}"
-            password: "{{ ansible_ssh_pass }}"
           commands:
             - snmp-server community ntc-course RO
             - snmp-server community supersecret RW
@@ -1675,7 +1671,6 @@ Within the network core config modules (like ios_config, junos_config etc). You 
     - name: ENSURE THAT SNMP IS CONFIGURED ON IOS DEVICES
       ios_config:
         src: 02-ios-snmp.j2
-        provider: "{{ provider }}"
 
 ```
 
@@ -1683,7 +1678,6 @@ Within the network core config modules (like ios_config, junos_config etc). You 
     - name: ENSURE THAT SNMP IS CONFIGURED ON JUNOS DEVICES
       junos_config:
         src: 02-junos-snmp.j2
-        provider: "{{ provider }}"
 
 ```
 
@@ -2952,8 +2946,7 @@ While the _config modules are used to make configuration changes and execute con
 The _command modules are often used to execute show commands and gather data from devices.
 
 - `commands` parameter can accept a single command or a list of commands
-- The `provider` parameter is a convenience parameter that is a dictionary and uses keys equal to parameters the module supports
-
+- Refer to `ansible-docs` for full list of parameters
 ]
 
 .right-column[
@@ -2978,7 +2971,6 @@ The _command modules are often used to execute show commands and gather data fro
         commands:
           - "show version"
           - "show ip int brief"
-        provider: "{{ ios_provider }}"
 
 
 
@@ -2986,32 +2978,7 @@ The _command modules are often used to execute show commands and gather data fro
 ]
 ]
 
----
 
-# The provider parameter
-
-Convenience parameter that allows all nxos arguments to be passed as a dict object. All constraints (required, choices, etc) must be met either by individual arguments or values in this dict.
-
-.med-code[
-```yaml
-  - name: SAMPLE PLAYBOOK
-    hosts: nxos
-
-    vars:
-      nxos_provider:
-        username: "{{ ansible_user }}"
-        password: "{{ ansible_ssh_pass }}"
-        host: "{{ inventory_hostname }}"
-        transport: "{{ transport }}"
-
-    tasks:
-
-      - nxos_command:
-          commands:
-            - 'show version'
-          provider: "{{ nxos_provider }}"
-```
-]
 
 ---
 
@@ -3023,14 +2990,12 @@ Convenience parameter that allows all nxos arguments to be passed as a dict obje
     - name: SINGLE COMMAND
       nxos_command:
         commands: show version
-        provider: "{{ nxos_provider }}"
 
     - name: LIST OF COMMAND STRINGS
       nxos_command:
         commands:
           - show version
           - show hostname
-        provider: "{{ nxos_provider }}"
 
     - name: LIST OF DICTIONARIES
       nxos_command:
@@ -3040,7 +3005,6 @@ Convenience parameter that allows all nxos arguments to be passed as a dict obje
           - command: show version
             output: text
         transport: cli
-        provider: "{{ nxos_provider }}"
 
 ```
 ]
@@ -3060,7 +3024,6 @@ Convenience parameter that allows all nxos arguments to be passed as a dict obje
           commands:
             - show version
             - show interfaces
-          provider: "{{ junos_provider }}"
 
       - name: EXECUTE JUNOS COMMANDS - TEXT
         junos_command:
@@ -3068,7 +3031,6 @@ Convenience parameter that allows all nxos arguments to be passed as a dict obje
           commands:
             - show version
             - show interfaces
-          provider: "{{ junos_provider }}"
 ```
 ]
 ]
@@ -3132,7 +3094,6 @@ There are two ways to see it:
       nxos_command:
         commands:
           - show version
-        provider: "{{ ios_provider }}"
       register: output
 
     - debug: var=output
@@ -3155,7 +3116,6 @@ There are two ways to see it:
     nxos_command:
       commands:
         - 'show version'
-      provider: "{{ ios_provider }}"
     register: output
 
   - debug: var=output
@@ -3204,7 +3164,6 @@ ok: [nxos-spine1] => {
     ios_command:
       commands:
         - show version
-      provider: "{{ provider }}"
     register: output
 
   - name: Ensure OS version is correct
@@ -3215,6 +3174,121 @@ ok: [nxos-spine1] => {
 ```
 ]
 
+---
+
+
+class: center, middle, title
+.footer-picture[<img src="data/media/Footer1.PNG" alt="Blue Logo" style="alight:middle;width:350px;height:60px;">]
+
+# How do you Iterate over items in a Playbook?
+
+---
+
+# Iterators
+
+
+* with_items - iterate (loop) over a list
+* with_dict - iterate (loop) over a dictionary
+* with_fileglob - iterate (loop) over files in a list of directories (often for templates)
+
+---
+
+
+# with_items
+
+* Iterate over a list of strings
+* `item` is built-in variable equal to an element of the list as you're iterating
+* In this case, `item` is a string
+
+```yaml
+  - name: ITERATE OVER LIST OF STRINGS
+    hosts: iosxe
+    connection: local
+    gather_facts: no
+
+    vars:
+      commands:
+        - show ip int brief
+        - show version
+        - show ip route
+
+    tasks:
+      - name: SEND A SERIES OF SHOW COMMANDS
+        ios_command:
+          commands:
+            "{{ item }}"
+        with_items: "{{ commands }}"
+```
+
+---
+
+
+# with_items
+
+* Iterate over a list of dictionaries
+* `item` is built-in variable equal to an element of the list as you're iterating
+* In this case, `item` is a dictionary
+
+```yaml
+---
+
+  - name: ITERATE OVER LIST OF STRINGS
+    hosts: iosxe
+    connection: local
+    gather_facts: no
+
+    vars:
+      commands:
+        - command: show ip int brief
+        - command: show version
+        - command: show ip route
+
+    tasks:
+      - name: SEND A SERIES OF SHOW COMMANDS
+        ios_command:
+          commands:
+            "{{ item.command }}"
+        with_items: "{{ commands }}"
+```
+
+
+
+---
+
+# with_dict
+
+.left-column[
+* Iterate over a dictionary
+* Root keys are `item.key`
+* Values are `item.value`
+]
+
+.right-column[
+```yaml
+---
+
+  - name: ITERATE OVER DICT
+    hosts: iosxe
+    connection: local
+    gather_facts: no
+    vars:
+      locations:
+        amer: sjc-branch
+        apac: hk-dc
+
+    tasks:
+      - name: PRINT ALL LOCATIONS
+        debug:
+          msg: "Region is {{ item.key }} and Site is {{ item.value }}"
+        with_dict: "{{ locations }}"
+```
+
+* Sample output:
+```
+"msg": "Regions are apac and Sites is hk-dc"
+"msg": "Regions are amer and Sites is sjc-branch"
+```
+]
 
 ---
 
@@ -3224,7 +3298,53 @@ ok: [nxos-spine1] => {
 - Lab 13 - Validating Reachability with the Command Module
 - Lab 14 - Continuous Compliance with Ansible
 
+---
 
+
+class: center, middle, title
+.footer-picture[<img src="data/media/Footer1.PNG" alt="Blue Logo" style="alight:middle;width:350px;height:60px;">]
+
+# Jinja Filters
+
+---
+
+# Jinja Filters
+.left-column[
+- Filters transform data within a parameter or Jinja Expression
+- Are used with the operator `|` like `hostname | upper` will transform 
+the hostname variable using the upper built-in filter to be uppercase
+- Custom filters are possible, and Ansible has built-in filters in addition to
+Jinja2 built-in filters
+]
+.right-column[
+```yaml
+    vars:
+      hostname: nycr1
+      device_ip: 10.1.1.1
+      bad_ip: X.10.Y.2
+
+    tasks:
+      - name: COVNERT HOSTNAME TO UPPERCASE
+        debug:
+          var: hostname | upper
+
+      - name: CHECK TO SEE IF A IP ADDR IS VALID
+        debug:
+          var: device_ip | ipaddr
+
+      - name: CHECK TO SEE IF A IP ADDR IS VALID
+        debug:
+          var: bad_ip | ipaddr
+``` 
+
+Sample Output:
+
+```
+"hostname | upper": "NYCR1"
+"device_ip | ipaddr": "10.1.1.1"
+"bad_ip | ipaddr": false
+```
+]
 ---
 
 # Parsing Response Data
@@ -3533,12 +3653,6 @@ You can pass commands into the module a few different ways:
   - name: DEPLOY SNMP COMMUNITY STRINGS ON IOS DEVICES
     hosts: ios
 
-    vars:
-      ios_provider:
-        username: ntc
-        password: ntc123
-        host: "{{ inventory_hostname }}"
-
     tasks:
 
     - name: USE COMMANDS IN THE PLAYBOOK
@@ -3552,7 +3666,6 @@ You can pass commands into the module a few different ways:
     - name: DEPLOY FROM CONFIG FILE
       ios_config:
         src: "configs/snmp.cfg"
-        provider: "{{ ios_provider }}"
 
 
 
@@ -3569,7 +3682,6 @@ You can pass commands into the module a few different ways:
     commands:
       - snmp-server community public group network-operator
       - snmp-server community networktocode group network-operator
-    provider: "{{ provider }}"
 
 ```
 
@@ -3577,7 +3689,6 @@ You can pass commands into the module a few different ways:
 # Ensure these lines are present in the configuration
 - junos_config:
     src: snmp.conf
-    provider: "{{ provider }}"
 
 ```
 
@@ -3602,7 +3713,6 @@ You can pass commands into the module a few different ways:
     lines:
       - description Configured by Ansible
       - ip address 10.100.100.1 255.255.255.0
-    provider: "{{ ios_provider }}"
 
 ```
 ]
@@ -3641,7 +3751,6 @@ You can pass commands into the module a few different ways:
           - neighbor 10.10.10.2 send-community
           - neighbor 10.10.10.2 soft-reconfiguration inbound
         after: ['copy run start']
-        provider: "{{ ios_provider }}"
 ```
 ]
 
@@ -3663,7 +3772,6 @@ Available options for the  save_when parameter:
 
     - name: ENSURE THAT LOOPBACK 222 IS CONFIGURED
       ios_config:
-        provider: "{{ provider }}"
         commands:
           - ip address 10.222.222.222 255.255.255.255
         parents:
@@ -3696,7 +3804,6 @@ Introduced in Ansible 2.4. Test running configuration against:
 ``` yaml
     - name: COMPARE RUNNING CONFIG WITH STARTUP
       ios_config:
-        provider: "{{ provider }}"
         diff_against: startup
 ```
 
@@ -3780,7 +3887,6 @@ csr1                       : ok=1    changed=0    unreachable=0    failed=0
       ios_config:
         diff_against: intended
         intended_config: "{{ lookup('file', './backups/{{ inventory_hostname }}.cfg') }}"
-        provider: "{{ provider }}"
 
 ```
 
@@ -3810,7 +3916,6 @@ TASK [VALIDATE CONFIGURATION INTENT] **************************************
 ``` yaml
     - name: ENSURE THAT LOOPBACK222 IS CONFIGURED
       ios_config:
-        provider: "{{ provider }}"
         commands:
           - ip address 10.222.222.222 255.255.255.255
         parents:
@@ -3876,13 +3981,6 @@ snmp-server community {{ snmp.community }} group {{ snmp.group }}
   connection: local
   gather_facts: False
 
-  vars:
-    nxos_provider:
-      host: "{{ inventory_hostname }}"
-      username: "{{ ansible_user }}"
-      password: "{{ ansible_ssh_pass }}"
-      transport: "{{ transport }}"
-
   tasks:
     - name: GENERATE CONFIGURATION
       template:
@@ -3907,7 +4005,6 @@ snmp-server community ntc-private group network-admin
 ```yaml
     - name: PUSH SNMP COMMUNITIES
       nxos_config:
-        provider: "{{ nxos_provider }}"
         src: "./snmp-config.cfg"
 ```
 ]
@@ -3922,7 +4019,6 @@ snmp-server community ntc-private group network-admin
 ```yaml
     - name: GET CONFIG FOR SNMP PARSING
       nxos_command:
-        provider: "{{ nxos_provider }}"
         commands:
           - show run section snmp
       register: output
@@ -4003,7 +4099,6 @@ ok: [nxos] => {
       nxos_config:
         commands:
           - "no snmp-server community {{ item }}"
-        provider: "{{ nxos_provider }}"
       with_items: "{{ snmp_communities_to_remove }}"
 ```
 
@@ -4027,125 +4122,6 @@ changed: [nxos] => (item=networktocode)
 # Lab Time
 
 - Lab 17 - Using the Config Module
-
----
-
-# Iterators
-
-
-* with_items - iterate (loop) over a list
-* with_dict - iterate (loop) over a dictionary
-* with_fileglob - iterate (loop) over files in a list of directories
-  - covered previously when looping over templates
-
----
-
-
-# with_items
-
-* Iterate over a list of strings
-* `item` is built-in variable equal to an element of the list as you're iterating
-* In this case, `item` is a string
-
-```yaml
-  - name: ITERATE OVER LIST OF STRINGS
-    hosts: iosxe
-    connection: local
-    gather_facts: no
-
-    vars:
-      snmp_ro_comm_strings:
-        - networktocode
-        - public
-        - public123
-        - private123
-        - private
-
-    tasks:
-      - name: ENSURE RO COMM STRINGS ARE GOOD
-        ios_config:
-          commands:
-            -  "snmp-server community {{ item }} RO"
-          provider: "{{ ios_provider }}"
-        with_items: "{{ snmp_ro_comm_strings }}"
-```
-
----
-
-
-# with_items
-
-* Iterate over a list of dictionaries
-* `item` is built-in variable equal to an element of the list as you're iterating
-* In this case, `item` is a dictionary
-
-.left-column2[
-```yaml
----
-
-- name: ITERATE LIST OF DICTS
-  hosts: iosxe
-  connection: local
-  gather_facts: no
-
-  vars:
-    snmp_comm_strings:
-      - community: public
-        type: RO
-      - community: public123
-        type: RO
-      - community: private123
-        type: RW
-      - community: private
-        type: RW
-```
-]
-
-.right-column2[
-```yaml
-    tasks:
-      - name: ENSURE RO COMM STRINGS ARE GOOD
-        ios_config:
-          commands:
-            -  "snmp-server community {{ item.community }} {{ item.type }}"
-          provider: "{{ ios_provider }}"
-        with_items: "{{ snmp_comm_strings }}"
-
-```
-]
-
-
----
-
-# with_dict
-
-* Iterate over a dictionary
-* Root keys are `item.key`
-* Associated values are `item.value.<value>`
-
-```yaml
-# PLAY DEFINITION TRUNCATED
-    vars:
-      snmp_comm_strings_dict:
-        networktocode:
-          type: RO
-          tool: solarwinds
-        public:
-          type: RO
-          tool: prime
-        private:
-          type: RW
-          tool: prime
-
-    tasks:
-      - name: ENSURE RO COMM STRINGS ARE GOOD
-        ios_config:
-          commands:
-            -  "snmp-server community {{ item.key }} {{ item.value.type }}"
-          provider: "{{ ios_provider }}"
-        with_dict: "{{ snmp_comm_strings_dict }}"
-```
-
 
 ---
 
@@ -4204,7 +4180,6 @@ Sample playbook gathering IOS facts:
     tasks:
       - name: GET FACTS
         ios_facts:
-          provider: "{{ ios_provider }}"
 ```
 ]
 --
@@ -4217,19 +4192,16 @@ Sample playbook gathering IOS facts:
   - name: GATHER ALL FACTS
     ios_facts:
       gather_subset: all
-      provider: "{{ ios_provider }}"
 
   - name: GATHER A SHOW RUN AND DEFAULT SYSTEM FACTS
     ios_facts:
       gather_subset:
         - config
-      provider: "{{ ios_provider }}"
 
   - name: GATHER ALL FACTS EXCEPT HARDWARE FACTS
    ios_facts:
     gather_subset:
       - "!hardware"
-    provider: "{{ ios_provider }}"
 ```
 
 ]
@@ -4248,7 +4220,6 @@ Sample playbook gathering IOS facts:
     tasks:
       - name: GET FACTS
         ios_facts:
-          provider: "{{ ios_provider }}"
         register: ntc_ios_facts
 
       - debug: var=ntc_ios_facts
@@ -4329,7 +4300,6 @@ Sample playbook gathering IOS facts:
 
 - name: GET FACTS
   ios_facts:
-    provider: "{{ ios_provider }}"
   register: ntc_ios_facts
 
 - debug: var=ntc_ios_facts
@@ -4342,7 +4312,7 @@ Sample playbook gathering IOS facts:
 
 - name: GET FACTS
   ios_facts:
-    provider: "{{ ios_provider }}"
+
 - name: Display variables/facts known for a given host
   debug: var=hostvars[inventory_hostname]
 
@@ -4528,6 +4498,63 @@ You can test all of these settings using Postman before building your Ansible ta
 
 ---
 
+# Tips: Using set_facts
+
+.left-column[
+- In contrast to using `register` to store the output of a task into a variable,
+the `set_fact` module allows a task to define a variable
+- Sometimes used to simplify the naming of a variable 
+]
+
+.right-column[
+```yaml
+vars:
+  locations:
+    amer:
+      nyc:
+        - nyc-dc
+        - nyc-campus
+      sjc:
+        - sjc-branch
+    apac:
+      hk:
+        - hk-dc
+        - hk-campus
+
+tasks:
+  - name: PRINT ALL LOCATIONS
+    debug:
+      var: locations
+
+  - name: SJC LOCATIONS
+    set_fact:
+      sjc_locations: "{{ locations['amer']['sjc'] }}"
+
+  - name: PRINT ALL LOCATIONS
+    debug:
+      var: sjc_locations
+```
+]
+
+---
+
+# Tips: Using from_json Filter
+
+- In a recent example, an API call to the IOSXE device received a JSON response
+in python, `json.loads()` would be used to convert the JSON object to a dictionary
+- In Ansible, instead use the `from_json` filter
+- For example, assuming the `response` API variable is earlier in the play:
+
+```yaml
+      - set_fact:
+          ip_info: "{{ response['content'] | from_json }}"
+
+      - debug:
+          var: ip_info['Cisco-IOS-XE-native:address']['primary']['address']
+```
+
+---
+
 # Creating Documentation
 
 .left-column[
@@ -4584,7 +4611,7 @@ Image:            {{ kickstart_image }}
 
     tasks:
       - nxos_facts:
-          provider: "{{ nxos_provider }}"
+
       - template: src=general.j2 dest=files/general.md
 
 ```
@@ -5763,16 +5790,9 @@ nxos_overlay_global.py          nxos_switchport.py      nxos_gir.py             
 
 .right-column[
 ```yaml
-  vars:
-    nxos_provider:
-      host: "{{ inventory_hostname }}"
-      username: "{{ ansible_user }}"
-      password: "{{ ansible_ssh_pass }}"
-      transport: nxapi
 
   tasks:
     - nxos_facts:
-        provider: "{{ nxos_provider }}"
 ```
 ]
 
@@ -5793,7 +5813,6 @@ nxos_overlay_global.py          nxos_switchport.py      nxos_gir.py             
 - nxos_vlan:
     vlan_id: 110
     name: DB_VLAN
-    provider: "{{ nxos_provider }}"
 ```
 
 ---
@@ -5809,7 +5828,6 @@ nxos_overlay_global.py          nxos_switchport.py      nxos_gir.py             
 - nxos_feature:
     feature: eigrp
     state: disabled
-    provider: "{{ nxos_provider }}"
 ```
 
 ```yaml
@@ -5817,7 +5835,6 @@ nxos_overlay_global.py          nxos_switchport.py      nxos_gir.py             
 - nxos_feature:
     feature: lacp
     state: enabled
-    provider: "{{ nxos_provider }}"
 ```
 
 ---
@@ -5834,7 +5851,6 @@ nxos_overlay_global.py          nxos_switchport.py      nxos_gir.py             
 # copy latest NX-OS to NXOS switch
 - nxos_file_copy:
     source_file: /home/cisco/Downloads/nxos.7.0.3.I2.1.bin
-    provider: "{{ nxos_provider }}"
 ```
 
 ---
@@ -5857,7 +5873,6 @@ nxos_overlay_global.py          nxos_switchport.py      nxos_gir.py             
     members:
       - Ethernet1/28
       - Ethernet1/29
-    provider: "{{ nxos_provider }}"
 ```
 ---
 
@@ -5887,7 +5902,6 @@ nxos_overlay_global.py          nxos_switchport.py      nxos_gir.py             
     pkl_src: 10.1.100.20
     peer_gw: true
     auto_recovery: true
-    provider: "{{ nxos_provider }}"
 ```
 ]
 
@@ -5907,7 +5921,6 @@ nxos_overlay_global.py          nxos_switchport.py      nxos_gir.py             
 - nxos_vpc_interface:
     portchannel: 10
     vpc: 100
-    provider: "{{ nxos_provider }}"
 ```
 
 
