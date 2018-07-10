@@ -340,7 +340,7 @@ Take a minute and review the template carefully.
 
 ##### Step 12
 
-Review the last config snippet including the Management1 interfce that needs to be de-composed:
+Review the last config snippet including the Management1 interface that needs to be de-composed:
 
 ```
 interface Management1

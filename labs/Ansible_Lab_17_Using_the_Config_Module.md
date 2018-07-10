@@ -20,7 +20,7 @@ Create a playbook called `config-interfaces.yml` and insert the following into i
 
     tasks:
 
-    - name: IOS show version
+    - name: CONFIGURING LOOPBACK
       ios_config:
         parents:
           - interface Loopback200
@@ -311,7 +311,6 @@ changed: [csr1]
 
 Add a new task to the playbook.  This task will compare the FULL config of one previously backed up to one that is on the device.
 
-```yaml
 ```yaml
   - name: USING DIFF AGAINST WITH CONFIG
     hosts: csr1

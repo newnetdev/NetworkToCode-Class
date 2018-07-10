@@ -62,7 +62,7 @@ Add a variable in your playbook called `backup_command`.  It should be a diction
 
 ```
 
-By making an object like this, it'll allow us to use a single task to backup all configuration instead of neededing a task/play per OS!
+By making an object like this, it'll allow us to use a single task to backup all configuration instead of needing a task/play per OS!
 
 
 ##### Step 4
