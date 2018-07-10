@@ -3174,6 +3174,121 @@ ok: [nxos-spine1] => {
 ```
 ]
 
+---
+
+
+class: center, middle, title
+.footer-picture[<img src="data/media/Footer1.PNG" alt="Blue Logo" style="alight:middle;width:350px;height:60px;">]
+
+# How do you Iterate over items in a Playbook?
+
+---
+
+# Iterators
+
+
+* with_items - iterate (loop) over a list
+* with_dict - iterate (loop) over a dictionary
+* with_fileglob - iterate (loop) over files in a list of directories (often for templates)
+
+---
+
+
+# with_items
+
+* Iterate over a list of strings
+* `item` is built-in variable equal to an element of the list as you're iterating
+* In this case, `item` is a string
+
+```yaml
+  - name: ITERATE OVER LIST OF STRINGS
+    hosts: iosxe
+    connection: local
+    gather_facts: no
+
+    vars:
+      commands:
+        - show ip int brief
+        - show version
+        - show ip route
+
+    tasks:
+      - name: SEND A SERIES OF SHOW COMMANDS
+        ios_command:
+          commands:
+            "{{ item }}"
+        with_items: "{{ commands }}"
+```
+
+---
+
+
+# with_items
+
+* Iterate over a list of dictionaries
+* `item` is built-in variable equal to an element of the list as you're iterating
+* In this case, `item` is a dictionary
+
+```yaml
+---
+
+  - name: ITERATE OVER LIST OF STRINGS
+    hosts: iosxe
+    connection: local
+    gather_facts: no
+
+    vars:
+      commands:
+        - command: show ip int brief
+        - command: show version
+        - command: show ip route
+
+    tasks:
+      - name: SEND A SERIES OF SHOW COMMANDS
+        ios_command:
+          commands:
+            "{{ item.command }}"
+        with_items: "{{ commands }}"
+```
+
+
+
+---
+
+# with_dict
+
+.left-column[
+* Iterate over a dictionary
+* Root keys are `item.key`
+* Values are `item.value`
+]
+
+.right-column[
+```yaml
+---
+
+  - name: ITERATE OVER DICT
+    hosts: iosxe
+    connection: local
+    gather_facts: no
+    vars:
+      locations:
+        amer: sjc-branch
+        apac: hk-dc
+
+    tasks:
+      - name: PRINT ALL LOCATIONS
+        debug:
+          msg: "Region is {{ item.key }} and Site is {{ item.value }}"
+        with_dict: "{{ locations }}"
+```
+
+* Sample output:
+```
+"msg": "Regions are apac and Sites is hk-dc"
+"msg": "Regions are amer and Sites is sjc-branch"
+```
+]
 
 ---
 
@@ -3182,6 +3297,7 @@ ok: [nxos-spine1] => {
 - Lab 12 - Getting Started with the Command Module
 - Lab 13 - Validating Reachability with the Command Module
 - Lab 14 - Continuous Compliance with Ansible
+
 
 
 ---
@@ -3961,122 +4077,6 @@ changed: [nxos] => (item=networktocode)
 # Lab Time
 
 - Lab 17 - Using the Config Module
-
----
-
-# Iterators
-
-
-* with_items - iterate (loop) over a list
-* with_dict - iterate (loop) over a dictionary
-* with_fileglob - iterate (loop) over files in a list of directories
-  - covered previously when looping over templates
-
----
-
-
-# with_items
-
-* Iterate over a list of strings
-* `item` is built-in variable equal to an element of the list as you're iterating
-* In this case, `item` is a string
-
-```yaml
-  - name: ITERATE OVER LIST OF STRINGS
-    hosts: iosxe
-    connection: local
-    gather_facts: no
-
-    vars:
-      snmp_ro_comm_strings:
-        - networktocode
-        - public
-        - public123
-        - private123
-        - private
-
-    tasks:
-      - name: ENSURE RO COMM STRINGS ARE GOOD
-        ios_config:
-          commands:
-            -  "snmp-server community {{ item }} RO"
-        with_items: "{{ snmp_ro_comm_strings }}"
-```
-
----
-
-
-# with_items
-
-* Iterate over a list of dictionaries
-* `item` is built-in variable equal to an element of the list as you're iterating
-* In this case, `item` is a dictionary
-
-.left-column2[
-```yaml
----
-
-- name: ITERATE LIST OF DICTS
-  hosts: iosxe
-  connection: local
-  gather_facts: no
-
-  vars:
-    snmp_comm_strings:
-      - community: public
-        type: RO
-      - community: public123
-        type: RO
-      - community: private123
-        type: RW
-      - community: private
-        type: RW
-```
-]
-
-.right-column2[
-```yaml
-    tasks:
-      - name: ENSURE RO COMM STRINGS ARE GOOD
-        ios_config:
-          commands:
-            -  "snmp-server community {{ item.community }} {{ item.type }}"
-        with_items: "{{ snmp_comm_strings }}"
-
-```
-]
-
-
----
-
-# with_dict
-
-* Iterate over a dictionary
-* Root keys are `item.key`
-* Associated values are `item.value.<value>`
-
-```yaml
-# PLAY DEFINITION TRUNCATED
-    vars:
-      snmp_comm_strings_dict:
-        networktocode:
-          type: RO
-          tool: solarwinds
-        public:
-          type: RO
-          tool: prime
-        private:
-          type: RW
-          tool: prime
-
-    tasks:
-      - name: ENSURE RO COMM STRINGS ARE GOOD
-        ios_config:
-          commands:
-            -  "snmp-server community {{ item.key }} {{ item.value.type }}"
-        with_dict: "{{ snmp_comm_strings_dict }}"
-```
-
 
 ---
 
