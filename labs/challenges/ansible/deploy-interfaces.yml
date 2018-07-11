@@ -2,7 +2,6 @@
 
   - name: PLAY 1 - BUILD CONFIGS
     hosts: iosxe,nxos
-    connection: network_cli
     gather_facts: no
 
     tasks:
@@ -14,7 +13,6 @@
 
   - name: PLAY 2 - DEPLOY IOS
     hosts: iosxe
-    connection: network_cli
     gather_facts: no
 
     tasks:
@@ -25,7 +23,6 @@
 
   - name: PLAY 3 - DEPLOY NXOS
     hosts: nxos
-    connection: network_cli
     gather_facts: no
 
     tasks:

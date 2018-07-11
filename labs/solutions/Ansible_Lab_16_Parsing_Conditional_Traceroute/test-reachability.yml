@@ -1,6 +1,5 @@
   - name: PING TEST AND TRACEROUTE
     hosts: csr1
-    connection: network_cli
     gather_facts: no
 
     vars:

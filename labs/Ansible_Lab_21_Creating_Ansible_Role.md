@@ -95,7 +95,6 @@ Notice you can also select two groups from the inventory file using the followin
 
   - name: MULTI-PLATFORM SNMP
     hosts: iosxe,nxos
-    connection: network_cli
     gather_facts: no
 
     roles:

@@ -2,7 +2,6 @@
 
   - name: TEST REACHABILITY
     hosts: iosxe
-    connection: network_cli
     gather_facts: no
 
     vars:

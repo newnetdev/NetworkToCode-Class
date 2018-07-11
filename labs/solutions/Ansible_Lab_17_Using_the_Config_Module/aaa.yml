@@ -1,6 +1,5 @@
   - name: CONFIGURING AAA SERVER GROUPS
     hosts: csr1
-    connection: network_cli
     gather_facts: no
 
     tasks:

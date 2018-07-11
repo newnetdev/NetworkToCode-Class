@@ -2,7 +2,6 @@
 
   - name: DEPLOY & RESTORE CONFIGS
     hosts: "{{ device }}"
-    connection: network_cli
     gather_facts: no
 
     tasks:

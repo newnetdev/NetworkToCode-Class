@@ -182,7 +182,6 @@ Add a task to the playbook to debug the `device_type` variable so the playbook r
 
   - name: USING THE DEBUG MODULE
     hosts: all
-    connection: network_cli
     gather_facts: no
 
 

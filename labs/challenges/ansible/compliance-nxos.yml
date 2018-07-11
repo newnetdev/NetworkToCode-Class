@@ -1,7 +1,6 @@
 ---
   - name: COMPLIANCE VERIFICATION FOR NXOS
     hosts: nxos-spines
-    connection: network_cli
     gather_facts: no
 
     tasks:

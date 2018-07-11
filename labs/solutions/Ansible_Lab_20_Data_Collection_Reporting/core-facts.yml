@@ -2,7 +2,6 @@
 
   - name: GATHER IOS FACTS
     hosts: iosxe
-    connection: network_cli
     gather_facts: no
     tags: ios
 
@@ -18,7 +17,6 @@
 
   - name: GATHER IOS FACTS
     hosts: iosxe
-    connection: network_cli
     gather_facts: no
     tags: ios
 
@@ -39,7 +37,6 @@
 
   - name: GATHER NXOS FACTS
     hosts: nxos
-    connection: network_cli
     gather_facts: no
     tags: nxos
 
@@ -60,7 +57,6 @@
 
   - name: GATHER EOS FACTS
     hosts: eos
-    connection: network_cli
     gather_facts: no
     tags: eos
 

@@ -2,7 +2,6 @@
 
   - name: Build Configuration Files
     hosts: eos-leaves
-    connection: network_cli
     gather_facts: no
 
     tasks:

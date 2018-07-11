@@ -2,7 +2,6 @@
 
   - name: IOS PLAY
     hosts: iosxe
-    connection: network_cli
     gather_facts: no
     tags: ios
 
@@ -14,7 +13,6 @@
 
   - name: NXOS PLAY
     hosts: nxos
-    connection: network_cli
     gather_facts: no
     tags: nxos
 

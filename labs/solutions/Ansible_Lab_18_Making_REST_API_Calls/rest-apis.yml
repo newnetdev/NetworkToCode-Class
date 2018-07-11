@@ -2,7 +2,6 @@
 
   - name: PLAY 1 - ISSUE API CALL TO CSR
     hosts: csr2
-    connection: network_cli
     gather_facts: no
     tags: ios
 
@@ -42,7 +41,6 @@
 
   - name: PLAY 2 - ISSUE SHOW VERSION TO NEXUS VIA API
     hosts: nxos-spine1
-    connection: network_cli
     gather_facts: no
     tags: nxos
 

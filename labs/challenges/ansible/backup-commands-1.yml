@@ -1,7 +1,6 @@
   
   - name: BACKUP IOS CONFIGS
     hosts: iosxe
-    connection: network_cli
     gather_facts: no
     tags: ios
 
@@ -19,7 +18,6 @@
 
   - name: BACKUP NXOS CONFIGS
     hosts: nxos
-    connection: network_cli
     gather_facts: no
     tags: nxos
 
@@ -55,7 +53,6 @@
 
   - name: BACKUP EOS CONFIGS 
     hosts: eos
-    connection: network_cli
     gather_facts: no
     tags: eos
 

@@ -17,8 +17,7 @@ Create a playbook called `configure-snmp.yml` and insert the following into it:
 ---
   
   - name: IOS PLAY
-    hosts: iosxe
-    connection: network_cli
+    hosts: iosxe   
     gather_facts: no
     tags: ios 
 
@@ -30,7 +29,6 @@ Create a playbook called `configure-snmp.yml` and insert the following into it:
 
   - name: NXOS PLAY
     hosts: nxos
-    connection: network_cli
     gather_facts: no
     tags: nxos
 
@@ -73,8 +71,7 @@ In the first step, you'll query the devices using the `snmp_device_version`  mod
 ---
 
   - name: PLAY 1 - DISCOVER OS 
-    hosts: iosxe,nxos,vmx
-    connection: network_cli
+    hosts: iosxe,nxos,vmx  
     gather_facts: no
 
     tasks:
@@ -176,8 +173,7 @@ This task will show you how to use the `group_by` module.
 
 
   - name: PLAY 1 - DISCOVER OS 
-    hosts: iosxe,nxos,vmx
-    connection: network_cli
+    hosts: iosxe,nxos,vmx   
     gather_facts: no
 
     tasks:
@@ -211,8 +207,7 @@ Add the following PLAYS to the same playbook.
 
 ```yaml
   - name: AUTOMATE IOS DEVICES
-    hosts: os_ios
-    connection: network_cli
+    hosts: os_ios   
     gather_facts: no
 
     tasks:
@@ -221,7 +216,6 @@ Add the following PLAYS to the same playbook.
 
   - name: AUTOMATE NEXUS DEVICES
     hosts: os_nxos
-    connection: network_cli
     gather_facts: no
 
     tasks:
@@ -230,7 +224,6 @@ Add the following PLAYS to the same playbook.
 
   - name: AUTOMATE JUNOS DEVICES
     hosts: os_junos
-    connection: network_cli
     gather_facts: no
 
     tasks:
@@ -247,7 +240,6 @@ The full playbook should look like this:
 
   - name: PLAY 1 - DISCOVER OS 
     hosts: iosxe,nxos,vmx
-    connection: network_cli
     gather_facts: no
     tags: discover
 
@@ -272,7 +264,6 @@ The full playbook should look like this:
 
   - name: AUTOMATE IOS DEVICES
     hosts: os_ios
-    connection: network_cli
     gather_facts: no
 
     tasks:
@@ -281,7 +272,6 @@ The full playbook should look like this:
 
   - name: AUTOMATE NEXUS DEVICES
     hosts: os_nxos
-    connection: network_cli
     gather_facts: no
 
     tasks:

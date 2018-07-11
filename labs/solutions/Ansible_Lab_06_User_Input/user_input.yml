@@ -2,7 +2,6 @@
 - name: COLLECT USERNAME AND PASSWORD
   hosts: csr1
   gather_facts: no
-  connection: network_cli
 
   vars_prompt:
     - name: un

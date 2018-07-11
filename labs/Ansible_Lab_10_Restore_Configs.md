@@ -16,7 +16,6 @@ Create a new playbook called `restore.yml`.  In this file, and for the first exe
 
   - name: DEPLOY & RESTORE CONFIGS
     hosts: iosxe
-    connection: network_cli
     gather_facts: no
 ```
 
@@ -31,7 +30,6 @@ Using `napalm_install_config`, push back these configurations. Since we didn't c
 
   - name: DEPLOY & RESTORE CONFIGS
     hosts: iosxe
-    connection: network_cli
     gather_facts: no
 
     tasks:
@@ -76,7 +74,6 @@ The full playbook should look like this for now:
 
   - name: DEPLOY & RESTORE CONFIGS
     hosts: iosxe
-    connection: network_cli
     gather_facts: no
 
     tasks:
@@ -294,7 +291,6 @@ Update your play definition to this:
 
   - name: DEPLOY & RESTORE CONFIGS
     hosts: "{{ device }}"
-    connection: network_cli
     gather_facts: no
 ```
 
@@ -319,7 +315,6 @@ Full and final playbook will look like this:
 
   - name: DEPLOY & RESTORE CONFIGS
     hosts: "{{ device }}"
-    connection: network_cli
     gather_facts: no
 
     tasks:

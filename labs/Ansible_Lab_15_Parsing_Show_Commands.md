@@ -19,7 +19,6 @@ Use the following playbook to gather `show version` for the IOS devices.
 
   - name: PING TEST
     hosts: csr1
-    connection: network_cli
     gather_facts: no
     tags: play2
 
@@ -302,7 +301,6 @@ The completed playbook is as follows:
 
   - name: PING TEST
     hosts: csr1
-    connection: network_cli
     gather_facts: no
     tags: play2
 

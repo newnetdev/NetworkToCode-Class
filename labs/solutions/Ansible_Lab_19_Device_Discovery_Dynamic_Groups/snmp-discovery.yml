@@ -3,7 +3,6 @@
 
   - name: PLAY 1 - DISCOVER OS
     hosts: iosxe,nxos,vmx
-    connection: network_cli
     gather_facts: no
     tags: discover
 
@@ -28,7 +27,6 @@
 
   - name: AUTOMATE IOS DEVICES
     hosts: os_ios
-    connection: network_cli
     gather_facts: no
 
     tasks:
@@ -37,7 +35,6 @@
 
   - name: AUTOMATE NEXUS DEVICES
     hosts: os_nxos
-    connection: network_cli
     gather_facts: no
 
     tasks:

@@ -35,7 +35,6 @@ Open this file using any text editor and add the following play definition:
 - name: GENERATE SNMP CONFIGS USING JINJA2 - AMERICAS
   hosts: AMER
   gather_facts: no
-  connection: network_cli
   
 ```
 
@@ -49,7 +48,6 @@ Define a SNMP RO string as a variable within the playbook:
 - name: GENERATE SNMP CONFIGS USING JINJA2 - AMERICAS
   hosts: AMER
   gather_facts: no
-  connection: network_cli
 
   vars:
     snmp_ro: ntc_course
@@ -66,7 +64,6 @@ Using the Ansible `template` module, create a task that will take this variable 
 - name: GENERATE SNMP CONFIGS USING JINJA2 - AMERICAS
   hosts: AMER
   gather_facts: no
-  connection: network_cli
 
   vars:
     snmp_ro: ntc_course
@@ -237,7 +234,6 @@ Since the `snmp_ro` variable has been defined as a group variable, we can now re
 - name: GENERATE SNMP CONFIGS USING JINJA2 - AMERICAS
   hosts: AMER
   gather_facts: no
-  connection: network_cli
 
   tasks:
     - name: GENERATE IOS SNMP CONFIGURATIONS
@@ -256,7 +252,6 @@ Add one more play to this playbook to also build the JUNOS specific configuratio
 - name: GENERATE SNMP CONFIGS USING JINJA2 - AMERICAS
   hosts: AMER
   gather_facts: no
-  connection: network_cli
 
   tasks:
     - name: GENERATE IOS SNMP CONFIGURATIONS
@@ -267,7 +262,6 @@ Add one more play to this playbook to also build the JUNOS specific configuratio
 - name: GENERATE SNMP CONFIGS USING JINJA2 - EMEA
   hosts: EMEA
   gather_facts: no
-  connection: network_cli
 
   tasks:
     - name: GENERATE JUNOS SNMP CONFIGURATIONS

@@ -2,7 +2,6 @@
 
   - name: PING TEST
     hosts: csr1
-    connection: network_cli
     gather_facts: no
     tags: play2
 

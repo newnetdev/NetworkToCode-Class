@@ -2,7 +2,6 @@
 
   - name: MULTI-PLATFORM SNMP
     hosts: iosxe,nxos
-    connection: network_cli
     gather_facts: no
 
     roles:
