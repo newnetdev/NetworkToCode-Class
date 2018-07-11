@@ -109,7 +109,8 @@ Save and execute the playbook.
 
 ### Task 2 - DO NOT DO THIS TASK
 
-In this task, we'll use another Jinja2 filter for parsing.  This one is called `parse_cli` that uses Ansible specific RegEx "spec" files that have the regular expression definitions defined.
+In this task, we'll use another Jinja2 filter for parsing.  
+This one is called `parse_cli` that uses Ansible specific RegEx "spec" files that have the regular expression definitions defined.
 
 ##### Step 1
 
@@ -154,7 +155,11 @@ Add a new task to your playbook to issue the `show ip int brief` command against
 
 ##### Step 4
 
-Add two more new tasks to the playbook to parse and print the required data.
+
+Add two new tasks:
+
+  * One that will _parse_ the "show ip int brief" response using the pre-built Ansible spec file and save it as a new variable using the `set_fact` module.
+  * One that will debug the new variable.
 
 ```yaml
       - set_fact:
@@ -164,10 +169,6 @@ Add two more new tasks to the playbook to parse and print the required data.
           var: show_brief
 ```
 
-Add two new tasks:
-
-  * One that will _parse_ the "show ip int brief" response using the pre-built Ansible spec file and save it as a new variable using the `set_fact` module.
-  * One that will debug the new variable.
 
 ##### Step 5
 
@@ -293,3 +294,49 @@ ok: [csr1] => {
 ```
 
 Notice how the first output was a nested dictionary and this one is a list of dictionaries.
+
+The completed playbook is as follows:
+
+```yaml
+---
+
+  - name: PING TEST
+    hosts: csr1
+    connection: network_cli
+    gather_facts: no
+    tags: play2
+
+    vars:
+      template_path: "/etc/ntc/ansible/library/ntc-ansible/ntc-templates/templates/"
+      show_version_path: "{{ template_path }}cisco_ios_show_version.template"
+
+    tasks:
+
+      - name: GET SHOW COMMANDS
+        ios_command:
+          commands: show version
+        register: config_data
+
+      - set_fact:
+          show_version: "{{ config_data.stdout.0 | parse_cli_textfsm(show_version_path) }}"
+
+      - debug:
+          var: show_version
+          
+      - name: CHECK OS AND CONFIG REGISTER
+        assert:
+          that:
+           - show_version[0]['VERSION'] == '16.6.2'
+           - show_version[0]['CONFIG_REGISTER'] == '0x2102'
+           
+      - name: GET SHOW COMMANDS
+        ios_command:
+          commands: show ip interface brief
+        register: output
+        
+      - set_fact:
+          show_brief: "{{ output.stdout.0 | parse_cli('./parsers/show_ip_interface_brief-dict.yml') }}"
+
+      - debug:
+          var: show_brief        
+```

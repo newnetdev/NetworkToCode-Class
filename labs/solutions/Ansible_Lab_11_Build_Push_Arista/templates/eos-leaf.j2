@@ -1,0 +1,54 @@
+! boot system flash:EOS.swi
+!
+transceiver qsfp default-mode 4x10G
+!
+hostname {{ inventory_hostname }}
+ip domain-name {{ domain_name }}
+!
+spanning-tree mode mstp
+!
+no aaa root
+!
+username {{ username }} privilege {{ priv }} role {{ role }} secret 5 {{ secret }}
+!
+{% for vlan in vlans %}
+vlan {{ vlan.id }}
+  name {{ vlan.name }}
+{% endfor %}
+!
+interface Port-Channel10
+  switchport mode trunk
+!
+{% for interface in interfaces %}
+interface {{ interface.name }}
+{% if interface.get('description') %}
+  description {{ interface.description }}
+{% endif %}
+{% if interface.get('mode') == "trunk" %}
+  switchport mode trunk
+{% elif interface.get('mode') == "access" %}
+  switchport mode access
+{% endif %}
+{% if interface.get('uplink') %}
+  channel-group 10 mode active
+{% endif %}
+{% if interface.get('state') == "up" %}
+  no shutdown
+{% elif interface.get('state') == "down" %}
+  shutdown
+{% endif %}
+!
+{% endfor %}
+!
+interface Management1
+   ip address {{ management_ip_mask }}
+!
+ip route 0.0.0.0/0 10.0.0.2
+!
+ip routing
+!
+management api http-commands
+   protocol http
+   no shutdown
+!
+end

@@ -1,0 +1,25 @@
+---
+
+# Possible other content from previous labs
+
+domain_name: ntc.com
+
+features:
+  - cmd: ip domain lookup
+    enabled: false
+  - cmd: lldp run
+    enabled: true
+  - cmd: cdp run
+    enabled: true
+
+ospf:
+  instance_tag: 100
+  area: 0.0.0.0
+  log_adj: true
+
+mgmt_default_route_next_hop: 10.0.0.2
+
+snmp:
+  ro_comm: networktocode
+  location: NYC_NY_DC1
+  contact: NETWORK_ADMIN

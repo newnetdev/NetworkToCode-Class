@@ -1,12 +1,16 @@
 ## Lab 13 - Issuing Ping Commands and Saving the Responses
 
-This lab will have you ping a certain amount of destinations from _each_ router.  Each of the resposnes will then be stored in its own file within a device sub-directory meaning we'll end up with a directory name of the hostname, e.g. "csr1" and "csr2" and in each directory will be files such as "to_8.8.8.8.txt" with the response from that router to that target IP.
+This lab will have you ping a certain amount of destinations from _each_ router.  
+Each of the resposnes will then be stored in its own file within a device sub-directory 
+meaning we'll end up with a directory name of the hostname, e.g. "csr1" and "csr2" and 
+in each directory will be files such as "to_8.8.8.8.txt" with the response from that router to that target IP.
 
 
 ##### Step 1
 
 
-It's not possible to keep typing "mkdir" to create directories manually especially when you want a directory per device.  This task will have you use the `file` module to auto-create a directory per device.
+It's not possible to keep typing "mkdir" to create directories manually especially when you want a directory per device.  
+This task will have you use the `file` module to auto-create a directory per device.
 
 
 Create a new playbook called `ping.yml` in the `ansible` directory.  

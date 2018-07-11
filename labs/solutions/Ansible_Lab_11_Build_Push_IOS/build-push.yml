@@ -1,0 +1,24 @@
+---
+
+  - name: Build & Deploy IOS Configurations
+    hosts: iosxe
+    connection: network_cli
+    gather_facts: no
+
+    tasks:
+      - name: BUILD CONFIGS
+        template:
+          src: csr-ospf.j2
+          dest: ./configs/{{ inventory_hostname }}.cfg
+        tags: build
+
+      - name: DEPLOY CONFIGURATIONS
+        napalm_install_config:
+          provider: "{{ connection_details }}"
+          config_file: ./configs/{{ inventory_hostname }}.cfg
+          diff_file: ./diffs/{{ inventory_hostname }}.diffs
+          replace_config: false
+          commit_changes: true
+          dev_os: "{{ ansible_network_os }}"
+        tags: push
+

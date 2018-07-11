@@ -1,0 +1,29 @@
+---
+
+  - name: BACKUP CONFIGURATIONS
+    hosts: all
+    connection: network_cli
+    gather_facts: no
+
+    tasks:
+
+      - name: BACKUP CONFIGS FOR ALL DEVICES
+        ntc_show_command:
+          provider: "{{ connection_details }}"
+          command: "{{ backup_command[ansible_network_os] }}"
+          local_file: "./backups/{{ inventory_hostname }}.cfg"
+          platform: "{{ ntc_vendor }}_{{ ansible_network_os }}"
+
+      - name: CLEAN UP IOS CONFIGS - LINE 1
+        lineinfile:
+          dest: ./backups/{{ inventory_hostname }}.cfg
+          line: "Building configuration..."
+          state: absent
+        tags: clean
+
+      - name: CLEAN UP IOS CONFIGS - LINE 2
+        lineinfile:
+          dest: ./backups/{{ inventory_hostname }}.cfg
+          regexp: "Current configuration .*"
+          state: absent
+        tags: clean

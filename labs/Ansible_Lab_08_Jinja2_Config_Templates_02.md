@@ -2,7 +2,8 @@
 
 ### Task 1 - Updating the SNMP Data Model
   
-In the previous lab, the SNMP data was modeled as a set of invdividual key-value pairs. This works for a simple use case, but what if we had to configure multiple read-only and read-write strings?
+In the previous lab, the SNMP data was modeled as a set of invdividual key-value pairs. 
+This works for a simple use case, but what if we had to configure multiple read-only and read-write strings?
 
 This task will expand the data structure currently being used by the `AMER` and `EMEA` groups.
 
@@ -54,7 +55,8 @@ Note: Ensure the existing four variables, e.g. `snmp_ro`, `snmp_rw`, `snmp_locat
 
 But now, since our data model has changed, we need to also update our Jinja2 templates to correctly access the values.
 
-Create a new file called `ios-snmpv2.j2` within the templates directory and open it with a text editor. We will use the following template to render the desired configuration.
+Create a new file called `ios-snmpv2.j2` within the templates directory and open it with a text editor. 
+We will use the following template to render the desired configuration.
 
 
 ``` 

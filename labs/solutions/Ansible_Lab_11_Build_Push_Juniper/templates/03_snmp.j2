@@ -1,0 +1,9 @@
+snmp {
+    location {{ snmp.location }};
+    contact {{ snmp.contact }};
+{% for community in snmp.communities %}
+    community {{ community.string }} {
+        authorization {{ community.auth }};
+    }
+{% endfor %}
+}
