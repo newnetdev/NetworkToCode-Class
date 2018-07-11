@@ -1,0 +1,7 @@
+---
+
+- name: ENSURE SNMP COMMUNITIES EXIST IN IOS
+  ios_config:
+    commands:
+      - "snmp-server community {{ item.community }} {{ item.group }}"
+  with_items: "{{ snmp_communities }}"

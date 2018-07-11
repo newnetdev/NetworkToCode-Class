@@ -1,0 +1,11 @@
+---
+
+  - name: test playbook for dynamic inventory
+    connection: network_cli
+    gather_facts: no
+    hosts: all
+
+
+    tasks:
+
+      - debug: var=inventory_hostname

@@ -400,5 +400,6 @@ TASK [VERIFY GOLDEN CONFIGURATION] *********************************************
 changed: [csr1]
 ```
 
-While this says changed, it is NOT making a change on the network. When you use `intended` as the`diff_against` value, the module does not permit changes on the network.
+While this says changed, it is NOT making a change on the network. 
+When you use `intended` as the`diff_against` value, the module does not permit changes on the network.
 

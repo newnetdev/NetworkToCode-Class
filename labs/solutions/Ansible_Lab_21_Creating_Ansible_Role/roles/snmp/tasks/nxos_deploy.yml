@@ -1,0 +1,7 @@
+---
+
+- name: ENSURE SNMP COMMUNITIES EXIST IN NXOS
+  nxos_config:
+    commands:
+      - "snmp-server community {{ item.community }} group {{ item.group }}"
+  with_items: "{{ snmp_communities }}"

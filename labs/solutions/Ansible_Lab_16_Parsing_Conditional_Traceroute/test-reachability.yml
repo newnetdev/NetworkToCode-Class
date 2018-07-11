@@ -1,0 +1,35 @@
+  - name: PING TEST AND TRACEROUTE
+    hosts: csr1
+    connection: network_cli
+    gather_facts: no
+
+    vars:
+      dest: "8.8.8.8"
+
+    tasks:
+
+    - name: ISSUE PING
+      ios_command:
+        commands: "ping vrf MANAGEMENT {{ dest }} repeat 2"
+      register: output
+
+    - name: PARSE PING RESPONSE TO OBTAIN % OF SUCCESS
+      set_fact:
+        ping_pct: "{{ output.stdout.0 | regex_search('Success rate is (\\d+)\\s+percent') | regex_search('(\\d+)') }}"
+
+    - debug:
+        var: ping_pct
+
+    - name: ALTERNATE OPTION FOR PARSING WITH REGEX
+      set_fact:
+        ping_data2: "{{ output.stdout.0 | regex_findall('Success rate is (\\d+)\\s+percent') | first }}"
+
+    - name: ISSUE TRACEROUTE
+      ios_command:
+        commands: "traceroute vrf MANAGEMENT {{ dest }} timeout 1 ttl 1 5"
+      register: traceroute
+      when: ping_pct|int < 81
+
+    - name: DEBUG TRACEROUTE
+      debug:
+        var: traceroute

@@ -1,0 +1,54 @@
+---
+
+
+  - name: PLAY 1 - DISCOVER OS
+    hosts: iosxe,nxos,vmx
+    connection: network_cli
+    gather_facts: no
+    tags: discover
+
+    tasks:
+
+      - name: QUERY DEVICE VIA SNMP
+        snmp_device_version:
+          community: networktocode
+          version: 2c
+          host: "{{ inventory_hostname }}"
+        tags: snmp
+
+      - debug:
+          var: ansible_device_os
+      - debug:
+          var: ansible_device_version
+      - debug:
+          var: ansible_device_vendor
+
+      - group_by:
+          key: os_{{ ansible_device_os }}
+
+  - name: AUTOMATE IOS DEVICES
+    hosts: os_ios
+    connection: network_cli
+    gather_facts: no
+
+    tasks:
+
+      - debug: var=inventory_hostname
+
+  - name: AUTOMATE NEXUS DEVICES
+    hosts: os_nxos
+    connection: network_cli
+    gather_facts: no
+
+    tasks:
+
+      - debug: var=inventory_hostname
+
+  - name: AUTOMATE JUNOS DEVICES
+    hosts: os_junos
+    connection: netconf
+    gather_facts: no
+
+    tasks:
+
+      - debug: var=inventory_hostname

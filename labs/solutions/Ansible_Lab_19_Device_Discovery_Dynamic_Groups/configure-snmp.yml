@@ -1,0 +1,36 @@
+---
+
+  - name: IOS PLAY
+    hosts: iosxe
+    connection: network_cli
+    gather_facts: no
+    tags: ios
+
+    tasks:
+
+      - name: IOS SNMP
+        ios_config:
+          commands: "snmp-server community networktocode RO"
+
+  - name: NXOS PLAY
+    hosts: nxos
+    connection: network_cli
+    gather_facts: no
+    tags: nxos
+
+    tasks:
+
+      - name: NXOS SNMP
+        nxos_config:
+          commands: "snmp-server community networktocode group network-operator"
+
+  - name: JUNOS PLAY
+    hosts: vmx
+    gather_facts: no
+    tags: vmx
+
+    tasks:
+
+      - name: JUNOS SNMP
+        junos_config:
+          lines: "set snmp community networktocode authorization read-only"

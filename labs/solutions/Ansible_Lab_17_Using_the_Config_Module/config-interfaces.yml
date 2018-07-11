@@ -1,0 +1,21 @@
+  - name: USING DIFF AGAINST WITH CONFIG
+    hosts: csr1
+    connection: network_cli
+    gather_facts: no
+
+    tasks:
+
+      - name: ENSURE THAT LOOPBACK222 IS CONFIGURED
+        ios_config:
+          parents:
+            - interface Loopback222
+          commands:
+            - ip address 10.224.222.222 255.255.255.255
+          diff_against: running
+        tags: diff_me
+
+      - name: VERIFY GOLDEN CONFIGURATION
+        ios_config:
+          diff_against: intended
+          intended_config: "{{ lookup('file', './backups/{{ inventory_hostname }}.cfg') }}"
+        tags: verify_config
