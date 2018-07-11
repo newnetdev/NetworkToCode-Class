@@ -1,5 +1,5 @@
 interface Loopback100
   ip address 10.1.{{ loopback_id }}.{{ inventory_hostname[-1] }} 255.255.255.255
-  description Management interface for {{ ntc_os }} devices
+  description Management interface for {{ ansible_network_os }} devices
 
 

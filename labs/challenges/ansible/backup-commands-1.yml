@@ -9,7 +9,7 @@
 
       - name: BACKUP IOS CONFIGS
         ios_command:
-          commands: "{{ config[ntc_os] }}"
+          commands: "{{ config[ansible_network_os] }}"
         register: config_data
 
       - name: SAVE CONFIG TO FILE
@@ -27,7 +27,7 @@
 
       - name: BACKUP NXOS CONFIGS
         nxos_command:
-          commands: "{{ config[ntc_os] }}"
+          commands: "{{ config[ansible_network_os] }}"
         register: config_data
 
       - name: SAVE CONFIG TO FILE
@@ -45,7 +45,7 @@
 
       - name: BACKUP VMX CONFIGS
         junos_command:
-          commands: "{{ config[ntc_os] }}"
+          commands: "{{ config[ansible_network_os] }}"
         register: config_data
 
       - name: SAVE CONFIG TO FILE
@@ -62,7 +62,7 @@
     tasks:
       - name: BACKUP EOS CONFIGS
         eos_command:
-          commands: "{{ config[ntc_os] }}"
+          commands: "{{ config[ansible_network_os] }}"
         register: config_data
 
       - name: SAVE CONFIG TO FILE

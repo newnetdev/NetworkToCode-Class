@@ -60,7 +60,8 @@ ntc@ntc:ansible$
 
 ##### Step 6
 
-Open this file with a text editor and create two plays similar to **Lab 1** to deploy the changes. This time, however, we will use the source file to deploy the configuration instead of using commands inside the playbook.
+Open this file with a text editor and create two plays similar to **Lab 1** to deploy the changes. 
+This time, however, we will use the source file to deploy the configuration instead of using commands inside the playbook.
 
 
 ```yaml
@@ -79,7 +80,7 @@ Open this file with a text editor and create two plays similar to **Lab 1** to d
 
   - name: PLAY 2 - DEPLOYING SNMP CONFIGURATIONS ON JUNOS
     hosts: vmx
-    connection: local
+    connection: netconf
     gather_facts: no
 
     tasks:

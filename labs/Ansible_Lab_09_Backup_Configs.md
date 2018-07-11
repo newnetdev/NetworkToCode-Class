@@ -127,9 +127,9 @@ All backup files should be saved locally inside the `backups` directory.
       - name: BACKUP CONFIGS FOR ALL DEVICES
         ntc_show_command:
           provider: "{{ connection_details }}"
-          command: "{{ backup_command[ntc_os] }}"
+          command: "{{ backup_command[ansible_network_os] }}"
           local_file: "./backups/{{ inventory_hostname }}.cfg"
-          platform: "{{ ntc_vendor }}_{{ ntc_os }}"
+          platform: "{{ ntc_vendor }}_{{ ansible_network_os }}"
 
 ```
 
@@ -288,9 +288,9 @@ The final updated playbook should look like this:
       - name: BACKUP CONFIGS FOR ALL DEVICES
         ntc_show_command:
           provider: "{{ connection_details }}"
-          command: "{{ backup_command[ntc_os] }}"
+          command: "{{ backup_command[ansible_network_os] }}"
           local_file: "./backups/{{ inventory_hostname }}.cfg"
-          platform: "{{ ntc_vendor }}_{{ ntc_os }}"
+          platform: "{{ ntc_vendor }}_{{ ansible_network_os }}"
 
       - name: CLEAN UP IOS CONFIGS - LINE 1
         lineinfile:

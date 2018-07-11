@@ -24,6 +24,7 @@ Open the new playbook in your text editor.
 Remove the second play (Junos), so you're left with the following in your playbook:
 
 > Note: if you prefer using Junos, you can following allow making the appropriate changes with Junos CLI commands instead of IOS.
+If you do use Junos, make sure to change to connection: netconf
 
 ```yaml
 ---

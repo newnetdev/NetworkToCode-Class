@@ -43,18 +43,21 @@ After adding these devices, your inventory file should look like this
 
 ```
 [iosxe]
-csr1
-csr2
-csr3
+csr1 ansible_network_os=ios
+csr2 ansible_network_os=ios
+csr3 ansible_network_os=ios
 
 [vmx]
-vmx7
-vmx8
-vmx9
+vmx7 ansible_network_os=junos
+vmx8 ansible_network_os=junos
+vmx9 ansible_network_os=junos
 
 ```
 
-This inventory file has **TWO** groups: **iosxe** and **vmx**.  Each group has THREE devices.  For the course, each of these devices are reachable by name, but you can also use an IP address if you didn't have devices in DNS or `/etc/hosts`.
+This inventory file has **TWO** groups: **iosxe** and **vmx**.  Each group has THREE devices. 
+Each iosxe device has a host variable set to `ansible_network_os=ios` and each vmx device has a host 
+variable set to `ansible_network_os=junos`.
+For the course, each of these devices are reachable by name, but you can also use an IP address if you didn't have devices in DNS or `/etc/hosts`.
 
 
 > Note: you should be able to ping each device by name
@@ -195,7 +198,7 @@ Add a _second_ play to the same playbook using the `junos_config` module to conf
 ```yaml
   - name: PLAY 2 - DEPLOYING SNMP CONFIGURATIONS ON JUNOS
     hosts: vmx
-    connection: local
+    connection: netconf
     gather_facts: no
 
     tasks:
@@ -229,7 +232,7 @@ After adding this new play, the full playbook will look like this:
 
   - name: PLAY 2 - DEPLOYING SNMP CONFIGURATIONS ON JUNOS
     hosts: vmx
-    connection: local
+    connection: netconf
     gather_facts: no
 
     tasks:
@@ -398,7 +401,7 @@ The updated playbook should look like this:
 
   - name: PLAY 2 - DEPLOYING SNMP CONFIGURATIONS ON JUNOS
     hosts: vmx
-    connection: local
+    connection: netconf
     gather_facts: no
 
     tasks:

@@ -1,0 +1,24 @@
+---
+
+  - name: PLAY 1 - DEPLOYING SNMP CONFIGURATIONS ON IOS
+    hosts: iosxe
+    connection: network_cli
+    gather_facts: no
+
+    tasks:
+
+      - name: TASK 1 in PLAY 1 - ENSURE SNMP COMMANDS EXIST ON IOS DEVICES
+        ios_config:
+          src: ./configs/ios-snmp.cfg
+
+  - name: PLAY 2 - DEPLOYING SNMP CONFIGURATIONS ON JUNOS
+    hosts: vmx
+    connection: netconf
+    gather_facts: no
+
+    tasks:
+
+      - name: TASK 1 in PLAY 2 - ENSURE SNMP COMMANDS EXIST ON JUNOS DEVICES
+        junos_config:
+          src: ./configs/junos-snmp.cfg
+

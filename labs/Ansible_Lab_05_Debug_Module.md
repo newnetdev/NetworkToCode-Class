@@ -257,14 +257,12 @@ Those two groups should now look like this:
 ```
 [iosxe:vars]
 ansible_network_os=ios
-ntc_os=ios
 ntc_api=ssh
 ntc_vendor=cisco
 ntc_device_type=csr1000v
 
 [nxos:vars]
 ansible_network_os=nxos
-ntc_os=nxos
 ntc_api=nxapi
 ntc_vendor=cisco
 ntc_device_type=n7kv
@@ -406,7 +404,7 @@ When you just want to print a single variable, you use the `var` parameter.  If 
 
 ##### Step 1
 
-Add a new task to the playbook to debug the `inventory_hostname` and `ntc_os` variables.
+Add a new task to the playbook to debug the `inventory_hostname` and `ansible_network_os` variables.
 
 **The `inventory_hostname` variable is a built-in variable that's equal to the hostname of the device as you've defined it in the inventory file**.
 
@@ -427,7 +425,7 @@ Add a new task to the playbook to debug the `inventory_hostname` and `ntc_os` va
         debug: var=ntc_device_type
 
       - name: DEBUG AND PRINT THE OS
-        debug: msg="The OS for {{ inventory_hostname }} is {{ ntc_os }}."
+        debug: msg="The OS for {{ inventory_hostname }} is {{ ansible_network_os }}."
 
 ```
 
@@ -501,7 +499,7 @@ Your playbook should look like this:
         debug: var=ntc_device_type
 
       - name: DEBUG AND PRINT THE OS
-        debug: msg="The OS for {{ inventory_hostname }} is {{ ntc_os }}."
+        debug: msg="The OS for {{ inventory_hostname }} is {{ ansible_network_os }}."
 
 ```
 
@@ -540,7 +538,7 @@ Convert this playbook to using the YAML syntax.
 
       - name: DEBUG AND PRINT THE OS
         debug:
-          msg: "The OS for {{ inventory_hostname }} is {{ ntc_os }}."
+          msg: "The OS for {{ inventory_hostname }} is {{ ansible_network_os }}."
 ```
 
 ##### Step 2

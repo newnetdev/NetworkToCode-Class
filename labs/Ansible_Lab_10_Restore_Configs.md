@@ -117,7 +117,7 @@ dev_os: ios
 We need to update this to be the following since we already have the `os` pre-defined as a group based variable:
 
 ```yaml
-dev_os: "{{ ntc_os }}"
+dev_os: "{{ ansible_network_os }}"
 ```
 
 ##### Step 6
@@ -227,7 +227,7 @@ This updated task should look like this:
           diff_file: ./diffs/{{ inventory_hostname }}.diffs
           replace_config: true
           commit_changes: false
-          dev_os: "{{ ntc_os }}"
+          dev_os: "{{ ansible_network_os }}"
 ```
 
 ##### Step 10
@@ -331,7 +331,7 @@ Full and final playbook will look like this:
           diff_file: ./diffs/{{ inventory_hostname }}.diffs
           replace_config: true
           commit_changes: true
-          dev_os: "{{ ntc_os }}"
+          dev_os: "{{ ansible_network_os }}"
 
 
 ```

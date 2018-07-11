@@ -21,7 +21,7 @@ In the `main.yml`, add the following statement:
 ```yaml
 ---
 
-- include_tasks: "{{ ntc_os }}_deploy.yml"
+- include_tasks: "{{ ansible_network_os }}_deploy.yml"
 ```
 
 Notice how it's a single include statement.  This will execute a file called `nxos.yml` or `ios.yml`.
