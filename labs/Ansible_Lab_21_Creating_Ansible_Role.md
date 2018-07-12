@@ -60,7 +60,7 @@ Use the Ansible `nxos_config` module to configure SNMP community strings.
   nxos_config:
     commands:
       - "snmp-server community {{ item.community }} group {{ item.group }}"
-  with_items: "{{ snmp_communities }}"
+  loop: "{{ snmp_communities|flatten(levels=1) }}"
 
 ```
 
@@ -77,7 +77,7 @@ Just like in the last task, open the `ios_deploy.yml` file and use Ansible `ios_
   ios_config:
     commands:
       - "snmp-server community {{ item.community }} {{ item.group }}"
-  with_items: "{{ snmp_communities }}"
+  loop: "{{ snmp_communities|flatten(levels=1) }}"
 ```
 
 ##### Step 6

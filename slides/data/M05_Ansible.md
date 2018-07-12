@@ -221,7 +221,7 @@ Configure interface descriptions based on active neighbors
         nxos_interface:
           interface: "{{ item.local_interface  }}"
           description: "Connects to {{ item.neighbor_interface }} on {{ item.neighbor }}"
-        with_items: neighbors.response
+        loop: "{{ neighbors.response|flatten(levels=1) }}"
         when: item.local_interface != 'mgmt0'
 ```
 
@@ -3184,17 +3184,32 @@ class: center, middle, title
 
 ---
 
-# Iterators
+# Iterators - Loop
 
+- `loop` is the keyword to iterate over lists and dictionaries
+- to iterate over a list use the `flatten` filter like this:
 
-* with_items - iterate (loop) over a list
-* with_dict - iterate (loop) over a dictionary
-* with_fileglob - iterate (loop) over files in a list of directories (often for templates)
+```yaml
+loop: "{{ device_list|flatten(levels=1) }}" 
+```
 
+- to iterate over a dictionary use either the `dict2items` filters with `loop`
+
+```yaml
+loop: "{{ interface_dict|dict2items }}" 
+```
+
+* to iterate over files in a list of directories use `with_fileglob`, (often for templates)
+```yaml
+      - name: BUILD CONFIGS
+        template: src={{ item }} dest=configs/{{ inventory_hostname }}.conf
+        with_fileglob:
+          - templates/0*
+```
 ---
 
 
-# with_items
+# loop with flatten filter
 
 * Iterate over a list of strings
 * `item` is built-in variable equal to an element of the list as you're iterating
@@ -3217,13 +3232,13 @@ class: center, middle, title
         ios_command:
           commands:
             "{{ item }}"
-        with_items: "{{ commands }}"
+        loop: "{{ commands|flatten(levels=1) }}"
 ```
 
 ---
 
 
-# with_items
+# loop Continued
 
 * Iterate over a list of dictionaries
 * `item` is built-in variable equal to an element of the list as you're iterating
@@ -3248,14 +3263,14 @@ class: center, middle, title
         ios_command:
           commands:
             "{{ item.command }}"
-        with_items: "{{ commands }}"
+        loop: "{{ commands|flatten(levels=1) }}"
 ```
 
 
 
 ---
 
-# with_dict
+# loop dict2items filter
 
 .left-column[
 * Iterate over a dictionary
@@ -3280,7 +3295,7 @@ class: center, middle, title
       - name: PRINT ALL LOCATIONS
         debug:
           msg: "Region is {{ item.key }} and Site is {{ item.value }}"
-        with_dict: "{{ locations }}"
+        loop: "{{ locations|dict2items }}"
 ```
 
 * Sample output:
@@ -4952,12 +4967,12 @@ roles/
 
 - name: ARISTA VLANs
   eos_vlan: vlanid={{ item.id }} connection={{ inventory_hostname }}
-  with_items: "{{ vlans }}"
+  loop: "{{ vlans|flatten(levels=1) }}"
   when: vendor == "arista"
 
 - name: CISCO VLANs
   nxos_vlan: vlan_id={{ item.id }} host={{ inventory_hostname }}
-  with_items: "{{ vlans }}"
+  loop: "{{ vlans|flatten(levels=1) }}"
   when: vendor == "cisco"
 ```
 
@@ -5020,13 +5035,13 @@ vlans:
 ---
 - name: ARISTA VLANs
   eos_vlan: vlanid={{ item.id }} connection={{ inventory_hostname }}
-  with_items: "{{ vlans }}"
+  loop: "{{ vlans|flatten(levels=1) }}"
 ```
 ```yaml
 # roles/vlans/tasks/cisco.yml
 - name: CISCO VLANs
   nxos_vlan: vlan_id={{ item.id }} host={{ inventory_hostname }}
-  with_items: "{{ vlans }}"
+  loop: "{{ vlans|flatten(levels=1) }}"
 ```
 ]
 

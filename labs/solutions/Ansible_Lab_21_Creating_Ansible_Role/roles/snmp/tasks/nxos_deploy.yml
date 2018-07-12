@@ -4,4 +4,4 @@
   nxos_config:
     commands:
       - "snmp-server community {{ item.community }} group {{ item.group }}"
-  with_items: "{{ snmp_communities }}"
+  loop: "{{ snmp_communities|flatten(levels=1) }}"

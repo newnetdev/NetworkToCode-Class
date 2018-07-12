@@ -21,7 +21,7 @@
         ios_command:
           commands: "ping vrf MANAGEMENT {{ item }} repeat 2"
         register: ping_responses
-        with_items: "{{ target_ips }}"
+        loop: "{{ target_ips|flatten(levels=1) }}"
 
       - name: VERIFY REGISTERED VARIABLE
         debug:
@@ -30,10 +30,10 @@
       - name: TEST LOOPING OVER REGISTERED VARIABLE
         debug:
           var: "{{ item }}"
-        with_items: "{{ ping_responses.results }}"
+        loop: "{{ ping_responses.results|flatten(levels=1) }}"
 
       - name: SAVE OUTPUTS TO INDIVIDUAL FILES
         template:
           src: basic-copy-2.j2
           dest: ./ping-responses/{{ inventory_hostname }}/to_{{ item.item }}.txt
-        with_items: "{{ ping_responses.results }}"
+        loop: "{{ ping_responses.results|flatten(levels=1) }}"

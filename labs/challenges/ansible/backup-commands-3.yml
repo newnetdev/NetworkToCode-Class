@@ -20,7 +20,7 @@
         ios_command:
           commands: "{{ item }}"
         register: config_data
-        with_items: "{{ commands }}"
+        loop: "{{ commands|flatten(levels=1) }}"
 
       - debug: var=config_data  
 
@@ -28,5 +28,5 @@
         template: 
           src: basic-copy-2.j2
           dest: ./command-outputs/{{ inventory_hostname }}/{{ item.item | replace(' ','_') | replace('|', '') }}.txt
-        with_items: "{{ config_data.results }}"   
+        loop: "{{ config_data.results|flatten(levels=1) }}"
   
