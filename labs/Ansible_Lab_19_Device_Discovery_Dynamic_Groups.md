@@ -17,8 +17,7 @@ Create a playbook called `configure-snmp.yml` and insert the following into it:
 ---
   
   - name: IOS PLAY
-    hosts: iosxe
-    connection: local
+    hosts: iosxe   
     gather_facts: no
     tags: ios 
 
@@ -30,7 +29,6 @@ Create a playbook called `configure-snmp.yml` and insert the following into it:
 
   - name: NXOS PLAY
     hosts: nxos
-    connection: local
     gather_facts: no
     tags: nxos
 
@@ -42,7 +40,6 @@ Create a playbook called `configure-snmp.yml` and insert the following into it:
 
   - name: JUNOS PLAY
     hosts: vmx
-    connection: local
     gather_facts: no
     tags: vmx
 
@@ -74,8 +71,7 @@ In the first step, you'll query the devices using the `snmp_device_version`  mod
 ---
 
   - name: PLAY 1 - DISCOVER OS 
-    hosts: iosxe,nxos,vmx
-    connection: local
+    hosts: iosxe,nxos,vmx  
     gather_facts: no
 
     tasks:
@@ -177,8 +173,7 @@ This task will show you how to use the `group_by` module.
 
 
   - name: PLAY 1 - DISCOVER OS 
-    hosts: iosxe,nxos,vmx
-    connection: local
+    hosts: iosxe,nxos,vmx   
     gather_facts: no
 
     tasks:
@@ -212,8 +207,7 @@ Add the following PLAYS to the same playbook.
 
 ```yaml
   - name: AUTOMATE IOS DEVICES
-    hosts: os_ios
-    connection: local
+    hosts: os_ios   
     gather_facts: no
 
     tasks:
@@ -222,7 +216,6 @@ Add the following PLAYS to the same playbook.
 
   - name: AUTOMATE NEXUS DEVICES
     hosts: os_nxos
-    connection: local
     gather_facts: no
 
     tasks:
@@ -231,7 +224,6 @@ Add the following PLAYS to the same playbook.
 
   - name: AUTOMATE JUNOS DEVICES
     hosts: os_junos
-    connection: local
     gather_facts: no
 
     tasks:
@@ -248,7 +240,6 @@ The full playbook should look like this:
 
   - name: PLAY 1 - DISCOVER OS 
     hosts: iosxe,nxos,vmx
-    connection: local
     gather_facts: no
     tags: discover
 
@@ -273,7 +264,6 @@ The full playbook should look like this:
 
   - name: AUTOMATE IOS DEVICES
     hosts: os_ios
-    connection: local
     gather_facts: no
 
     tasks:
@@ -282,7 +272,6 @@ The full playbook should look like this:
 
   - name: AUTOMATE NEXUS DEVICES
     hosts: os_nxos
-    connection: local
     gather_facts: no
 
     tasks:
@@ -291,7 +280,7 @@ The full playbook should look like this:
 
   - name: AUTOMATE JUNOS DEVICES
     hosts: os_junos
-    connection: local
+    connection: netconf
     gather_facts: no
 
     tasks:

@@ -29,7 +29,6 @@ In this task in the play, use the `ios_facts` module to gather the device facts.
 
   - name: GATHER IOS FACTS
     hosts: iosxe
-    connection: local
     gather_facts: no
 
     tasks:
@@ -101,7 +100,6 @@ The updated playbook should look like this:
 
   - name: GATHER IOS FACTS
     hosts: iosxe
-    connection: local
     gather_facts: no
 
     tasks:
@@ -334,7 +332,6 @@ This is a sample playbook for running against all 4 device types (IOS, NXOS, JUN
 
   - name: GATHER IOS FACTS
     hosts: iosxe
-    connection: local
     gather_facts: no
     tags: ios
 
@@ -357,7 +354,6 @@ This is a sample playbook for running against all 4 device types (IOS, NXOS, JUN
 
   - name: GATHER NXOS FACTS
     hosts: nxos
-    connection: local
     gather_facts: no
     tags: nxos
 
@@ -380,7 +376,6 @@ This is a sample playbook for running against all 4 device types (IOS, NXOS, JUN
 
   - name: GATHER EOS FACTS
     hosts: eos
-    connection: local
     gather_facts: no
     tags: eos
 
@@ -441,7 +436,6 @@ Create a new playbook called `reports.yml`.  Create a play that requires the dir
 
   - name: GATHER IOS FACTS
     hosts: iosxe
-    connection: local
     gather_facts: no
     tags: ios
 
@@ -482,7 +476,7 @@ Create two new templates and save them in the `templates` directory: `facts-text
 
 ```
 Hostname:      {{ ansible_net_hostname }}
-Vendor:        {{ vendor }}
+Vendor:        {{ ntc_vendor }}
 Model:         {{ ansible_net_model or "UNKNOWN" }}
 OS Version:    {{ ansible_net_version }}
 Serial Number:  {{ ansible_net_serialnum or "UNKNOWN" }}
@@ -492,7 +486,7 @@ Serial Number:  {{ ansible_net_serialnum or "UNKNOWN" }}
 `facts-csv.j2`:
 
 ```
-{{ ansible_net_hostname }},{{ vendor }},{{ ansible_net_model or "UNKNOWN" }},{{ ansible_net_version }},{{ ansible_net_serialnum or "UNKNOWN" }}
+{{ ansible_net_hostname }},{{ ntc_vendor }},{{ ansible_net_model or "UNKNOWN" }},{{ ansible_net_version }},{{ ansible_net_serialnum or "UNKNOWN" }}
 ```
 
 ##### Step 3
@@ -502,7 +496,6 @@ Add a new play to create reports for each IOS device (for both report types).
 ```yaml
   - name: GATHER IOS FACTS
     hosts: iosxe
-    connection: local
     gather_facts: no
     tags: ios
 
@@ -598,7 +591,6 @@ The final playbook should look like this:
 
   - name: GATHER IOS FACTS
     hosts: iosxe
-    connection: local
     gather_facts: no
     tags: ios
 
@@ -614,7 +606,6 @@ The final playbook should look like this:
 
   - name: GATHER IOS FACTS
     hosts: iosxe
-    connection: local
     gather_facts: no
     tags: ios
 
@@ -635,7 +626,6 @@ The final playbook should look like this:
 
   - name: GATHER NXOS FACTS
     hosts: nxos
-    connection: local
     gather_facts: no
     tags: nxos
 
@@ -656,7 +646,6 @@ The final playbook should look like this:
 
   - name: GATHER EOS FACTS
     hosts: eos
-    connection: local
     gather_facts: no
     tags: eos
 

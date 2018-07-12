@@ -24,13 +24,14 @@ Open the new playbook in your text editor.
 Remove the second play (Junos), so you're left with the following in your playbook:
 
 > Note: if you prefer using Junos, you can following allow making the appropriate changes with Junos CLI commands instead of IOS.
+If you do use Junos, make sure to change to connection: netconf
 
 ```yaml
 ---
 
   - name: PLAY 1 - DEPLOYING SNMP CONFIGURATIONS ON IOS
     hosts: iosxe
-    connection: local
+    connection: network_cli
     gather_facts: no
 
     tasks:
@@ -143,7 +144,7 @@ So that the complete playbook looks like this:
 
   - name: PLAY 1 - DEPLOYING SNMP CONFIGURATIONS ON IOS
     hosts: iosxe
-    connection: local
+    connection: network_cli
     gather_facts: no
 
     tasks:

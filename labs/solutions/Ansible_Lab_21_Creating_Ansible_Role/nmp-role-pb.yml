@@ -1,0 +1,13 @@
+---
+
+  - name: MULTI-PLATFORM SNMP
+    hosts: iosxe,nxos
+    gather_facts: no
+
+    roles:
+      - role: snmp
+        snmp_communities:
+          - community: ntc-public
+            group: network-operator
+          - community: ntc-private
+            group: network-admin

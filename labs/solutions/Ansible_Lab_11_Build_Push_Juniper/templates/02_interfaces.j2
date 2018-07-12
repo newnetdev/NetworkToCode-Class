@@ -1,0 +1,19 @@
+interfaces {
+{% for interface in interfaces %}
+    {{ interface.name }} {
+{% if interface.get('state') == 'down' %}
+        disable;
+{% endif %}
+        description {{ interface.description }};
+        unit 0 {
+{% if interface.get('ip') %}
+            family inet {
+                address {{ interface.ip }}/{{ interface.mask }};
+            }
+{% else %}
+            family inet;
+{% endif %}
+        }
+    }
+{% endfor %}
+}

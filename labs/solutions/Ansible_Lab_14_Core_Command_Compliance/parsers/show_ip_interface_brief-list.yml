@@ -1,0 +1,11 @@
+---
+
+keys:
+  interfaces:
+    type: list
+    value:
+      interface: "{{ item.iface_name }}"
+      ip_addr: "{{ item.ip_addr }}"
+      status: "{{ item.status }}"
+      protocol: "{{ item.protocol }}"
+    items: "^(?P<iface_name>(\\S+))\\s+(?P<ip_addr>(\\S+)|(\\w+))\\s+(?P<ok>(\\w+))\\s+(?P<method>(\\S+))\\s+(?P<status>(administratively down|\\w+))\\s+(?P<protocol>(\\S+))"

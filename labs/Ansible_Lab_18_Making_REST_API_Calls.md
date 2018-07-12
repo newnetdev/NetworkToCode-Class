@@ -15,7 +15,6 @@ Create a playbook called `rest-apis.yml` and insert the following into it:
 
   - name: PLAY 1 - ISSUE API CALL TO CSR
     hosts: csr2
-    connection: local
     gather_facts: no
     tags: ios
 
@@ -54,7 +53,6 @@ Add a new debug statement to the playbook:
 
   - name: PLAY 1 - ISSUE API CALL TO CSR
     hosts: csr2
-    connection: local
     gather_facts: no
     tags: ios
 
@@ -244,7 +242,6 @@ This is the full playbook:
 
   - name: PLAY 1 - ISSUE API CALL TO CSR
     hosts: csr2
-    connection: local
     gather_facts: no
     tags: ios
 
@@ -292,7 +289,6 @@ This task is showing you can also do a HTTP POST passing a multi-line string wit
 ```yaml
   - name: PLAY 2 - ISSUE SHOW VERSION TO NEXUS VIA API
     hosts: nxos-spine1
-    connection: local
     gather_facts: no
     tags: nxos
 
@@ -343,7 +339,6 @@ The full playbook is as follows:
 
   - name: PLAY 1 - ISSUE API CALL TO CSR
     hosts: csr2
-    connection: local
     gather_facts: no
     tags: ios
 
@@ -383,7 +378,6 @@ The full playbook is as follows:
 
   - name: PLAY 2 - ISSUE SHOW VERSION TO NEXUS VIA API
     hosts: nxos-spine1
-    connection: local
     gather_facts: no
     tags: nxos
 

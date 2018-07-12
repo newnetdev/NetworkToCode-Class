@@ -781,7 +781,6 @@ This play should be limited to the `iosxe` group in the inventory file, so use t
 
   - name: Build & Deploy IOS Configurations
     hosts: iosxe
-    connection: local
     gather_facts: no
 
     tasks:
@@ -866,7 +865,6 @@ Add the following task to the `build-push.yml` playbook:
 
   - name: Build & Deploy IOS Configurations
     hosts: iosxe
-    connection: local
     gather_facts: no
 
     tasks:
@@ -883,7 +881,7 @@ Add the following task to the `build-push.yml` playbook:
           diff_file: ./diffs/{{ inventory_hostname }}.diffs
           replace_config: false
           commit_changes: true
-          dev_os: "{{ os }}"
+          dev_os: "{{ ansible_network_os }}"
         tags: push
 
 

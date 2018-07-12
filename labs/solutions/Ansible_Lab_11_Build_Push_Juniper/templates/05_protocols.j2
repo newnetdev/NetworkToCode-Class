@@ -1,0 +1,16 @@
+protocols {
+{% if ospf is defined %}
+    ospf {
+{% for each_area in ospf %}
+        area {{ each_area.area }} {
+{% for interface in each_area.interfaces %}
+            interface {{ interface }};
+{% endfor %}
+        }
+{% endfor %}
+    }
+{% endif %}
+    lldp {
+        interface all;
+    }
+}

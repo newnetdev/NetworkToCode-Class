@@ -1,0 +1,40 @@
+---
+
+  - name: PING TEST
+    hosts: csr1
+    gather_facts: no
+    tags: play2
+
+    vars:
+      template_path: "/etc/ntc/ansible/library/ntc-ansible/ntc-templates/templates/"
+      show_version_path: "{{ template_path }}cisco_ios_show_version.template"
+
+    tasks:
+
+      - name: GET SHOW COMMANDS
+        ios_command:
+          commands: show version
+        register: config_data
+
+      - set_fact:
+          show_version: "{{ config_data.stdout.0 | parse_cli_textfsm(show_version_path) }}"
+
+      - debug:
+          var: show_version
+
+      - name: CHECK OS AND CONFIG REGISTER
+        assert:
+          that:
+           - show_version[0]['VERSION'] == '16.6.2'
+           - show_version[0]['CONFIG_REGISTER'] == '0x2102'
+
+      - name: GET SHOW COMMANDS
+        ios_command:
+          commands: show ip interface brief
+        register: output
+
+      - set_fact:
+          show_brief: "{{ output.stdout.0 | parse_cli('./parsers/show_ip_interface_brief-dict.yml') }}"
+
+      - debug:
+          var: show_brief

@@ -16,7 +16,6 @@ Create a new playbook called `restore.yml`.  In this file, and for the first exe
 
   - name: DEPLOY & RESTORE CONFIGS
     hosts: iosxe
-    connection: local
     gather_facts: no
 ```
 
@@ -31,7 +30,6 @@ Using `napalm_install_config`, push back these configurations. Since we didn't c
 
   - name: DEPLOY & RESTORE CONFIGS
     hosts: iosxe
-    connection: local
     gather_facts: no
 
     tasks:
@@ -76,7 +74,6 @@ The full playbook should look like this for now:
 
   - name: DEPLOY & RESTORE CONFIGS
     hosts: iosxe
-    connection: local
     gather_facts: no
 
     tasks:
@@ -117,7 +114,7 @@ dev_os: ios
 We need to update this to be the following since we already have the `os` pre-defined as a group based variable:
 
 ```yaml
-dev_os: "{{ os }}"
+dev_os: "{{ ansible_network_os }}"
 ```
 
 ##### Step 6
@@ -227,7 +224,7 @@ This updated task should look like this:
           diff_file: ./diffs/{{ inventory_hostname }}.diffs
           replace_config: true
           commit_changes: false
-          dev_os: "{{ os }}"
+          dev_os: "{{ ansible_network_os }}"
 ```
 
 ##### Step 10
@@ -294,7 +291,6 @@ Update your play definition to this:
 
   - name: DEPLOY & RESTORE CONFIGS
     hosts: "{{ device }}"
-    connection: local
     gather_facts: no
 ```
 
@@ -319,7 +315,6 @@ Full and final playbook will look like this:
 
   - name: DEPLOY & RESTORE CONFIGS
     hosts: "{{ device }}"
-    connection: local
     gather_facts: no
 
     tasks:
@@ -331,7 +326,7 @@ Full and final playbook will look like this:
           diff_file: ./diffs/{{ inventory_hostname }}.diffs
           replace_config: true
           commit_changes: true
-          dev_os: "{{ os }}"
+          dev_os: "{{ ansible_network_os }}"
 
 
 ```

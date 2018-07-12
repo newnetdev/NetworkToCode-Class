@@ -1,0 +1,10 @@
+---
+
+  - name: test playbook for dynamic inventory
+    gather_facts: no
+    hosts: all
+
+
+    tasks:
+
+      - debug: var=inventory_hostname

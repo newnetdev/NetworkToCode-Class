@@ -35,7 +35,6 @@ Create a play that'll be executed against **all** hosts defined in the inventory
   
   - name: BACKUP CONFIGURATIONS
     hosts: all
-    connection: local
     gather_facts: no
 
 
@@ -50,7 +49,6 @@ Add a variable in your playbook called `backup_command`.  It should be a diction
   
   - name: BACKUP CONFIGURATIONS
     hosts: all
-    connection: local
     gather_facts: no
 
     vars:
@@ -77,7 +75,6 @@ Add a variable to handle the login to the devices. Often referred to as a provid
   
   - name: BACKUP CONFIGURATIONS
     hosts: all
-    connection: local
     gather_facts: no
 
     vars:
@@ -108,7 +105,6 @@ All backup files should be saved locally inside the `backups` directory.
   
   - name: BACKUP CONFIGURATIONS
     hosts: all
-    connection: local
     gather_facts: no
 
     vars:
@@ -127,9 +123,9 @@ All backup files should be saved locally inside the `backups` directory.
       - name: BACKUP CONFIGS FOR ALL DEVICES
         ntc_show_command:
           provider: "{{ connection_details }}"
-          command: "{{ backup_command[os] }}"
+          command: "{{ backup_command[ansible_network_os] }}"
           local_file: "./backups/{{ inventory_hostname }}.cfg"
-          platform: "{{ vendor }}_{{ os }}"
+          platform: "{{ ntc_vendor }}_{{ ansible_network_os }}"
 
 ```
 
@@ -280,7 +276,6 @@ The final updated playbook should look like this:
   
   - name: BACKUP CONFIGURATIONS
     hosts: all
-    connection: local
     gather_facts: no
 
     tasks:
@@ -288,9 +283,9 @@ The final updated playbook should look like this:
       - name: BACKUP CONFIGS FOR ALL DEVICES
         ntc_show_command:
           provider: "{{ connection_details }}"
-          command: "{{ backup_command[os] }}"
+          command: "{{ backup_command[ansible_network_os] }}"
           local_file: "./backups/{{ inventory_hostname }}.cfg"
-          platform: "{{ vendor }}_{{ os }}"
+          platform: "{{ ntc_vendor }}_{{ ansible_network_os }}"
 
       - name: CLEAN UP IOS CONFIGS - LINE 1
         lineinfile:

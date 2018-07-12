@@ -1,0 +1,75 @@
+---
+
+  - name: PLAY 1 - ISSUE API CALL TO CSR
+    hosts: csr2
+    gather_facts: no
+    tags: ios
+
+    tasks:
+
+      - name: GET INTERFACE IP ADDRESS
+        uri:
+          url: https://{{ inventory_hostname }}/restconf/data/Cisco-IOS-XE-native:native/interface=GigabitEthernet/1/ip/address
+          method: GET
+          user: "{{ ansible_user }}"
+          password: "{{ ansible_ssh_pass }}"
+          return_content: yes
+          validate_certs: no
+          headers:
+            Content-Type: application/yang-data+json
+            Accept: application/yang-data+json
+        register: response
+
+      - debug: var=response
+
+      - debug: var=response.content
+
+      - debug:
+          var: response['content']['Cisco-IOS-XE-native:address']['primary']['address']
+
+      - set_fact:
+          ip_info: "{{ response['content'] | from_json }}"
+
+      - debug:
+          var: ip_info['Cisco-IOS-XE-native:address']['primary']['address']
+
+      - set_fact:
+          ipaddr: "{{ ip_info['Cisco-IOS-XE-native:address']['primary']['address'] }}"
+
+      - debug: var=ipaddr
+
+
+  - name: PLAY 2 - ISSUE SHOW VERSION TO NEXUS VIA API
+    hosts: nxos-spine1
+    gather_facts: no
+    tags: nxos
+
+    tasks:
+
+      - name: SHOW VERSION NEXUS API
+        uri:
+          url: http://nxos-spine1/ins
+          method: POST
+          user: "{{ ansible_user }}"
+          password: "{{ ansible_ssh_pass }}"
+          return_content: yes
+          body_format: json
+          headers:
+            Content-Type: application/json
+            Accept: application/json
+          body: |
+            {
+              "ins_api": {
+                "version": "1.2",
+                "type": "cli_show",
+                "chunk": "0",
+                "sid": "1",
+                "input": "show version",
+                "output_format": "json"
+              }
+            }
+        register: response
+
+      - debug: var=response
+
+      - debug: var=response.content

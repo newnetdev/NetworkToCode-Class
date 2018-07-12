@@ -504,7 +504,6 @@ This play should be limited to the `eos-leaves` group in the inventory file, so 
 
   - name: Build Configuration Files
     hosts: eos-leaves
-    connection: local
     gather_facts: no
 
     tasks:
@@ -693,7 +692,6 @@ Then add the following task to the `build-push.yml` playbook:
 
   - name: Build Configuration Files
     hosts: eos-leaves
-    connection: local
     gather_facts: no
 
     tasks:
@@ -705,7 +703,7 @@ Then add the following task to the `build-push.yml` playbook:
           hostname={{ inventory_hostname }}
           username={{ ansible_user }}
           password={{ ansible_ssh_pass }}
-          dev_os={{ os }}
+          dev_os={{ ansible_network_os }}
           config_file=configs/{{ inventory_hostname }}.conf
           diff_file=diffs/{{ inventory_hostname }}.diffs
           commit_changes=true

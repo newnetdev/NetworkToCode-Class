@@ -14,7 +14,6 @@ Create a new playbook called `core-command.yml` in the `ansible` directory.  You
 
   - name: BACKUP SHOW VERSION
     hosts: csr1
-    connection: local
     gather_facts: no
 
     tasks:
@@ -30,7 +29,6 @@ Add a task to issue the `show version` command.
 
   - name: BACKUP SHOW VERSION
     hosts: csr1
-    connection: local
     gather_facts: no
 
     tasks:
@@ -158,7 +156,6 @@ Full and final playbook will look like this:
 
   - name: BACKUP SHOW VERSION
     hosts: iosxe
-    connection: local
     gather_facts: no
 
     tasks:

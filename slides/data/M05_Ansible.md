@@ -179,7 +179,7 @@ Note: a more seamless upgrade requires a few more tasks.
           username={{ ansible_user }}
           password={{ ansible_ssh_pass }}
           local_file=backups/{{ inventory_hostname }}.cfg
-          platform={{ vendor }}_{{ os }}_{{ api }}
+          platform={{ ntc_vendor }}_{{ ansible_network_os }}_{{ ntc_api }}
         tags: backup
 
       - name: DEPLOY CONFIGS
@@ -191,7 +191,7 @@ Note: a more seamless upgrade requires a few more tasks.
           diff_file=diffs/{{ inventory_hostname }}.diffs
           replace_config=true
           commit_changes=true
-          dev_os={{ os }}
+          dev_os={{ ansible_network_os }}
         tags: restore
 
 ```
@@ -213,7 +213,7 @@ Configure interface descriptions based on active neighbors
       - name: GET NEIGHBOR INFORMATION
         ntc_show_command:
           connection=ssh
-          platform={{ vendor }}_{{ os }}
+          platform={{ ntc_vendor }}_{{ ansible_network_os }}
           command='show lldp neighbors'
         register: neighbors
 
@@ -221,7 +221,7 @@ Configure interface descriptions based on active neighbors
         nxos_interface:
           interface: "{{ item.local_interface  }}"
           description: "Connects to {{ item.neighbor_interface }} on {{ item.neighbor }}"
-        with_items: neighbors.response
+        loop: "{{ neighbors.response|flatten(levels=1) }}"
         when: item.local_interface != 'mgmt0'
 ```
 
@@ -261,7 +261,7 @@ class: middle, segue
 
 - name: vlan testing
   hosts: dc1
-  connection: local
+  connection: network_cli
   gather_facts: no
 
   tasks:
@@ -653,7 +653,7 @@ Two files are required to get started:
   - arbitrary description of the play and is displayed to terminal when executed (optional)
 - `hosts`
   - one or more hosts or groups as defined in inventory file or _expression_
-- `connection: local`
+- `connection: network_cli`
   - does not use default SSH connection mechanism / use method as defined *inside* modules
 - Play contains one or more tasks
 ]
@@ -664,7 +664,7 @@ Two files are required to get started:
 
 - name: Play 1 - Deploy router configs
   hosts: routers
-  connection: local
+  connection: network_cli
   gather_facts: no
 
   tasks:
@@ -679,7 +679,7 @@ Two files are required to get started:
 ```yaml
 - name: Play 2 - Deploy vlans on switches
   hosts: switches
-  connection: local
+  connection: network_cli
   gather_facts: no
 
   tasks:
@@ -707,7 +707,7 @@ Two files are required to get started:
 
 - name: PLAY 1 - Deploy vlans on switches
   hosts: switches
-  connection: local
+  connection: network_cli
   gather_facts: no
 
   tasks:
@@ -754,7 +754,7 @@ Two files are required to get started:
 
 - name: MANAGE VLANS
   hosts: switches
-  connection: local
+  connection: network_cli
   gather_facts: no
 
   tasks:
@@ -818,7 +818,7 @@ class: center, middle
 
 - name: MANAGE VLANS
   hosts: switches
-  connection: local
+  connection: network_cli
   gather_facts: no
 
   tasks:
@@ -846,7 +846,7 @@ class: center, middle
 
 - name: MANAGE VLANS
   hosts: switches
-  connection: local
+  connection: network_cli
   gather_facts: no
 
   tasks:
@@ -1145,7 +1145,7 @@ You can request user input and capture the user response as a variable using the
 - name: COLLECT USERNAME AND PASSWORD
   hosts: csr1
   gather_facts: no
-  connection: local
+  connection: network_cli
 
   vars_prompt:
     - name: un
@@ -1178,7 +1178,7 @@ Variables within a playbook can be defined under the optional `vars` paramater
 - name: PRINT VLANS
   hosts: all
   gather_facts: no
-  connection: local
+  connection: network_cli
   
   vars:
     vlan: 300
@@ -1210,7 +1210,7 @@ and the Ansible built-in `inventory_hostname` variable
 - name: PRINT HOSTS
   hosts: all
   gather_facts: no
-  connection: local
+  connection: network_cli
   
   vars:
     priority: "P1" 
@@ -1280,7 +1280,7 @@ leaf2 mgmt_ip=10.1.1.2
 
   - name: DEBUGGING VARIABLES
     hosts: all
-    connection: local
+    connection: network_cli
     gather_facts: no
 
     tasks:
@@ -1348,7 +1348,7 @@ leaf2 mgmt_ip=10.1.1.2
 
   - name: DEBUGGING VARIABLES
     hosts: all
-    connection: local
+    connection: network_cli
     gather_facts: no
 
     tasks:
@@ -1416,7 +1416,7 @@ leaf2 mgmt_ip=10.1.1.2
 
   - name: DEBUGGING VARIABLES
     hosts: all
-    connection: local
+    connection: network_cli
     gather_facts: no
 
     tasks:
@@ -1508,7 +1508,7 @@ nxos-spine1                : ok=3    changed=0    unreachable=0    failed=0
 
   - name: PLAY 1 - DEPLOYING SNMP CONFIGURATIONS ON IOS
     hosts: ios-xe
-    connection: local
+    connection: network_cli
     gather_facts: no
 
     tasks:
@@ -1707,7 +1707,7 @@ class: middle, segue
 ```yaml
   - name: BACKUP ALL CONFIGURATIONS
     hosts: all
-    connection: local
+    connection: network_cli
     gather_facts: no
 
     tasks:
@@ -2178,7 +2178,7 @@ Be cautious of device support.  This is based on NAPALM driver implementation wh
 
   - name: DEPLOY CONFIGURATION
     napalm_install_config:
-      dev_os={{ os }}
+      dev_os={{ ansible_network_os }}
       config_file=./backups/{{ inventory_hostname }}.cfg   # file with commands to apply
       commit_changes=true                                  # apply changes (or only generate diffs)
       replace_config=true                                  # full config replace or merge (just a few commands)
@@ -2235,7 +2235,7 @@ ansible-playbook -i inventory playbook.yml --tags=vlan
   - name: DATA CENTER AUTOMATION
     hosts: all
     gather_facts: no
-    connection: local
+    connection: network_cli
     tags: datacenter
 ```
 
@@ -2517,7 +2517,7 @@ vlans:
 
   - name: BUILD CONFIGS
     hosts: all
-    connection: local
+    connection: network_cli
 
     tasks:
 
@@ -2646,7 +2646,7 @@ interface {{ interface.name }}
 
   - name: BUILD PROCESS
     hosts: all
-    connection: local
+    connection: network_cli
     gather_facts: no
 
     tasks:
@@ -2672,7 +2672,7 @@ interface {{ interface.name }}
 
   - name: DEPLOY CONFIGURATIONS USING NAPALM
     hosts: all
-    connection: local
+    connection: network_cli
 
     tasks:
 
@@ -2710,7 +2710,7 @@ leaf6
 
   - name: BUILD PROCESS
     hosts: all
-    connection: local
+    connection: network_cli
     gather_facts: no
     tags: build
 
@@ -2729,7 +2729,7 @@ leaf6
 
   - name: DEPLOY CONFIGURATIONS USING NAPALM
     hosts: all
-    connection: local
+    connection: network_cli
     gather_facts: no
     tags: deploy
 
@@ -3014,7 +3014,7 @@ The _command modules are often used to execute show commands and gather data fro
 .med-code[
 ```yaml
   - hosts: junos
-    connection: local
+    connection: network_cli
     gather_facts: no
 
     tasks:
@@ -3176,131 +3176,6 @@ ok: [nxos-spine1] => {
 
 ---
 
-
-class: center, middle, title
-.footer-picture[<img src="data/media/Footer1.PNG" alt="Blue Logo" style="alight:middle;width:350px;height:60px;">]
-
-# How do you Iterate over items in a Playbook?
-
----
-
-# Iterators
-
-
-* with_items - iterate (loop) over a list
-* with_dict - iterate (loop) over a dictionary
-* with_fileglob - iterate (loop) over files in a list of directories (often for templates)
-
----
-
-
-# with_items
-
-* Iterate over a list of strings
-* `item` is built-in variable equal to an element of the list as you're iterating
-* In this case, `item` is a string
-
-```yaml
-  - name: ITERATE OVER LIST OF STRINGS
-    hosts: iosxe
-    connection: local
-    gather_facts: no
-
-    vars:
-      commands:
-        - show ip int brief
-        - show version
-        - show ip route
-
-    tasks:
-      - name: SEND A SERIES OF SHOW COMMANDS
-        ios_command:
-          commands:
-            "{{ item }}"
-        with_items: "{{ commands }}"
-```
-
----
-
-
-# with_items
-
-* Iterate over a list of dictionaries
-* `item` is built-in variable equal to an element of the list as you're iterating
-* In this case, `item` is a dictionary
-
-```yaml
----
-
-  - name: ITERATE OVER LIST OF STRINGS
-    hosts: iosxe
-    connection: local
-    gather_facts: no
-
-    vars:
-      commands:
-        - command: show ip int brief
-        - command: show version
-        - command: show ip route
-
-    tasks:
-      - name: SEND A SERIES OF SHOW COMMANDS
-        ios_command:
-          commands:
-            "{{ item.command }}"
-        with_items: "{{ commands }}"
-```
-
-
-
----
-
-# with_dict
-
-.left-column[
-* Iterate over a dictionary
-* Root keys are `item.key`
-* Values are `item.value`
-]
-
-.right-column[
-```yaml
----
-
-  - name: ITERATE OVER DICT
-    hosts: iosxe
-    connection: local
-    gather_facts: no
-    vars:
-      locations:
-        amer: sjc-branch
-        apac: hk-dc
-
-    tasks:
-      - name: PRINT ALL LOCATIONS
-        debug:
-          msg: "Region is {{ item.key }} and Site is {{ item.value }}"
-        with_dict: "{{ locations }}"
-```
-
-* Sample output:
-```
-"msg": "Regions are apac and Sites is hk-dc"
-"msg": "Regions are amer and Sites is sjc-branch"
-```
-]
-
----
-
-# Lab Time
-
-- Lab 12 - Getting Started with the Command Module
-- Lab 13 - Validating Reachability with the Command Module
-- Lab 14 - Continuous Compliance with Ansible
-
----
-
-
 class: center, middle, title
 .footer-picture[<img src="data/media/Footer1.PNG" alt="Blue Logo" style="alight:middle;width:350px;height:60px;">]
 
@@ -3347,6 +3222,139 @@ Sample Output:
 ]
 ---
 
+class: center, middle, title
+.footer-picture[<img src="data/media/Footer1.PNG" alt="Blue Logo" style="alight:middle;width:350px;height:60px;">]
+
+# How do you Iterate over items in a Playbook?
+
+---
+
+# Iterators - Loop
+
+- `loop` is the keyword to iterate over lists and dictionaries
+- to iterate over a list use the `flatten` filter like this:
+
+```yaml
+loop: "{{ device_list|flatten(levels=1) }}" 
+```
+
+- to iterate over a dictionary use either the `dict2items` filters with `loop`
+
+```yaml
+loop: "{{ interface_dict|dict2items }}" 
+```
+
+* to iterate over files in a list of directories use `with_fileglob`, (often for templates)
+```yaml
+      - name: BUILD CONFIGS
+        template: src={{ item }} dest=configs/{{ inventory_hostname }}.conf
+        with_fileglob:
+          - templates/0*
+```
+---
+
+
+# loop with flatten filter
+
+* Iterate over a list of strings
+* `item` is built-in variable equal to an element of the list as you're iterating
+* In this case, `item` is a string
+
+```yaml
+  - name: ITERATE OVER LIST OF STRINGS
+    hosts: iosxe
+    connection: network_cli
+    gather_facts: no
+
+    vars:
+      commands:
+        - show ip int brief
+        - show version
+        - show ip route
+
+    tasks:
+      - name: SEND A SERIES OF SHOW COMMANDS
+        ios_command:
+          commands:
+            "{{ item }}"
+        loop: "{{ commands|flatten(levels=1) }}"
+```
+
+---
+
+
+# loop Continued
+
+* Iterate over a list of dictionaries
+* `item` is built-in variable equal to an element of the list as you're iterating
+* In this case, `item` is a dictionary
+
+```yaml
+---
+
+  - name: ITERATE OVER LIST OF STRINGS
+    hosts: iosxe
+    connection: network_cli
+    gather_facts: no
+
+    vars:
+      commands:
+        - command: show ip int brief
+        - command: show version
+        - command: show ip route
+
+    tasks:
+      - name: SEND A SERIES OF SHOW COMMANDS
+        ios_command:
+          commands:
+            "{{ item.command }}"
+        loop: "{{ commands|flatten(levels=1) }}"
+```
+
+
+
+---
+
+# loop dict2items filter
+
+* Iterate over a dictionary
+* Root keys are `item.key`
+* Values are `item.value`
+
+```yaml
+---
+
+    vars:
+      locations:
+        amer: sjc-branch
+        apac: hk-dc
+
+    tasks:
+      - name: PRINT ALL LOCATIONS
+        debug:
+          msg: "Region is {{ item.key }} and Site is {{ item.value }}"
+        loop: "{{ locations|dict2items }}"
+```
+
+* Sample output:
+```
+"msg": "Regions are apac and Sites is hk-dc"
+"msg": "Regions are amer and Sites is sjc-branch"
+```
+
+
+---
+
+# Lab Time
+
+- Lab 12 - Getting Started with the Command Module
+- Lab 13 - Validating Reachability with the Command Module
+- Lab 14 - Continuous Compliance with Ansible
+
+---
+
+
+
 # Parsing Response Data
 
 When running commands use the core command module it is often necessary to parse needed information from the command response data.
@@ -3372,7 +3380,7 @@ The `parse_cli_textfsm` Jinja2 filter can use the same `textfsm` templates that 
 
   - name: TEST PARSE USING PARSE_CLI_TEXTFSM
     hosts: csr1
-    connection: local
+    connection: network_cli
     gather_facts: no
 
     vars:
@@ -3460,7 +3468,7 @@ Now you can reference the new parser using `parse_cli`:
 
   - name: TEST PARSE USING PARSE_CLI
     hosts: csr1
-    connection: local
+    connection: network_cli
     gather_facts: no
 
     tasks:
@@ -3577,7 +3585,7 @@ In this example we issued the ping command from an IOS device and want to parse 
 
  - name: PING TEST AND TRACEROUTE
     hosts: csr1
-    connection: local
+    connection: network_cli
     gather_facts: no
 
     vars:
@@ -3978,7 +3986,7 @@ snmp-server community {{ snmp.community }} group {{ snmp.group }}
 ---
 - name: Declarative Configuration
   hosts: nxos
-  connection: local
+  connection: network_cli
   gather_facts: False
 
   tasks:
@@ -4174,7 +4182,7 @@ Sample playbook gathering IOS facts:
 ```yaml
   - name: GATHER IOS FACTS
     hosts: iosxe
-    connection: local
+    connection: network_cli
     gather_facts: no
 
     tasks:
@@ -4214,7 +4222,7 @@ Sample playbook gathering IOS facts:
 ```yaml
   - name: GATHER IOS FACTS
     hosts: iosxe
-    connection: local
+    connection: network_cli
     gather_facts: no
 
     tasks:
@@ -4358,7 +4366,7 @@ Sample playbook gathering IOS facts:
 ```yaml
 - ntc_get_facts:
     provider: "{{ ntc_provider }}"
-    platform: "{{ vendor }}"_{{ os }}_{{ api }}"
+    platform: "{{ ntc_vendor }}"_{{ ansible_network_os }}_{{ ntc_api }}"
 ```
 
 
@@ -4453,7 +4461,7 @@ In this example we are grouping the devices by vendor.  This will create a group
 
   - name: DISCOVER VENDOR
     hosts: iosxe,nxos,vmx
-    connection: local
+    connection: network_cli
     gather_facts: no
 
     tasks:
@@ -4592,9 +4600,9 @@ Then:
 
 Device: {{ inventory_hostname }}
 
-Vendor:           {{ vendor }}
+Vendor:           {{ ntc_vendor }}
 Platform:         {{ platform }}
-Operating System: {{ os }}
+Operating System: {{ ansible_network_os }}
 Image:            {{ kickstart_image }}
 
 ```
@@ -4606,7 +4614,7 @@ Image:            {{ kickstart_image }}
 
   - name: DC P1
     hosts: n9k1
-    connection: local
+    connection: network_cli
     gather_facts: no
 
     tasks:
@@ -4663,7 +4671,7 @@ LOCAL INTERFACE:    {{ neighbor.local_interace }}
 
   - name: DC P1
     hosts: eos-spine1
-    connection: local
+    connection: network_cli
     gather_facts: no
 
     tasks:
@@ -4733,7 +4741,7 @@ LOCAL INTERFACE:    Ethernet7
 
   - name: DC P1
     hosts: eos-spine1
-    connection: local
+    connection: network_cli
     gather_facts: no
 
     tasks:
@@ -4799,7 +4807,7 @@ class: middle, segue
 ---
 
   - name: PB
-    connection: local
+    connection: network_cli
     hosts: all
 
     tasks:
@@ -4831,11 +4839,11 @@ class: middle, segue
 ---
   - name: CONFIGURE DEVICES
     hosts: all
-    connection: local
+    connection: network_cli
 
     tasks:
 
-      - include: get-facts.yml vendor={{ vendor }}
+      - include: get-facts.yml vendor={{ ntc_vendor }}
 ```
 
 ```yaml
@@ -4894,7 +4902,7 @@ roles/
 
 - name: SAMPLE PLAYBOOK USING ROLES
   hosts: leaves
-  connection: local
+  connection: network_cli
 
   roles:
      - common
@@ -4915,7 +4923,7 @@ roles/
 ---
 
 - hosts: spine
-  connection: local
+  connection: network_cli
   roles:
     - common
     - spine
@@ -4937,7 +4945,7 @@ roles/
 
   - name: DC P1
     hosts: datacenter
-    connection: local
+    connection: network_cli
     gather_facts: no
 
     roles:
@@ -4952,12 +4960,12 @@ roles/
 
 - name: ARISTA VLANs
   eos_vlan: vlanid={{ item.id }} connection={{ inventory_hostname }}
-  with_items: "{{ vlans }}"
+  loop: "{{ vlans|flatten(levels=1) }}"
   when: vendor == "arista"
 
 - name: CISCO VLANs
   nxos_vlan: vlan_id={{ item.id }} host={{ inventory_hostname }}
-  with_items: "{{ vlans }}"
+  loop: "{{ vlans|flatten(levels=1) }}"
   when: vendor == "cisco"
 ```
 
@@ -5001,7 +5009,7 @@ vlans:
 .---
   - name: DC P1
     hosts: datacenter
-    connection: local
+    connection: network_cli
     gather_facts: no
     roles:
       - vlans
@@ -5012,7 +5020,7 @@ vlans:
 ```yaml
 # roles/vlans/tasks/main.yml
 ---
-- include: "{{ vendor }}.yml"
+- include: "{{ ntc_vendor }}.yml"
 ```
 
 ```yaml
@@ -5020,13 +5028,13 @@ vlans:
 ---
 - name: ARISTA VLANs
   eos_vlan: vlanid={{ item.id }} connection={{ inventory_hostname }}
-  with_items: "{{ vlans }}"
+  loop: "{{ vlans|flatten(levels=1) }}"
 ```
 ```yaml
 # roles/vlans/tasks/cisco.yml
 - name: CISCO VLANs
   nxos_vlan: vlan_id={{ item.id }} host={{ inventory_hostname }}
-  with_items: "{{ vlans }}"
+  loop: "{{ vlans|flatten(levels=1) }}"
 ```
 ]
 
@@ -5191,7 +5199,7 @@ if __name__ == "__main__":
 ---
 
   - name: test playbook for dynamic inventory
-    connection: local
+    connection: network_cli
     gather_facts: no
     hosts: all
 
@@ -6097,7 +6105,7 @@ IMPORTANT:
 .left-column[
 
 * `platform` values for **ntc_show_command** and **ntc_config_command**:
- * `{{ vendor }}_{{ os }}`
+ * `{{ ntc_vendor }}_{{ ansible_network_os }}`
  * matches what Netmiko supports: **cisco_ios**, **cisco_nxos**, **arista_eos** (optionally _ssh can be added too, e.g. **cisco_ios_ssh**)
  * Anything Netmiko supports for `device_type` is supported here (all SSH)
 ]
@@ -6284,7 +6292,7 @@ Reboot a network device, optionally on a timer.
 ```yaml
 - ntc_file_copy:
     platform: cisco_nxos_nxapi
-    local_file: ./images/{{ os }}/{{ os_version }}
+    local_file: ./images/{{ ansible_network_os }}/{{ os_version }}
     provider: "{{ ntc_provider }}"
     transport: http
 
@@ -6407,7 +6415,7 @@ Reboot a network device, optionally on a timer.
           - name: CREATE LAST KNOWN GOOD (CHECKPOINT)
             ntc_rollback:
               checkpoint_file=last_known_good.conf
-              platform: "{{ vendor }}_{{ os }}_{{ api }}"
+              platform: "{{ ntc_vendor }}_{{ ansible_network_os }}_{{ ntc_api }}"
               provider: "{{ ntc_provider }}"
           - nxos_vlan:
               vlan_id: 500
@@ -6419,7 +6427,7 @@ Reboot a network device, optionally on a timer.
           - name: ROLLBACK TO CHECKPOINT FILE UPON ERROR
             ntc_rollback:
               rollback_to: last_known_good.conf
-              platform: "{{ vendor }}_{{ os }}_{{ api }}"
+              platform: "{{ ntc_vendor }}_{{ ansible_network_os }}_{{ ntc_api }}"
               provider: "{{ ntc_provider }}"
 
 

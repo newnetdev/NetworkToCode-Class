@@ -1,0 +1,20 @@
+---
+
+  - name: IOS COMPLIANCE
+    hosts: iosxe
+    gather_facts: no
+
+
+    tasks:
+
+      - name: IOS show version
+        ios_command:
+          commands:
+            - show version
+        register: output
+
+      - name: CHECK OS AND CONFIG REGISTER
+        assert:
+          that:
+           - "'16.6.2' in output['stdout'][0]"
+           - "'0x2102' in output['stdout'][0]"

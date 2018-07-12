@@ -161,16 +161,16 @@ vmx
 
 In this task, you'll create group based variables that will be used throughout the course.  Do NOT forget there is an implicit group that always exists called **all**.
 
-Ensure you have two group variables in the **all** group that are used for authentication:
+Ensure you have three group variables in the **all** group that are used for authentication:
 
 ```
 [all:vars]
 ansible_user=ntc
 ansible_ssh_pass=ntc123
-
+ansible_connection=network_cli
 ```
 
-All devices in the course use these credentials.
+All devices in the course use these credentials and connection type.
 
 ### Task 4 - Create Group Based Variables for the *eos* group
 
@@ -178,9 +178,9 @@ Create the variables required in the **eos** group:
 
 ```
 [eos:vars]
-os=eos
-api=eapi
-vendor=arista
+ansible_network_os=eos
+ntc_api=eapi
+ntc_vendor=arista
 ```
 
 We'll use these variables in a variety of ways throughout the course.
@@ -190,9 +190,9 @@ We'll use these variables in a variety of ways throughout the course.
 
 Create the variables required in the **nxos** group:
 
-* Set `os` equal to **nxos**
-* Set `api` equal to **nxapi**
-* Set `vendor` equal to **cisco**
+* Set `ansible_network_os` to **nxos**
+* Set `ntc_api` equal to **nxapi**
+* Set `ntc_vendor` equal to **cisco**
 
 We'll use these variables in a variety of ways throughout the course.
 
@@ -201,9 +201,9 @@ We'll use these variables in a variety of ways throughout the course.
 
 Create the variables required in the **iosxe** group:
 
-* Set `os` equal to **ios**
-* Set `api` equal to **ssh**
-* Set `vendor` equal to **cisco**
+* Set `ansible_network_os` to **ios**
+* Set `ntc_api` equal to **ssh**
+* Set `ntc_vendor` equal to **cisco**
 
 We'll use these variables in a variety of ways throughout the course as well.
 
@@ -212,9 +212,10 @@ We'll use these variables in a variety of ways throughout the course as well.
 
 Create the variables required in the **vmx** group:
 
-* Set `os` equal to **junos**
-* Set `api` equal to **netconf**
-* Set `vendor` equal to **juniper**
+* Set `ansible_connection` to **netconf**
+* Set `ansible_network_os` to **junos**
+* Set `ntc_api` equal to **netconf**
+* Set `ntc_vendor` equal to **juniper**
 
 
 We'll use these variables in a variety of ways throughout the course.
@@ -226,11 +227,10 @@ After adding all group variables, your inventory file should look like this (not
 > Note: if there isn't a particular device in your topology, there is no need to have it in the inventory file.
 
 ```
-
 [all:vars]
 ansible_user=ntc
 ansible_ssh_pass=ntc123
-
+ansible_connection=network_cli
 
 [eos:children]
 eos-spines
@@ -245,9 +245,9 @@ eos-leaf1
 eos-leaf2
 
 [eos:vars]
-os=eos
-api=eapi
-vendor=arista
+ansible_network_os=eos
+ntc_api=eapi
+ntc_vendor=arista
 
 [iosxe]
 csr1
@@ -255,9 +255,9 @@ csr2
 csr3
 
 [iosxe:vars]
-os=ios
-api=ssh
-vendor=cisco
+ansible_network_os=ios
+ntc_api=ssh
+ntc_vendor=cisco
 
 [nxos:children]
 nxos-spines
@@ -267,17 +267,18 @@ nxos-spine1
 nxos-spine2
 
 [nxos:vars]
-os=nxos
-api=nxapi
-vendor=cisco
+ansible_network_os=nxos
+ntc_api=nxapi
+ntc_vendor=cisco
 
 [vmx]
 vmx[7:9]
 
 [vmx:vars]
-os=junos
-api=netconf
-vendor=juniper
+ansible_connection=netconf
+ansible_network_os=junos
+ntc_api=netconf
+ntc_vendor=juniper
 
 [AMER:children]
 iosxe

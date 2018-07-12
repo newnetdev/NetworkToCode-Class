@@ -1,0 +1,38 @@
+  - name: CONFIGURING AAA SERVER GROUPS
+    hosts: csr1
+    gather_facts: no
+
+    tasks:
+      - name: DEPLOYING AAA GROUP AND IPS
+        ios_config:
+          parents:
+            - aaa group server tacacs+ TESTING
+          commands:
+            - server 1.2.3.4
+            - server 2.1.3.4
+            - server 3.2.1.4
+        tags: starting_config
+
+      - name: DEPLOYING AAA GROUP AND IPS
+        ios_config:
+          parents:
+            - aaa group server tacacs+ TESTING
+          commands:
+            - server 4.3.2.1
+            - server 1.2.3.4
+            - server 2.1.3.4
+            - server 3.2.1.4
+        tags: append_server
+
+      - name: DEPLOYING AAA GROUP AND IPS
+        ios_config:
+          before: no aaa group server tacacs+ TESTING
+          parents:
+            - aaa group server tacacs+ TESTING
+          commands:
+            - server 4.1.1.1
+            - server 1.2.3.4
+            - server 2.1.3.4
+            - server 3.2.1.5
+          match: exact
+        tags: replace_on_change

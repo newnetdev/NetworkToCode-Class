@@ -1,12 +1,16 @@
 ## Lab 13 - Issuing Ping Commands and Saving the Responses
 
-This lab will have you ping a certain amount of destinations from _each_ router.  Each of the resposnes will then be stored in its own file within a device sub-directory meaning we'll end up with a directory name of the hostname, e.g. "csr1" and "csr2" and in each directory will be files such as "to_8.8.8.8.txt" with the response from that router to that target IP.
+This lab will have you ping a certain amount of destinations from _each_ router.  
+Each of the resposnes will then be stored in its own file within a device sub-directory 
+meaning we'll end up with a directory name of the hostname, e.g. "csr1" and "csr2" and 
+in each directory will be files such as "to_8.8.8.8.txt" with the response from that router to that target IP.
 
 
 ##### Step 1
 
 
-It's not possible to keep typing "mkdir" to create directories manually especially when you want a directory per device.  This task will have you use the `file` module to auto-create a directory per device.
+It's not possible to keep typing "mkdir" to create directories manually especially when you want a directory per device.  
+This task will have you use the `file` module to auto-create a directory per device.
 
 
 Create a new playbook called `ping.yml` in the `ansible` directory.  
@@ -16,7 +20,6 @@ Create a new playbook called `ping.yml` in the `ansible` directory.
 
   - name: TEST REACHABILITY
     hosts: iosxe
-    connection: local
     gather_facts: no
 
     vars:
@@ -86,7 +89,7 @@ Add a task that'll loop over `target_ips` and send them to each device.
       - name: SEND PING COMMANDS TO DEVICES
         ios_command:
           commands: "ping vrf MANAGEMENT {{ item }} repeat 2"
-        with_items: "{{ target_ips }}"
+        loop: "{{ target_ips|flatten(levels=1) }}"
 ```
 
 Remember, this task plus `target_ips` is equivalent to the following:
@@ -95,7 +98,7 @@ Remember, this task plus `target_ips` is equivalent to the following:
       - name: SEND PING COMMANDS TO DEVICES
         ios_command:
           commands: "ping vrf MANAGEMENT {{ item }} repeat 2"
-        with_items:
+        loop:
           - "8.8.8.8"
           - "4.4.4.4"
           - "198.6.1.4"
@@ -151,7 +154,6 @@ The updated playbook will look like this:
 
   - name: TEST REACHABILITY
     hosts: iosxe
-    connection: local
     gather_facts: no
 
     vars:
@@ -171,7 +173,8 @@ The updated playbook will look like this:
         ios_command:
           commands: "ping vrf MANAGEMENT {{ item }} repeat 2"
         register: ping_responses
-        with_items: "{{ target_ips }}"
+        loop: "{{ target_ips|flatten(levels=1) }}"
+
 
       - name: VERIFY REGISTERED VARIABLE
         debug:
@@ -290,12 +293,12 @@ Use the `template` module to create the files.
         template: 
           src: basic-copy-2.j2
           dest: TBD
-        with_items: "{{ ping_responses.results }}"   
+        loop: "{{ ping_responses.results|flatten(levels=1) }}"
 ```
 
 ##### Step 12
 
-Create the template that accesses the response during each iteration of the `with_items`. 
+Create the template that accesses the response during each iteration of the `loop`. 
 
 Save the template as `basic-copy-2.j2`:
 
@@ -317,7 +320,7 @@ This is creating filenames such as `to_1.1.1.1.txt`:
         template: 
           src: basic-copy-2.j2
           dest: ./ping-responses/{{ inventory_hostname }}/to_{{ item.item }}.txt
-        with_items: "{{ ping_responses.results }}"   
+        loop: "{{ ping_responses.results|flatten(levels=1) }}"   
 ```
 
 ##### Step 14
@@ -355,7 +358,6 @@ Full and final playbook will look like this:
 
   - name: TEST REACHABILITY
     hosts: iosxe
-    connection: local
     gather_facts: no
 
     vars:
@@ -375,7 +377,7 @@ Full and final playbook will look like this:
         ios_command:
           commands: "ping vrf MANAGEMENT {{ item }} repeat 2"
         register: ping_responses
-        with_items: "{{ target_ips }}"
+        loop: "{{ target_ips|flatten(levels=1) }}"
 
       - name: VERIFY REGISTERED VARIABLE
         debug:
@@ -384,11 +386,11 @@ Full and final playbook will look like this:
       - name: TEST LOOPING OVER REGISTERED VARIABLE
         debug:
           var: "{{ item }}"
-        with_items: "{{ ping_responses.results }}"
+        loop: "{{ ping_responses.results|flatten(levels=1) }}"
 
       - name: SAVE OUTPUTS TO INDIVIDUAL FILES
         template:
           src: basic-copy-2.j2
           dest: ./ping-responses/{{ inventory_hostname }}/to_{{ item.item }}.txt
-        with_items: "{{ ping_responses.results }}"
+        loop: "{{ ping_responses.results|flatten(levels=1) }}"
 ```

@@ -2,13 +2,16 @@
 
 ### Task 1 - Multi-Platform SNMP Role
 
-In this task, you will learn how to create re-usable tasks called roles.  You will create a role for configuring SNMP communities on both IOS and NXOS.
+In this task, you will learn how to create re-usable tasks called roles.  
+You will create a role for configuring SNMP communities on both IOS and NXOS.
 
 ##### Step 1
 
-In order to create a new role, you need a `roles` sub-directory.  Create a roles directory within the `ansible` directory.
+In order to create a new role, you need a `roles` sub-directory.  
+Create a roles directory within the `ansible` directory.
 
-Now we need a directory that is equal to the role name.  Our role name is `snmp`, so now create a sub-directory called `snmp` within the `roles` directory.
+Now we need a directory that is equal to the role name.  
+Our role name is `snmp`, so now create a sub-directory called `snmp` within the `roles` directory.
 
 ##### Step 2
 
@@ -21,7 +24,7 @@ In the `main.yml`, add the following statement:
 ```yaml
 ---
 
-- include_tasks: "{{ os }}_deploy.yml"
+- include_tasks: "{{ ansible_network_os }}_deploy.yml"
 ```
 
 Notice how it's a single include statement.  This will execute a file called `nxos.yml` or `ios.yml`.
@@ -57,7 +60,7 @@ Use the Ansible `nxos_config` module to configure SNMP community strings.
   nxos_config:
     commands:
       - "snmp-server community {{ item.community }} group {{ item.group }}"
-  with_items: "{{ snmp_communities }}"
+  loop: "{{ snmp_communities|flatten(levels=1) }}"
 
 ```
 
@@ -74,7 +77,7 @@ Just like in the last task, open the `ios_deploy.yml` file and use Ansible `ios_
   ios_config:
     commands:
       - "snmp-server community {{ item.community }} {{ item.group }}"
-  with_items: "{{ snmp_communities }}"
+  loop: "{{ snmp_communities|flatten(levels=1) }}"
 ```
 
 ##### Step 6
@@ -92,7 +95,6 @@ Notice you can also select two groups from the inventory file using the followin
 
   - name: MULTI-PLATFORM SNMP
     hosts: iosxe,nxos
-    connection: local
     gather_facts: no
 
     roles:
@@ -104,7 +106,8 @@ Notice you can also select two groups from the inventory file using the followin
             group: network-admin
 ```
 
-Notice now as the playbook user, you no longer need to be aware of which tasks are actually performing the change or which vendor device is used as that's all taken care of within the role.
+Notice now as the playbook user, you no longer need to be aware of which tasks are actually performing the change 
+or which vendor device is used as that's all taken care of within the role.
 
 
 ##### Step 7
@@ -149,4 +152,6 @@ nxos-spine2                : ok=2    changed=1    unreachable=0    failed=0
 ```
 
 
-As you can see this is a very powerful concept and allows for the re-use of tasks. You _could_ have had each task in the role in the playbook, but now next time you need to update community strings, you can easily call this role.
+As you can see this is a very powerful concept and allows for the re-use of tasks. 
+You _could_ have had each task in the role in the playbook, but now next time you need to update community strings, 
+you can easily call this role.

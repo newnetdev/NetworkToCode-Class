@@ -1,0 +1,16 @@
+---
+
+  - name: DEPLOY & RESTORE CONFIGS
+    hosts: "{{ device }}"
+    gather_facts: no
+
+    tasks:
+
+      - name: DEPLOY CONFIGURATIONS
+        napalm_install_config:
+          provider: "{{ connection_details }}"
+          config_file: ./backups/{{ inventory_hostname }}.cfg
+          diff_file: ./diffs/{{ inventory_hostname }}.diffs
+          replace_config: true
+          commit_changes: true
+          dev_os: "{{ ansible_network_os }}"

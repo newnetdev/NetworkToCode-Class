@@ -1,0 +1,30 @@
+---
+
+  - name: BUILD PUSH JUNIPER
+    gather_facts: no
+    hosts: vmx
+
+    tasks:
+
+      - name: ENSURE DIRs created per device
+        file: path=/home/ntc/ansible//configs/{{ inventory_hostname }}/partials state=directory
+
+      - name: BUILD CONFIGS
+        template: src={{ item }} dest=configs/{{ inventory_hostname }}/partials/{{ item | basename }}.conf
+        with_fileglob:
+          - templates/*
+
+      - name: ASSEMBLE PARTIAL CONFIGS
+        assemble: src=configs/{{ inventory_hostname }}/partials dest=configs/{{ inventory_hostname }}/{{ inventory_hostname}}.conf
+
+      - name: PUSH CONFIGS
+        napalm_install_config:
+          hostname={{ inventory_hostname }}
+          username={{ ansible_user }}
+          password={{ ansible_ssh_pass }}
+          dev_os={{ ansible_network_os }}
+          config_file=configs/{{ inventory_hostname }}/{{ inventory_hostname}}.conf
+          diff_file=diffs/{{ inventory_hostname }}.diffs
+          commit_changes=true
+          replace_config=true
+        tags: push

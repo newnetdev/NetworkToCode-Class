@@ -1,0 +1,16 @@
+---
+
+  - name: PLAY 1 - DEPLOYING SNMP CONFIGURATIONS ON IOS
+    hosts: iosxe
+    connection: network_cli
+    gather_facts: no
+
+    tasks:
+
+      - name: TASK 1 in PLAY 1 - ENSURE SNMP COMMANDS EXIST ON IOS DEVICES
+        ios_config:
+          commands:
+            - snmp-server community ntc-course RO
+            - snmp-server community supersecret RW
+            - snmp-server location NYC_HQ_COLO
+            - snmp-server contact JOHN_SMITH

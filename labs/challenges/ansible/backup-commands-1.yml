@@ -1,7 +1,6 @@
   
   - name: BACKUP IOS CONFIGS
     hosts: iosxe
-    connection: local
     gather_facts: no
     tags: ios
 
@@ -9,7 +8,7 @@
 
       - name: BACKUP IOS CONFIGS
         ios_command:
-          commands: "{{ config[os] }}"
+          commands: "{{ config[ansible_network_os] }}"
         register: config_data
 
       - name: SAVE CONFIG TO FILE
@@ -19,7 +18,6 @@
 
   - name: BACKUP NXOS CONFIGS
     hosts: nxos
-    connection: local
     gather_facts: no
     tags: nxos
 
@@ -27,7 +25,7 @@
 
       - name: BACKUP NXOS CONFIGS
         nxos_command:
-          commands: "{{ config[os] }}"
+          commands: "{{ config[ansible_network_os] }}"
         register: config_data
 
       - name: SAVE CONFIG TO FILE
@@ -45,7 +43,7 @@
 
       - name: BACKUP VMX CONFIGS
         junos_command:
-          commands: "{{ config[os] }}"
+          commands: "{{ config[ansible_network_os] }}"
         register: config_data
 
       - name: SAVE CONFIG TO FILE
@@ -55,14 +53,13 @@
 
   - name: BACKUP EOS CONFIGS 
     hosts: eos
-    connection: local
     gather_facts: no
     tags: eos
 
     tasks:
       - name: BACKUP EOS CONFIGS
         eos_command:
-          commands: "{{ config[os] }}"
+          commands: "{{ config[ansible_network_os] }}"
         register: config_data
 
       - name: SAVE CONFIG TO FILE

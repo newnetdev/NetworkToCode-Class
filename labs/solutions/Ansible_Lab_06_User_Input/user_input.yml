@@ -1,0 +1,19 @@
+---
+- name: COLLECT USERNAME AND PASSWORD
+  hosts: csr1
+  gather_facts: no
+
+  vars_prompt:
+    - name: un
+      prompt: "Please enter the username"
+      private: no
+      default: ntc
+
+    - name: pwd
+      prompt: "Please enter the password"
+
+  tasks:
+
+    - name: DISPLAY THE USERNAME AND PASSWORD
+      debug:
+        msg: "The Username is {{ un }} and password is {{ pwd }}"

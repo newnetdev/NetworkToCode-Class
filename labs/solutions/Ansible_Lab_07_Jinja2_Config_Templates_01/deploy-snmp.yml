@@ -1,0 +1,20 @@
+---
+- name: GENERATE SNMP CONFIGS USING JINJA2 - AMERICAS
+  hosts: AMER
+  gather_facts: no
+
+  tasks:
+    - name: GENERATE IOS SNMP CONFIGURATIONS
+      template:
+        src: ios-snmp.j2
+        dest: "./configs/{{ inventory_hostname }}-snmp.cfg"
+
+- name: GENERATE SNMP CONFIGS USING JINJA2 - EMEA
+  hosts: EMEA
+  gather_facts: no
+
+  tasks:
+    - name: GENERATE JUNOS SNMP CONFIGURATIONS
+      template:
+        src: junos-snmp.j2
+        dest: "./configs/{{ inventory_hostname }}-snmp.cfg"

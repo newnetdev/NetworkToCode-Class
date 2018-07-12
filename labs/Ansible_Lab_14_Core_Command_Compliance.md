@@ -17,7 +17,6 @@ Use the following playbook to gather `show version` for the IOS devices.
 
   - name: IOS COMPLIANCE
     hosts: iosxe
-    connection: local
     gather_facts: no
 
 
@@ -94,7 +93,6 @@ Full and final playbook will look like this:
 
   - name: IOS COMPLIANCE
     hosts: iosxe
-    connection: local
     gather_facts: no
 
 

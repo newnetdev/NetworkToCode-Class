@@ -617,7 +617,6 @@ This play should be limited to the `vmx` group in the inventory file, so use the
 ---
 
   - name: BUILD PUSH JUNIPER
-    connection: local
     gather_facts: no
     hosts: vmx
 
@@ -844,7 +843,6 @@ The updated playbook should look like this:
 ---
 
   - name: BUILD PUSH JUNIPER
-    connection: local
     gather_facts: no
     hosts: vmx
 
@@ -948,7 +946,6 @@ Then add the following task to the `juniper-build.yml` playbook:
 ---
 
   - name: BUILD PUSH JUNIPER
-    connection: local
     gather_facts: no
     hosts: vmx
 
@@ -970,7 +967,7 @@ Then add the following task to the `juniper-build.yml` playbook:
           hostname={{ inventory_hostname }}
           username={{ ansible_user }}
           password={{ ansible_ssh_pass }}
-          dev_os={{ os }}
+          dev_os={{ ansible_network_os }}
           config_file=configs/{{ inventory_hostname }}/{{ inventory_hostname}}.conf
           diff_file=diffs/{{ inventory_hostname }}.diffs
           commit_changes=true

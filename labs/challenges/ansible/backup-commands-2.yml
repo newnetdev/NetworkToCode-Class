@@ -1,6 +1,5 @@
   - name: DUMP COMMAND OUTPUTS TO FILE
     hosts: iosxe
-    connection: local
     gather_facts: no
     tags: ios
 

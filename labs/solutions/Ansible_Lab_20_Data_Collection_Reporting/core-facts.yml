@@ -1,0 +1,121 @@
+---
+
+  - name: GATHER IOS FACTS
+    hosts: iosxe
+    gather_facts: no
+    tags: ios
+
+    tasks:
+
+      - file:
+          path: ./docs/csv/
+          state: directory
+
+      - file:
+          path: ./docs/text/
+          state: directory
+
+  - name: GATHER IOS FACTS
+    hosts: iosxe
+    gather_facts: no
+    tags: ios
+
+    tasks:
+      - name: GET FACTS
+        ios_facts:
+
+      - name: DUMP FACTS INTO TEXT FILE
+        template:
+          src: facts-text.j2
+          dest: ./docs/text/{{ inventory_hostname }}.md
+
+      - name: DUMP FACTS INTO CSV FILE
+        template:
+          src: facts-csv.j2
+          dest: ./docs/csv/{{ inventory_hostname }}.csv
+
+
+  - name: GATHER NXOS FACTS
+    hosts: nxos
+    gather_facts: no
+    tags: nxos
+
+    tasks:
+      - name: GET NXOS FACTS
+        nxos_facts:
+
+      - name: DUMP FACTS INTO FILE
+        template:
+          src: facts-text.j2
+          dest: ./docs/text/{{ inventory_hostname }}.md
+
+      - name: DUMP FACTS INTO FILE
+        template:
+          src: facts-csv.j2
+          dest: ./docs/csv/{{ inventory_hostname }}.csv
+
+
+  - name: GATHER EOS FACTS
+    hosts: eos
+    gather_facts: no
+    tags: eos
+
+    tasks:
+      - name: GET EOS FACTS
+        eos_facts:
+
+      - name: DUMP FACTS INTO FILE
+        template:
+          src: facts-text.j2
+          dest: ./docs/text/{{ inventory_hostname }}.md
+
+      - name: DUMP FACTS INTO FILE
+        template:
+          src: facts-csv.j2
+          dest: ./docs/csv/{{ inventory_hostname }}.csv
+
+  - name: GATHER JUNOS FACTS
+    hosts: vmx
+    connection: local
+    gather_facts: no
+    tags: junos
+
+    tasks:
+      - name: GET FACTS
+        junos_facts:
+
+      - name: DUMP FACTS INTO FILE
+        template:
+          src: facts-text.j2
+          dest: ./docs/text/{{ inventory_hostname }}.md
+
+      - name: DUMP FACTS INTO FILE
+        template:
+          src: facts-csv.j2
+          dest: ./docs/csv/{{ inventory_hostname }}.csv
+
+  - name: FINAL TASK
+    hosts: localhost
+    connection: local
+    gather_facts: no
+    tags: assemble
+
+    tasks:
+
+        - name: CREATE MASTER TEXT REPORT
+          assemble:
+            src: ./docs/text/
+            dest: ./docs/master-text.md
+            delimiter: "---"
+
+        - name: CREATE MASTER CSV REPORT
+          assemble:
+            src: ./docs/csv/
+            dest: ./docs/master-csv.csv
+
+        - name: INSERT COLUMNS INTO CSV REPORT
+          lineinfile:
+            path: ./docs/master-csv.csv
+            line: "Hostname,Vendor,Model,OS Version,Serial Number"
+            insertbefore: BOF
+            state: present
