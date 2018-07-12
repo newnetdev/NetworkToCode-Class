@@ -3176,6 +3176,51 @@ ok: [nxos-spine1] => {
 
 ---
 
+class: center, middle, title
+.footer-picture[<img src="data/media/Footer1.PNG" alt="Blue Logo" style="alight:middle;width:350px;height:60px;">]
+
+# Jinja Filters
+
+---
+
+# Jinja Filters
+.left-column[
+- Filters transform data within a parameter or Jinja Expression
+- Are used with the operator `|` like `hostname | upper` will transform 
+the hostname variable using the upper built-in filter to be uppercase
+- Custom filters are possible, and Ansible has built-in filters in addition to
+Jinja2 built-in filters
+]
+.right-column[
+```yaml
+    vars:
+      hostname: nycr1
+      device_ip: 10.1.1.1
+      bad_ip: X.10.Y.2
+
+    tasks:
+      - name: COVNERT HOSTNAME TO UPPERCASE
+        debug:
+          var: hostname | upper
+
+      - name: CHECK TO SEE IF A IP ADDR IS VALID
+        debug:
+          var: device_ip | ipaddr
+
+      - name: CHECK TO SEE IF A IP ADDR IS VALID
+        debug:
+          var: bad_ip | ipaddr
+``` 
+
+Sample Output:
+
+```
+"hostname | upper": "NYCR1"
+"device_ip | ipaddr": "10.1.1.1"
+"bad_ip | ipaddr": false
+```
+]
+---
 
 class: center, middle, title
 .footer-picture[<img src="data/media/Footer1.PNG" alt="Blue Logo" style="alight:middle;width:350px;height:60px;">]
@@ -3272,20 +3317,13 @@ loop: "{{ interface_dict|dict2items }}"
 
 # loop dict2items filter
 
-.left-column[
 * Iterate over a dictionary
 * Root keys are `item.key`
 * Values are `item.value`
-]
 
-.right-column[
 ```yaml
 ---
 
-  - name: ITERATE OVER DICT
-    hosts: iosxe
-    connection: network_cli
-    gather_facts: no
     vars:
       locations:
         amer: sjc-branch
@@ -3303,7 +3341,7 @@ loop: "{{ interface_dict|dict2items }}"
 "msg": "Regions are apac and Sites is hk-dc"
 "msg": "Regions are amer and Sites is sjc-branch"
 ```
-]
+
 
 ---
 
@@ -3316,51 +3354,6 @@ loop: "{{ interface_dict|dict2items }}"
 ---
 
 
-class: center, middle, title
-.footer-picture[<img src="data/media/Footer1.PNG" alt="Blue Logo" style="alight:middle;width:350px;height:60px;">]
-
-# Jinja Filters
-
----
-
-# Jinja Filters
-.left-column[
-- Filters transform data within a parameter or Jinja Expression
-- Are used with the operator `|` like `hostname | upper` will transform 
-the hostname variable using the upper built-in filter to be uppercase
-- Custom filters are possible, and Ansible has built-in filters in addition to
-Jinja2 built-in filters
-]
-.right-column[
-```yaml
-    vars:
-      hostname: nycr1
-      device_ip: 10.1.1.1
-      bad_ip: X.10.Y.2
-
-    tasks:
-      - name: COVNERT HOSTNAME TO UPPERCASE
-        debug:
-          var: hostname | upper
-
-      - name: CHECK TO SEE IF A IP ADDR IS VALID
-        debug:
-          var: device_ip | ipaddr
-
-      - name: CHECK TO SEE IF A IP ADDR IS VALID
-        debug:
-          var: bad_ip | ipaddr
-``` 
-
-Sample Output:
-
-```
-"hostname | upper": "NYCR1"
-"device_ip | ipaddr": "10.1.1.1"
-"bad_ip | ipaddr": false
-```
-]
----
 
 # Parsing Response Data
 
