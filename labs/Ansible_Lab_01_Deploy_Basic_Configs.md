@@ -239,7 +239,7 @@ After adding this new play, the full playbook will look like this:
 
       - name: TASK 1 in PLAY 2 - ENSURE SNMP COMMANDS EXIST ON JUNOS DEVICES
         junos_config:
-          lines:
+          commands:
             - set snmp community public authorization read-only
             - set snmp location NYC_HQ
             - set snmp contact JOHN_SMITH
