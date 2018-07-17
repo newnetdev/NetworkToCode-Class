@@ -105,7 +105,11 @@ if __name__ == "__main__":
 
 ##### Step 3
 
-Replace the hard-coded variables you just created with interactive prompts:
+Import `input` from `builtins` and replace the hard-coded variables you just created with interactive prompts:
+
+```python
+from builtins import input
+```
 
 ```python
     device = input("Please enter the hostname or IP: ")
