@@ -619,6 +619,7 @@ This play should be limited to the `vmx` group in the inventory file, so use the
   - name: BUILD PUSH JUNIPER
     gather_facts: no
     hosts: vmx
+    connection: local
 
     tasks:
 
@@ -845,6 +846,7 @@ The updated playbook should look like this:
   - name: BUILD PUSH JUNIPER
     gather_facts: no
     hosts: vmx
+    connection: local
 
     tasks:
 
@@ -948,6 +950,7 @@ Then add the following task to the `juniper-build.yml` playbook:
   - name: BUILD PUSH JUNIPER
     gather_facts: no
     hosts: vmx
+    connection: local
 
     tasks:
 
