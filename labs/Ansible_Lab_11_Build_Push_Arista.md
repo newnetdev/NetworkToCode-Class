@@ -505,6 +505,7 @@ This play should be limited to the `eos-leaves` group in the inventory file, so 
   - name: Build Configuration Files
     hosts: eos-leaves
     gather_facts: no
+    connection: local
 
     tasks:
       - name: BUILD CONFIGS
@@ -693,6 +694,7 @@ Then add the following task to the `build-push.yml` playbook:
   - name: Build Configuration Files
     hosts: eos-leaves
     gather_facts: no
+    connection: local
 
     tasks:
       - name: BUILD CONFIGS
