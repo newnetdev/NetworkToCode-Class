@@ -56,7 +56,7 @@ Add a variable in your playbook called `backup_command`.  It should be a diction
         eos: show run
         ios: show run
         nxos: show run
-        junos: show config
+        junos: show configuration
 
 ```
 
@@ -82,7 +82,7 @@ Add a variable to handle the login to the devices. Often referred to as a provid
         eos: show run
         ios: show run
         nxos: show run
-        junos: show config
+        junos: show configuration
       connection_details:
         username: "{{ ansible_user }}"
         password: "{{ ansible_ssh_pass }}"
@@ -112,7 +112,7 @@ All backup files should be saved locally inside the `backups` directory.
         eos: show run
         ios: show run
         nxos: show run
-        junos: show config
+        junos: show configuration
       connection_details:
         username: "{{ ansible_user }}"
         password: "{{ ansible_ssh_pass }}"
@@ -313,7 +313,7 @@ backup_command:
   eos: show run
   ios: show run
   nxos: show run
-  junos: show config
+  junos: show configuration
 connection_details:
   username: "{{ ansible_user }}"
   password: "{{ ansible_ssh_pass }}"
