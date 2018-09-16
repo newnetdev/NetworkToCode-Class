@@ -2176,7 +2176,7 @@ print(json.dumps(devices, indent=4))
 ---
 
 # Writing Scripts (cont'd)
-
+.left-column[
 ```python
 #! /usr/bin/env python
 
@@ -2192,9 +2192,9 @@ devices = [facts1, facts2, facts3]
 
 print(json.dumps(devices, indent=4))
 ```
-
-.ubuntu[
-```
+]
+.right-column[
+```json
 ntc@ntc:~$ python print_facts.py
 [
     {
@@ -2215,7 +2215,6 @@ ntc@ntc:~$ python print_facts.py
 ]
 ```
 ]
-
 
 ---
 
