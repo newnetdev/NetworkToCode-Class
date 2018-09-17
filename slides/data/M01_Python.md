@@ -2005,10 +2005,6 @@ class: ubuntu
 
 .left-column[
 ```
->>> import json
->>>
->>>
->>>
 >>>
 >>> vlans = [{'id': '10', 'name': 'USERS'}, {'id': '20', 'name': 'VOICE'}, {'id': '30', 'name': 'WLAN'}, {'id': '40', 'name': 'APP'}, {'id': '50', 'name': 'WEB'}]
 >>>
