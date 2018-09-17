@@ -1565,7 +1565,11 @@ You can optionally return a given object (string, list, dict, etc.) if the key d
 >>>  
 ```
 
+---
+# Lab Time
 
+- Lab 7 - Working with Dictionaries
+  - Learn how to work with dictionaries and their built-in methods while working in the Python Interactive Interpreter
 
 
 
@@ -1828,14 +1832,6 @@ export PYTHONPATH=$PYTHONPATH:/home/ntc/new/path
 - Modules are Standalone Python files used to share code between programs
 - Packages are a collection of modules
 
----
-
-# Lab Time
-
-- Lab 7 - Working with Dictionaries
-  - Learn how to work with dictionaries and their built-in methods while working in the Python Interactive Interpreter
-
-- Lab 8 - Using Python Modules
 
 ---
 
@@ -1903,6 +1899,8 @@ class: ubuntu
 ---
 
 # Lab Time
+
+- Lab 8 - Using Python Modules
 
 - Lab 9 - Exploring Nested Objects
   - List of dictionaries
@@ -2044,6 +2042,8 @@ class: ubuntu
 
 .right-column[
 ```
+>>> write_file = open("vlan_new.cfg","w")
+>>>
 >>> write_file.write("vlan " + vlans[0]["id"] + "\n")
 >>> write_file.write("  name  " + vlans[0]["name"] + "\n")
 >>>
