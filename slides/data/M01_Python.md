@@ -1322,7 +1322,7 @@ sw1
 >>>
 ```
 
-Dictionaries are preferred over list when storing contextual information and you need to progrmatically access individual elements.
+Dictionaries are preferred over list when storing contextual information and you need to programmatically access individual elements.
 
 
 ---

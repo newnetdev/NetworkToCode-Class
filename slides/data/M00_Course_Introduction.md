@@ -7,11 +7,11 @@ class: center, middle, title
 <br>
 <br>
 
-Jason Edelman
+Jason Belk
 
-jason@networktocode.com
+jason.belk@networktocode.com
 
-@jedelman8
+@JasonBelk3
 
 <br><br>
 
@@ -170,7 +170,6 @@ Everyone has a virtual topology that will be hosted in the public cloud for the 
 - 3 x vMX
 - 1 x Ubuntu Jump host
 
-**More Device Types for Ansible**
 
 
 ---
@@ -197,7 +196,7 @@ Everyone has a virtual topology that will be hosted in the public cloud for the 
 # Lab & Lecture Material
 
 - Access to Lecture / Lab Material
-  - Email your GitHub USER ID (not email address) to labs@networktocode.com
+  - Email your GitHub USER ID (not email address) to jason.belk@networktocode.com
   - If you don't have one, create one at https://github.com
 
 
