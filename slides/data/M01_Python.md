@@ -1322,7 +1322,7 @@ sw1
 >>>
 ```
 
-Dictionaries are preferred over list when storing contextual information and you need to progrmatically access individual elements.
+Dictionaries are preferred over list when storing contextual information and you need to programmatically access individual elements.
 
 
 ---
@@ -1565,7 +1565,11 @@ You can optionally return a given object (string, list, dict, etc.) if the key d
 >>>  
 ```
 
+---
+# Lab Time
 
+- Lab 7 - Working with Dictionaries
+  - Learn how to work with dictionaries and their built-in methods while working in the Python Interactive Interpreter
 
 
 
@@ -1828,14 +1832,6 @@ export PYTHONPATH=$PYTHONPATH:/home/ntc/new/path
 - Modules are Standalone Python files used to share code between programs
 - Packages are a collection of modules
 
----
-
-# Lab Time
-
-- Lab 7 - Working with Dictionaries
-  - Learn how to work with dictionaries and their built-in methods while working in the Python Interactive Interpreter
-
-- Lab 8 - Using Python Modules
 
 ---
 
@@ -1903,6 +1899,8 @@ class: ubuntu
 ---
 
 # Lab Time
+
+- Lab 8 - Using Python Modules
 
 - Lab 9 - Exploring Nested Objects
   - List of dictionaries
@@ -2007,10 +2005,6 @@ class: ubuntu
 
 .left-column[
 ```
->>> import json
->>>
->>>
->>>
 >>>
 >>> vlans = [{'id': '10', 'name': 'USERS'}, {'id': '20', 'name': 'VOICE'}, {'id': '30', 'name': 'WLAN'}, {'id': '40', 'name': 'APP'}, {'id': '50', 'name': 'WEB'}]
 >>>
@@ -2044,6 +2038,8 @@ class: ubuntu
 
 .right-column[
 ```
+>>> write_file = open("vlan_new.cfg","w")
+>>>
 >>> write_file.write("vlan " + vlans[0]["id"] + "\n")
 >>> write_file.write("  name  " + vlans[0]["name"] + "\n")
 >>>
@@ -2176,7 +2172,7 @@ print(json.dumps(devices, indent=4))
 ---
 
 # Writing Scripts (cont'd)
-
+.left-column[
 ```python
 #! /usr/bin/env python
 
@@ -2192,9 +2188,9 @@ devices = [facts1, facts2, facts3]
 
 print(json.dumps(devices, indent=4))
 ```
-
-.ubuntu[
-```
+]
+.right-column[
+```json
 ntc@ntc:~$ python print_facts.py
 [
     {
@@ -2215,7 +2211,6 @@ ntc@ntc:~$ python print_facts.py
 ]
 ```
 ]
-
 
 ---
 
@@ -2376,47 +2371,57 @@ class: middle, segue
 
 # Getting Started with Netmiko
 
+Starting a connection to the device by creating an object that maintains the ssh session:
 
 ```python
 >>> from netmiko import ConnectHandler
 >>>
->>> device = ConnectHandler(device_type='cisco_nxos', ip='n9k1', username='cisco', password='cisco')`
+>>> device = ConnectHandler(device_type='cisco_nxos', ip='nxos-spine1', username='ntc', password='ntc123')`
 >>>
 
 ```
 
 --
 
-We could have also done:
+Send a command to the device
 
 ```python
->>> args = dict(device_type='cisco_nxos', ip='n9k2', username='cisco', password='cisco')
->>>
->>> device = ConnectHandler(**args)
+>>> device.send_command('show hostname')
+u'nxos-spine1 '
 >>>
 ```
 
-Note: `**` as in `**args` is used to treat a dictionary (single object) as multiple key-value pairs.
 
 ---
 
 # Using Netmiko
 
-Send a command to the device
+In the interactive prompt, the ssh session may time out, verify if connection is live
+with the `is_alive()` method which returns True/False.
 
 ```python
->>> device.send_command_timing('show hostname')
-u'N9K1.cisconxapi.com '
+>>> print("Connecting to CSR1...")
+Connecting to CSR1...
+>>> csr1 = ConnectHandler(ip='csr1', username=user, password=pwd, device_type=d_type)
+>>> print("Connected to CSR1")
+Connected to CSR1
+>>> csr1_device_check = csr1.is_alive()
+>>> print "Connected to device is verified " + str(csr1_device_check)
+Connected to device is verified True
 >>>
 ```
 
-Send a command to the device and wait for a string (prompt).
-
-Default waits for the previous prompt string to return.
+To reconnect if the session is lost use the `.establish_connection()` method
 
 ```python
->>> device.send_command('copy run start')
-# output omitted
+>>> csr1.disconnect()
+>>> csr1.is_alive()
+False
+>>> csr1.establish_connection()
+
+u''
+>>> csr1.is_alive()
+True
 >>>
 ```
 
@@ -2425,34 +2430,34 @@ Default waits for the previous prompt string to return.
 
 # Using netmiko (cont'd)
 
-Enter config mode
+Issuing Configuration changes, use send_config_set with a list of commands.
+Netmko will automatically enter and exit config mode 
 
 ```python
->>> device.config_mode()
-u'config term\nEnter configuration commands, one per line. End with CNTL/Z.\nN9K1(config)# '
-```
-
-
-Send configuration mode command (must using timing here)
-
-```python
->>> device.send_command_timing('hostname NEW_HOSTNAME')
-u'NEW_HOSTNAME(config)# '
+>>> commands = ['interface Loopback100', 'ip address 10.200.1.20 255.255.255.0']
+>>> output = csr1.send_config_set(commands)
+>>> # prints commands sent
+... print(output)
+config term
+Enter configuration commands, one per line.  End with CNTL/Z.
+csr1(config)#interface Loopback100
+csr1(config-if)#ip address 10.200.1.20 255.255.255.0
+csr1(config-if)#end
+csr1#
 >>>
 ```
 
-Same result can be achieved specifying `expect_string` within `send_command`
+Or you can send configuration commands from a file
 
 ```python
->>> device.send_command('hostname NEWER_HOSTNAME', expect_string='NEWER_HOSTNAME')
-u'NEWER_HOSTNAME(config)# '
+>>> csr1 = ConnectHandler(host='csr1', username='ntc', password='ntc123', device_type='cisco_ios')
+>>> csr2 = ConnectHandler(host='csr2', username='ntc', password='ntc123', device_type='cisco_ios')
 >>>
-```
-
-Exit configuration mode
-
-```python
-device.exit_config_mode()
+>>> csr1.send_config_from_file("snmp_communities.txt")
+u'config term\nEnter configuration commands, one per line.  End with CNTL/Z.\ncsr1(config)#snmp-server community networktocode ro\ncsr1(config)#snmp-server community public ro\ncsr1(config)#snmp-server community private rw\ncsr1(config)#snmp-server community supersecret rw\ncsr1(config)#end\ncsr1#'
+>>> csr2.send_config_from_file("snmp_communities.txt")
+u'config term\nEnter configuration commands, one per line.  End with CNTL/Z.\ncsr2(config)#snmp-server community networktocode ro\ncsr2(config)#snmp-server community public ro\ncsr2(config)#snmp-server community private rw\ncsr2(config)#snmp-server community supersecret rw\ncsr2(config)#end\ncsr2#'
+>>>
 ```
 
 ---
@@ -2462,7 +2467,7 @@ device.exit_config_mode()
 Storing & Printing a command response
 
 ```python
->>> vlans = device.send_command_expect('show vlan')
+>>> vlans = device.send_command('show vlans')
 >>>
 >>> print(vlans)
 
@@ -2487,17 +2492,6 @@ VLAN Name                             Status    Ports
 # shortened for brevity
 ```
 
----
-
-# Using netmiko (cont'd)
-
-Check your current prompt
-
-```python
->>> device.find_prompt()
-u'NEW_HOSTNAME#'
->>>
-```
 
 ---
 
@@ -2532,9 +2526,10 @@ u'NEW_HOSTNAME#'
 # Lab Time
 
 - Lab 12 - Exploring Netmiko
-    - Choose either IOS or JUNOS
 
 - Lab 13 -  Use Netmiko to interactively communicate with a network switch
+
+- Lab 14 - Deploying Configurations with Netmiko
 
 ---
 
@@ -3013,6 +3008,7 @@ NAME: db
 - Lab 16 - Getting Started with For Loops
   - You will access and print elements as you loop through lists and dictionaries
   - You will iterate through key-value pairs that are commands in the form of feature/command, and using the feature name (command key), you will access their configuration values values from another dictionary, to build a list of commands to send to a network device.
+- Lab 17 Re-factoring Code Using Loops
 
 ---
 
@@ -3292,6 +3288,7 @@ Duplex: auto
 # Lab Time
 
 - Lab 18 - Getting Started with Functions
+- Lab 19 - Re-factoring Code with Functions
 
 
 

@@ -267,10 +267,10 @@ class: middle, segue
   tasks:
 
     - name: ensure VLAN 10 exists
-      nxos_vlan: vlan_id=10 name=web_vlan host={{ inventory_hostname }}
+      nxos_vlan: vlan_id=10 name=web_vlan
 
     - name: ensure VLAN 10 does NOT exist
-      nxos_vlan: vlan_id=10 name=web_vlan host={{ inventory_hostname }} state=absent
+      nxos_vlan: vlan_id=10 name=web_vlan state=absent
 ```
 ]]
 
@@ -3232,10 +3232,9 @@ class: center, middle, title
 # Iterators - Loop
 
 - `loop` is the keyword to iterate over lists and dictionaries
-- to iterate over a list use the `flatten` filter like this:
 
 ```yaml
-loop: "{{ device_list|flatten(levels=1) }}" 
+loop: "{{ device_list }}" 
 ```
 
 - to iterate over a dictionary use either the `dict2items` filters with `loop`
@@ -3254,7 +3253,7 @@ loop: "{{ interface_dict|dict2items }}"
 ---
 
 
-# loop with flatten filter
+# loop 
 
 * Iterate over a list of strings
 * `item` is built-in variable equal to an element of the list as you're iterating
@@ -3277,7 +3276,7 @@ loop: "{{ interface_dict|dict2items }}"
         ios_command:
           commands:
             "{{ item }}"
-        loop: "{{ commands|flatten(levels=1) }}"
+        loop: "{{ commands }}"
 ```
 
 ---
@@ -3308,7 +3307,7 @@ loop: "{{ interface_dict|dict2items }}"
         ios_command:
           commands:
             "{{ item.command }}"
-        loop: "{{ commands|flatten(levels=1) }}"
+        loop: "{{ commands }}"
 ```
 
 

@@ -170,7 +170,6 @@ Everyone has a virtual topology that will be hosted in the public cloud for the 
 - 3 x vMX
 - 1 x Ubuntu Jump host
 
-**More Device Types for Ansible**
 
 
 ---
