@@ -39,7 +39,7 @@ class: ubuntu
 - Prompt the user for data that can then be stored as a variable and used in the script
 
 
-``` python
+``` 
 
 number_of_routers = input('Enter the number of routers in the mesh:')
 
