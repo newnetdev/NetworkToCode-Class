@@ -7,11 +7,11 @@ class: center, middle, title
 <br>
 <br>
 
-Jason Belk
+Jason Edelman
 
-jason.belk@networktocode.com
+jason@networktocode.com
 
-@JasonBelk3
+@jedelman8
 
 <br><br>
 
@@ -196,7 +196,7 @@ Everyone has a virtual topology that will be hosted in the public cloud for the 
 # Lab & Lecture Material
 
 - Access to Lecture / Lab Material
-  - Email your GitHub USER ID (not email address) to jason.belk@networktocode.com
+  - Email your GitHub USER ID (not email address) to labs@networktocode.com
   - If you don't have one, create one at https://github.com
 
 
