@@ -36,11 +36,11 @@ In the Headers tab, add two header options:
 
 Set both to `application/yang-data+json`
 
-> NOTE: The picture is incorrect.  Use what is documented in the lab guide for the headers.
+> NOTE: The URL IP picture is incorrect.  
 
 These headers are specific to RESTCONF. They mean we are going to be using JSON data, but it is JSON data that adheres to YANG models.
 
-![Headers](images/postman/headers.png)
+![Headers](images/postman/headers_2.png)
 
 ##### Step 5
 
@@ -58,7 +58,10 @@ Click the **Send** button to make the HTTP request.
 
 ##### Step 7
 
-If it fails, click the URL in the bottom pane.  You'll be prompted to accept the security risk of using a self-signed certificate.  You'll be prompted to also login - you can click cancel.  There is no need to login.  Once you get prompted to login, you can move to the next step.
+If it fails, open `https://YOUR_CSR1_IP`in the bottom pane.  You'll be prompted to accept the security risk of using a self-signed certificate.  
+You'll be prompted to also login - you can click cancel.  There is no need to login.  Once you get prompted to login, you can move to the next step.
+
+![Headers](images/postman/https.png)
 
 ##### Step 8
 
