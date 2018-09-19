@@ -58,7 +58,10 @@ Click the **Send** button to make the HTTP request.
 
 ##### Step 7
 
-If it fails, click the URL in the bottom pane.  You'll be prompted to accept the security risk of using a self-signed certificate.  You'll be prompted to also login - you can click cancel.  There is no need to login.  Once you get prompted to login, you can move to the next step.
+If it fails, open `https://YOUR_CSR1_IP`in the bottom pane.  You'll be prompted to accept the security risk of using a self-signed certificate.  
+You'll be prompted to also login - you can click cancel.  There is no need to login.  Once you get prompted to login, you can move to the next step.
+
+![Headers](images/postman/https.png)
 
 ##### Step 8
 
