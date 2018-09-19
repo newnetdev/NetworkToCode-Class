@@ -6,5 +6,4 @@ Do the lab(s) as directed by your instructor.  This is determined based on your 
 
 **23.2** [Exploring Arista eAPI](Lab_23_2_Postman_eAPI.md)
 
-**23.3** [Exploring the NetBox API]
 

@@ -36,11 +36,11 @@ In the Headers tab, add two header options:
 
 Set both to `application/yang-data+json`
 
-> NOTE: The picture is incorrect.  Use what is documented in the lab guide for the headers.
+> NOTE: The URL IP picture is incorrect.  
 
 These headers are specific to RESTCONF. They mean we are going to be using JSON data, but it is JSON data that adheres to YANG models.
 
-![Headers](images/postman/headers.png)
+![Headers](images/postman/headers_2.png)
 
 ##### Step 5
 
