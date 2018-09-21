@@ -1,0 +1,3 @@
+- name: IMPORTED TASK
+  debug:
+    msg: "You can have Tasks from YAML files outside your playbook"

@@ -1,0 +1,18 @@
+---
+# tasks file for ntc_role
+# roles are not plays so do not have hosts only tasks
+  # - name: Build Configuration Files
+  #   hosts: eos-leaves
+  #   gather_facts: no
+
+    # tasks:
+  - file:
+      path: ./configs/
+      state: directory
+
+  - name: BUILD CONFIGS
+    template: src=templates/ntp.j2 dest=configs/{{inventory_hostname }}-ntc-role.conf
+
+# vault password is ntc123
+  - name: DECRYPT A ROLE VAULT PASSWORD
+    debug: var=mysecret

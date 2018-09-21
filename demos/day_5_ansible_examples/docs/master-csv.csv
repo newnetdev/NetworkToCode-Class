@@ -1,0 +1,13 @@
+Hostname,Vendor,Model,OS Version,Serial Number
+csr1,cisco,CSR1000V,16.06.02,9KIBQAQ3OPE
+csr2,cisco,CSR1000V,16.06.02,9KIBQAQ3OPE
+csr3,cisco,CSR1000V,16.06.02,9KIBQAQ3OPE
+eos-leaf1,arista,vEOS,4.20.0F-7058194.bloomingtonrel (engineering build),UNKNOWN
+eos-leaf2,arista,vEOS,4.20.0F-7058194.bloomingtonrel (engineering build),UNKNOWN
+eos-spine1,arista,vEOS,4.20.0F-7058194.bloomingtonrel (engineering build),UNKNOWN
+eos-spine2,arista,vEOS,4.20.0F-7058194.bloomingtonrel (engineering build),UNKNOWN
+nxos-spine1,cisco,NX-OSv Chassis,7.3(1)D1(1) [build 7.3(1)D1(0.10)],TM602622D6B
+nxos-spine2,cisco,NX-OSv Chassis,7.3(1)D1(1) [build 7.3(1)D1(0.10)],TM604B14E3B
+vmx7,juniper,vmx,15.1F4.15,VMXc4
+vmx8,juniper,vmx,15.1F4.15,VMX85
+vmx9,juniper,vmx,15.1F4.15,VMX23

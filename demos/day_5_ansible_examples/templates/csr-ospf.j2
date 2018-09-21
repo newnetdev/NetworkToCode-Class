@@ -1,0 +1,62 @@
+!
+ip domain name {{ domain_name }}
+!
+{% for feature in features %}
+{% if feature.enabled %}
+{{ feature.cmd }}
+{% else %}
+no {{ feature.cmd }}
+{% endif %}
+{% endfor %}
+!
+vrf definition MANAGEMENT
+ !
+ address-family ipv4
+ exit-address-family
+ !
+ address-family ipv6
+ exit-address-family
+!
+!
+{% for interface in interfaces %}
+interface {{ interface.name }}
+{% if interface.get('description') %}
+ description {{ interface.description }}
+{% endif %}
+{% if interface.get('vrf') %}
+ vrf forwarding {{ interface.vrf }}
+{% endif %}
+{% if interface.get('ip') %}
+ ip address {{ interface.get('ip') }} {{ interface.get('mask') }}
+{% endif %}
+{% if interface.get('cdp') %}
+ cdp enable
+{% endif %}
+{% if interface.get('state') == "up" %}
+ no shutdown
+{% elif interface.get('state') == "down" %}
+ shutdown
+{% endif %}
+!
+{% endfor %}
+!
+router ospf {{ ospf.instance_tag }}
+ router-id {{ router_id }}
+{% if ospf.log_adj %}
+ log-adjacency-changes
+{% endif %}
+{% for interface in interfaces %}
+{% if interface.name in ospf_interfaces %}
+ network {{ interface.get('ip')}} 0.0.0.0 area {{ ospf.area }}
+{% endif %}
+{% endfor %}
+!
+ip route vrf MANAGEMENT 0.0.0.0 0.0.0.0 {{ mgmt_default_route_next_hop }}
+!
+!
+snmp-server community {{ snmp.ro_comm }} RO
+snmp-server location {{ snmp.location }}
+snmp-server contact {{ snmp.contact }}
+!
+!
+end

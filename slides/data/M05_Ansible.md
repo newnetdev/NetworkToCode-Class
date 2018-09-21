@@ -985,7 +985,6 @@ csr2
 
 .big-code[
 ```bash
-.
 ├── inventory
 ├── pb.yml
 ├── group_vars
@@ -1750,7 +1749,7 @@ ansible-playbook -i inventory playbook.yml --limit nxos,eos,csr1
 class: middle, segue
 
 # Introduction to NAPALM
-### Managing Device Configuration (includes re-storing configurations)
+### Managing Device Configuration (includes restoring configurations)
 
 
 

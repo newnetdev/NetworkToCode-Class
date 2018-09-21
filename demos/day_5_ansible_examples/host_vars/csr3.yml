@@ -1,0 +1,39 @@
+---
+
+# Possible other content from previous labs
+
+interfaces:
+  - name: Loopback100
+    state: up
+    ip: 3.3.3.3
+    mask: 255.255.255.255
+    description: OSPF ROUTER ID
+  - name: GigabitEthernet1
+    state: up
+    ip: 10.0.0.53
+    mask: 255.255.255.0
+    description: MANAGEMENT
+    cdp: true
+    vrf: MANAGEMENT
+  - name: GigabitEthernet2
+    state: up
+    ip: 10.254.13.3
+    mask: 255.255.255.0
+    description: CONNECTS_CSR3
+    cdp: true
+  - name: GigabitEthernet3
+    state: up
+    ip: 10.254.23.3
+    mask: 255.255.255.0
+    description: CONNECTS_CSR2
+    cdp: true
+  - name: GigabitEthernet4
+    state: down
+    cdp: false
+
+router_id: 3.3.3.3
+
+ospf_interfaces:
+  - GigabitEthernet2
+  - GigabitEthernet3
+  - Loopback100

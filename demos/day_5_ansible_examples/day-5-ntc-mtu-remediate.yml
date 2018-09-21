@@ -1,0 +1,51 @@
+---
+
+  - name: IOS COMPLIANCE
+    hosts: csr1
+    connection: local
+    gather_facts: no
+    tags: ios
+
+    vars:
+      # i-action: define backup_command in inventory file 
+      # all:vars and vmx:vars only 
+      connection_details:
+        username: "{{ ansible_user }}"
+        password: "{{ ansible_ssh_pass }}"
+        host: "{{ inventory_hostname }}"
+        
+    tasks:
+
+      - name: ENSURE DIRECTORY FOR EACH DEVICE EXISTS
+        file:
+          path: ./commands/{{ inventory_hostname }}/
+          state: directory
+ 
+      - name: IOS show version
+        ios_command:
+          commands: show interfaces
+        register: output
+
+      - copy:
+          content: "{{ output['stdout'][0] }}"
+          dest: ./commands/{{ inventory_hostname }}/interfaces.txt
+
+      - name: PARSE DATA
+        ntc_show_command:
+          connection: offline
+          file: ./commands/{{ inventory_hostname }}/interfaces.txt
+          provider: "{{ connection_details }}" 
+          platform: "{{ ntc_vendor }}_{{ ansible_network_os }}"       
+          template_dir: "/etc/ntc/ansible/library/ntc-ansible/ntc-templates/templates"
+          command: 'show interfaces' 
+        register: show_data #  {"show_data": "response": [] }
+
+     
+      - name: REMEDIATE CONFIGS
+        ios_config:
+          parents: 
+            - "interface {{ item['interface'] }}"
+          commands:
+            - mtu 9200
+        with_items: "{{ show_data.response }}"
+        when: "item['mtu'] != 9200 and item['interface'].startswith('Gig') and item['interface'] != 'GigabitEthernet1'"

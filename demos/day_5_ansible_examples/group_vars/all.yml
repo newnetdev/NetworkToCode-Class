@@ -1,0 +1,29 @@
+---
+snmp: 
+  contact: JASON
+  location: JAPAN
+  ro_strings:
+    - public 
+    - sgpublic 
+    - public123 
+
+  rw_strings:
+    - privates 
+    - secure 
+
+vlans:
+- id: 10
+  name: web_vlan
+- id: 20
+- id: 30
+  name: db_vlan
+
+backup_command:
+  eos: show run
+  ios: show run
+  nxos: show run
+  junos: show config
+connection_details:
+  username: "{{ ansible_user }}"
+  password: "{{ ansible_ssh_pass }}"
+  host: "{{ inventory_hostname }}"

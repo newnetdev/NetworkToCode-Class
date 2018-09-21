@@ -1,0 +1,6 @@
+routing-options {
+    static {
+        route 0.0.0.0/0 next-hop {{ mgmt_default_route_next_hop }};
+    }
+    router-id {{ router_id }};
+}

@@ -1,0 +1,15 @@
+- name: IOS TO FILE OUTPUT
+  hosts: csr1
+  connection: network_cli
+  gather_facts: no
+
+  tasks:
+      - name: SEND IOS COMAND
+        ios_command: 
+          commands: "show version"
+        register: sh_ver
+        
+      - name: TO FILE
+        copy:
+          content: "{{ sh_ver }}"
+          dest: "./show_ver.txt"

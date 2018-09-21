@@ -1,0 +1,28 @@
+!
+hostname {{ inventory_hostname }}
+!
+!
+snmp-server location {{ snmp['location'] }}
+snmp-server contact {{ snmp.contact }}
+
+{% set ro_strings = snmp['ro_strings'] %}
+
+snmp-server community GLOBAL_NMS RO 
+{% for ro_string in ro_strings %}
+snmp-server community {{ ro_string }} RO
+{% endfor %}
+
+
+{% for rw_string in snmp['rw_strings'] %}
+snmp-server community {{ rw_string }} RO
+{% endfor %}
+!
+{% for vlan in vlans %}
+vlan {{ vlan['id'] }}
+{% if vlan.get('name') %}
+  name {{ vlan['name'] }}
+{% endif %}
+{% endfor %}
+
+
+

@@ -1,0 +1,18 @@
+---
+
+  - name: GATHER IOS FACTS
+    hosts: iosxe
+    connection: local
+    gather_facts: no
+    tags: ios_play
+
+    tasks:
+      - name: GET FACTS
+        ios_facts:
+        register: ios_facts 
+
+      - debug:
+          var: ios_facts['ansible_facts']['ansible_net_version']
+
+      - debug:
+          var: ansible_net_version
