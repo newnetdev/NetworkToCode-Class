@@ -1,0 +1,91 @@
+---
+
+  - name: GATHER IOS FACTS
+    hosts: localhost
+    connection: local
+    gather_facts: no
+    tags: dir
+
+    tasks:
+
+      - file: 
+          path: ./docs/text/
+          state: directory
+
+  - name: GATHER IOS FACTS
+    hosts: iosxe
+    connection: local
+    gather_facts: no
+    tags: ios
+
+    tasks:
+      - name: GET FACTS
+        ios_facts:
+        tags: ios_facts
+
+      - name: DUMP FACTS INTO TEXT FILE
+        template:
+          src: facts-text.j2
+          dest: ./docs/text/{{ inventory_hostname }}.md
+        tags: ios_facts  
+  
+
+  - name: GATHER NXOS FACTS
+    hosts: nxos
+    connection: local
+    gather_facts: no
+    tags: nxos
+
+    tasks:
+      - name: GET NXOS FACTS
+        nxos_facts:
+
+      - name: DUMP FACTS INTO FILE
+        template:
+          src: facts-text.j2
+          dest: ./docs/text/{{ inventory_hostname }}.md
+
+
+  - name: GATHER EOS FACTS
+    hosts: eos
+    connection: local
+    gather_facts: no
+    tags: eos
+
+    tasks:
+      - name: GET EOS FACTS
+        eos_facts:
+
+      - name: DUMP FACTS INTO FILE
+        template:
+          src: facts-text.j2
+          dest: ./docs/text/{{ inventory_hostname }}.md
+
+  - name: GATHER JUNOS FACTS
+    hosts: vmx
+    connection: local
+    gather_facts: no
+    tags: junos
+
+    tasks:
+      - name: GET FACTS
+        junos_facts:
+
+      - name: DUMP FACTS INTO FILE
+        template:
+          src: facts-text.j2
+          dest: ./docs/text/{{ inventory_hostname }}.md
+  
+  - name: FINAL TASK
+    hosts: localhost
+    connection: local
+    gather_facts: no
+    tags: assemble
+
+    tasks:
+        - name: CREATE MASTER TEXT REPORT
+          assemble:
+            src: ./docs/text/
+            dest: ./docs/master-text.md
+            delimiter: "---"
+

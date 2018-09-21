@@ -1,0 +1,23 @@
+domain_name: ntc.com
+
+
+username: admin
+priv: 15
+role: network-admin
+secret: $1$7yUmRiH6$9F1Io4WMwAWSc2GMjeK3h/
+
+
+vlans:
+  - { id: 20, name: app }
+  - { id: 30, name: db }
+  - { id: 40, name: test }
+  - { id: 50, name: misc }
+
+
+interfaces:
+  - { name: Ethernet1, description: description uplink to spine, state: up, uplink: true }
+  - { name: Ethernet2, description: description uplink to spine, state: up, uplink: true }
+  - { name: Ethernet3, state: down }
+  - { name: Ethernet4, state: down }
+  - { name: Ethernet5, state: down, mode: access }
+  - { name: Ethernet6, state: down, mode: access }

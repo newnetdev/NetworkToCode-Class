@@ -1,0 +1,18 @@
+---
+
+interfaces:
+  - { name: ge-0/0/0, state: down, description: 'UNUSED' }
+  - { name: ge-0/0/1, state: up, ip: 10.254.23.2, mask: 24, description: 'CONNECTS_vmx7'}
+  - { name: ge-0/0/2, state: up, ip: 10.254.12.2, mask: 24, description: 'CONNECTS_vmx8'}
+  - { name: fxp0, state: up, ip: 10.0.0.39, mask: 24, description: 'MANAGEMENT'}
+  - { name: lo0, state: up, ip: 2.2.2.2, mask: 32, description: 'OSPF_ROUTER_ID' }
+
+router_id: 2.2.2.2
+
+ospf:
+  - area: 0.0.0.0
+    interfaces:
+      - ge-0/0/1
+      - ge-0/0/2
+      - lo0
+

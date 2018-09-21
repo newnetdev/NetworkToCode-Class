@@ -1,0 +1,17 @@
+---
+
+- hosts: csr1
+  gather_facts: no
+
+  pre_tasks:
+    - name: PRE TASKS
+      debug:
+        msg: "You can have Tasks before your tasks in pre_tasks"
+
+  roles:
+    - ntc_role
+
+  post_tasks: 
+    - name: POST TASKS
+      debug:
+        msg: "You can have Tasks before your tasks in post_tasks"

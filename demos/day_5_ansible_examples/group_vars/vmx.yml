@@ -1,0 +1,12 @@
+---
+
+mgmt_default_route_next_hop: 10.0.0.2
+
+snmp:
+  location: NYC_NY_DC1
+  contact: NETWORK_ADMIN
+  communities:
+    - string: networktocode
+      auth: read-only
+    - string: public
+      auth: read-only

@@ -1,0 +1,15 @@
+---
+
+- hosts: csr1
+  gather_facts: no
+
+  tasks:
+  - include_vars:
+       file: vars/standalone_var_file.yml
+       name: vars_from_file
+
+  - name: VARS FROM A FILE
+    debug: var=vars_from_file
+
+  - name: IMPORTING TASKS FROM A FILEda
+    import_tasks: tasks/not_a_playbook_task.yml
