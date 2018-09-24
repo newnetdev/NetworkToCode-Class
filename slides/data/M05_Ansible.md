@@ -4736,16 +4736,16 @@ LOCAL INTERFACE:    Ethernet7
 
 ```yaml
 ---
-
   - name: DC P1
     hosts: eos-spine1
     connection: network_cli
     gather_facts: no
-
     tasks:
-      - eos_facts: host={{ inventory_hostname }}
-      - template: src=neighbors-table.j2 dest=files/neighbors-table.md
-
+      - ntc_show_command:
+          provider: "{{ ntc_provider }}"
+          command: "show lldp neighbor"
+        register: ntc_neighbors
+      - template: src=neighbors.j2 dest=files/neighbors-table.md
 ```
 
 
@@ -5147,6 +5147,7 @@ class: middle, segue
     ]
 }
 ```
+]
 ]
 
 
