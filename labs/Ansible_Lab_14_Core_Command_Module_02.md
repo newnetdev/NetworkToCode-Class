@@ -1,4 +1,4 @@
-## Lab 13 - Issuing Ping Commands and Saving the Responses
+## Lab 14 - Issuing Ping Commands and Saving the Responses
 
 This lab will have you ping a certain amount of destinations from _each_ router.  
 Each of the resposnes will then be stored in its own file within a device sub-directory 
