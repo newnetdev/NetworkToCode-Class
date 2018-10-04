@@ -89,7 +89,7 @@ Add a task that'll loop over `target_ips` and send them to each device.
       - name: SEND PING COMMANDS TO DEVICES
         ios_command:
           commands: "ping vrf MANAGEMENT {{ item }} repeat 2"
-        loop: "{{ target_ips|flatten(levels=1) }}"
+        loop: "{{ target_ips }}"
 ```
 
 Remember, this task plus `target_ips` is equivalent to the following:
@@ -173,7 +173,7 @@ The updated playbook will look like this:
         ios_command:
           commands: "ping vrf MANAGEMENT {{ item }} repeat 2"
         register: ping_responses
-        loop: "{{ target_ips|flatten(levels=1) }}"
+        loop: "{{ target_ips|flatten }}"
 
 
       - name: VERIFY REGISTERED VARIABLE
@@ -293,7 +293,7 @@ Use the `template` module to create the files.
         template: 
           src: basic-copy-2.j2
           dest: TBD
-        loop: "{{ ping_responses.results|flatten(levels=1) }}"
+        loop: "{{ ping_responses.results }}"
 ```
 
 ##### Step 12
@@ -320,7 +320,7 @@ This is creating filenames such as `to_1.1.1.1.txt`:
         template: 
           src: basic-copy-2.j2
           dest: ./ping-responses/{{ inventory_hostname }}/to_{{ item.item }}.txt
-        loop: "{{ ping_responses.results|flatten(levels=1) }}"   
+        loop: "{{ ping_responses.results }}"   
 ```
 
 ##### Step 14
@@ -377,7 +377,7 @@ Full and final playbook will look like this:
         ios_command:
           commands: "ping vrf MANAGEMENT {{ item }} repeat 2"
         register: ping_responses
-        loop: "{{ target_ips|flatten(levels=1) }}"
+        loop: "{{ target_ips }}"
 
       - name: VERIFY REGISTERED VARIABLE
         debug:
@@ -386,11 +386,11 @@ Full and final playbook will look like this:
       - name: TEST LOOPING OVER REGISTERED VARIABLE
         debug:
           var: "{{ item }}"
-        loop: "{{ ping_responses.results|flatten(levels=1) }}"
+        loop: "{{ ping_responses.results }}"
 
       - name: SAVE OUTPUTS TO INDIVIDUAL FILES
         template:
           src: basic-copy-2.j2
           dest: ./ping-responses/{{ inventory_hostname }}/to_{{ item.item }}.txt
-        loop: "{{ ping_responses.results|flatten(levels=1) }}"
+        loop: "{{ ping_responses.results }}"
 ```
