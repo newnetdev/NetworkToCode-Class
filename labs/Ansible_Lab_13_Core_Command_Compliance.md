@@ -1,4 +1,4 @@
-## Lab 14 - Continuous Compliance with IOS
+## Lab 13 - Continuous Compliance with IOS
 
 This lab introduces a methodology to perform real-time validation and compliance of network configuration and operational state.
 
