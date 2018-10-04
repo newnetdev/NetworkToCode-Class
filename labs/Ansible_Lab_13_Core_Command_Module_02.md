@@ -173,7 +173,7 @@ The updated playbook will look like this:
         ios_command:
           commands: "ping vrf MANAGEMENT {{ item }} repeat 2"
         register: ping_responses
-        loop: "{{ target_ips|flatten }}"
+        loop: "{{ target_ips }}"
 
 
       - name: VERIFY REGISTERED VARIABLE
