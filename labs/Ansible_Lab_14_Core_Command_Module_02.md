@@ -267,7 +267,7 @@ Add a debug task to loop over `ping_responses.results` proving how it's possible
       - name: TEST LOOPING OVER REGISTERED VARIABLE
         debug: 
           var: "{{ item }}"    
-        with_items: "{{ ping_responses.results }}"  
+        loop: "{{ ping_responses.results }}"  
 
  
 ```
