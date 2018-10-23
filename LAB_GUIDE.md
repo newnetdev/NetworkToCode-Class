@@ -22,7 +22,7 @@
 - [Lab 18 - Using Python Functions](labs/Lab_18_Getting_Started_with_Functions.md)
 - [Lab 19 - Re-factoring Code with Functions](labs/Lab_19_Refactor_with_Functions.md)
 - [Lab 20 - Passing in User Input](labs/Lab_20_User_Input.md)
-- [Lab 21 - Parsing show commands with TextFSM](labs/Lab_21_Show_Parsing_TextFSM.md)
+- [Lab 21 - BONUS: Parsing show commands with TextFSM](labs/Lab_21_Show_Parsing_TextFSM.md)
 - [Lab 22 - Exploring NX-API & eAPI ](labs/Lab_22_Exploring_eAPI_NXAPI.md)
 - [Lab 23 - Using Postman to Interact with HTTP APIs](labs/Lab_23_Postman.md)
 - [Lab 24 - Using Python requests for HTTP APIs ](labs/Lab_24_Python_requests.md)
