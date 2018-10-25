@@ -124,7 +124,7 @@ At this point, the playbook should look as follows:
 Now run the playbook.
 
 ```
-ntc@ntc:ansible$ ansible-playbook -i inventory deploy-snmp.yaml 
+ntc@ntc:ansible$ ansible-playbook -i inventory deploy-snmp.yml 
 ```
 
 
@@ -170,7 +170,7 @@ snmp_config:
 Now run the playbook.
 
 ```
-ntc@ntc:ansible$ ansible-playbook -i inventory deploy-snmp.yaml 
+ntc@ntc:ansible$ ansible-playbook -i inventory deploy-snmp.yml 
 ```
 
 
